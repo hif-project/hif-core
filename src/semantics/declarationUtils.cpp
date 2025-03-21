@@ -20,14 +20,14 @@
 #include "hif/semantics/semantics.hpp"
 
 #ifdef __clang__
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wunused-member-function"
+#    pragma clang diagnostic push
+#    pragma clang diagnostic ignored "-Wunused-member-function"
 #elif defined __GNUC__
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-function"
-#if __GNUC__ >= 5
-#pragma GCC diagnostic ignored "-Wduplicated-cond"
-#endif
+#    pragma GCC diagnostic push
+#    pragma GCC diagnostic ignored "-Wunused-function"
+#    if __GNUC__ >= 5
+#        pragma GCC diagnostic ignored "-Wduplicated-cond"
+#    endif
 #endif
 
 namespace hif

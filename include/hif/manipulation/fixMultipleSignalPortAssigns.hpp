@@ -10,8 +10,8 @@
 #include "hif/classes/classes.hpp"
 
 #ifdef __clang__
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdocumentation"
+#    pragma clang diagnostic push
+#    pragma clang diagnostic ignored "-Wdocumentation"
 #endif
 
 namespace hif
@@ -187,5 +187,5 @@ bool fixMultipleSignalPortAssigns(
 } // namespace hif
 
 #ifdef __clang__
-#pragma clang diagnostic pop
+#    pragma clang diagnostic pop
 #endif

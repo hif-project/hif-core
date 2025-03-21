@@ -51,7 +51,7 @@ public:
     /// @warning This method only changes the name of the design unit in the
     /// calling view reference. It does not modify the name in the design unit
     /// itself or in any other view reference.
-    void setDesignUnit(const std::string& n);
+    void setDesignUnit(const std::string &n);
 
     /// @brief Accepts a visitor to visit the current object.
     /// @param vis The visitor.

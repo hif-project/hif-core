@@ -124,9 +124,9 @@ void StepFileManager::setAutoStepFile(const std::string &autoStepFile)
         return;
     }
 
-    _autoStepFile                = _parentManager->getAutoStepFile();
+    _autoStepFile          = _parentManager->getAutoStepFile();
     std::string parentStep = _parentManager->getCurrentStepName();
-    const std::size_t size       = 3 + parentStep.size() + 1;
+    const std::size_t size = 3 + parentStep.size() + 1;
     if (size >= _autoStepFile.size()) {
         _autoStepFile = "";
     } else {

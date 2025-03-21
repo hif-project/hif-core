@@ -11,8 +11,8 @@
 #include "hif/application_utils/portability.hpp"
 
 #ifdef _MSC_VER
-#pragma warning(push)
-#pragma warning(disable : 4702)
+#    pragma warning(push)
+#    pragma warning(disable : 4702)
 #endif
 
 namespace hif
@@ -26,8 +26,7 @@ namespace __conversion
 {
 
 /// @brief Utility to check relationships between two classes.
-template <class CHILD, class PARENT>
-class Conversion_t
+template <class CHILD, class PARENT> class Conversion_t
 {
 private:
     typedef char True_t;
@@ -51,8 +50,7 @@ public:
 };
 
 /// @brief Specialization for identical types.
-template <class T>
-class Conversion_t<T, T>
+template <class T> class Conversion_t<T, T>
 {
 public:
     /// @brief Always true for identical types.
@@ -63,8 +61,7 @@ public:
 };
 
 /// @brief Utility to verify subclass relationships.
-template <class PARENT, class CHILD>
-struct checkSubclass {
+template <class PARENT, class CHILD> struct checkSubclass {
     /// @brief Result of subclass verification.
     enum {
         result =
@@ -105,8 +102,7 @@ struct checkSubclass {
 //@{
 
 /// @brief Maps runtime polymorphism to compile-time polymorphism.
-template <class FinalRebind>
-class MapVisitor1 : protected HifVisitor
+template <class FinalRebind> class MapVisitor1 : protected HifVisitor
 {
 public:
     /// @brief Constructor that initializes the visitor with an object.
@@ -302,8 +298,7 @@ private:
 // ////////////////////////////////////////////////////////////////////////////////////////
 
 /// @brief Maps runtime polymorphism to compile-time polymorphism.
-template <class FinalRebind, class Parent2>
-class MapVisitor2 : protected HifVisitor
+template <class FinalRebind, class Parent2> class MapVisitor2 : protected HifVisitor
 {
 public:
     MapVisitor2(Object *oo1, Object *oo2);
@@ -311,13 +306,11 @@ public:
     virtual ~MapVisitor2();
 
     /// @brief This struct is used to map to compile-time polimorphism.
-    template <class T2>
-    struct rebind_t {
+    template <class T2> struct rebind_t {
         typedef FinalRebind FR_t;
         /// @brief This method calls the FinalRebind::map() method,
         /// passing tree objects, and using their actual type.
-        template <typename T1>
-        static void map(T1 *o1);
+        template <typename T1> static void map(T1 *o1);
     };
 
 protected:
@@ -504,8 +497,7 @@ protected:
     /// polymorphism, since references to "this" are not constant.
     static Object *o2;
 
-    template <class T2>
-    friend struct rebind_t;
+    template <class T2> friend struct rebind_t;
 
 private:
     MapVisitor2(const MapVisitor2<FinalRebind, Parent2> &);
@@ -513,12 +505,11 @@ private:
 };
 // Statics definition:
 
-template <class FinalRebind, class Parent2>
-Object *MapVisitor2<FinalRebind, Parent2>::o2 = nullptr;
+template <class FinalRebind, class Parent2> Object *MapVisitor2<FinalRebind, Parent2>::o2 = nullptr;
 } // namespace hif
 
 #include "MapVisitor.i.hpp"
 
 #ifdef _MSC_VER
-#pragma warning(pop)
+#    pragma warning(pop)
 #endif

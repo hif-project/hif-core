@@ -300,10 +300,10 @@ public:
     /// @brief Get the eventual LibraryDef matching the given name.
     /// @param n The name.
     /// @return The LibraryDef or nullptr.
-    virtual LibraryDef *getStandardLibrary(const std::string & n);
+    virtual LibraryDef *getStandardLibrary(const std::string &n);
 
     /// @brief Return True if the given library is native for the semantics.
-    virtual bool isNativeLibrary(const std::string & n, const bool hifFormat = false);
+    virtual bool isNativeLibrary(const std::string &n, const bool hifFormat = false);
 
     /// @brief Map an input symbol into the corresponding output one.
     virtual MapCases
@@ -313,7 +313,7 @@ public:
     virtual Object *getSimplifiedSymbol(KeySymbol &key, Object *s);
 
     /// @brief Returns true if no namespaces is needed for given library name.
-    virtual bool isStandardInclusion(const std::string & n, const bool isLibInclusion);
+    virtual bool isStandardInclusion(const std::string &n, const bool isLibInclusion);
 
     /// @brief Returns the event method name w.r.t. current semantics.
     virtual std::string getEventMethodName(const bool hifFormat = false);
@@ -324,7 +324,7 @@ public:
 
     /// @brief Returns the namespace used by given library name.
     /// E.g. for "iostream" returns "std"
-    std::string getLibraryNamespace(const std::string & n);
+    std::string getLibraryNamespace(const std::string &n);
 
     /// @}
 private:

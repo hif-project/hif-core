@@ -49,8 +49,7 @@ public:
 private:
     const ResetDeclarationsOptions &_opt;
 
-    template <typename T>
-    void _resetDeclaration(T *obj);
+    template <typename T> void _resetDeclaration(T *obj);
 
     ResetDeclarationVisitor(const ResetDeclarationVisitor &);
     ResetDeclarationVisitor &operator=(const ResetDeclarationVisitor &);
@@ -69,8 +68,7 @@ ResetDeclarationVisitor::~ResetDeclarationVisitor()
     // ntd
 }
 
-template <typename T>
-void ResetDeclarationVisitor::_resetDeclaration(T *obj)
+template <typename T> void ResetDeclarationVisitor::_resetDeclaration(T *obj)
 {
     typename T::DeclarationType *oldDecl = nullptr;
     if (_opt.onlyVisible) {
@@ -332,8 +330,7 @@ void resetDeclarations(BList<Object> &o, const ResetDeclarationsOptions &opt)
     }
 }
 
-template <typename T>
-void resetDeclarations(BList<T> &o, const ResetDeclarationsOptions &opt)
+template <typename T> void resetDeclarations(BList<T> &o, const ResetDeclarationsOptions &opt)
 {
     resetDeclarations(o.template toOtherBList<Object>(), opt);
 }

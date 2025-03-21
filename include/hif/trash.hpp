@@ -44,8 +44,7 @@ public:
 
     /// @brief Add given list objects in trash. All list elements are removed.
     /// @param list The list
-    template <typename T>
-    void insert(BList<T> &list);
+    template <typename T> void insert(BList<T> &list);
 
     /// @brief Check whether given object is in trash.
     /// @param o The object.

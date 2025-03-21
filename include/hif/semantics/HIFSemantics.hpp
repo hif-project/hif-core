@@ -243,10 +243,10 @@ public:
     /// @brief Get the eventual LibraryDef matching the given name.
     /// @param n The name.
     /// @return The LibraryDef or nullptr.
-    virtual LibraryDef *getStandardLibrary(const std::string & name);
+    virtual LibraryDef *getStandardLibrary(const std::string &name);
 
     /// @brief Return True if the given library is native for the semantics.
-    virtual bool isNativeLibrary(const std::string & name, const bool hifFormat = false);
+    virtual bool isNativeLibrary(const std::string &name, const bool hifFormat = false);
 
     /// @brief Map an input symbol into the corresponding output one.
     virtual MapCases
@@ -306,10 +306,10 @@ private:
     _getSimplifiedSymbol_withVerilogIntegers(Object *s, bool intReturnedType, const std::vector<int> &intParamIndexes);
 
     /// Splitting cases.
-    LibraryDef *_getVHDLStandardLibrary(const std::string & name);
-    LibraryDef *_getVerilogStandardLibrary(const std::string & name);
-    LibraryDef *_getSystemCStandardLibrary(const std::string & name);
-    LibraryDef *_getHIFStandardLibrary(const std::string & name);
+    LibraryDef *_getVHDLStandardLibrary(const std::string &name);
+    LibraryDef *_getVerilogStandardLibrary(const std::string &name);
+    LibraryDef *_getSystemCStandardLibrary(const std::string &name);
+    LibraryDef *_getHIFStandardLibrary(const std::string &name);
 
     typedef std::list<hif::SubProgram *> SubList;
     typedef std::map<std::string, SubList> DeclarationMap;

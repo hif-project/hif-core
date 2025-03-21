@@ -476,8 +476,8 @@ void Bach::_fixNames(Declaration *decl)
         const bool view1IsComponent = (view1->getContents() == nullptr);
         const bool view2IsComponent = (view2->getContents() == nullptr);
 
-        View *toMerge = nullptr;
-        std::string toBeSet  = nullptr;
+        View *toMerge       = nullptr;
+        std::string toBeSet = nullptr;
         if (view1IsComponent && !view2IsComponent) {
             toMerge = view1;
             toBeSet = view2->getName();
@@ -608,7 +608,7 @@ bool Bach::_mergeBranches(Object *&found, Object *o1, Object *o2)
 void _printStep(Object *tree, unsigned int stepNumber, Object *merged)
 {
     std::string stepName = "MERGED_";
-    std::string name            = hif::objectGetName(merged);
+    std::string name     = hif::objectGetName(merged);
     if (name == nullptr)
         stepName += "unamed_object";
     else

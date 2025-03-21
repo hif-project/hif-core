@@ -279,10 +279,10 @@ public:
     /// @brief Get the eventual library def matching the given name.
     /// @param n The name.
     /// @return The library def or nullptr.
-    virtual LibraryDef *getStandardLibrary(const std::string & n);
+    virtual LibraryDef *getStandardLibrary(const std::string &n);
 
     /// @brief Return True if the given library is native for the semantics.
-    virtual bool isNativeLibrary(const std::string & n, const bool hifFormat = false);
+    virtual bool isNativeLibrary(const std::string &n, const bool hifFormat = false);
 
     /// @brief Starting from system adds all required standard packeges.
     /// @param s The system.
@@ -296,7 +296,7 @@ public:
     virtual Object *getSimplifiedSymbol(KeySymbol &key, Object *s);
 
     /// @brief Returns true if no namespaces is needed for given library name.
-    virtual bool isStandardInclusion(const std::string & n, const bool isLibInclusion);
+    virtual bool isStandardInclusion(const std::string &n, const bool isLibInclusion);
 
     /// @brief Returns the event method name w.r.t. current semantics.
     virtual std::string getEventMethodName(const bool hifFormat = false);

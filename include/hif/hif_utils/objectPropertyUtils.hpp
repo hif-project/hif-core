@@ -16,7 +16,7 @@ namespace hif
 /// @param obj The object on which to operate.
 /// @param n The new name to set.
 ///
-void objectSetName(Object *obj, const std::string& n);
+void objectSetName(Object *obj, const std::string &n);
 
 /// @brief Returns the name of a generic object.
 /// @param obj The object on which to operate.

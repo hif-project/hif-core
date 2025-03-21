@@ -18,18 +18,18 @@
 
 // temporary pragma for disable warnings
 #if (defined __GNUC__)
-#if HIF_DIAGNOSTIC_PUSH_POP
-#pragma GCC diagnostic push
-#endif
-#pragma GCC diagnostic ignored "-Winline"
+#    if HIF_DIAGNOSTIC_PUSH_POP
+#        pragma GCC diagnostic push
+#    endif
+#    pragma GCC diagnostic ignored "-Winline"
 #endif
 #ifdef __clang__
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wunused-member-function"
-#pragma clang diagnostic ignored "-Wmissing-noreturn"
+#    pragma clang diagnostic push
+#    pragma clang diagnostic ignored "-Wunused-member-function"
+#    pragma clang diagnostic ignored "-Wmissing-noreturn"
 #elif defined __GNUC__
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-function"
+#    pragma GCC diagnostic push
+#    pragma GCC diagnostic ignored "-Wunused-function"
 #endif
 
 // //////////////////////////////////////////////////////////////////////////
@@ -1511,9 +1511,9 @@ Value *transformValue(Value *vo, Type *to, hif::semantics::ILanguageSemantics *s
 
 // temporary pragma for re-enable warnings
 #if (defined __GNUC__)
-#if HIF_DIAGNOSTIC_PUSH_POP
-#pragma GCC diagnostic pop
-#else
-#pragma GCC diagnostic error "-Winline"
-#endif
+#    if HIF_DIAGNOSTIC_PUSH_POP
+#        pragma GCC diagnostic pop
+#    else
+#        pragma GCC diagnostic error "-Winline"
+#    endif
 #endif

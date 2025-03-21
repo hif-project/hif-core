@@ -28,12 +28,12 @@ class Bitvector : public SimpleType, public hif::features::ITypeSpan
 {
 public:
 #if (defined _MSC_VER)
-#pragma warning(push)
-#pragma warning(disable : 4251)
+#    pragma warning(push)
+#    pragma warning(disable : 4251)
 #endif
 
 #if (defined _MSC_VER)
-#pragma warning(pop)
+#    pragma warning(pop)
 #endif
 
     /// @brief Constructor.

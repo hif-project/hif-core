@@ -82,8 +82,7 @@ private:
 
     const GetReferencesOptions &_opt;
 
-    template <typename T>
-    void _addReference(T *o);
+    template <typename T> void _addReference(T *o);
 
     void _addDeclaration(Declaration *decl);
 
@@ -138,8 +137,7 @@ bool GetReferencesVisitor::BeforeVisit(Object & /*o*/)
     return false;
 }
 
-template <typename T>
-void GetReferencesVisitor::_addReference(T *o)
+template <typename T> void GetReferencesVisitor::_addReference(T *o)
 {
     if (_declaration != nullptr) {
         if (_declaration->getName() != o->getName())

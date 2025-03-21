@@ -247,8 +247,7 @@ private:
 
     /// @brief Set the content of the copy of the declaration returned by the
     /// instantiate function call.
-    template <typename T>
-    T *_setDeclCopy(T *d, T *decl);
+    template <typename T> T *_setDeclCopy(T *d, T *decl);
 
     /// @brief Simplify given tree by setting context option to resolve
     /// symbols no more visible.
@@ -605,8 +604,7 @@ bool ResolveTemplates::_isCTC(const BList<Declaration> &templates) const
     return false;
 }
 
-template <typename T>
-T *ResolveTemplates::_setDeclCopy(T *d, T *decl)
+template <typename T> T *ResolveTemplates::_setDeclCopy(T *d, T *decl)
 {
     T *declCopy                     = nullptr;
     InstanceToCopyMap::iterator git = _instanceToCopyMap.find(decl);

@@ -265,8 +265,7 @@ Type *_checkCaseType(Value *v, hif::semantics::ILanguageSemantics *sem)
     return ret;
 }
 
-template <class T>
-void _mapSignedUnsigned(T *obj, hif::semantics::ILanguageSemantics *sem)
+template <class T> void _mapSignedUnsigned(T *obj, hif::semantics::ILanguageSemantics *sem)
 {
     typedef typename T::AltType AltType;
     // Map signed and unsigned to corresponding logic vector since:

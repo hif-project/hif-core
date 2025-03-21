@@ -21,8 +21,7 @@ namespace hif
 /// ID of the object.
 /// @tparam Child The derived visitor class that implements specific `map`
 /// methods for each object type.
-template <class Child>
-class MonoVisitor
+template <class Child> class MonoVisitor
 {
 public:
     /// @brief Default constructor.
@@ -57,8 +56,7 @@ private:
 /// two objects.
 /// @tparam Child The derived visitor class that implements specific `map`
 /// methods for object pairs.
-template <class Child>
-class BiVisitor : public MonoVisitor<Child>
+template <class Child> class BiVisitor : public MonoVisitor<Child>
 {
 public:
     using MonoVisitor<Child>::callMap;
@@ -86,8 +84,7 @@ private:
     /// @tparam T The type of the first object in the pair.
     /// @param o1 The first object, already cast to type T.
     /// @param o2 The second object to visit.
-    template <typename T>
-    void _rebind(T *o1, Object *o2);
+    template <typename T> void _rebind(T *o1, Object *o2);
 
     /// @brief Copy constructor (deleted).
     BiVisitor(const BiVisitor<Child> &);

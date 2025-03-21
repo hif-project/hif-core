@@ -19,21 +19,21 @@
 #include "hif/semantics/semantics.hpp"
 
 #ifdef __clang__
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wunused-member-function"
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+#    pragma clang diagnostic push
+#    pragma clang diagnostic ignored "-Wunused-member-function"
+#    pragma clang diagnostic ignored "-Wdeprecated-declarations"
 #elif defined __GNUC__
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-function"
+#    pragma GCC diagnostic push
+#    pragma GCC diagnostic ignored "-Wunused-function"
 #endif
 
 #ifdef __GNUC__
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#    pragma GCC diagnostic push
+#    pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 #endif
 
 #ifdef _MSC_VER
-#pragma warning(disable : 4996)
+#    pragma warning(disable : 4996)
 #endif
 namespace hif
 {
@@ -696,8 +696,7 @@ bool _mspwCreateSupportSignals(
     Signal *supportSig              = new Signal();
     supportSignals[decl->getName()] = supportSig;
     supportSig->setType(_getUnpackedType(decl->getType(), sem));
-    supportSig->setName(
-        hif::NameTable::getInstance()->getFreshName((decl->getName() + std::string("_mspw")).c_str()));
+    supportSig->setName(hif::NameTable::getInstance()->getFreshName((decl->getName() + std::string("_mspw")).c_str()));
     if (decl->getValue() == nullptr) {
         Value *v = sem->getTypeDefaultValue(supportSig->getType(), decl);
         supportSig->setValue(v);
@@ -730,8 +729,8 @@ void _mspwCreateUpdatingProcess(
     _updatingProcesses1.insert(decl);
 
     StateTable *supportST = new StateTable();
-    supportST->setName(hif::NameTable::getInstance()->getFreshName(
-        (decl->getName() + std::string("_mspw_proc_tgt")).c_str()));
+    supportST->setName(
+        hif::NameTable::getInstance()->getFreshName((decl->getName() + std::string("_mspw_proc_tgt")).c_str()));
 
     for (Signals::iterator i = supportSignals.begin(); i != supportSignals.end(); ++i) {
         Signal *supportSig = i->second;
@@ -751,7 +750,7 @@ void _mspwCreateUpdatingProcess(
         RecordValue *rv = new RecordValue();
         for (BList<Field>::iterator i = rec->fields.begin(); i != rec->fields.end(); ++i) {
             Field *f           = *i;
-            std::string n             = f->getName();
+            std::string n      = f->getName();
             Signal *supportSig = supportSignals[n];
             messageAssert(supportSig != nullptr, "Expected related signal", f, sem);
             RecordValueAlt *rva = new RecordValueAlt();
@@ -785,8 +784,8 @@ void _mspwCreateUpdatingProcess(
     _updatingProcesses2.insert(decl);
 
     StateTable *supportST = new StateTable();
-    supportST->setName(hif::NameTable::getInstance()->getFreshName(
-        (decl->getName() + std::string("_mspw_proc_src")).c_str()));
+    supportST->setName(
+        hif::NameTable::getInstance()->getFreshName((decl->getName() + std::string("_mspw_proc_src")).c_str()));
 
     supportST->sensitivity.push_back(new Identifier(decl->getName()));
     State *state = new State();
@@ -799,7 +798,7 @@ void _mspwCreateUpdatingProcess(
         messageAssert(rec != nullptr, "Expected record", baseType, sem);
         for (BList<Field>::iterator i = rec->fields.begin(); i != rec->fields.end(); ++i) {
             Field *f           = *i;
-            std::string n             = f->getName();
+            std::string n      = f->getName();
             Signal *supportSig = supportSignals[n];
             messageAssert(supportSig != nullptr, "Expected related signal", f, sem);
             Assign *supportAssign = new Assign();
@@ -862,7 +861,7 @@ bool _fixSensitivityProcesses(
             if (!findBadLocation)
                 continue;
 
-            std::string varName         = NameTable::getInstance()->getFreshName(deco->getName(), "_expr_var");
+            std::string varName  = NameTable::getInstance()->getFreshName(deco->getName(), "_expr_var");
             Variable *supportVar = new Variable();
             supportVar->setName(varName);
             supportVar->setType(hif::copy(deco->getType()));

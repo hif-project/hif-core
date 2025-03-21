@@ -26,11 +26,11 @@
 // /////////////////////////////////////////////////////////////////////
 
 #ifdef __clang__
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wunused-member-function"
+#    pragma clang diagnostic push
+#    pragma clang diagnostic ignored "-Wunused-member-function"
 #elif defined __GNUC__
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-function"
+#    pragma GCC diagnostic push
+#    pragma GCC diagnostic ignored "-Wunused-function"
 #endif
 
 namespace hif
@@ -254,8 +254,7 @@ protected:
     /// @param v The object of source tree.
     /// @return true if the operation was successful.
     ///
-    template <typename T>
-    bool _dstCopyObject(T *v);
+    template <typename T> bool _dstCopyObject(T *v);
 
     /// @brief Delete the corresponding object into map.
     /// and remove the original entry of the map.
@@ -297,8 +296,7 @@ protected:
     /// @param v The object of source tree.
     /// @return The corresponding object into map.
     ///
-    template <typename T>
-    T *_mapTypedGet(T *v);
+    template <typename T> T *_mapTypedGet(T *v);
 
     ///@}
 
@@ -493,8 +491,7 @@ protected:
     ///
     /// @param o The referenced assign object.
     ///
-    template <typename T>
-    void _mapReferencedAssign(T *o, const hif::Operator op);
+    template <typename T> void _mapReferencedAssign(T *o, const hif::Operator op);
 
     /// @brief Manage referenced assign list of Type TP and Value TP.
     /// For each ValueTPAssign it call _mapReferencedAssign function.
@@ -668,8 +665,7 @@ System *HifStdVisitor::getResult(System *o) { return _mapTypedGet(o); }
 // StdVisitor support methods
 // //////////////////////////////////////////////////
 
-template <typename T>
-bool HifStdVisitor::_dstCopyObject(T *v)
+template <typename T> bool HifStdVisitor::_dstCopyObject(T *v)
 {
     Object *o = _mapGet(v);
 
@@ -814,11 +810,7 @@ void HifStdVisitor::_mapSet(Object *k, Object *v)
     _mapCheck(k, v);
     _treeMap[k] = v;
 }
-template <typename T>
-T *HifStdVisitor::_mapTypedGet(T *v)
-{
-    return dynamic_cast<T *>(_mapGet(v));
-}
+template <typename T> T *HifStdVisitor::_mapTypedGet(T *v) { return dynamic_cast<T *>(_mapGet(v)); }
 void HifStdVisitor::_assureInitialValue(DataDeclaration *o)
 {
     if (o->getValue() != nullptr)
@@ -1457,8 +1449,7 @@ void HifStdVisitor::_mapInitialValue(DataDeclaration *o)
     //opt.copySemanticsTypes = true;
     _dstReplaceWithCast(o->getValue(), dstObj->getValue(), hif::copy(declType, opt));
 }
-template <typename T>
-void HifStdVisitor::_mapReferencedAssign(T *o, const Operator op)
+template <typename T> void HifStdVisitor::_mapReferencedAssign(T *o, const Operator op)
 {
     T *dstObj = _mapTypedGet(o);
     messageAssert(dstObj != nullptr, "Object not found in map", o, _dstSem);
@@ -2028,12 +2019,12 @@ void HifStdVisitor::_performSemanticsAlgorithm(
                 messageDebug("Suggested type 1", dstSuggestedType1, _dstSem);
                 messageDebug("Suggested type 2", dstSuggestedType2, _dstSem);
 
-#if 0
+#    if 0
                 _dstSem->getSuggestedTypeForOp(
                             dstOperandCast, operation, dstT1, dstStarting, true );
                 _dstSem->getSuggestedTypeForOp(
                             dstOperandCast, operation, dstT2, dstStarting, true );
-#endif
+#    endif
             }
 #endif
             messageAssert(

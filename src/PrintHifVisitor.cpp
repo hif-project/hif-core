@@ -18,11 +18,11 @@
 #include "hif/hifPrinter.hpp"
 
 #ifdef __clang__
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wunused-member-function"
+#    pragma clang diagnostic push
+#    pragma clang diagnostic ignored "-Wunused-member-function"
 #elif defined __GNUC__
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-function"
+#    pragma GCC diagnostic push
+#    pragma GCC diagnostic ignored "-Wunused-function"
 #endif
 
 namespace hif
@@ -203,7 +203,7 @@ public:
         const std::string &eVal,
         const std::string &before = " [",
         const std::string &after  = "]",
-        const bool manageEmpty   = false);
+        const bool manageEmpty    = false);
 
     static std::string stringTypeVariant(const Type::TypeVariant t);
 
@@ -2686,7 +2686,7 @@ void PrintHifVisitor::_printInt(long long value, const std::string &name)
     _out << " [" << name << ": " << value << "]";
 }
 
-void PrintHifVisitor::_printName(const std::string & value, const std::string &name, const bool printAnyway)
+void PrintHifVisitor::_printName(const std::string &value, const std::string &name, const bool printAnyway)
 {
     if ((value.empty() || value == NAME_NONE) && !printAnyway)
         return;

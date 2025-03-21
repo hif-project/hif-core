@@ -50,8 +50,7 @@ private:
 
     void checkFound(Declaration *decl, Object &obj, const bool mustBe = true);
 
-    template <typename T>
-    typename T::DeclarationType *_getDeclaration(T *obj);
+    template <typename T> typename T::DeclarationType *_getDeclaration(T *obj);
 
     // K: disabled
     UpdateDeclarationsVisitor(const UpdateDeclarationsVisitor &);
@@ -86,8 +85,7 @@ void UpdateDeclarationsVisitor::checkFound(Declaration *decl, Object &obj, const
     }
 }
 
-template <typename T>
-typename T::DeclarationType *UpdateDeclarationsVisitor::_getDeclaration(T *obj)
+template <typename T> typename T::DeclarationType *UpdateDeclarationsVisitor::_getDeclaration(T *obj)
 {
     typename T::DeclarationType *oldDecl = nullptr;
     if (_opt.onlyVisible) {

@@ -144,8 +144,7 @@ bool equals(Object *obj1, Object *obj2, const EqualsOptions &options = EqualsOpt
 /// @param options The comparison options.
 /// @return <tt>true</tt> if the lists are identical, <tt>false</tt> otherwise.
 ///
-template <class T>
-bool equals(BList<T> &list1, BList<T> &list2, const EqualsOptions &options = EqualsOptions())
+template <class T> bool equals(BList<T> &list1, BList<T> &list2, const EqualsOptions &options = EqualsOptions())
 {
     typename BList<T>::iterator i, j;
 

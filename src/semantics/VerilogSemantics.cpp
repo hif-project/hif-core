@@ -188,12 +188,12 @@ bool _isPermittedOnReals(Operator operation);
 
 // Wrapper used to suppress useless warnings:
 #ifdef __GNUC__
-#pragma GCC diagnostic ignored "-Wswitch-default"
-#pragma GCC diagnostic ignored "-Wswitch-enum"
+#    pragma GCC diagnostic ignored "-Wswitch-default"
+#    pragma GCC diagnostic ignored "-Wswitch-enum"
 #else
-#pragma warning(disable : 4127)
-#pragma warning(disable : 4244)
-#pragma warning(disable : 4505)
+#    pragma warning(disable : 4127)
+#    pragma warning(disable : 4244)
+#    pragma warning(disable : 4505)
 #endif
 VerilogSemantics::VerilogSemantics()
     : ILanguageSemantics()

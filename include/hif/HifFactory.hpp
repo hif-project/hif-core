@@ -11,10 +11,10 @@
 
 #if (defined _MSC_VER)
 #else
-#if HIF_DIAGNOSTIC_PUSH_POP
-#pragma GCC diagnostic push
-#endif
-#pragma GCC diagnostic ignored "-Weffc++"
+#    if HIF_DIAGNOSTIC_PUSH_POP
+#        pragma GCC diagnostic push
+#    endif
+#    pragma GCC diagnostic ignored "-Weffc++"
 #endif
 namespace hif
 {
@@ -319,10 +319,10 @@ public:
     /// @param sy Tells whether the referenced LibraryDef is system.
     Library *library(
         const std::string &n,
-        ReferencedType *i = nullptr,
-        const std::string &fn    = nullptr,
-        const bool s      = false,
-        const bool sy     = false);
+        ReferencedType *i     = nullptr,
+        const std::string &fn = nullptr,
+        const bool s          = false,
+        const bool sy         = false);
 
     /// @brief Creates a pointer type.
     /// @param type the type the pointer points to.
@@ -706,8 +706,12 @@ public:
     /// @param v the default value of the formal parameter.
     /// @param r the parameter range.
     /// @param dir the parameter direction.
-    parameter_t
-    parameter(Type *t, const std::string &n, Value *v = nullptr, Range *r = nullptr, const PortDirection dir = dir_none);
+    parameter_t parameter(
+        Type *t,
+        const std::string &n,
+        Value *v                = nullptr,
+        Range *r                = nullptr,
+        const PortDirection dir = dir_none);
 
     /// @brief Creates a port declaration.
     /// @param t the type of the port.
@@ -716,8 +720,13 @@ public:
     /// @param init the initial value of the port.
     /// @param r the eventual range.
     /// @param w if the port is a wrapper.
-    Port *
-    port(Type *t, const std::string &n, PortDirection d, Value *init = nullptr, Range *r = nullptr, const bool w = false);
+    Port *port(
+        Type *t,
+        const std::string &n,
+        PortDirection d,
+        Value *init  = nullptr,
+        Range *r     = nullptr,
+        const bool w = false);
 
     /// @brief Creates a port assign.
     /// @param n the name of the (instance) port.
@@ -785,7 +794,8 @@ public:
     /// @param opaque true if opaque.
     /// @param r The eventual constraint.
     /// @param external The external flag. Default is false.
-    TypeDef *typeDef(const std::string &n, Type *t, const bool opaque = true, Range *r = nullptr, const bool external = false);
+    TypeDef *
+    typeDef(const std::string &n, Type *t, const bool opaque = true, Range *r = nullptr, const bool external = false);
 
     /// @brief Creates a type def.
     /// @param n the name of the type def.
@@ -986,7 +996,8 @@ public:
     /// @param iT is the referenced type of instance.
     /// @param p the list of actual parameters.
     /// @param t the list of template parameters assigns.
-    FunctionCall *classConstructorCall(const std::string &n, ReferencedType *iT, parameterArgument_t p, templateArgument_t t);
+    FunctionCall *
+    classConstructorCall(const std::string &n, ReferencedType *iT, parameterArgument_t p, templateArgument_t t);
 
     /// @brief Creates a class destructor. By default its name is __hif_destructor.
     /// @param du the DesignUnit representing the class.
@@ -1002,9 +1013,9 @@ protected:
 
 #if (defined _MSC_VER) && !(defined __GNUC__)
 #else
-#if HIF_DIAGNOSTIC_PUSH_POP
-#pragma GCC diagnostic pop
-#else
-#pragma GCC diagnostic ignored "-Weffc++"
-#endif
+#    if HIF_DIAGNOSTIC_PUSH_POP
+#        pragma GCC diagnostic pop
+#    else
+#        pragma GCC diagnostic ignored "-Weffc++"
+#    endif
 #endif

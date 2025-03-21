@@ -348,7 +348,7 @@ bool BListHost::contains(Object *o) const
 
     return reinterpret_cast<const void *>(this) == reinterpret_cast<const void *>(o->getBList());
 }
-Object *BListHost::findByName(const std::string & n) const
+Object *BListHost::findByName(const std::string &n) const
 {
     for (BListHost::iterator i = this->begin(); i != this->end(); ++i) {
         if (hif::objectGetName(*i) == n)

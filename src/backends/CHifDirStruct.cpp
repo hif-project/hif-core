@@ -500,8 +500,8 @@ CHifDirStruct::DirectoryStatus CHifDirStruct::Apply(Instance &riTgt, const char 
 CHifDirStruct::DirectoryStatus CHifDirStruct::Apply(LibraryDef &rlTgt, const char *pcLine, Suffix rSuff)
 {
 #ifdef HIFDIR_DBG
-    std::cout << INDENT << METHOD
-              << "CHifDirStruct Apply(LibraryDef & rlTgt, const char * pcLine, Suffix rSuff = SRC)" << std::endl;
+    std::cout << INDENT << METHOD << "CHifDirStruct Apply(LibraryDef & rlTgt, const char * pcLine, Suffix rSuff = SRC)"
+              << std::endl;
 #endif // HIFDIR_DBG
     hif::application_utils::FileStructure *fRx6Out;
     hif::application_utils::FileStructure fPDir(".");
@@ -640,8 +640,7 @@ bool CHifDirStruct::IsModified(DesignUnit &rDU, const char *cFile, Suffix rSuff)
 bool CHifDirStruct::IsModified(Instance &rInst, const char *cFile, Suffix rSuff)
 {
 #ifdef HIFDIR_DBG
-    cout << INDENT << METHOD << "CHifDirStruct IsModified(Instance & rInst, char * cFile, Suffix rSuff = SRC)"
-         << endl;
+    cout << INDENT << METHOD << "CHifDirStruct IsModified(Instance & rInst, char * cFile, Suffix rSuff = SRC)" << endl;
 #endif // HIFDIR_DBG
     hif::application_utils::FileStructure *fDir = GetDir(rInst, rSuff);
     if (!fDir)
@@ -668,8 +667,8 @@ bool CHifDirStruct::IsModified(LibraryDef &rLd, const char *cFile, Suffix rSuff)
 bool CHifDirStruct::IsModifiedBase(DesignUnit &rDU, const char *cFile, Suffix rSuff)
 {
 #ifdef HIFDIR_DBG
-    std::cout << INDENT << METHOD
-              << "CHifDirStruct IsModifiedBase(DesignUnit & rDU, char * cFile, Suffix rSuff = SRC)" << std::endl;
+    std::cout << INDENT << METHOD << "CHifDirStruct IsModifiedBase(DesignUnit & rDU, char * cFile, Suffix rSuff = SRC)"
+              << std::endl;
 #endif // HIFDIR_DBG
     //hif::application_utils::FileStructure * fDir = GetDirBase(rDU,rSuff);
     hif::application_utils::FileStructure *fDir = GetDir(rDU, rSuff);

@@ -67,7 +67,7 @@ void Properties::load(const std::string &config_file_name, bool silent, bool eva
 
 void Properties::dump(std::ostream &out) const
 {
-    for (const auto & property : properties) {
+    for (const auto &property : properties) {
         out << property.first << " = " << property.second << std::endl;
     }
 }

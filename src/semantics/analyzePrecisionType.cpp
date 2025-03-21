@@ -19,8 +19,7 @@ namespace semantics
 namespace /*anon*/
 {
 
-template <typename T>
-Type *_analyzePrecisionType(T *o, ILanguageSemantics *sem)
+template <typename T> Type *_analyzePrecisionType(T *o, ILanguageSemantics *sem)
 {
     std::list<Type *> altTypes;
 

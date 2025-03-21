@@ -23,17 +23,17 @@
 #include "hif/semantics/standardization.hpp"
 
 #ifdef __clang__
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wunused-member-function"
-#pragma clang diagnostic ignored "-Wunused-template"
+#    pragma clang diagnostic push
+#    pragma clang diagnostic ignored "-Wunused-member-function"
+#    pragma clang diagnostic ignored "-Wunused-template"
 #elif defined __GNUC__
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-function"
-#pragma GCC diagnostic ignored "-Wunsafe-loop-optimizations"
-#if __GNUC__ >= 5
-#pragma GCC diagnostic ignored "-Wduplicated-cond"
-#pragma GCC diagnostic ignored "-Wnull-dereference"
-#endif
+#    pragma GCC diagnostic push
+#    pragma GCC diagnostic ignored "-Wunused-function"
+#    pragma GCC diagnostic ignored "-Wunsafe-loop-optimizations"
+#    if __GNUC__ >= 5
+#        pragma GCC diagnostic ignored "-Wduplicated-cond"
+#        pragma GCC diagnostic ignored "-Wnull-dereference"
+#    endif
 #endif
 
 /////////////////////////////////////////
@@ -42,9 +42,9 @@
 
 #ifndef NDEBUG
 //#define DEBUG_EXPR_SCREEN
-#ifdef DEBUG_EXPR_SCREEN
+#    ifdef DEBUG_EXPR_SCREEN
 long long unsigned int __expressionId = 0ULL;
-#endif
+#    endif
 #endif
 
 /////////////////////////////////////////
@@ -66,7 +66,7 @@ namespace /*anon*/
 #if (defined _MSC_VER)
 double log2(double d) { return log(d) / log(2.0); }
 #else
-#pragma GCC diagnostic ignored "-Wswitch-enum"
+#    pragma GCC diagnostic ignored "-Wswitch-enum"
 #endif
 
 // ////////////////////////////////////////////////////////////////////
@@ -237,8 +237,7 @@ private:
     /// @name For simplifications management
     /// @{
 
-    template <typename T>
-    bool _simplifyUselessFor(T *o);
+    template <typename T> bool _simplifyUselessFor(T *o);
     bool _simplifyConstantLoopFor(For *o);
 
     /// @}
@@ -279,11 +278,9 @@ private:
 
     bool _replace(Object *from, Object *&to);
 
-    template <class T1, class T2>
-    bool _replace(T1 *from, T2 *&to);
+    template <class T1, class T2> bool _replace(T1 *from, T2 *&to);
 
-    template <class T>
-    bool _replace(T *from, BList<T> &to);
+    template <class T> bool _replace(T *from, BList<T> &to);
 
     void _replaceWithList(Object *from, BList<Object> &to);
 
@@ -448,26 +445,22 @@ private:
     /// @brief If option is enable, the declaration member is simplified.
     /// This is done because guide visitor does not go into this child node.
     /// @param o The Object to manage.
-    template <typename T>
-    void _simplifyDeclaration(T *o);
+    template <typename T> void _simplifyDeclaration(T *o);
 
     /// @name If option is enable, the semantics type member is simplified.
     /// This is done because guide visitor does not go into this child node.
     /// @param o The Object to manage.
     /// @{
 
-    template <typename T>
-    void _simplifySemanticsType(T *o);
+    template <typename T> void _simplifySemanticsType(T *o);
 
-    template <typename T>
-    void _simplifyBaseType(T *o);
+    template <typename T> void _simplifyBaseType(T *o);
 
     /// @}
 
     /// @brief In case of negative Int/RealValue, tries to push the minus
     /// inside value of the object.
-    template <typename T>
-    bool _fixNegativeValue(T *o);
+    template <typename T> bool _fixNegativeValue(T *o);
 
     /// @brief Eventually remove the syntactic type.
     /// @param o The const value to check.
@@ -679,7 +672,11 @@ private:
 
     /// @brief Determines the number of steps performed by a for statement
     /// (which may be a For or ForGenerate).
-    Value *_resolveForLoopBound_getSteps(Value *condition, BList<Action> &steps, const std::string &indexName, Expression *exprCond);
+    Value *_resolveForLoopBound_getSteps(
+        Value *condition,
+        BList<Action> &steps,
+        const std::string &indexName,
+        Expression *exprCond);
 
     /// @brief Determines the number of iterations performed by a for statement
     /// (which may be a For or ForGenerate) basing on the extracted infos.
@@ -775,8 +772,7 @@ private:
     /// @name Simplify referenced assign source mathods
     /// @{
 
-    template <typename T>
-    bool _simplifyReferencedAssignList(BList<T> &list);
+    template <typename T> bool _simplifyReferencedAssignList(BList<T> &list);
 
     /// @}
 
@@ -806,16 +802,13 @@ private:
     bool _equalsAltAndDefaultBody(WithAlt *refAlt, With *o);
     void _replaceCaseWithDefault(With *o);
 
-    template <typename T>
-    bool _simplifyMergingCases(T *o);
+    template <typename T> bool _simplifyMergingCases(T *o);
 
     bool _simplifyWhenBoolConstants(When *o);
 
-    template <typename T>
-    bool _simplifyUselessAlts(T *o);
+    template <typename T> bool _simplifyUselessAlts(T *o);
 
-    template <typename T>
-    bool _simplifyMergingAlts(T *o);
+    template <typename T> bool _simplifyMergingAlts(T *o);
 
     /// @}
 };
@@ -1216,8 +1209,7 @@ bool SimplifyVisitor::_simplifyIteratedConcat(FunctionCall *o)
     return true;
 }
 
-template <typename T>
-bool SimplifyVisitor::_simplifyUselessFor(T *o)
+template <typename T> bool SimplifyVisitor::_simplifyUselessFor(T *o)
 {
     int boolCond = _resolveBoolCondition(o->getCondition());
     if (boolCond != 0)
@@ -1947,8 +1939,7 @@ bool SimplifyVisitor::_replace(Object *from, Object *&to)
     return true;
 }
 
-template <class T1, class T2>
-bool SimplifyVisitor::_replace(T1 *from, T2 *&to)
+template <class T1, class T2> bool SimplifyVisitor::_replace(T1 *from, T2 *&to)
 {
     Object *loc         = to;
     const bool replaced = _replace(static_cast<Object *>(from), loc);
@@ -1956,8 +1947,7 @@ bool SimplifyVisitor::_replace(T1 *from, T2 *&to)
     return replaced;
 }
 
-template <class T>
-bool SimplifyVisitor::_replace(T *from, BList<T> &to)
+template <class T> bool SimplifyVisitor::_replace(T *from, BList<T> &to)
 {
     return _replace(static_cast<Object *>(from), to);
 }
@@ -3187,8 +3177,7 @@ bool SimplifyVisitor::_getNestedSingleConstantOperands(
     return true;
 }
 
-template <typename T>
-void SimplifyVisitor::_simplifyDeclaration(T * /*o*/)
+template <typename T> void SimplifyVisitor::_simplifyDeclaration(T * /*o*/)
 {
     // if (!_opt.simplify_declarations) return;
     // typename T::DeclarationType * originalDecl =
@@ -3208,16 +3197,14 @@ void SimplifyVisitor::_simplifyDeclaration(T * /*o*/)
     // }
 }
 
-template <typename T>
-void SimplifyVisitor::_simplifySemanticsType(T *o)
+template <typename T> void SimplifyVisitor::_simplifySemanticsType(T *o)
 {
     if (_opt.simplify_semantics_types && o->getSemanticType() != nullptr) {
         o->getSemanticType()->acceptVisitor(*this);
     }
 }
 
-template <typename T>
-void SimplifyVisitor::_simplifyBaseType(T *o)
+template <typename T> void SimplifyVisitor::_simplifyBaseType(T *o)
 {
     if (!_opt.simplify_semantics_types)
         return;
@@ -3231,8 +3218,7 @@ void SimplifyVisitor::_simplifyBaseType(T *o)
     }
 }
 
-template <typename T>
-bool SimplifyVisitor::_fixNegativeValue(T *o)
+template <typename T> bool SimplifyVisitor::_fixNegativeValue(T *o)
 {
     if (o->getValue() >= 0)
         return false;
@@ -4552,7 +4538,10 @@ bool SimplifyVisitor::_resolveForLoopBound_rangeCase(Value *condition, long long
 
     return true;
 }
-Value *SimplifyVisitor::_resolveForLoopBound_getEndValue(Value * /*condition*/, const std::string &indexName, Expression *exprCond)
+Value *SimplifyVisitor::_resolveForLoopBound_getEndValue(
+    Value * /*condition*/,
+    const std::string &indexName,
+    Expression *exprCond)
 {
     Value *lastVal = nullptr;
 
@@ -4566,7 +4555,7 @@ Value *SimplifyVisitor::_resolveForLoopBound_getEndValue(Value * /*condition*/, 
 Value *SimplifyVisitor::_resolveForLoopBound_getSteps(
     Value *condition,
     BList<Action> &steps,
-    const std::string & indexName,
+    const std::string &indexName,
     Expression *exprCond)
 {
     Value *increment = nullptr;
@@ -6062,8 +6051,7 @@ bool SimplifyVisitor::_simplifyAggregateToConcat(Aggregate *obj, Type *t)
     return true;
 }
 
-template <typename T>
-bool SimplifyVisitor::_simplifyReferencedAssignList(BList<T> &list)
+template <typename T> bool SimplifyVisitor::_simplifyReferencedAssignList(BList<T> &list)
 {
     for (typename BList<T>::iterator i = list.begin(); i != list.end(); ++i) {
         ReferencedAssign *ra = *i;
@@ -6400,8 +6388,7 @@ bool SimplifyVisitor::_simplifyWhenBoolConstants(When *o)
     return true;
 }
 
-template <typename T>
-bool SimplifyVisitor::_simplifyUselessAlts(T *o)
+template <typename T> bool SimplifyVisitor::_simplifyUselessAlts(T *o)
 {
     typedef std::set<std::string> CaseSet;
     CaseSet caseSet;
@@ -6431,8 +6418,7 @@ bool SimplifyVisitor::_simplifyUselessAlts(T *o)
     return o->alts.empty();
 }
 
-template <typename T>
-bool SimplifyVisitor::_simplifyMergingCases(T *o)
+template <typename T> bool SimplifyVisitor::_simplifyMergingCases(T *o)
 {
     typedef typename T::AltType AltType;
     AltType *refAlt = nullptr;
@@ -6503,8 +6489,7 @@ bool SimplifyVisitor::_simplifyMergingCases(T *o)
     return false;
 }
 
-template <typename T>
-bool SimplifyVisitor::_simplifyMergingAlts(T *o)
+template <typename T> bool SimplifyVisitor::_simplifyMergingAlts(T *o)
 {
     typedef typename T::AltType AltType;
     hif::Trash localTrash;
@@ -7575,8 +7560,7 @@ typename SimplifiedType<T>::type *simplify(T *o, hif::semantics::ILanguageSemant
     return dynamic_cast<typename SimplifiedType<T>::type *>(simplify(static_cast<Object *>(o), refSem, opt));
 }
 
-template <typename T>
-void simplify(BList<T> &o, hif::semantics::ILanguageSemantics *refSem, const SimplifyOptions &opt)
+template <typename T> void simplify(BList<T> &o, hif::semantics::ILanguageSemantics *refSem, const SimplifyOptions &opt)
 {
     simplify(o.template toOtherBList<Object>(), refSem, opt);
 }

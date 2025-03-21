@@ -15,8 +15,8 @@
 #include "hif/semantics/standardization.hpp"
 
 #if defined __GNUC__
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-function"
+#    pragma GCC diagnostic push
+#    pragma GCC diagnostic ignored "-Wunused-function"
 #endif
 
 namespace hif
@@ -722,7 +722,7 @@ Range *ILanguageSemantics::getContextPrecision(Object *o)
     hif::manipulation::simplify(current, this);
     return current;
 }
-std::string ILanguageSemantics::getStandardFilename(const std::string& n)
+std::string ILanguageSemantics::getStandardFilename(const std::string &n)
 {
     std::string ret = _standardFilenames[n];
     return ret;
@@ -733,8 +733,7 @@ bool ILanguageSemantics::useNativeSemantics() const { return _useNativeSemantics
 void ILanguageSemantics::setUseNativeSemantics(const bool b) { _useNativeSemantics = b; }
 
 std::string ILanguageSemantics::makeHifName(const std::string &reqName) const { return _makeHifName(reqName, true); }
-template <typename T>
-T *ILanguageSemantics::getSuffixedCopy(T *obj, const std::string &suffix)
+template <typename T> T *ILanguageSemantics::getSuffixedCopy(T *obj, const std::string &suffix)
 {
     Declaration *decl = dynamic_cast<Declaration *>(obj);
     messageAssert(decl != nullptr, "Expected declaration", obj, this);

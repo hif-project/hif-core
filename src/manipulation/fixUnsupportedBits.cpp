@@ -48,12 +48,10 @@ private:
 
     /// @brief Removes cases into Switch and With, having dontcare bits.
     /// @param o The Switch or With.
-    template <typename T>
-    void _removeDontcareCases(T *o);
+    template <typename T> void _removeDontcareCases(T *o);
 
     /// @brief Transform CASE_X and CASE_Z in CASE_LITERAL.
-    template <typename T>
-    void _fixCaseSemantics(T *o);
+    template <typename T> void _fixCaseSemantics(T *o);
 
     /// @brief Simplify special expressions, which cannot be matched.
     /// @param o The expression.
@@ -373,8 +371,7 @@ bool BadBitsVisitor::_skipInitialValues(Value *v)
     DataDeclaration *ddecl = dynamic_cast<DataDeclaration *>(v->getParent());
     return ddecl != nullptr && ddecl->getValue() == v;
 }
-template <typename T>
-void BadBitsVisitor::_removeDontcareCases(T *o)
+template <typename T> void BadBitsVisitor::_removeDontcareCases(T *o)
 {
     if (_semOpts.lang_hasDontCare && !_opts.onlyBinaryBits)
         return;
@@ -407,8 +404,7 @@ void BadBitsVisitor::_removeDontcareCases(T *o)
 
     altTrash.clear();
 }
-template <typename T>
-void BadBitsVisitor::_fixCaseSemantics(T *o)
+template <typename T> void BadBitsVisitor::_fixCaseSemantics(T *o)
 {
     if (o->getCaseSemantics() == hif::CASE_LITERAL)
         return;

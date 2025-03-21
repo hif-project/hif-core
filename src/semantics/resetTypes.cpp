@@ -69,8 +69,7 @@ public:
 
 private:
     void _resetType(TypedObject &);
-    template <typename T>
-    void _resetBaseTypes(T &);
+    template <typename T> void _resetBaseTypes(T &);
     const bool _recursive;
 
     ResetTypeVisitor(const ResetTypeVisitor &);
@@ -96,8 +95,7 @@ void ResetTypeVisitor::_resetType(TypedObject &o)
     delete o.setSemanticType(nullptr);
 }
 
-template <typename T>
-void ResetTypeVisitor::_resetBaseTypes(T &o)
+template <typename T> void ResetTypeVisitor::_resetBaseTypes(T &o)
 {
     delete o.setBaseType(nullptr, false);
     delete o.setBaseType(nullptr, true);
@@ -341,8 +339,7 @@ void resetTypes(BList<Object> &root, const bool recursive)
     }
 }
 
-template <typename T>
-void resetTypes(BList<T> &root, const bool recursive)
+template <typename T> void resetTypes(BList<T> &root, const bool recursive)
 {
     BList<Object> *tmp = reinterpret_cast<BList<Object> *>(&root);
     resetTypes(*tmp, recursive);

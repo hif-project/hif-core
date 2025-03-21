@@ -19,15 +19,15 @@
 #include "hif/trash.hpp"
 
 #ifdef __clang__
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wunused-member-function"
-#pragma clang diagnostic ignored "-Wmissing-noreturn"
+#    pragma clang diagnostic push
+#    pragma clang diagnostic ignored "-Wunused-member-function"
+#    pragma clang diagnostic ignored "-Wmissing-noreturn"
 #elif defined __GNUC__
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-function"
-#if __GNUC__ >= 5
-#pragma GCC diagnostic ignored "-Wduplicated-cond"
-#endif
+#    pragma GCC diagnostic push
+#    pragma GCC diagnostic ignored "-Wunused-function"
+#    if __GNUC__ >= 5
+#        pragma GCC diagnostic ignored "-Wduplicated-cond"
+#    endif
 #endif
 
 //#define DEBUG_INSERTIONS
@@ -119,8 +119,8 @@ std::string _setNewFieldName(Field *f, Declaration *decl)
     if (propValue != nullptr)
         return static_cast<Identifier *>(propValue)->getName();
 
-    std::string n = hif::NameTable::getInstance()->getFreshName(
-        (std::string(decl->getName()) + "_" + f->getName()).c_str());
+    std::string n =
+        hif::NameTable::getInstance()->getFreshName((std::string(decl->getName()) + "_" + f->getName()).c_str());
     f->addProperty(PROPERTY_NEW_NAME, new Identifier(n));
     return n;
 }
@@ -481,8 +481,7 @@ protected:
     /// (if returned) setting the new _recursionPosition pointer.
     /// @param o The object to manage.
     ///
-    template <typename T>
-    void _manageReference(T *o);
+    template <typename T> void _manageReference(T *o);
 
     /// @brief Print eventual warning when try to move as constant (template
     /// parameter o define a variable.
@@ -619,8 +618,7 @@ ValueTP *MoveVisitor::_makeValueTP(DataDeclaration *c, BList<Declaration> &decla
                 it.insert_after(vtp);
                 _paramPosition = vtp;
 #ifdef DEBUG_INSERTIONS
-                clog << "INSERT: " << hif::objectGetName(vtp) << " AFTER: " << hif::objectGetName(*it)
-                     << endl;
+                clog << "INSERT: " << hif::objectGetName(vtp) << " AFTER: " << hif::objectGetName(*it) << endl;
 #endif
             }
         } else {
@@ -637,8 +635,7 @@ ValueTP *MoveVisitor::_makeValueTP(DataDeclaration *c, BList<Declaration> &decla
         it.insert_before(vtp);
 
 #ifdef DEBUG_INSERTIONS
-        clog << "INSERT: " << hif::objectGetName(vtp) << " BEFORE: " << hif::objectGetName(*it)
-             << endl;
+        clog << "INSERT: " << hif::objectGetName(vtp) << " BEFORE: " << hif::objectGetName(*it) << endl;
 #endif
     }
 
@@ -738,8 +735,7 @@ DataDeclaration *MoveVisitor::_moveToTemplate(DataDeclaration *decl)
     return ret;
 }
 
-template <typename T>
-void MoveVisitor::_manageReference(T *o)
+template <typename T> void MoveVisitor::_manageReference(T *o)
 {
     if (!_isInBadScope)
         return;
@@ -1245,8 +1241,7 @@ protected:
 
     void _renameEventualDefine(Identifier *ref);
 
-    template <typename T>
-    void _fixReference(T *ref, typename T::DeclarationType *decl);
+    template <typename T> void _fixReference(T *ref, typename T::DeclarationType *decl);
 
     void _fixBadGeneralRef(ValueTPAssign *ref, Type *badType, Type *goodType);
     void _fixBadGeneralRef(Identifier *ref, Type *badType, Type *goodType);
@@ -1335,8 +1330,7 @@ void FixReferencesVisitor::_renameEventualDefine(Identifier *ref)
     ref->setName(definesMap[c]);
 }
 
-template <typename T>
-void FixReferencesVisitor::_fixReference(T *ref, typename T::DeclarationType *decl)
+template <typename T> void FixReferencesVisitor::_fixReference(T *ref, typename T::DeclarationType *decl)
 {
     if (!_checkIsAlreadyTemplate(decl, false))
         return;
@@ -1593,7 +1587,7 @@ void FixReferencesVisitor::_fixBadRecordRef(ValueTPAssign *ref, Record * /*badTy
 
     for (BList<Field>::iterator i = goodType->fields.begin(); i != goodType->fields.end(); ++i) {
         ValueTPAssign *vtpa = new ValueTPAssign();
-        std::string n              = _setNewFieldName(*i, decl);
+        std::string n       = _setNewFieldName(*i, decl);
         vtpa->setName(n);
         FieldReference *fr = new FieldReference();
         fr->setName((*i)->getName());
@@ -1654,7 +1648,7 @@ void FixReferencesVisitor::_fixBadRecordRef(ParameterAssign *ref, Record * /*bad
 
     for (BList<Field>::iterator i = goodType->fields.begin(); i != goodType->fields.end(); ++i) {
         ParameterAssign *pa = new ParameterAssign();
-        std::string n              = _setNewFieldName(*i, decl);
+        std::string n       = _setNewFieldName(*i, decl);
         pa->setName(n);
         FieldReference *fr = new FieldReference();
         fr->setName((*i)->getName());
@@ -1692,7 +1686,7 @@ void FixReferencesVisitor::_fixBadTimeRef(ValueTPAssign *ref, Time * /*badType*/
 
     for (BList<Field>::iterator i = goodType->fields.begin(); i != goodType->fields.end(); ++i) {
         ValueTPAssign *vtpa = new ValueTPAssign();
-        std::string n              = _setNewFieldName(*i, decl);
+        std::string n       = _setNewFieldName(*i, decl);
         vtpa->setName(n);
         FieldReference *fr = new FieldReference();
         fr->setName((*i)->getName());
@@ -1976,7 +1970,7 @@ void _fixBadStringDecl(
     if (initVal != nullptr) {
         // Initial value must be a text. In this case add a new
         // enum value entry into global enums.
-        std::string n              = _addStringEnumEntry(dataDecl, initVal->getValue(), sem);
+        std::string n       = _addStringEnumEntry(dataDecl, initVal->getValue(), sem);
         // Set initial value with an identifier to created enum value.
         Identifier *enumRef = new Identifier(n);
         delete dataDecl->setValue(enumRef);

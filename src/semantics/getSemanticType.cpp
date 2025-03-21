@@ -17,11 +17,11 @@
 #include "hif/trash.hpp"
 
 #ifdef __clang__
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wunused-member-function"
+#    pragma clang diagnostic push
+#    pragma clang diagnostic ignored "-Wunused-member-function"
 #elif defined __GNUC__
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-function"
+#    pragma GCC diagnostic push
+#    pragma GCC diagnostic ignored "-Wunused-function"
 #endif
 
 namespace hif
@@ -1530,8 +1530,7 @@ void typeTree(BList<Object> &root, ILanguageSemantics *ref_sem, const bool error
         typeTree(*i, ref_sem, error);
     }
 }
-template <typename T>
-void typeTree(BList<T> &root, ILanguageSemantics *ref_sem, const bool error)
+template <typename T> void typeTree(BList<T> &root, ILanguageSemantics *ref_sem, const bool error)
 {
     typeTree(root.template toOtherBList<Object>(), ref_sem, error);
 }

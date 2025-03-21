@@ -28,7 +28,7 @@ Object::CodeInfo::CodeInfo()
     // ntd
 }
 
-Object::CodeInfo::CodeInfo(const std::string & f, unsigned int l, unsigned int c)
+Object::CodeInfo::CodeInfo(const std::string &f, unsigned int l, unsigned int c)
     : filename(f)
     , lineNumber(l)
     , columnNumber(c)
@@ -113,11 +113,7 @@ Object *Object::getParent() const
     return _parent;
 }
 
-template <typename T>
-T *Object::getParent() const
-{
-    return dynamic_cast<T *>(getParent());
-}
+template <typename T> T *Object::getParent() const { return dynamic_cast<T *>(getParent()); }
 
 Object::Object()
     : _comments(nullptr)
@@ -462,8 +458,7 @@ std::string Object::getFieldName() const
 
 std::string Object::getBListName(const BList<Object> &list) const { return _getBListName(list); }
 
-template <typename T>
-std::string Object::getBListName(const BList<T> &list) const
+template <typename T> std::string Object::getBListName(const BList<T> &list) const
 {
     return getBListName(list.template toOtherBList<Object>());
 }
@@ -472,30 +467,17 @@ std::string Object::getBListName(const BList<T> &list) const
 // Explicit instantations
 // /////////////////////////////////////
 
-template <typename T>
-void Object::_setBListParent(BList<T> &p)
-{
-    _setBListParent(p.template toOtherBList<Object>());
-}
+template <typename T> void Object::_setBListParent(BList<T> &p) { _setBListParent(p.template toOtherBList<Object>()); }
 
-template <typename T>
-T *Object::setChild(T *&field, T *newObj)
+template <typename T> T *Object::setChild(T *&field, T *newObj)
 {
     Object **tmp = reinterpret_cast<Object **>(&field);
     return static_cast<T *>(_setChild(tmp, static_cast<Object *>(newObj)));
 }
 
-template <typename T>
-void Object::_addField(T *&f)
-{
-    _fields->push_back(reinterpret_cast<Object **>(&f));
-}
+template <typename T> void Object::_addField(T *&f) { _fields->push_back(reinterpret_cast<Object **>(&f)); }
 
-template <typename T>
-void Object::_addBList(BList<T> &l)
-{
-    _blists->push_back(reinterpret_cast<BList<Object> *>(&l));
-}
+template <typename T> void Object::_addBList(BList<T> &l) { _blists->push_back(reinterpret_cast<BList<Object> *>(&l)); }
 
 /// @brief Defines a template method for setting the parent of a BList field.
 #define HIF_TEMPLATE_METHOD(T) void Object::_setBListParent<T>(BList<T> & p)

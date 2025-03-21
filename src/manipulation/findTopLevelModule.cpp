@@ -23,7 +23,7 @@ namespace /*anon*/
 typedef std::map<View *, unsigned int> ScoreMap;
 
 #ifdef NDEBUG
-#define _printCandidates(...)
+#    define _printCandidates(...)
 #else
 void _printCandidates(const ViewSet &candidates)
 {
@@ -283,8 +283,7 @@ ViewSet _searchTopCandidates(System *root, hif::semantics::ILanguageSemantics *s
         // heuristic works return unique candiate
         View *found = *h1Result.begin();
         if (opt.verbose) {
-            messageWarning(
-                "Assuming top level design unit is " + std::string(found->getName()), nullptr, nullptr);
+            messageWarning("Assuming top level design unit is " + std::string(found->getName()), nullptr, nullptr);
         }
         return h1Result;
     }
@@ -294,8 +293,7 @@ ViewSet _searchTopCandidates(System *root, hif::semantics::ILanguageSemantics *s
         // heuristic works return unique candiate
         View *found = *h1Result.begin();
         if (opt.verbose) {
-            messageWarning(
-                "Assuming top level design unit is " + std::string(found->getName()), nullptr, nullptr);
+            messageWarning("Assuming top level design unit is " + std::string(found->getName()), nullptr, nullptr);
         }
         return h2Result;
     }

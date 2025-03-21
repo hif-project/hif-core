@@ -106,11 +106,7 @@ int HifVisitor::visitWith(With & /* o */) { return 0; }
 int HifVisitor::visitWithAlt(WithAlt & /* o */) { return 0; }
 // /////////////////////////////////////////////////////////////////////////////////////////////
 
-template <class T>
-int HifVisitor::visitList(BList<T> &l)
-{
-    return visitList(l.template toOtherBList<Object>());
-}
+template <class T> int HifVisitor::visitList(BList<T> &l) { return visitList(l.template toOtherBList<Object>()); }
 
 int HifVisitor::visitList(BList<Object> &l)
 {

@@ -14,10 +14,10 @@
 #include "hif/semantics/semantics.hpp"
 
 #ifdef __clang__
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wunused-private-field"
+#    pragma clang diagnostic push
+#    pragma clang diagnostic ignored "-Wunused-private-field"
 #elif __GNUC__
-#pragma GCC diagnostic ignored "-Weffc++"
+#    pragma GCC diagnostic ignored "-Weffc++"
 #endif
 namespace hif
 {

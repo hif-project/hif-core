@@ -38,7 +38,6 @@ void resetTypes(BList<Object> &root, const bool recursive = true);
 /// @param root of the subtree
 /// @param recursive If true, reset types of sub nodes.
 ///
-template <typename T>
-void resetTypes(BList<T> &root, const bool recursive = true);
+template <typename T> void resetTypes(BList<T> &root, const bool recursive = true);
 } // namespace semantics
 } // namespace hif

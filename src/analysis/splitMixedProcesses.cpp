@@ -283,10 +283,10 @@ void _printInfos(ProcessList &proc, AnalyzeProcessOptions::ProcessMap &map)
     for (ProcessList::iterator i = proc.begin(); i != proc.end(); ++i) {
         ProcessInfos &infos = map[*i];
         std::clog << (*i)->getName() << " " << static_cast<int>(infos.processKind) << std::endl;
-#ifdef PRINT_STEP_PROCESSES
+#    ifdef PRINT_STEP_PROCESSES
         hif::writeFile(std::clog, *i);
         std::clog << std::endl;
-#endif
+#    endif
     }
     std::clog << "--------------------------------------------------\n";
 }

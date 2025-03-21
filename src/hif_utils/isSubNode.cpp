@@ -43,8 +43,7 @@ bool isSubNode(Object *obj, BList<Object> &parentList, const bool matchStarting)
     return false;
 }
 
-template <typename T>
-bool isSubNode(Object *obj, BList<T> &parentList, const bool matchStarting)
+template <typename T> bool isSubNode(Object *obj, BList<T> &parentList, const bool matchStarting)
 {
     BList<Object> *tmp = reinterpret_cast<BList<Object> *>(&parentList);
     return isSubNode(obj, *tmp, matchStarting);

@@ -13,12 +13,12 @@
 #include "hif/semantics/semantics.hpp"
 
 #ifdef __clang__
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wmissing-noreturn"
+#    pragma clang diagnostic push
+#    pragma clang diagnostic ignored "-Wmissing-noreturn"
 #elif defined __GNUC__
-#if __GNUC__ >= 5
-#pragma GCC diagnostic ignored "-Wduplicated-cond"
-#endif
+#    if __GNUC__ >= 5
+#        pragma GCC diagnostic ignored "-Wduplicated-cond"
+#    endif
 #endif
 namespace hif
 {

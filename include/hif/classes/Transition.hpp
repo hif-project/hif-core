@@ -50,7 +50,7 @@ public:
     ///
     /// @param n The name representing next state's new name.
     ///
-    void setName(const std::string& n);
+    void setName(const std::string &n);
 
     /// @brief Function to get the name of next state.
     ///
@@ -62,7 +62,7 @@ public:
     ///
     /// @param n The name representing prev state's new name.
     ///
-    void setPrevName(const std::string& n);
+    void setPrevName(const std::string &n);
 
     /// @brief Function to get the name of prev state.
     ///

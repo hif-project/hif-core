@@ -11,11 +11,11 @@
 
 #if (defined _MSC_VER)
 #else
-#pragma GCC diagnostic ignored "-Weffc++"
+#    pragma GCC diagnostic ignored "-Weffc++"
 #endif
 #ifdef __clang__
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wweak-template-vtables"
+#    pragma clang diagnostic push
+#    pragma clang diagnostic ignored "-Wweak-template-vtables"
 #endif
 namespace hif
 {

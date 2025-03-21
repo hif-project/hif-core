@@ -40,7 +40,6 @@ bool isSubNode(Object *obj, BList<Object> &parentList, const bool matchStarting 
 /// Default is <tt>true</tt>.
 /// @return <tt>true</tt> if the passed object is in the sub tree of parentList.
 ///
-template <typename T>
-bool isSubNode(Object *obj, BList<T> &parentList, const bool matchStarting = true);
+template <typename T> bool isSubNode(Object *obj, BList<T> &parentList, const bool matchStarting = true);
 
 } // namespace hif

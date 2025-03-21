@@ -13,8 +13,8 @@
 #include "hif/search.hpp"
 #include "hif/semantics/semantics.hpp"
 #ifdef __clang__
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wunused-member-function"
+#    pragma clang diagnostic push
+#    pragma clang diagnostic ignored "-Wunused-member-function"
 #endif
 
 // Uncomment to obtain debug output prints
@@ -80,7 +80,7 @@ private:
     void _flattenSubtreeFromView(hif::View *view);
     void _flattenInstance(hif::Instance *instance);
     void _insertNewView(hif::View *originalDecl, hif::View *newView, hif::ViewReference *vr);
-    hif::Value *_extractBoundValue(const std::string& n, hif::BList<hif::PortAssign> &bindings);
+    hif::Value *_extractBoundValue(const std::string &n, hif::BList<hif::PortAssign> &bindings);
     void _renameDeclarations(hif::View *view, const std::string &prefix, hif::Instance *instance);
     void _propagateBoundInitialValue(Port *port, Value *v);
     void _propagateConcatInitialValue(Expression *expr, Value *source);
@@ -91,7 +91,7 @@ private:
     bool _decomposeConcat(Value *v, std::list<Value *> &members);
     void _propagateMemberInitialValue(Member *m, DataDeclaration *destination, Value *source);
     void _propagateSliceInitialValue(Slice *s, DataDeclaration *destination, Value *source);
-    void _renameReferences(const std::string& newName, ObjectsSet &refs);
+    void _renameReferences(const std::string &newName, ObjectsSet &refs);
     void _propagateLibraries(hif::Scope *target, hif::Scope *source);
     void _expandDeclarationsList(
         hif::BList<hif::Declaration> &target,
@@ -379,8 +379,8 @@ void Flattener::_flattenInstance(Instance *instance)
     Contents *c    = dynamic_cast<Contents *>(instance->getBList()->getParent());
     DesignUnit *du = dynamic_cast<DesignUnit *>(c->getParent()->getParent());
     if (du != nullptr) {
-        std::cout << "\tRemoving instance " << instance->getName() << " from design unit "
-                  << du->getName() << std::endl;
+        std::cout << "\tRemoving instance " << instance->getName() << " from design unit " << du->getName()
+                  << std::endl;
     }
 #endif
 
@@ -412,7 +412,7 @@ void Flattener::_insertNewView(View *originalDecl, View *newView, ViewReference 
         context = hif::getNearestParent<System>(originalDecl);
     }
     messageAssert(context != nullptr, "Contents not found", nullptr, _sem);
-    std::string newUnitName                 = _nameTable->getFreshName(vr->getDesignUnit().c_str());
+    std::string newUnitName          = _nameTable->getFreshName(vr->getDesignUnit().c_str());
     BList<Declaration> *declarations = hif::objectGetDeclarationList(context);
     DesignUnit *newUnit              = new DesignUnit();
     newUnit->setName(newUnitName);
@@ -422,7 +422,7 @@ void Flattener::_insertNewView(View *originalDecl, View *newView, ViewReference 
     declarations->push_back(newUnit);
 }
 
-Value *Flattener::_extractBoundValue(const std::string& n, BList<PortAssign> &bindings)
+Value *Flattener::_extractBoundValue(const std::string &n, BList<PortAssign> &bindings)
 {
     for (BList<PortAssign>::iterator iter = bindings.begin(); iter != bindings.end(); ++iter) {
         PortAssign *bind = *iter;
@@ -587,8 +587,8 @@ void Flattener::_renameDeclarations(View *view, const std::string &prefix, Insta
     Contents *contents = view->getContents();
     for (BList<StateTable>::iterator iter = contents->stateTables.begin(); iter != contents->stateTables.end();
          ++iter) {
-        StateTable *st = *iter;
-        std::string newName   = _nameTable->getFreshName((prefix + "_" + st->getName()).c_str());
+        StateTable *st      = *iter;
+        std::string newName = _nameTable->getFreshName((prefix + "_" + st->getName()).c_str());
         st->setName(newName);
     }
 }
@@ -807,7 +807,7 @@ void Flattener::_propagateSliceInitialValue(Slice *s, DataDeclaration *destinati
     _initialValueWarnings5.insert(info);
 }
 
-void Flattener::_renameReferences(const std::string& newName, ObjectsSet &refs)
+void Flattener::_renameReferences(const std::string &newName, ObjectsSet &refs)
 {
     for (std::set<Object *>::iterator iter = refs.begin(); iter != refs.end(); ++iter) {
         Object *obj = *iter;
@@ -870,7 +870,7 @@ void Flattener::_expandContents(Contents *target, Contents *source, const std::s
 #endif
     for (BList<Instance>::iterator i = source->instances.begin(); i != source->instances.end(); ++i) {
         Instance *inst = *i;
-        std::string n         = _nameTable->getFreshName((prefix + "_" + inst->getName()).c_str());
+        std::string n  = _nameTable->getFreshName((prefix + "_" + inst->getName()).c_str());
         inst->setName(n);
     }
     target->instances.merge(source->instances);

@@ -198,12 +198,12 @@ bool _isShiftOrRotate(Operator operation);
 
 // Wrapper used to suppress useless warnings:
 #ifdef __GNUC__
-#pragma GCC diagnostic ignored "-Wswitch-default"
-#pragma GCC diagnostic ignored "-Wswitch-enum"
+#    pragma GCC diagnostic ignored "-Wswitch-default"
+#    pragma GCC diagnostic ignored "-Wswitch-enum"
 #else
-#pragma warning(disable : 4127)
-#pragma warning(disable : 4244)
-#pragma warning(disable : 4505)
+#    pragma warning(disable : 4127)
+#    pragma warning(disable : 4244)
+#    pragma warning(disable : 4505)
 #endif
 HIFSemantics::HIFSemantics()
     : ILanguageSemantics()
@@ -1944,8 +1944,7 @@ void HIFAnalysis::map(ViewReference *op1, ViewReference *op2)
         LibraryDef *ld1 = hif::getNearestParent<LibraryDef>(d1);
         if (ld1 == nullptr)
             return;
-        if (ld1->getName() != "hif_verilog_vams_disciplines" &&
-            ld1->getName() != "vams_disciplines")
+        if (ld1->getName() != "hif_verilog_vams_disciplines" && ld1->getName() != "vams_disciplines")
             return;
 
         Array *res_array = new Array();
@@ -2194,9 +2193,9 @@ void HIFAnalysis::_baseShiftAndRotate(Type *t1, Int * /*i*/)
 
 // Wrapper used to suppress useless warnings:
 #ifdef _MSC_VER
-#pragma warning(disable : 4127)
-#pragma warning(disable : 4244)
-#pragma warning(disable : 4505)
+#    pragma warning(disable : 4127)
+#    pragma warning(disable : 4244)
+#    pragma warning(disable : 4505)
 #endif
 
 bool _isRelationalOrAssignment(Operator operation)

@@ -36,8 +36,7 @@ public:
     /// @tparam T The type of the objects in the list.
     /// @param l Reference to the list of objects to visit.
     /// @return The result of the visit operation.
-    template <class T>
-    int visitList(BList<T> &l);
+    template <class T> int visitList(BList<T> &l);
 
     /// @brief Method for visiting a list of generic objects.
     /// @param l Reference to the list of objects to visit.

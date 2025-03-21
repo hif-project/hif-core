@@ -112,8 +112,7 @@ bool addUniqueObject(Object *obj, BList<Object> &list, const AddUniqueObjectOpti
     return (res == RES_INSERTED);
 }
 
-template <typename T>
-bool addUniqueObject(Object *obj, BList<T> &list, const AddUniqueObjectOptions &opt)
+template <typename T> bool addUniqueObject(Object *obj, BList<T> &list, const AddUniqueObjectOptions &opt)
 {
     return addUniqueObject(obj, list.template toOtherBList<Object>(), opt);
 }

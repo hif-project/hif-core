@@ -22,13 +22,13 @@
 #include "hif/semantics/semantics.hpp"
 
 #ifdef __clang__
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wunused-member-function"
-#pragma clang diagnostic ignored "-Wunused-function"
-#pragma clang diagnostic ignored "-Wmissing-noreturn"
+#    pragma clang diagnostic push
+#    pragma clang diagnostic ignored "-Wunused-member-function"
+#    pragma clang diagnostic ignored "-Wunused-function"
+#    pragma clang diagnostic ignored "-Wmissing-noreturn"
 #elif defined __GNUC__
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-function"
+#    pragma GCC diagnostic push
+#    pragma GCC diagnostic ignored "-Wunused-function"
 #endif
 
 namespace hif
@@ -4493,8 +4493,7 @@ void SystemCCastAnalysis::map(Bitvector * /*vi*/, ViewReference *vr)
 
 void SystemCCastAnalysis::map(ViewReference *vi, ViewReference *vr)
 {
-    if (vi->getDesignUnit() == "tlm_target_socket" &&
-        vr->getDesignUnit() == "tlm_initiator_socket") {
+    if (vi->getDesignUnit() == "tlm_target_socket" && vr->getDesignUnit() == "tlm_initiator_socket") {
         _result = _getCastFromValueToType(_inputVal, vr);
         return;
     }
@@ -5507,12 +5506,12 @@ Expression *SystemCBoolConversionVisitor::_getVectorsConversion(Type *t)
 
 // Wrapper used to suppress useless warnings:
 #ifdef __GNUC__
-#pragma GCC diagnostic ignored "-Wswitch-default"
-#pragma GCC diagnostic ignored "-Wswitch-enum"
+#    pragma GCC diagnostic ignored "-Wswitch-default"
+#    pragma GCC diagnostic ignored "-Wswitch-enum"
 #else
-#pragma warning(disable : 4127)
-#pragma warning(disable : 4244)
-#pragma warning(disable : 4505)
+#    pragma warning(disable : 4127)
+#    pragma warning(disable : 4244)
+#    pragma warning(disable : 4505)
 #endif
 
 SystemCSemantics::SystemCSemantics()

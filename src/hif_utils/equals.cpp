@@ -131,8 +131,7 @@ public:
     virtual int visitWithAlt(WithAlt &o);
     bool _equals(Object *obj1, Object *obj2);
 
-    template <typename T>
-    bool _equals(BList<T> &list1, BList<T> &list2);
+    template <typename T> bool _equals(BList<T> &list1, BList<T> &list2);
 
 private:
     bool _equalsSpanOfConstexpr(Range *r1, Range *r2);
@@ -140,8 +139,7 @@ private:
     bool _equalsSymbolDeclarations(Object *s1, Object *s2);
     bool _equalsCheckInnerType(Type *s1, Type *s2);
     bool _equalsChildren(Object *o1, Object *o2);
-    template <typename T>
-    bool _equalsChildren(BList<T> &o1, BList<T> &o2);
+    template <typename T> bool _equalsChildren(BList<T> &o1, BList<T> &o2);
     bool _equalsSpans(Range *r1, Range *r2);
     bool _equalsInstance(Object *o1, Object *o2);
     bool _equalsProperties(Object *o1, Object *o2);
@@ -373,8 +371,7 @@ bool HifEqualsVisitor::_equalsAdditionalKeywords(Declaration *o1, Declaration *o
     return true;
 }
 
-template <typename T>
-bool HifEqualsVisitor::_equalsChildren(BList<T> &o1, BList<T> &o2)
+template <typename T> bool HifEqualsVisitor::_equalsChildren(BList<T> &o1, BList<T> &o2)
 {
     if (_options.skipChilden && !_isInSignature)
         return true;
@@ -465,8 +462,7 @@ bool HifEqualsVisitor::_equals(Object *obj1, Object *obj2)
     return (o1->acceptVisitor(*this) != 0);
 }
 
-template <typename T>
-bool HifEqualsVisitor::_equals(BList<T> &list1, BList<T> &list2)
+template <typename T> bool HifEqualsVisitor::_equals(BList<T> &list1, BList<T> &list2)
 {
     typename BList<T>::iterator i, j;
 

@@ -52,8 +52,7 @@ protected:
 };
 /// @brief Interface for symbols, including their declaration type and other
 /// common features.
-template <class T>
-class TemplateSymbolIf : public ISymbol
+template <class T> class TemplateSymbolIf : public ISymbol
 {
 public:
     typedef T DeclarationType;

@@ -115,8 +115,7 @@ int Propagator::visitInstance(Instance &o)
         Port *port = hif::semantics::getDeclaration(pa, _sem);
         messageAssert(port != nullptr, "Declaration not found", pa, _sem);
 
-        Signal *supportSig =
-            _factory.signal(hif::copy(paType), sigName, _sem->getTypeDefaultValue(paType, port));
+        Signal *supportSig = _factory.signal(hif::copy(paType), sigName, _sem->getTypeDefaultValue(paType, port));
 
         parentView->getContents()->declarations.push_back(supportSig);
 
@@ -324,8 +323,7 @@ int Propagator::visitVariable(Variable &o)
 
     hif::semantics::updateDeclarations(o.getType(), _sem);
 
-    Signal *supportSig =
-        _factory.signal(hif::copy(o.getType()), sigName, _sem->getTypeDefaultValue(o.getType(), &o));
+    Signal *supportSig = _factory.signal(hif::copy(o.getType()), sigName, _sem->getTypeDefaultValue(o.getType(), &o));
 
     c->declarations.push_back(supportSig);
 

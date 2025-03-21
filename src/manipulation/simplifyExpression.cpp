@@ -10,11 +10,11 @@
 #include "hif/manipulation/simplifyExpression.hpp"
 
 #ifdef __clang__
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wunused-member-function"
+#    pragma clang diagnostic push
+#    pragma clang diagnostic ignored "-Wunused-member-function"
 #elif defined __GNUC__
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-function"
+#    pragma GCC diagnostic push
+#    pragma GCC diagnostic ignored "-Wunused-function"
 #endif
 
 namespace hif
@@ -28,7 +28,7 @@ namespace /*anon*/
 #if (defined _MSC_VER)
 double log2(double d) { return log(d) / log(2.0); }
 #else
-#pragma GCC diagnostic ignored "-Wswitch-enum"
+#    pragma GCC diagnostic ignored "-Wswitch-enum"
 #endif
 
 // ///////////////////////////////////////////////////////////////////
@@ -2325,7 +2325,7 @@ Value *simplifyExpression(Expression *e, hif::semantics::ILanguageSemantics *sem
     const bool isOpRel = hif::operatorIsRelational(e->getOperator()) && hif::typeIsLogic(exprType, sem);
     cannotBeSimplified |= isOpRel;
 
-#if 0 // ENABLE TO DEBUG SIMPLIFICATION
+#    if 0 // ENABLE TO DEBUG SIMPLIFICATION
     if (!cannotBeSimplified)
     {
         if (e->getValue2() == nullptr)
@@ -2338,7 +2338,7 @@ Value *simplifyExpression(Expression *e, hif::semantics::ILanguageSemantics *sem
         }
 
     }
-#endif
+#    endif
 
     messageAssert(cannotBeSimplified, "Unable to simplify expression.", e, sem);
 

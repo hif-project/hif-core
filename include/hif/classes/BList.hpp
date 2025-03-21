@@ -13,8 +13,8 @@
 #include "hif/classes/BListHost.hpp"
 
 #ifdef __clang__
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wweak-template-vtables"
+#    pragma clang diagnostic push
+#    pragma clang diagnostic ignored "-Wweak-template-vtables"
 #endif
 
 namespace hif

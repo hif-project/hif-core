@@ -250,10 +250,10 @@ public:
     /// @brief Get the eventual LibraryDef matching the given name.
     /// @param n The name.
     /// @return The LibraryDef or nullptr.
-    virtual LibraryDef *getStandardLibrary(const std::string & n);
+    virtual LibraryDef *getStandardLibrary(const std::string &n);
 
     /// @brief Return True if the given library is native for the semantics.
-    virtual bool isNativeLibrary(const std::string & n, const bool hifFormat = false);
+    virtual bool isNativeLibrary(const std::string &n, const bool hifFormat = false);
 
     /// @brief Starting from system adds all required standard packages.
     /// @param s The system.
@@ -264,7 +264,7 @@ public:
     mapStandardSymbol(Declaration *decl, KeySymbol &key, ValueSymbol &value, ILanguageSemantics *srcSem);
 
     /// @brief Returns true if no namespaces is needed for given library name.
-    virtual bool isStandardInclusion(const std::string & n, const bool isLibInclusion);
+    virtual bool isStandardInclusion(const std::string &n, const bool isLibInclusion);
 
     /// @brief Returns the mapped symbol w.r.t. the current semantics.
     virtual Object *getSimplifiedSymbol(KeySymbol &key, Object *s);

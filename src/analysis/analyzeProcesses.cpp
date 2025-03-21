@@ -311,13 +311,13 @@ void ProcessVisitor::_classifyWrtSensitivity(ProcessInfos &infos, StateTable * /
     if (_opt.clock.empty() && _opt.reset.empty()) {
         return;
     }
-    bool clockPos      = false;
-    bool clockNeg      = false;
-    bool resetPos      = false;
-    bool resetNeg      = false;
-    unsigned asynch    = 0;
-    unsigned asynchPos = 0;
-    unsigned asynchNeg = 0;
+    bool clockPos             = false;
+    bool clockNeg             = false;
+    bool resetPos             = false;
+    bool resetNeg             = false;
+    unsigned asynch           = 0;
+    unsigned asynchPos        = 0;
+    unsigned asynchNeg        = 0;
     std::string asynchName    = nullptr;
     std::string asynchPosName = nullptr;
     std::string asynchNegName = nullptr;

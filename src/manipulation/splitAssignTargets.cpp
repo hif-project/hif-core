@@ -15,15 +15,15 @@
 #include "hif/trash.hpp"
 
 #ifdef __clang__
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+#    pragma clang diagnostic push
+#    pragma clang diagnostic ignored "-Wdeprecated-declarations"
 #endif
 #ifdef __GNUC__
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#    pragma GCC diagnostic push
+#    pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 #endif
 #ifdef _MSC_VER
-#pragma warning(disable : 4996)
+#    pragma warning(disable : 4996)
 #endif
 
 // Upper bound to choose whether simplify or not assignments.
@@ -472,9 +472,9 @@ bool SplitConcats::_fixArrayParameters(Object *o)
             continue;
 
         const std::string &n = std::string(id->getName()) + "_supp";
-        std::string varName = hif::NameTable::getInstance()->getFreshName(n.c_str());
-        Variable *var       = _factory.variable(hif::copy(type), varName);
-        StateTable *st      = hif::getNearestParent<StateTable>(o);
+        std::string varName  = hif::NameTable::getInstance()->getFreshName(n.c_str());
+        Variable *var        = _factory.variable(hif::copy(type), varName);
+        StateTable *st       = hif::getNearestParent<StateTable>(o);
         messageAssert(st != nullptr, "Cannot find enclosing scope State Table", o, _sem);
 
         Assign *ass         = hif::getNearestParent<Assign>(o);

@@ -98,7 +98,7 @@ public:
     /// @brief Set an instance name
     void SetInstName(std::string sName);
     /// @brief Set an entity name
-    void SetEntName(const std::string& sName);
+    void SetEntName(const std::string &sName);
     /// @brief Set an instance flag
     void SetInstTag(InstTag_T eTag);
     /// @brief Set a status

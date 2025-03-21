@@ -19,11 +19,11 @@
 #include "hif/semantics/semantics.hpp"
 
 #ifdef __clang__
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wunused-member-function"
+#    pragma clang diagnostic push
+#    pragma clang diagnostic ignored "-Wunused-member-function"
 #elif defined __GNUC__
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-function"
+#    pragma GCC diagnostic push
+#    pragma GCC diagnostic ignored "-Wunused-function"
 #endif
 
 //#define HIF_DEBUG_CACHE
@@ -170,11 +170,7 @@ Instantiations allInstantions;
 // ///////////////////////////////////////////////////////////////////
 
 // Is only a wrapper to add options if needed
-template <typename T>
-T *_copy(T *o)
-{
-    return hif::copy(o);
-}
+template <typename T> T *_copy(T *o) { return hif::copy(o); }
 
 /// @brief This method check whether the signature depends on
 /// one or more actual values assigned to formal parameters.
@@ -727,10 +723,10 @@ TypeDef *_instantiate(TypeReference *symbol, hif::semantics::ILanguageSemantics 
     TypeDef *originalDecl = dynamic_cast<TypeDef *>(hif::semantics::getDeclaration(symbol, sem));
     if (originalDecl == nullptr)
         return nullptr;
-    // In case of no tempaltes, returning something in the tree could be unsafe for typing,
-    // since it could be not-simplifyed.
-    // Ref. design: vhdl/openCores/avs_aes + composite_recurse = true
-    // in ILanguageSemantics::getSliceSemanticType() for typerefs.
+        // In case of no tempaltes, returning something in the tree could be unsafe for typing,
+        // since it could be not-simplifyed.
+        // Ref. design: vhdl/openCores/avs_aes + composite_recurse = true
+        // in ILanguageSemantics::getSliceSemanticType() for typerefs.
 #ifdef SKIP_NO_TEMPLATE_DECLS
     if (originalDecl->templateParameters.empty())
         return originalDecl;

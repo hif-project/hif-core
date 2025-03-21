@@ -83,7 +83,7 @@ public:
 
     CommandLineParser *operator=(const CommandLineParser &) = delete;
 
-    virtual ~CommandLineParser() =default;
+    virtual ~CommandLineParser() = default;
 
     /// @name Main methods.
     /// @{
@@ -322,14 +322,14 @@ protected:
     /// @param s The string to be split.
     /// @param maxSize THe maximum size.
     /// @param margin Additional margin when wrapping. Default is 0.
-    static void _makeChunks(Chunks &chunks, std::string s, const std::size_t maxSize, const std::size_t margin = 0) ;
+    static void _makeChunks(Chunks &chunks, std::string s, const std::size_t maxSize, const std::size_t margin = 0);
 
     /// @brief Pads given string to fix exactely maxLineSize.
     ///
     /// @param s The string.
     /// @param maxLineSize The line size.
     /// @return The padded string.
-    static std::string _padString(const std::string &s, const std::size_t maxLineSize) ;
+    static std::string _padString(const std::string &s, const std::size_t maxLineSize);
 
     /// @}
 

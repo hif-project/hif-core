@@ -21,8 +21,6 @@ namespace analysis
 /// the port to inject, the number of clock or delta cycles, and whether it
 /// represents a half-clock delay.
 struct DelayProperties {
-    using Size = std::size_t; ///< Alias for the size type used for delay values.
-
     /// @brief Constructor.
     DelayProperties();
 
@@ -38,17 +36,16 @@ struct DelayProperties {
     /// @return a reference to this instance.
     auto operator=(const DelayProperties &other) -> DelayProperties &;
 
-    Port *port;       ///< The port where the delay will be injected.
-    Size clockCycles; ///< Number of clock cycles of delay.
-    Size deltas;      ///< Number of delta cycles of delay.
-    bool halfClock;   ///< Indicates if this is a half-clock delay.
+    Port *port;              ///< The port where the delay will be injected.
+    std::size_t clockCycles; ///< Number of clock cycles of delay.
+    std::size_t deltas;      ///< Number of delta cycles of delay.
+    bool halfClock;          ///< Indicates if this is a half-clock delay.
 };
 
 /// @brief Stores delay information associated with a specific design unit.
 /// @details This structure contains the details of delays to be injected into a
 /// design unit, including the reference clock, reset, and working edges.
 struct DelayInfos {
-    using Size        = DelayProperties::Size;             ///< Alias for the size type.
     using DelayMap    = std::map<Port *, DelayProperties>; ///< Map of ports to delay properties.
     using WorkingEdge = ProcessInfos::WorkingEdge;         ///< Alias for the working edge type.
     using ResetPhase  = ProcessInfos::ResetPhase;          ///< Alias for the reset phase type.

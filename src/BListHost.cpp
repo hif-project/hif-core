@@ -239,16 +239,18 @@ void BListHost::clear()
     _head = nullptr;
     _tail = nullptr;
 }
+
 bool BListHost::empty() const { return _head == nullptr; }
-BListHost::size_t BListHost::size() const
+
+auto BListHost::size() const -> std::size_t
 {
-    BListHost::size_t ret = 0;
+    std::size_t ret = 0;
     for (BLink *l = _head; l != nullptr; l = l->next) {
         ++ret;
     }
-
     return ret;
 }
+
 void BListHost::merge(BListHost &x)
 {
     if (_tail == nullptr) {
@@ -305,7 +307,7 @@ void BListHost::remove_dopplegangers(const bool strict)
 }
 Object *BListHost::getParent() { return _parent; }
 void BListHost::setParent(Object *p) { _parent = p; }
-BListHost::size_t BListHost::getPosition(Object *o) const
+std::size_t BListHost::getPosition(Object *o) const
 {
     size_t count = 0;
     for (BListHost::iterator i = this->begin(); i != this->end(); ++i) {
@@ -316,7 +318,7 @@ BListHost::size_t BListHost::getPosition(Object *o) const
 
     return count;
 }
-Object *BListHost::insert(Object *o, const size_t pos, const bool expand)
+Object *BListHost::insert(Object *o, std::size_t pos, const bool expand)
 {
     BListHost::iterator i = this->begin();
     i                     = i + pos;
@@ -333,7 +335,7 @@ Object *BListHost::insert(Object *o, const size_t pos, const bool expand)
         return ret;
     }
 }
-Object *BListHost::at(const size_t pos) const
+Object *BListHost::at(std::size_t pos) const
 {
     BListHost::iterator i = this->begin();
     i                     = i + pos;
@@ -666,7 +668,7 @@ BListHost::iterator &BListHost::iterator::operator--()
     return *this;
 }
 
-BListHost::iterator BListHost::iterator::operator+(const size_t s) const
+BListHost::iterator BListHost::iterator::operator+(std::size_t s) const
 {
     iterator ret(*this);
     for (size_t i = 0; i < s; ++i) {
@@ -679,7 +681,7 @@ BListHost::iterator BListHost::iterator::operator+(const size_t s) const
     return ret;
 }
 
-BListHost::iterator BListHost::iterator::operator-(const size_t s) const
+BListHost::iterator BListHost::iterator::operator-(std::size_t s) const
 {
     iterator ret(*this);
     for (size_t i = 0; i < s; ++i) {

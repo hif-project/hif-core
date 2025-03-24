@@ -320,7 +320,7 @@ public:
     Library *library(
         const std::string &n,
         ReferencedType *i     = nullptr,
-        const std::string &fn = nullptr,
+        const std::string &fn = std::string(),
         const bool s          = false,
         const bool sy         = false);
 
@@ -642,7 +642,7 @@ public:
     /// @param actions The actions.
     /// @param label The the while label.
     /// @param doWhile true if is a do-while.
-    While *whileLoop(Value *cond, action_t actions, const std::string &label = nullptr, const bool doWhile = false);
+    While *whileLoop(Value *cond, action_t actions, const std::string &label = std::string(), const bool doWhile = false);
 
     /// @brief Creates an alias.
     /// @param name The name of the alias.
@@ -838,7 +838,7 @@ public:
         library_t l,
         template_t t,
         const bool s                = false,
-        const std::string &fileName = "");
+        const std::string &fileName = std::string());
 
     /// @brief Creates a View.
     /// @param n the name of the view.
@@ -861,7 +861,7 @@ public:
         template_t t,
         const bool s,
         viewReference_t parents,
-        const std::string &fileName = "");
+        const std::string &fileName = std::string());
 
     /// @}
     /// @name Actions.

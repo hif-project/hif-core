@@ -182,7 +182,7 @@ private:
     bool _getBooleanValue(Value *v);
 
     /// @brief Resize given string to given size.
-    void _resize(std::string &s, const char c, const size_t size);
+    void _resize(std::string &s, const char c, std::size_t size);
 
     /// @brief Try to transform the given value to an int value. This
     /// function is useful to get the index of some Hif object e.g. hif::Member
@@ -873,7 +873,7 @@ bool SimplifyVisitor::_getBooleanValue(Value *v)
 // Utility methods
 // //////////////////////////
 
-void SimplifyVisitor::_resize(std::string &s, const char c, const size_t size)
+void SimplifyVisitor::_resize(std::string &s, const char c, std::size_t size)
 {
     if (s.size() >= size)
         return;
@@ -983,7 +983,7 @@ bool SimplifyVisitor::_simplifyRecordValueFieldReference(FieldReference *o)
         // Normal case
         Record *rec = dynamic_cast<Record *>(f->getParent());
         messageAssert(rec != nullptr, "Unexpcted field parent", f->getParent(), _sem);
-        BList<Field>::size_t pos = rec->fields.getPosition(f);
+        auto pos = rec->fields.getPosition(f);
         messageAssert(pos != rec->fields.size(), "Unmatched field position", f, _sem);
 
         agra = recVal->alts.at(pos);
@@ -1600,8 +1600,9 @@ bool SimplifyVisitor::_simplifyUnrollAggregate(Member *o)
     Value *minBound = hif::rangeGetMinBound(span);
     With *w         = new With();
     w->setCondition(hif::manipulation::assureSyntacticType(o->getIndex(), _sem));
-    unsigned int altSize = aggr->alts.size();
-    for (unsigned int i = 0; i < altSize - 2; ++i) {
+    std::size_t altSize = aggr->alts.size();
+    messageAssert(altSize >= 2, "Wrong number of alts.", o, _sem);
+    for (std::size_t i = 0; i < altSize - 2; ++i) {
         WithAlt *wa  = new WithAlt();
         Value *index = _factory.cast(
             hif::copy(semType),

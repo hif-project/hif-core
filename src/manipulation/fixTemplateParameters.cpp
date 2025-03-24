@@ -1924,7 +1924,7 @@ void _checkConstexprFunction(Function *originalDecl, hif::semantics::ILanguageSe
     opt.simplify_statements = true;
     hif::manipulation::simplify(originalDecl, sem, opt);
 
-    const BList<Action>::size_t ss = stOriginal->states.front()->actions.size();
+    const std::size_t ss = stOriginal->states.front()->actions.size();
     if (ss != 1) {
         messageError(
             "Found function which must be a constexpr, but currently is not supported. (2)", originalDecl, sem);

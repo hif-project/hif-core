@@ -107,7 +107,7 @@ std::string ILanguageSemantics::_makeHifName(const std::string &reqName, const b
 }
 
 TypeDef *
-ILanguageSemantics::_makeEnum(const char *enumName, const char *values[], const size_t size, const bool hifFormat)
+ILanguageSemantics::_makeEnum(const char *enumName, const char *values[], std::size_t size, const bool hifFormat)
 {
     std::string en(_makeHifName(enumName, hifFormat));
 

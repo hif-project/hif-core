@@ -649,7 +649,7 @@ auto FileStructure::openfile(char *mode) const -> FILE *
     fp = fopen(string_e.c_str(), mode);
     if (fp == nullptr) {
         char *c        = strerror(errno);
-        const size_t s = strlen(c) + 1;
+        std::size_t s = strlen(c) + 1;
         tmp_error      = static_cast<char *>(malloc(sizeof(char) * s));
         strcpy(tmp_error, c);
         std::ostringstream os;

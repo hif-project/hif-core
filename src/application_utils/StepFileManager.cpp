@@ -109,7 +109,7 @@ void StepFileManager::setAutoStepFile(const std::string &autoStepFile)
         _autoStepFile             = autoStepFile;
         // Removing: .hif.xml
         _autoStepFile             = _autoStepFile.substr(0, _autoStepFile.size() - 8);
-        const size_t lastSlashIdx = _autoStepFile.find_last_of("\\/");
+        std::size_t lastSlashIdx = _autoStepFile.find_last_of("\\/");
         if (std::string::npos != lastSlashIdx) {
             _autoStepFile.erase(0, lastSlashIdx + 1);
         }

@@ -27,8 +27,6 @@ namespace hif
 template <class T> class BList : private BListHost
 {
 public:
-    typedef BListHost::size_t size_t;
-
     class iterator;
 
     BList();
@@ -156,12 +154,12 @@ public:
     /// @param pos The position.
     /// @param expand If <tt>false</tt>, replace the element ati the given position.
     /// @return The previous element at the given position (if any).
-    T *insert(T *o, const size_t pos, const bool expand);
+    T *insert(T *o, std::size_t pos, const bool expand);
 
     /// @brief Returns the element at the given position, or <tt>nullptr</tt> in case of error.
     /// @param pos The position.
     /// @return The element at the given position, or <tt>nullptr</tt> in case of error.
-    T *at(const size_t pos) const;
+    T *at(std::size_t pos) const;
 
     /// @brief Checks whether a given element is contained in this list.
     /// @param o The element to be checked.
@@ -336,12 +334,12 @@ public:
         /// @brief Moves the iterator forward by @p s positions.
         /// @param s The number of positions to move forward.
         /// @return The resulting iterator.
-        iterator operator+(const size_t s) const;
+        iterator operator+(std::size_t s) const;
 
         /// @brief Moves iterator backward of @p s positions.
         /// @param s The number of positions to move backward.
         /// @return The resulting iterator.
-        iterator operator-(const size_t s) const;
+        iterator operator-(std::size_t s) const;
 
         /// @brief Equality operator.
         /// @param i Iterator to compare with the current iterator.

@@ -20,7 +20,7 @@ namespace manipulation
 namespace /*anon*/
 {
 
-typedef std::map<View *, unsigned int> ScoreMap;
+typedef std::map<View *, std::size_t> ScoreMap;
 
 #ifdef NDEBUG
 #    define _printCandidates(...)
@@ -38,9 +38,9 @@ void _printCandidates(const ViewSet &candidates)
 }
 #endif
 
-unsigned int _getChildInstances(View *v, View *c, semantics::ILanguageSemantics *sem)
+std::size_t _getChildInstances(View *v, View *c, semantics::ILanguageSemantics *sem)
 {
-    unsigned int ret = 0;
+    std::size_t ret = 0;
 
     for (BList<Instance>::iterator i = v->getContents()->instances.begin(); i != v->getContents()->instances.end();
          ++i) {
@@ -143,11 +143,11 @@ ViewSet _mostComplexHeuristic(
     ViewDependenciesSet checked;
 
     ViewSet localCandidates;
-    unsigned int maxScore = 0;
+    std::size_t maxScore = 0;
     for (ViewSet::const_iterator i = candidatesList.begin(); i != candidatesList.end(); ++i) {
         View *v = *i;
         _calculateScore(v, scoreMap, checked, *opt.smm, sem);
-        unsigned int currentScore = scoreMap[v];
+        std::size_t currentScore = scoreMap[v];
         if (currentScore > maxScore) {
             localCandidates.clear();
             maxScore = currentScore;

@@ -1374,7 +1374,7 @@ void InternalDeclarationVisitor::_manageParameterAssign(ParameterAssign *obj)
     if (_data.index == hif::NameTable::getInstance()->none()) {
         // The name may be not set just after parsing. Thus this could help
         // even if it could be unsafe.
-        BList<ParameterAssign>::size_t pos = obj->getBList()->getPosition(obj);
+        auto pos = obj->getBList()->getPosition(obj);
         messageAssert(pos != obj->getBList()->size(), "Unexpected position", obj, _data.sem);
         _data.resultDeclarations.push_back(sub->parameters.at(pos));
     } else {

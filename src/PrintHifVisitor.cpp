@@ -2479,7 +2479,7 @@ bool PrintHifVisitor::_printObjectInit(Object *o)
     }
 
     if (o->isInBList() && _stack.back().mustPrintListIndex) {
-        const BList<Object>::size_t s = o->getBList()->getPosition(o);
+        std::size_t s = o->getBList()->getPosition(o);
         if (s < 10)
             _out << "<00" << s << ">";
         else if (s < 100)

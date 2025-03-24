@@ -86,7 +86,7 @@ template <class T> void BList<T>::removeSubTree(T *a) { BListHost::removeSubTree
 
 template <class T> bool BList<T>::empty() const { return BListHost::empty(); }
 
-template <class T> typename BList<T>::size_t BList<T>::size() const { return BListHost::size(); }
+template <class T> std::size_t BList<T>::size() const { return BListHost::size(); }
 
 template <class T> void BList<T>::merge(BList<T> &x) { BListHost::merge(x); }
 
@@ -99,14 +99,15 @@ template <class T> Object *BList<T>::getParent() { return BListHost::getParent()
 template <class T> void BList<T>::setParent(Object *p) { BListHost::setParent(p); }
 
 template <class T> bool BList<T>::_checkSuitable(Object *o) { return dynamic_cast<T *>(o) != nullptr; }
-template <class T> typename BList<T>::size_t BList<T>::getPosition(T *o) const { return BListHost::getPosition(o); }
 
-template <class T> T *BList<T>::insert(T *o, const size_t pos, const bool expand)
+template <class T> std::size_t BList<T>::getPosition(T *o) const { return BListHost::getPosition(o); }
+
+template <class T> T *BList<T>::insert(T *o, std::size_t pos, const bool expand)
 {
     return static_cast<T *>(BListHost::insert(o, pos, expand));
 }
 
-template <class T> T *BList<T>::at(const size_t pos) const { return static_cast<T *>(BListHost::at(pos)); }
+template <class T> T *BList<T>::at(std::size_t pos) const { return static_cast<T *>(BListHost::at(pos)); }
 
 template <class T> bool BList<T>::contains(T *o) const { return BListHost::contains(o); }
 
@@ -251,12 +252,12 @@ template <class T> typename BList<T>::iterator &BList<T>::iterator::operator--()
     return static_cast<iterator &>(BListHost::iterator::operator--());
 }
 
-template <class T> typename BList<T>::iterator BList<T>::iterator::operator+(const size_t s) const
+template <class T> typename BList<T>::iterator BList<T>::iterator::operator+(std::size_t s) const
 {
     return static_cast<iterator>(BListHost::iterator::operator+(s));
 }
 
-template <class T> typename BList<T>::iterator BList<T>::iterator::operator-(const size_t s) const
+template <class T> typename BList<T>::iterator BList<T>::iterator::operator-(std::size_t s) const
 {
     return static_cast<iterator>(BListHost::iterator::operator-(s));
 }

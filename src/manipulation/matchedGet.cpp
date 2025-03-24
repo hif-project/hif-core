@@ -43,7 +43,7 @@ Object *matchedGet(Object *newParent, Object *oldObj, Object *oldParent)
 
         BList<Object> *newList = reinterpret_cast<BList<Object> *>(reinterpret_cast<Byte *>(newParent) + shift);
 
-        const BList<Object>::size_t pos = oldList->getPosition(oldObj);
+        std::size_t pos = oldList->getPosition(oldObj);
         ret                             = newList->at(pos);
     } else {
         const std::ptrdiff_t shift = reinterpret_cast<Byte *>(oldObj->_field) - reinterpret_cast<Byte *>(oldParent);

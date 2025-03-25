@@ -243,7 +243,7 @@ void ProcessVisitor::_analyze(StateTable *o)
 void ProcessVisitor::_classifySignals(ProcessInfos &infos, Object *proc)
 {
     ObjList list;
-    hif::semantics::collectSymbols(list, proc, _sem, _opt.skipStandardDeclarations);
+    hif::semantics::collectSymbols(list, proc, _sem, _opt.skip_standard_declarations);
 
     for (auto *o : list) {
         if (dynamic_cast<hif::features::ISymbol *>(o) == nullptr) {
@@ -1268,7 +1268,7 @@ auto ProcessInfos::isInSensitivity(ReferredDeclarations::value_type v) const -> 
 AnalyzeProcessOptions::AnalyzeProcessOptions()
     : clock(nullptr)
     , reset(nullptr)
-    , skipStandardDeclarations(true)
+    , skip_standard_declarations(true)
     , printWarnings(false)
 {
     // ntd
@@ -1280,7 +1280,7 @@ AnalyzeProcessOptions::~AnalyzeProcessOptions()
 AnalyzeProcessOptions::AnalyzeProcessOptions(const AnalyzeProcessOptions &other)
     : clock(other.clock)
     , reset(other.reset)
-    , skipStandardDeclarations(other.skipStandardDeclarations)
+    , skip_standard_declarations(other.skip_standard_declarations)
     , printWarnings(other.printWarnings)
 {
     // ntd
@@ -1293,7 +1293,7 @@ auto AnalyzeProcessOptions::operator=(const AnalyzeProcessOptions &other) -> Ana
     }
     clock                    = other.clock;
     reset                    = other.reset;
-    skipStandardDeclarations = other.skipStandardDeclarations;
+    skip_standard_declarations = other.skip_standard_declarations;
     printWarnings            = other.printWarnings;
 
     return *this;

@@ -26,7 +26,7 @@ struct SplitAssignTargetOptions {
     /// @{
 
     /// @brief Skip standard scopes. Default is true.
-    bool skipStandardDeclarations;
+    bool skip_standard_declarations;
     /// @brief Split concat targets. Default is false.
     bool splitConcats;
     /// @brief Split target vectors, whose size is greater than given trashold. Default is false.

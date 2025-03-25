@@ -389,7 +389,7 @@ bool removeUnusedDeclarations(
         localOptions.allReferencesMap = new RemoveUnusedDeclarationOptions::ReferencesMap();
 
         hif::semantics::GetReferencesOptions opt;
-        opt.includeUnreferenced = true;
+        opt.include_unreferenced = true;
         hif::semantics::getAllReferences(*localOptions.allReferencesMap, sem, root, opt);
     }
 

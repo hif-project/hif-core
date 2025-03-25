@@ -690,8 +690,8 @@ Object *mergeTrees(std::list<Object *> &partialTrees, semantics::ILanguageSemant
     // search all references
     RefMap refMap;
     hif::semantics::GetReferencesOptions options;
-    //options.skipStandardDeclarations = true;
-    options.includeUnreferenced = true;
+    //options.skip_standard_declarations = true;
+    options.include_unreferenced = true;
     hif::semantics::getAllReferences(refMap, sem, tree, options);
     cv.setRefrenceMap(refMap);
 

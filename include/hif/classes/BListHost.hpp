@@ -351,6 +351,14 @@ protected:
         /// with the element pointed by @p i, <tt>false</tt> otherwise.
         bool operator!=(const iterator &i) const;
 
+        /// @brief Returns the iterator to the next element.
+        /// @return the iterator to the next element.
+        iterator next() const;
+
+        /// @brief Returns the iterator to the previous element.
+        /// @return the iterator to the previous element.
+        iterator prev() const;
+
     private:
         /// @brief The current element of the list.
         BLink *_link;

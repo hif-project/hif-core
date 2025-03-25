@@ -190,7 +190,7 @@ struct AnalyzeProcessOptions {
     /// @{
     std::string clock;             ///< Main clock name (default: nullptr).
     std::string reset;             ///< Main reset name (default: nullptr).
-    bool skipStandardDeclarations; ///< Skip standard declarations (default: true).
+    bool skip_standard_declarations; ///< Skip standard declarations (default: true).
     bool printWarnings;            ///< Print warnings (default: false).
     /// @}
 

@@ -285,8 +285,9 @@ bool mapLastValueToSystemC(Object *root, const LastValueOptions &opts)
     typedef std::set<Object *> SymbolSet;
     typedef std::map<Declaration *, SymbolSet> RefMap;
     RefMap refMap;
-    hif::semantics::GetReferencesOptions opt(false, false, false);
-    hif::semantics::getAllReferences(refMap, sem, s, opt);
+    hif::semantics::GetReferencesOptions get_refs_opts;
+    get_refs_opts.error = false;
+    hif::semantics::getAllReferences(refMap, sem, s, get_refs_opts);
 
     SymbolSet &lastValueRefs = refMap[lastValue];
 

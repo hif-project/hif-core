@@ -437,7 +437,7 @@ void Flattener::_renameDeclarations(View *view, const std::string &prefix, Insta
 {
     ReferenceMap refMap;
     hif::semantics::GetReferencesOptions opt;
-    opt.includeUnreferenced = true;
+    opt.include_unreferenced = true;
     hif::semantics::getAllReferences(refMap, _sem, view, opt);
     for (ReferenceMap::iterator iter = refMap.begin(); iter != refMap.end(); ++iter) {
         Declaration *decl = iter->first;

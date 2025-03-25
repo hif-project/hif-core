@@ -131,7 +131,7 @@ int SplitConcats::visitProcedureCall(ProcedureCall &o)
 
 int SplitConcats::visitLibraryDef(LibraryDef &o)
 {
-    if (_opt.skipStandardDeclarations && o.isStandard())
+    if (_opt.skip_standard_declarations && o.isStandard())
         return 0;
     return GuideVisitor::visitLibraryDef(o);
 }
@@ -151,7 +151,7 @@ int SplitConcats::visitPortAssign(PortAssign &o)
 
 int SplitConcats::visitView(View &o)
 {
-    if (_opt.skipStandardDeclarations && o.isStandard())
+    if (_opt.skip_standard_declarations && o.isStandard())
         return 0;
     return GuideVisitor::visitView(o);
 }
@@ -679,7 +679,7 @@ Value *SplitConcats::_makeElement(Value *val, Type *sourceType, Type *targetType
 // SplitAssignTargetOptions
 // /////////////////////////////////////////////////////////////////////////////
 SplitAssignTargetOptions::SplitAssignTargetOptions()
-    : skipStandardDeclarations(true)
+    : skip_standard_declarations(true)
     , splitConcats(false)
     , splitVectors(false)
     , splitIntegers(false)
@@ -700,7 +700,7 @@ SplitAssignTargetOptions::~SplitAssignTargetOptions()
 }
 
 SplitAssignTargetOptions::SplitAssignTargetOptions(const SplitAssignTargetOptions &other)
-    : skipStandardDeclarations(other.skipStandardDeclarations)
+    : skip_standard_declarations(other.skip_standard_declarations)
     , splitConcats(other.splitConcats)
     , splitVectors(other.splitVectors)
     , splitIntegers(other.splitIntegers)
@@ -723,7 +723,7 @@ SplitAssignTargetOptions &SplitAssignTargetOptions::operator=(SplitAssignTargetO
 
 void SplitAssignTargetOptions::swap(SplitAssignTargetOptions &other)
 {
-    std::swap(skipStandardDeclarations, other.skipStandardDeclarations);
+    std::swap(skip_standard_declarations, other.skip_standard_declarations);
     std::swap(splitConcats, other.splitConcats);
     std::swap(splitVectors, other.splitVectors);
     std::swap(splitIntegers, other.splitIntegers);

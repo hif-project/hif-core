@@ -696,4 +696,8 @@ BListHost::iterator BListHost::iterator::operator-(std::size_t s) const
 bool BListHost::iterator::operator==(const iterator &i) const { return (_link == i._link); }
 bool BListHost::iterator::operator!=(const iterator &i) const { return (_link != i._link); }
 
+BListHost::iterator BListHost::iterator::next() const { return ++(iterator(*this)); }
+
+BListHost::iterator BListHost::iterator::prev() const { return --(iterator(*this)); }
+
 } // namespace hif

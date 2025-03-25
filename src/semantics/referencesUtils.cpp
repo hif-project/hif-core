@@ -127,7 +127,7 @@ GetReferencesVisitor::~GetReferencesVisitor()
 
 bool GetReferencesVisitor::BeforeVisit(Object & /*o*/)
 {
-    if (!_opt.onlyFirst)
+    if (!_opt.only_first)
         return false;
 
     if (_declaration != nullptr) {
@@ -145,15 +145,15 @@ template <typename T> void GetReferencesVisitor::_addReference(T *o)
         Declaration *decl = getDeclaration(o, _refSem);
         if (decl != _declaration)
             return;
-        if (_opt.onlyFirst && !_list->empty())
+        if (_opt.only_first && !_list->empty())
             return;
-        if (_opt.collectObjectMethod != nullptr && !_opt.collectObjectMethod(o, _refSem, _opt))
+        if (_opt.check_object_method != nullptr && !_opt.check_object_method(o, _refSem, _opt))
             return;
         _list->insert(o);
     } else {
         Declaration *decl = getDeclaration(o, _refSem);
 
-        if (_opt.skipStandardDeclarations && decl != nullptr && declarationIsPartOfStandard(decl))
+        if (_opt.skip_standard_declarations && decl != nullptr && declarationIsPartOfStandard(decl))
             return;
 
         if (dynamic_cast<Instance *>(o) != nullptr) {
@@ -169,10 +169,10 @@ template <typename T> void GetReferencesVisitor::_addReference(T *o)
             return;
         }
 
-        if (_opt.onlyFirst && _map->find(decl) != _map->end() && !(*_map)[decl].empty())
+        if (_opt.only_first && _map->find(decl) != _map->end() && !(*_map)[decl].empty())
             return;
 
-        if (_opt.collectObjectMethod != nullptr && !_opt.collectObjectMethod(o, _refSem, _opt))
+        if (_opt.check_object_method != nullptr && !_opt.check_object_method(o, _refSem, _opt))
             return;
 
         (*_map)[decl].insert(o);
@@ -181,10 +181,10 @@ template <typename T> void GetReferencesVisitor::_addReference(T *o)
 
 void GetReferencesVisitor::_addDeclaration(Declaration *decl)
 {
-    if ((_declaration != nullptr) || !_opt.includeUnreferenced)
+    if ((_declaration != nullptr) || !_opt.include_unreferenced)
         return;
 
-    if (_opt.collectObjectMethod != nullptr && !_opt.collectObjectMethod(decl, _refSem, _opt))
+    if (_opt.check_object_method != nullptr && !_opt.check_object_method(decl, _refSem, _opt))
         return;
 
     (*_map)[decl];
@@ -221,9 +221,9 @@ int GetReferencesVisitor::visitFieldReference(FieldReference &o)
         Declaration *decl = getDeclaration(&o, _refSem);
         if (decl != _declaration)
             return 0;
-        if (_opt.onlyFirst && !_list->empty())
+        if (_opt.only_first && !_list->empty())
             return 0;
-        if (_opt.collectObjectMethod != nullptr && !_opt.collectObjectMethod(&o, _refSem, _opt))
+        if (_opt.check_object_method != nullptr && !_opt.check_object_method(&o, _refSem, _opt))
             return 0;
         _list->insert(&o);
     } else {
@@ -238,10 +238,10 @@ int GetReferencesVisitor::visitFieldReference(FieldReference &o)
             return 0;
         }
 
-        if (_opt.onlyFirst && _map->find(decl) != _map->end() && !(*_map)[decl].empty())
+        if (_opt.only_first && _map->find(decl) != _map->end() && !(*_map)[decl].empty())
             return 0;
 
-        if (_opt.collectObjectMethod != nullptr && !_opt.collectObjectMethod(&o, _refSem, _opt))
+        if (_opt.check_object_method != nullptr && !_opt.check_object_method(&o, _refSem, _opt))
             return 0;
 
         (*_map)[decl].insert(&o);
@@ -418,56 +418,6 @@ int GetReferencesVisitor::visitView(View &o)
 }
 
 } // namespace
-
-// ///////////////////////////////////////////////////////////////////
-// Get References Options
-// ///////////////////////////////////////////////////////////////////
-GetReferencesOptions::GetReferencesOptions()
-    : includeUnreferenced(false)
-    , error(true)
-    , skipStandardDeclarations(false)
-    , onlyFirst(false)
-    , collectObjectMethod(nullptr)
-{
-    // ntd
-}
-
-GetReferencesOptions::GetReferencesOptions(const bool iu, const bool e, const bool ssd)
-    : includeUnreferenced(iu)
-    , error(e)
-    , skipStandardDeclarations(ssd)
-    , onlyFirst(false)
-    , collectObjectMethod(nullptr)
-{
-    // ntd
-}
-
-GetReferencesOptions::~GetReferencesOptions()
-{
-    // ntd
-}
-
-GetReferencesOptions::GetReferencesOptions(const GetReferencesOptions &other)
-    : includeUnreferenced(other.includeUnreferenced)
-    , error(other.error)
-    , skipStandardDeclarations(other.skipStandardDeclarations)
-    , onlyFirst(other.onlyFirst)
-    , collectObjectMethod(other.collectObjectMethod)
-{
-    // ntd
-}
-
-GetReferencesOptions &GetReferencesOptions::operator=(const GetReferencesOptions &other)
-{
-    if (this == &other)
-        return *this;
-    includeUnreferenced      = other.includeUnreferenced;
-    error                    = other.error;
-    skipStandardDeclarations = other.skipStandardDeclarations;
-    onlyFirst                = other.onlyFirst;
-    collectObjectMethod      = other.collectObjectMethod;
-    return *this;
-}
 
 // ///////////////////////////////////////////////////////////////////
 // References methods

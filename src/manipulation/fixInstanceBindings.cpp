@@ -649,7 +649,7 @@ bool _fixInstanceBindings(Instance *instance, hif::semantics::ILanguageSemantics
 
     return true;
 }
-bool collectObjectMethod(Object *o, const HifQueryBase *)
+bool check_object_method(Object *o, const HifQueryBase *)
 {
     if (dynamic_cast<Instance *>(o) == nullptr) {
         return false;
@@ -713,7 +713,7 @@ FixBindingOptions &FixBindingOptions::operator=(const FixBindingOptions &o)
 bool fixInstanceBindings(Object *root, hif::semantics::ILanguageSemantics *sem, const FixBindingOptions &opt)
 {
     hif::HifTypedQuery<Instance> q;
-    q.collectObjectMethod = &collectObjectMethod;
+    q.check_object_method = &check_object_method;
     std::list<Instance *> list;
     hif::search(list, root, q);
 

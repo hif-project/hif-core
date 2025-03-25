@@ -297,8 +297,8 @@ ResolveTemplates::~ResolveTemplates()
     // 1- Check if declarations can be removed:
     hif::semantics::ReferencesMap allRefs;
     hif::semantics::GetReferencesOptions getOpts;
-    getOpts.includeUnreferenced      = true;
-    getOpts.skipStandardDeclarations = true;
+    getOpts.include_unreferenced      = true;
+    getOpts.skip_standard_declarations = true;
     hif::semantics::getAllReferences(allRefs, _sem, _system);
     for (Declarations::iterator it(_instantiatedDeclarations.begin()); it != _instantiatedDeclarations.end(); ++it) {
         Declaration *decl                          = *it;
@@ -539,8 +539,8 @@ void ResolveTemplates::fixDeclarationsInMap(Declaration *o)
     _visitedDeclarations.insert(o);
     DeclarationsReferences referencesMapNew;
     hif::semantics::GetReferencesOptions opt;
-    opt.includeUnreferenced      = true;
-    opt.skipStandardDeclarations = true;
+    opt.include_unreferenced      = true;
+    opt.skip_standard_declarations = true;
     hif::semantics::getAllReferences(referencesMapNew, _sem, o, opt);
     referencesMapNew.erase(o);
 

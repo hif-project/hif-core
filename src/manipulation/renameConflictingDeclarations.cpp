@@ -142,7 +142,7 @@ bool renameConflictingDeclarations(
         messageAssert(sys != nullptr, "Unable to get System", root, sem);
         infos.refMap = new std::map<Declaration *, std::set<Object *>>();
         hif::semantics::GetReferencesOptions opt;
-        opt.includeUnreferenced = true;
+        opt.include_unreferenced = true;
         hif::semantics::getAllReferences(*infos.refMap, sem, sys, opt);
     } else {
         infos.refMap = refMap;

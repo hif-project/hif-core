@@ -32,7 +32,7 @@ public:
 private:
     std::list<Object *> &_result;
     const HifQueryBase &_query;
-    HifQueryBase::Depth _currentDepth;
+    std::size_t _currentDepth;
     CheckSet _checkedSet;
 
     HifSearchVisitor(const HifSearchVisitor &);
@@ -86,7 +86,7 @@ int HifSearchVisitor::AfterVisit(Object &o)
         add = false;
     }
 
-    if (_query.collectObjectMethod != nullptr && !(*_query.collectObjectMethod)(&o, &_query)) {
+    if (_query.check_object_method && !_query.check_object_method(&o, &_query)) {
         add = false;
     }
 
@@ -158,7 +158,7 @@ HifQueryBase::HifQueryBase()
     : depth(0)
     , name()
     , classToAvoid()
-    , collectObjectMethod(nullptr)
+    , check_object_method(nullptr)
     , checkInsideCallsDeclarations(false)
     , onlyFirstMatch(false)
     , skipStandardScopes(false)

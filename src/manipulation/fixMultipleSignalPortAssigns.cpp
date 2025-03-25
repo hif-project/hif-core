@@ -1256,7 +1256,7 @@ void _addInitialAssign(StateTable *currentSt, Assign *firstAssign, hif::semantic
     q2.setNextQueryType(&q3);
 
     q1.sem                 = sem;
-    q1.collectObjectMethod = &collectMethod;
+    q1.check_object_method = &collectMethod;
 
     std::list<hif::Object *> list;
     hif::search(list, currentSt, q1);
@@ -1291,7 +1291,7 @@ void _addSignalAssign(StateTable *currentSt, Assign *lastAssign, hif::semantics:
     q3.setNextQueryType(&q4);
 
     q1.sem                 = sem;
-    q1.collectObjectMethod = &collectMethod;
+    q1.check_object_method = &collectMethod;
 
     std::list<hif::Object *> list;
     hif::search(list, currentSt, q1);
@@ -1340,8 +1340,8 @@ bool _fixPartialWritings(System *o, hif::semantics::ILanguageSemantics *sem)
     hif::semantics::ReferencesMap refMap;
 
     hif::semantics::GetReferencesOptions opt;
-    opt.skipStandardDeclarations = true;
-    opt.collectObjectMethod      = refCollectMethod;
+    opt.skip_standard_declarations = true;
+    opt.check_object_method      = refCollectMethod;
     hif::semantics::getAllReferences(refMap, sem, o, opt);
 
     PartialWritesMap partialWritesMap;

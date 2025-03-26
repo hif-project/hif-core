@@ -16,7 +16,6 @@ namespace features
 
 void INamedObject::setName(const std::string &name)
 {
-    messageAssert(!name.empty(), "setName() called with nullptr pointer to name.", nullptr, nullptr);
     _name = name;
 }
 

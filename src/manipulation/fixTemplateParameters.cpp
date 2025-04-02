@@ -301,7 +301,7 @@ Value *TypeConverterVisitor::_transformTimeValueToRecordValue(Value * /*o*/)
                           _getTimeUnitString(tv->getUnit())));
     rv->alts.push_back(rvaUnit);
 
-    if (tv->getValue() > static_cast<long long>(tv->getValue()))
+    if (tv->getValue() > static_cast<std::int64_t>(tv->getValue()))
     {
         // TODO: multiply the value to avoid integer truncation
         messageWarning( "Time value will be truncated since is "
@@ -2066,7 +2066,7 @@ void _fixBadTimeDecl(
         // Fixing initial value:
         if (tv != nullptr) {
             IntValue *v = new IntValue();
-            v->setValue(static_cast<long long>(tv->getValue()));
+            v->setValue(static_cast<std::int64_t>(tv->getValue()));
             v->setType(hif::copy(nf->getType()));
             nf->setValue(v);
         }

@@ -93,7 +93,7 @@ struct AnalyzeSpansResult {
         /// @param kind The kind of the index.
         /// @param min The minimum bound of the range.
         /// @param max The maximum bound of the range.
-        ValueIndex(IndexKind kind, unsigned long long min, unsigned long long max);
+        ValueIndex(IndexKind kind, std::uint64_t min, std::uint64_t max);
 
         /// @brief Swaps the contents of two ValueIndex objects.
         /// @param other The other instance to swap.
@@ -110,23 +110,23 @@ struct AnalyzeSpansResult {
 
         /// @brief Gets the maximum bound of the range or slice.
         /// @return the maximum bound of the range or slice.
-        auto getMax() const -> unsigned long long;
+        auto getMax() const -> std::uint64_t;
 
         /// @brief Gets the minimum bound of the range or slice.
         /// @return the minimum bound of the range or slice.
-        auto getMin() const -> unsigned long long;
+        auto getMin() const -> std::uint64_t;
 
         /// @brief Gets the size of the range or slice.
         /// @return the size of the range or slice.
-        auto getSize() const -> unsigned long long;
+        auto getSize() const -> std::uint64_t;
 
     private:
-        IndexKind _kind;                   ///< Kind of the index.
-        unsigned long long _index;         ///< Index value.
-        unsigned long long _minRangeIndex; ///< Minimum bound for ranges.
-        unsigned long long _maxRangeIndex; ///< Maximum bound for ranges.
-        unsigned long long _minSliceIndex; ///< Minimum bound for slices.
-        unsigned long long _maxSliceIndex; ///< Maximum bound for slices.
+        IndexKind _kind;              ///< Kind of the index.
+        std::uint64_t _index;         ///< Index value.
+        std::uint64_t _minRangeIndex; ///< Minimum bound for ranges.
+        std::uint64_t _maxRangeIndex; ///< Maximum bound for ranges.
+        std::uint64_t _minSliceIndex; ///< Minimum bound for slices.
+        std::uint64_t _maxSliceIndex; ///< Maximum bound for slices.
     };
 
     /// @brief The map storing indices and their associated values.
@@ -151,10 +151,10 @@ struct AnalyzeSpansResult {
     /// @param other The other instance to swap with.
     void swap(AnalyzeSpansResult &other) noexcept;
 
-    ValueMap resultMap;          ///< The result map from indices to values.
-    unsigned long long maxBound; ///< The maximum bound shifted to zero.
-    bool allSpecified;           ///< True if indices fully cover the original span.
-    bool allOthers;              ///< True if all index values match a given default.
+    ValueMap resultMap;     ///< The result map from indices to values.
+    std::uint64_t maxBound; ///< The maximum bound shifted to zero.
+    bool allSpecified;      ///< True if indices fully cover the original span.
+    bool allOthers;         ///< True if all index values match a given default.
 };
 
 /// @brief Analyzes a set of indices to unroll and pack their values.

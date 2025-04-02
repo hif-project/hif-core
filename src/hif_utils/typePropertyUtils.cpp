@@ -155,20 +155,20 @@ Range *typeGetSpan(Type *to, hif::semantics::ILanguageSemantics *sem, const bool
         return str->getSpanInformation();
     } else if (dynamic_cast<Bit *>(to) || dynamic_cast<Bool *>(to)) {
         // For bit and bool create a dummy range of length 1
-        static Range ret(0ll, 0ll);
+        static Range ret(0, 0);
         return &ret;
     } else if (dynamic_cast<Char *>(to)) {
         // For char create a dummy range of length 8
-        static Range ret(7ll, 0ll);
+        static Range ret(7ll, 0);
         return &ret;
     } else if (dynamic_cast<Enum *>(to)) {
         // For enum create a dummy range of length 32
-        static Range ret(31ll, 0ll);
+        static Range ret(31ll, 0);
         return &ret;
     } else if (dynamic_cast<Reference *>(to)) {
         return typeGetSpan(static_cast<Reference *>(to)->getType(), sem);
     } else if (dynamic_cast<Pointer *>(to)) {
-        static Range ret(sizeof(void *) * 8ll - 1ll, 0ll);
+        static Range ret(sizeof(void *) * 8ll - 1ll, 0);
         return &ret;
     } else if (dynamic_cast<TypeReference *>(to)) {
         TypeReference *tr = static_cast<TypeReference *>(to);
@@ -361,7 +361,7 @@ unsigned int typeGetCardinality(Type *type, hif::semantics::ILanguageSemantics *
     return 0u;
 }
 
-Type *typeGetNestedType(Type *t, hif::semantics::ILanguageSemantics *refLang, long long depth)
+Type *typeGetNestedType(Type *t, hif::semantics::ILanguageSemantics *refLang, std::int64_t depth)
 {
     if (depth == 0)
         return t;

@@ -878,7 +878,7 @@ bool RangeVisitor::_checkRange(Range *range, const bool noError)
     v                       = range->getRightBound();
     const bool isRightError = !_checkBound(v) && (v != nullptr || !isSpanInformation);
 
-    unsigned long long bw = hif::semantics::spanGetBitwidth(range, _sem);
+    std::uint64_t bw = hif::semantics::spanGetBitwidth(range, _sem);
     if (bw == 0) {
         if (isLeftError) {
             if (noError)

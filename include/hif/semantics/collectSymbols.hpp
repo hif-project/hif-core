@@ -30,7 +30,7 @@ typedef std::list<Object *> SymbolList;
 void collectSymbols(
     SymbolList &list,
     Object *root,
-    ILanguageSemantics *sem             = hif::semantics::HIFSemantics::getInstance(),
+    ILanguageSemantics *sem               = hif::semantics::HIFSemantics::getInstance(),
     const bool skip_standard_declarations = false);
 
 } // namespace semantics

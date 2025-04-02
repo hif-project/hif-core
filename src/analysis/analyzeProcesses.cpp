@@ -834,7 +834,7 @@ auto ProcessVisitor::_isEqualsToZeroOrOne(Value *cond, DataDeclaration *&n, bool
         delete tmp;
         return false;
     }
-    long long cv = iv->getValue();
+    std::int64_t cv = iv->getValue();
     delete iv;
     if (cv != 0 && cv != 1) {
         return false;

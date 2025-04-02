@@ -20,9 +20,6 @@ namespace hif
 namespace
 {
 
-const char *const a_to_Z       = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-const char *const zero_to_nine = "0123456789";
-
 const char *const name_none                  = "(no name)";
 const char *const name_any                   = "(any name)";
 const char *const name_hif_string_names      = "hif_string_names";
@@ -92,7 +89,7 @@ bool NameTable::nameExists(const std::string &name) { return m_name_map.count(na
 std::string NameTable::getFreshName(const std::string &prefix)
 {
     std::string _prefix = ((prefix.empty()) ? "hif" : prefix) + "_";
-    std::uint64_t id    = 0ULL;
+    std::uint64_t id    = 0;
     std::string name;
     do {
         name = _prefix + std::to_string(id++);
@@ -106,7 +103,7 @@ std::string NameTable::getFreshName(const std::string &name, const std::string &
     return this->getFreshName(name + suffix);
 }
 
-std::string NameTable::getFreshName(const std::string &name, unsigned long long suffix)
+std::string NameTable::getFreshName(const std::string &name, std::uint64_t suffix)
 {
     return this->getFreshName(name + "_" + std::to_string(suffix));
 }

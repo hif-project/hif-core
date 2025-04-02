@@ -802,8 +802,8 @@ void VHDLAnalysis::map(Bitvector *op1, Bitvector *op2)
             // logical operations on std_logic_vector and std_ulogic_vector are in
             // std_logic_1164 library
 
-            unsigned long long r1 = spanGetBitwidth(span1, _sem);
-            unsigned long long r2 = spanGetBitwidth(span2, _sem);
+            std::uint64_t r1 = spanGetBitwidth(span1, _sem);
+            std::uint64_t r2 = spanGetBitwidth(span2, _sem);
 
             if (r1 != 0 && r2 != 0 && r1 != r2)
                 return;
@@ -2287,7 +2287,7 @@ Value *DefaultValueVisitor::_getSignedUnsignedDefaultValue(Type *type)
     Range *range = hif::typeGetSpan(type, _sem);
     messageAssert(range != nullptr, "Unexpected case", type, _sem);
 
-    unsigned long long size = spanGetBitwidth(range, VHDLSemantics::getInstance());
+    std::uint64_t size = spanGetBitwidth(range, VHDLSemantics::getInstance());
     if (size == 0) {
         // Failed to determine range: create an Aggregate with others = 'U'
         Bit *b = new Bit();
@@ -2306,7 +2306,7 @@ Value *DefaultValueVisitor::_getSignedUnsignedDefaultValue(Type *type)
     s.reserve(static_cast<std::string::size_type>(size + 1));
     char c = 'u';
 
-    for (unsigned long long i = 0; i < size; ++i)
+    for (std::uint64_t i = 0; i < size; ++i)
         s.push_back(c);
     BitvectorValue *bv = new BitvectorValue(s);
     type               = hif::copy(type);
@@ -2361,7 +2361,7 @@ int DefaultValueVisitor::visitBitvector(Bitvector &o)
     if (range == nullptr)
         return 0;
 
-    unsigned long long size = spanGetBitwidth(range, VHDLSemantics::getInstance());
+    std::uint64_t size = spanGetBitwidth(range, VHDLSemantics::getInstance());
     if (size == 0) {
         // Failed to determine range: create an Aggregate with others = 'U' or '0'
         BitValue *bitvalue;
@@ -2386,7 +2386,7 @@ int DefaultValueVisitor::visitBitvector(Bitvector &o)
     if (o.isLogic())
         c = 'U';
 
-    for (unsigned long long i = 0; i < size; ++i)
+    for (std::uint64_t i = 0; i < size; ++i)
         s.push_back(c);
 
     BitvectorValue *bValue = new BitvectorValue(s);
@@ -2520,7 +2520,7 @@ int DefaultValueVisitor::visitString(String &o)
 
         _ret = t;
     } else {
-        unsigned long long s = spanGetBitwidth(o.getSpanInformation(), _sem);
+        std::uint64_t s = spanGetBitwidth(o.getSpanInformation(), _sem);
         if (s != 0) {
             StringValue *t = new StringValue();
             t->setValue(std::string(std::string::size_type(s), ' '));
@@ -2694,7 +2694,7 @@ int TypeForConstantVisitor::visitStringValue(StringValue &t)
         Range *r = new Range();
         r->setDirection(dir_upto);
         r->setLeftBound(new IntValue(1LL));
-        r->setRightBound(new IntValue(static_cast<long long>(s.size())));
+        r->setRightBound(new IntValue(static_cast<std::int64_t>(s.size())));
         ret->setSpanInformation(r);
     } else {
         Range *r = new Range();
@@ -2941,7 +2941,7 @@ Value *VHDLSemantics::explicitCast(Value *valueToCast, Type *castType, Type *src
     return ret;
 }
 
-long long VHDLSemantics::transformRealToInt(const double v) { return std::llround(v); }
+std::int64_t VHDLSemantics::transformRealToInt(const double v) { return std::llround(v); }
 
 Type *VHDLSemantics::isTypeAllowedAsBound(Type *t)
 {

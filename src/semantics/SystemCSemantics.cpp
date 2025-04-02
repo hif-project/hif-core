@@ -494,7 +494,7 @@ private:
     HifFactory _factory;
     Value *_result;
 
-    ConstValue *_makeBitvectorValueOfBitValue(unsigned long long size, BitConstant b);
+    ConstValue *_makeBitvectorValueOfBitValue(std::uint64_t size, BitConstant b);
 
     SystemCTypeDefaultValueVisitor(const SystemCTypeDefaultValueVisitor &);
     SystemCTypeDefaultValueVisitor &operator=(const SystemCTypeDefaultValueVisitor &);
@@ -597,9 +597,9 @@ private:
 // Common utility functions
 // ///////////////////////////////////////////////////////////////////
 
-bool _isBuiltinIntSize(unsigned long long size) { return (size == 8 || size == 16 || size == 32 || size == 64); }
+bool _isBuiltinIntSize(std::uint64_t size) { return (size == 8 || size == 16 || size == 32 || size == 64); }
 
-Type::TypeVariant _getSuitableIntTypeVariantBySize(unsigned long long size)
+Type::TypeVariant _getSuitableIntTypeVariantBySize(std::uint64_t size)
 {
     if (_isBuiltinIntSize(size))
         return Type::NATIVE_TYPE;
@@ -611,7 +611,7 @@ Type::TypeVariant _getSuitableIntTypeVariantBySize(unsigned long long size)
 
 bool _isSmallBuiltinInt(Int *i)
 {
-    unsigned long long size = spanGetBitwidth(i->getSpan(), SystemCSemantics::getInstance());
+    std::uint64_t size = spanGetBitwidth(i->getSpan(), SystemCSemantics::getInstance());
     if (i->getTypeVariant() == Type::NATIVE_TYPE) {
         return (size == 8 || size == 16);
     } else if (i->getTypeVariant() == Type::SYSTEMC_INT_BITFIELD) {
@@ -627,7 +627,7 @@ bool _isBuiltinInt(Int *i)
         return false;
     if (i->getTypeVariant() != Type::NATIVE_TYPE)
         return false;
-    unsigned long long size = spanGetBitwidth(i->getSpan(), SystemCSemantics::getInstance());
+    std::uint64_t size = spanGetBitwidth(i->getSpan(), SystemCSemantics::getInstance());
     return _isBuiltinIntSize(size);
 }
 
@@ -635,7 +635,7 @@ Int *_getBuiltinInt(Int *i, const bool fresh, const bool atLeast32 = false)
 {
     Int *ret = fresh ? hif::copy(i) : i;
     ret->setTypeVariant(Type::NATIVE_TYPE);
-    unsigned long long size = spanGetBitwidth(i->getSpan(), SystemCSemantics::getInstance());
+    std::uint64_t size = spanGetBitwidth(i->getSpan(), SystemCSemantics::getInstance());
     if (atLeast32) {
         if (size != 0 && size <= 32)
             delete ret->setSpan(new Range(31, 0));
@@ -730,7 +730,7 @@ void _setTypeVariantFlagByTypes(Type *ref, Type *t1, Type *t2, const bool error 
     messageAssert(!error, "Unexpected different type variants", t1, sem);
 }
 
-bool _getExpressionValue(Object *sourceObj, long long &retval, const bool value2 = true)
+bool _getExpressionValue(Object *sourceObj, std::int64_t &retval, const bool value2 = true)
 {
     SystemCSemantics *sem = SystemCSemantics::getInstance();
 
@@ -829,7 +829,7 @@ bool _checkValidReal(Real *real)
     //	* double: 64
     //	* long double: 128
     Range *span          = real->getSpan();
-    unsigned long long s = spanGetBitwidth(span, SystemCSemantics::getInstance());
+    std::uint64_t s = spanGetBitwidth(span, SystemCSemantics::getInstance());
     return (span != nullptr && (s == 32 || s == 64 || s == 128));
 }
 
@@ -846,13 +846,13 @@ Pointer *_makeSystemCPointer(Type *to)
 }
 
 Int *_makeSystemCIntFromSize(
-    long long spanSize,
+    std::int64_t spanSize,
     const bool sign,
     const bool constExpr,
     const Type::TypeVariant variant = Type::NATIVE_TYPE)
 {
     hif::HifFactory f(SystemCSemantics::getInstance());
-    return f.integer(f.range(spanSize - 1, 0ll), sign, constExpr, variant);
+    return f.integer(f.range(spanSize - 1, 0), sign, constExpr, variant);
 }
 
 Int *_makeSystemCIntFromRange(
@@ -1691,7 +1691,7 @@ void SystemCAnalysis::map(Int *op1)
 
             // returned type is the same type
             Int *ret                = hif::copy(op1);
-            unsigned long long size = spanGetBitwidth(ret->getSpan(), _sem);
+            std::uint64_t size = spanGetBitwidth(ret->getSpan(), _sem);
             if (size < 32) {
                 delete ret->setSpan(new Range(31, 0));
             }
@@ -1732,10 +1732,10 @@ void SystemCAnalysis::map(Int *op1)
         _result.returnedType = hif::copy(op1);
     } else {
         if (!op1->isSigned() && _currOperator == op_plus) {
-            // result type is long long uint
+            // result type is std::int64_t uint
             _result.returnedType = _makeSystemCIntFromSize(64, false, op1->isConstexpr());
         } else {
-            // in all other allowed cases the result type is long long
+            // in all other allowed cases the result type is std::int64_t
             _result.returnedType = _makeSystemCIntFromSize(64, true, op1->isConstexpr());
         }
     }
@@ -1888,8 +1888,8 @@ void SystemCAnalysis::map(Bitvector *op1, Bitvector *op2)
         resultRange = rangeGetSum(op1->getSpan(), op2->getSpan(), _sem);
     } else if (hif::operatorIsRelational(_currOperator) || hif::operatorIsAssignment(_currOperator)) {
         // returned type is boolean, precision is the bv with max range
-        unsigned long long size1 = spanGetBitwidth(op1->getSpan(), _sem, true);
-        unsigned long long size2 = spanGetBitwidth(op2->getSpan(), _sem, true);
+        std::uint64_t size1 = spanGetBitwidth(op1->getSpan(), _sem, true);
+        std::uint64_t size2 = spanGetBitwidth(op2->getSpan(), _sem, true);
 
         // If array2 is unsigned, or assign implies a truncation, padding with 0 is ok
         const bool checkSize       = !hif::operatorIsAssignment(_currOperator) || (op2->isSigned() && size1 > size2);
@@ -2170,8 +2170,8 @@ void SystemCAnalysis::map(Int *op1, Int *op2)
     messageAssert(isBuiltin1 || isScInt1 || isScBigInt1, "Unexpected operand 1", op1, _sem);
     messageAssert(isBuiltin2 || isScInt2 || isScBigInt2, "Unexpected operand 2", op2, _sem);
 
-    unsigned long long size1 = spanGetBitwidth(op1->getSpan(), _sem);
-    unsigned long long size2 = spanGetBitwidth(op2->getSpan(), _sem);
+    std::uint64_t size1 = spanGetBitwidth(op1->getSpan(), _sem);
+    std::uint64_t size2 = spanGetBitwidth(op2->getSpan(), _sem);
 
     // Special managing of concat operation both in case of hdtlib and not-hdtlib.
     if (_currOperator == op_concat) {
@@ -2292,8 +2292,8 @@ void SystemCAnalysis::map(Int *op1, Int *op2)
             // uint-int, uint-uint, uint-sc_int, uint-sc_uint => uint(size)
             _result.returnedType = hif::copy(op1);
         } else if (isScInt1) {
-            // sc_int-int, sc_int-uint, sc_int-sc_int, sc_int-sc_uint => long long
-            // sc_uint-int, sc_uint-uint, sc_uint-sc_int, sc_uint-sc_uint => long long uint
+            // sc_int-int, sc_int-uint, sc_int-sc_int, sc_int-sc_uint => std::int64_t
+            // sc_uint-int, sc_uint-uint, sc_uint-sc_int, sc_uint-sc_uint => std::int64_t uint
             _result.returnedType = _makeSystemCIntFromSize(64, op1->isSigned(), op1->isConstexpr());
         } else // isScBigInt1
         {
@@ -2302,7 +2302,7 @@ void SystemCAnalysis::map(Int *op1, Int *op2)
             } else {
                 // bigint and left shift should return a bigint with range incremented
                 // of the value 2 value.
-                long long retval = 0;
+                std::int64_t retval = 0;
                 if (_getExpressionValue(_srcObj, retval, true) && retval != 0) {
                     // Op2 value can be established from srcObj!
                     // result range is incremented by value2..
@@ -2326,7 +2326,7 @@ void SystemCAnalysis::map(Int *op1, Int *op2)
     Range *retTypeSpan               = nullptr;
     bool retTypeSigned               = true;
     Type::TypeVariant retTypeVariant = Type::NATIVE_TYPE;
-    long long spanSizeFinalVariation = 0;
+    std::int64_t spanSizeFinalVariation = 0;
 
     // Determinate result size and sign
     if (isBuiltin1 && isBuiltin2) {
@@ -2340,20 +2340,20 @@ void SystemCAnalysis::map(Int *op1, Int *op2)
         retTypeSigned  = (op1->isSigned() && op2->isSigned());
         retTypeSpan    = size1 > size2 ? hif::copy(op1->getSpan()) : hif::copy(op2->getSpan());
     } else if (isBuiltin1 && isScInt2) {
-        // int-sc_int, int-sc_uint => long long
-        // uint-sc_int, uint-sc_uint => long long uint
+        // int-sc_int, int-sc_uint => std::int64_t
+        // uint-sc_int, uint-sc_uint => std::int64_t uint
         retTypeVariant = Type::NATIVE_TYPE;
         retTypeSigned  = op2->isSigned();
         retTypeSpan    = _factory.range(63, 0);
     } else if (isScInt1 && isBuiltin2) {
-        // sc_int-int, sc_int-uint => long long
-        // sc_uint-int, sc_uint-uint => long long uint
+        // sc_int-int, sc_int-uint => std::int64_t
+        // sc_uint-int, sc_uint-uint => std::int64_t uint
         retTypeVariant = Type::NATIVE_TYPE;
         retTypeSigned  = op1->isSigned();
         retTypeSpan    = _factory.range(63, 0);
     } else if (isScInt1 && isScInt2) {
-        // sc_int-sc_int => long long
-        // sc_int-sc_uint, sc_uint-sc_int, sc_uint-sc_uint => long long uint
+        // sc_int-sc_int => std::int64_t
+        // sc_int-sc_uint, sc_uint-sc_int, sc_uint-sc_uint => std::int64_t uint
         retTypeVariant = Type::NATIVE_TYPE;
         retTypeSigned  = op1->isSigned() && op2->isSigned();
         retTypeSpan    = _factory.range(63, 0);
@@ -2493,7 +2493,7 @@ void SystemCAnalysis::map(Bitvector *op1, Int *op2)
             // Left shift returned type is sc_lv_base with size of
             // original bitvector + the value of the left shift!
             Bitvector *retType = nullptr;
-            long long retval   = 0;
+            std::int64_t retval   = 0;
             if (_getExpressionValue(_srcObj, retval, true) && retval != 0) {
                 // Op2 value can be established from srcObj!
                 // result range is incremented by value2..
@@ -2638,8 +2638,8 @@ void SystemCAnalysis::map(Int *op1, Bit *op2)
             // uint-bool => type of uint (SAME)
             retType = hif::copy(op1);
         } else if (isScInt) {
-            // sc_int-bool => long long
-            // sc_uint-bool => long long uint
+            // sc_int-bool => std::int64_t
+            // sc_uint-bool => std::int64_t uint
             retType = _makeSystemCIntFromSize(64, op1->isSigned(), op1->isConstexpr());
         } else // ScBigInt
         {
@@ -2648,7 +2648,7 @@ void SystemCAnalysis::map(Int *op1, Bit *op2)
             // sc_bigint-bool => sc_bigint<sizeof(sc_bigint)>  (SAME)
             // sc_biguint-bool => sc_biguint<sizeof(sc_biguint)>  (SAME)
             if (_currOperator == op_sll || _currOperator == op_sla) {
-                long long retval = 0;
+                std::int64_t retval = 0;
                 if (_getExpressionValue(_srcObj, retval, true) && retval != 0) {
                     // Op2 value can be established from srcObj!
                     // result range is incremented by value2..
@@ -2683,14 +2683,14 @@ void SystemCAnalysis::map(Int *op1, Bit *op2)
             // uint-sc_bit => type of uint (SAME)
             retType = hif::copy(op1);
         } else if (isScInt) {
-            // sc_int-sc_bit => long long
-            // sc_uint-sc_bit => long long uint
+            // sc_int-sc_bit => std::int64_t
+            // sc_uint-sc_bit => std::int64_t uint
             retType = _makeSystemCIntFromSize(64, op1->isSigned(), op1->isConstexpr());
         } else // scBigInt
         {
             messageAssert(op1->getTypeVariant() == Type::SYSTEMC_INT_SC_BIGINT, "Expected systemc big int", op1, _sem);
             retType             = hif::copy(op1);
-            long long increment = 0;
+            std::int64_t increment = 0;
 
             if (_currOperator == op_mult) {
                 // sc_bigint * sc_bit  => sc_bigint<sizeof(sc_bigint)+64>
@@ -2704,7 +2704,7 @@ void SystemCAnalysis::map(Int *op1, Bit *op2)
 
                 if (!op1->isSigned())
                     increment = 1;
-                long long retval = 0;
+                std::int64_t retval = 0;
                 if (_getExpressionValue(_srcObj, retval, true) && retval != 0) {
                     // Op2 value can be established from srcObj!
                     // result range is incremented by value2..
@@ -2818,7 +2818,7 @@ void SystemCAnalysis::map(Bitvector *op1, Real *op2)
         if (opIsLeftShift) {
             // returned type is the op1 with range incremented
             // of the value 2 value.
-            long long retval = 0;
+            std::int64_t retval = 0;
             if (_getExpressionValue(_srcObj, retval, true) && retval != 0) {
                 // Op2 value can be established from srcObj!
                 // result range is incremented by value2..
@@ -3123,8 +3123,8 @@ void SystemCAnalysis::map(Int *op1, Bool *op2)
             }
         } else // sc_int
         {
-            // sc_int => long long
-            // sc_uint => long long uint
+            // sc_int => std::int64_t
+            // sc_uint => std::int64_t uint
             retType = _makeSystemCIntFromSize(32, op1->isSigned(), op1->isConstexpr() && op2->isConstexpr());
         }
 
@@ -3156,8 +3156,8 @@ void SystemCAnalysis::map(Int *op1, Bool *op2)
             retType = hif::copy(op1);
         } else if (!isScBigInt) {
             messageAssert(op1->getTypeVariant() == Type::SYSTEMC_INT_SC_INT, "Expected systemc int", op1, _sem);
-            // sc_int-bool => long long
-            // sc_uint-bool => long long uint
+            // sc_int-bool => std::int64_t
+            // sc_uint-bool => std::int64_t uint
             retType = _makeSystemCIntFromSize(32, op1->isSigned(), op1->isConstexpr() && op2->isConstexpr());
         } else // isscBigInt
         {
@@ -3165,7 +3165,7 @@ void SystemCAnalysis::map(Int *op1, Bool *op2)
             // sc_bigint-bool => sc_bigint<sizeof(sc_bigint)>
             // sc_biguint-bool => sc_biguint<sizeof(sc_biguint)>
             if (_currOperator == op_sll || _currOperator == op_sla) {
-                long long retval = 0;
+                std::int64_t retval = 0;
                 if (_getExpressionValue(_srcObj, retval, true) && retval != 0) {
                     // Op2 value can be established from srcObj!
                     // result range is incremented by value2..
@@ -3202,15 +3202,15 @@ void SystemCAnalysis::map(Int *op1, Bool *op2)
         } else if (!isScBigInt) // sc_int
         {
             messageAssert(op1->getTypeVariant() == Type::SYSTEMC_INT_SC_INT, "Expected systemc int", op1, _sem);
-            // sc_int-bool => long long
-            // sc_uint-bool => long long uint
+            // sc_int-bool => std::int64_t
+            // sc_uint-bool => std::int64_t uint
             retType = _makeSystemCIntFromSize(32, op1->isSigned(), op1->isConstexpr() && op2->isConstexpr());
         } else // big int
         {
             messageAssert(op1->getTypeVariant() == Type::SYSTEMC_INT_SC_BIGINT, "Expected systemc big int", op1, _sem);
 
             retType             = hif::copy(op1);
-            long long increment = 0;
+            std::int64_t increment = 0;
             if (_currOperator == op_mult) {
                 // sc_bigint*bool => sc_bigint<sizeof(sc_bigint)+64>
                 // sc_biguint-bool => sc_bigint<sizeof(sc_biguint)+64+1>
@@ -3221,7 +3221,7 @@ void SystemCAnalysis::map(Int *op1, Bool *op2)
                 // sc_biguint-sc_bit => sc_bigint<sizeof(sc_biguint)+1*>
                 if (!op1->isSigned())
                     increment = 1;
-                long long retval = 0;
+                std::int64_t retval = 0;
                 if (_getExpressionValue(_srcObj, retval, true) && retval != 0) {
                     // Op2 value can be established from srcObj!
                     // result range is incremented by value2..
@@ -3816,7 +3816,7 @@ std::string SystemCCastAnalysis::_getToIntFCallName(Int *i)
 {
     std::string fname = (i->isSigned()) ? "to_int" : "to_uint";
     ;
-    unsigned long long size = spanGetBitwidth(i->getSpan(), _sem, true);
+    std::uint64_t size = spanGetBitwidth(i->getSpan(), _sem, true);
     if (size > 32 || size == 0)
         fname += "64";
     return fname;
@@ -4003,12 +4003,12 @@ void SystemCCastAnalysis::map(Array * /*vi*/, Bitvector *bv)
     Type *elementType = hif::typeGetNestedType(_sourceType, _sem, 1);
     messageAssert(elementType != nullptr, "Unable to get array element type", _sourceType, _sem);
 
-    long long elements = static_cast<long long>(hif::semantics::typeGetSpanBitwidth(_sourceType, _sem));
+    std::int64_t elements = static_cast<std::int64_t>(hif::semantics::typeGetSpanBitwidth(_sourceType, _sem));
     messageAssert(elements != 0, "Could not calculate elements of array", _sourceType, _sem);
 
     if (hif::semantics::isVectorType(elementType, _sem)) {
         Value *concat = _factory.member(hif::copy(_inputVal), new IntValue(0));
-        for (long long i = 1; i < elements; ++i) {
+        for (std::int64_t i = 1; i < elements; ++i) {
             Expression *e =
                 _factory.expression(_factory.member(hif::copy(_inputVal), new IntValue(i)), hif::op_concat, concat);
             concat = e;
@@ -4020,7 +4020,7 @@ void SystemCCastAnalysis::map(Array * /*vi*/, Bitvector *bv)
         hif::typeSetSpan(innerCastType, elementSpan, _sem);
 
         Value *concat = _factory.cast(innerCastType, _factory.member(hif::copy(_inputVal), new IntValue(0)));
-        for (long long i = 1; i < elements; ++i) {
+        for (std::int64_t i = 1; i < elements; ++i) {
             Expression *e = _factory.expression(
                 _factory.cast(hif::copy(innerCastType), _factory.member(hif::copy(_inputVal), new IntValue(i))),
                 hif::op_concat, concat);
@@ -4031,7 +4031,7 @@ void SystemCCastAnalysis::map(Array * /*vi*/, Bitvector *bv)
         Type *bvType = hif::copy(bv);
         hif::typeSetSpan(bvType, new Range(0, 0), _sem);
         Value *concat = _factory.cast(bvType, _factory.member(hif::copy(_inputVal), new IntValue(0)));
-        for (long long i = 1; i < elements; ++i) {
+        for (std::int64_t i = 1; i < elements; ++i) {
             Expression *e = _factory.expression(
                 _factory.cast(hif::copy(bvType), _factory.member(hif::copy(_inputVal), new IntValue(i))),
                 hif::op_concat, concat);
@@ -4057,7 +4057,7 @@ void SystemCCastAnalysis::map(ViewReference *vi, Bitvector *bv)
 
 void SystemCCastAnalysis::map(Bit * /*b*/, Bitvector *bv)
 {
-    unsigned long long size = spanGetBitwidth(bv->getSpan(), _sem);
+    std::uint64_t size = spanGetBitwidth(bv->getSpan(), _sem);
 
     std::string charValue = "0";
     BitValue *bValue      = dynamic_cast<BitValue *>(_inputVal);
@@ -4116,7 +4116,7 @@ void SystemCCastAnalysis::map(Bit * /*b*/, Bitvector *bv)
 
     // length established create sc_bv/lv "000" (length -1 times) concat inputVal
     std::string s("");
-    for (unsigned long long i = 0; i < size - 1; ++i) {
+    for (std::uint64_t i = 0; i < size - 1; ++i) {
         s += charValue;
     }
 
@@ -4129,7 +4129,7 @@ void SystemCCastAnalysis::map(Bit * /*b*/, Bitvector *bv)
         _result = bvv;
     } else {
         Bitvector *retSyntType = hif::copy(bv);
-        delete retSyntType->setSpan(new Range(static_cast<long long>(size) - 2, 0));
+        delete retSyntType->setSpan(new Range(static_cast<std::int64_t>(size) - 2, 0));
         BitvectorValue *bvv = new BitvectorValue();
         bvv->setValue(s.c_str());
         bvv->setType(retSyntType);
@@ -4144,7 +4144,7 @@ void SystemCCastAnalysis::map(Bit * /*b*/, Bitvector *bv)
 
 void SystemCCastAnalysis::map(Bool *, Bitvector *bv)
 {
-    unsigned long long size = spanGetBitwidth(bv->getSpan(), _sem);
+    std::uint64_t size = spanGetBitwidth(bv->getSpan(), _sem);
 
     std::string charValue = "0";
     BoolValue *bValue     = dynamic_cast<BoolValue *>(_inputVal);
@@ -4164,7 +4164,7 @@ void SystemCCastAnalysis::map(Bool *, Bitvector *bv)
 
     // length established create sc_bv/lv "000" (length -1 times) concat inputVal
     std::string s("");
-    for (unsigned long long i = 0; i < size - 1; ++i) {
+    for (std::uint64_t i = 0; i < size - 1; ++i) {
         s += charValue;
     }
 
@@ -4177,7 +4177,7 @@ void SystemCCastAnalysis::map(Bool *, Bitvector *bv)
         _result = bvv;
     } else {
         Bitvector *retSyntType = hif::copy(bv);
-        delete retSyntType->setSpan(new Range(static_cast<long long>(size) - 2, 0));
+        delete retSyntType->setSpan(new Range(static_cast<std::int64_t>(size) - 2, 0));
         BitvectorValue *bvv = new BitvectorValue();
         bvv->setValue(s.c_str());
         bvv->setType(retSyntType);
@@ -4197,9 +4197,9 @@ void SystemCCastAnalysis::map(Real *vi, Bitvector *bv)
     Range *span = vi->getSpan();
     if (span == nullptr)
         return;
-    unsigned long long size = spanGetBitwidth(span, _sem, true);
+    std::uint64_t size = spanGetBitwidth(span, _sem, true);
 
-    Int *castType = _makeSystemCIntFromSize(static_cast<long long>(size), true, false);
+    Int *castType = _makeSystemCIntFromSize(static_cast<std::int64_t>(size), true, false);
     if (!_isBuiltinIntSize(size)) {
         /// @warning Should never happens?
         castType->setTypeVariant(Type::SYSTEMC_INT_SC_INT);
@@ -4679,7 +4679,7 @@ int SystemCTypeVisitor::visitInt(Int &o)
     }
 
     Range *old              = o.setSpan(hif::copy(o.getSpan()));
-    unsigned long long size = spanGetBitwidth(o.getSpan(), _sem);
+    std::uint64_t size = spanGetBitwidth(o.getSpan(), _sem);
     delete o.setSpan(old);
 
     if (size == 0) {
@@ -4709,18 +4709,18 @@ int SystemCTypeVisitor::visitReal(Real &o)
     Range *span = o.getSpan();
     messageAssert(span != nullptr, "Real without range", &o, _sem);
     Real *res               = new Real();
-    unsigned long long size = spanGetBitwidth(span, _sem);
+    std::uint64_t size = spanGetBitwidth(span, _sem);
     if (size == 0) {
         // As default, returning a double
         res->setSpan(new Range(63, 0));
         // TODO: check if copy original span
     } else if (size <= sizeof(float) * 8) {
-        res->setSpan(new Range(static_cast<long long>(sizeof(float)) * 8 - 1, 0));
+        res->setSpan(new Range(static_cast<std::int64_t>(sizeof(float)) * 8 - 1, 0));
     } else if (size <= sizeof(double) * 8) {
-        res->setSpan(new Range(static_cast<long long>(sizeof(double)) * 8 - 1, 0));
+        res->setSpan(new Range(static_cast<std::int64_t>(sizeof(double)) * 8 - 1, 0));
     } else //( span_size <= sizeof(long double) * 8 )
     {
-        res->setSpan(new Range(static_cast<long long>(sizeof(long double)) * 8 - 1, 0));
+        res->setSpan(new Range(static_cast<std::int64_t>(sizeof(long double)) * 8 - 1, 0));
     }
     _result = res;
     return 0;
@@ -4891,8 +4891,8 @@ Type *SystemCTemplateTypeVisitor::getResult() { return _result; }
 
 Type *SystemCTemplateTypeVisitor::_getSuitableIntegerByType(Type *t)
 {
-    unsigned long long size = spanGetBitwidth(hif::typeGetSpan(t, _sem), _sem);
-    long long lbound        = 0;
+    std::uint64_t size = spanGetBitwidth(hif::typeGetSpan(t, _sem), _sem);
+    std::int64_t lbound        = 0;
     if (size == 0LL)
         lbound = 31LL;
     else if (size < 8LL)
@@ -5036,7 +5036,7 @@ SystemCTypeDefaultValueVisitor::~SystemCTypeDefaultValueVisitor()
 
 Value *SystemCTypeDefaultValueVisitor::getResult() { return _result; }
 
-ConstValue *SystemCTypeDefaultValueVisitor::_makeBitvectorValueOfBitValue(unsigned long long size, BitConstant b)
+ConstValue *SystemCTypeDefaultValueVisitor::_makeBitvectorValueOfBitValue(std::uint64_t size, BitConstant b)
 {
     if (size == 0)
         return nullptr;
@@ -5067,7 +5067,7 @@ ConstValue *SystemCTypeDefaultValueVisitor::_makeBitvectorValueOfBitValue(unsign
     // Build a string made of the right number of cval
     std::string ret;
     ret.reserve(std::string::size_type(size + 1));
-    for (unsigned long long i = 0; i < size; ++i)
+    for (std::uint64_t i = 0; i < size; ++i)
         ret.push_back(cval);
 
     return _factory.stringval(ret.c_str(), false);
@@ -5080,12 +5080,12 @@ int SystemCTypeDefaultValueVisitor::visitArray(Array &o)
         return 0;
 
     Aggregate *ao           = new Aggregate();
-    unsigned long long size = spanGetBitwidth(span, _sem);
+    std::uint64_t size = spanGetBitwidth(span, _sem);
     Value *defValue         = _sem->getTypeDefaultValue(o.getType(), _decl);
     if (size != 0) {
-        for (unsigned long long i = 0; i < size; ++i) {
+        for (std::uint64_t i = 0; i < size; ++i) {
             AggregateAlt *aao = new AggregateAlt();
-            aao->indices.push_back(new IntValue(static_cast<long long>(i)));
+            aao->indices.push_back(new IntValue(static_cast<std::int64_t>(i)));
             aao->setValue(hif::copy(defValue));
         }
     } else {
@@ -5120,7 +5120,7 @@ int SystemCTypeDefaultValueVisitor::visitBitvector(Bitvector &o)
     if (span == nullptr)
         return 0;
 
-    unsigned long long size = spanGetBitwidth(span, _sem);
+    std::uint64_t size = spanGetBitwidth(span, _sem);
     if (size != 0) {
         BitConstant defBitVal = o.isLogic() ? bit_x : bit_zero;
         _result               = _makeBitvectorValueOfBitValue(size, defBitVal);
@@ -5282,7 +5282,7 @@ int SystemCSuggestedTypeVisitor::visitBitvector(Bitvector &o)
         // arithmetic or shift allowed operations,
         // in this case, return a systemc integer type.
         // Otherwise return a copy of \p t.
-        unsigned long long size = spanGetBitwidth(o.getSpan(), _sem);
+        std::uint64_t size = spanGetBitwidth(o.getSpan(), _sem);
         _result = _factory.integer(hif::copy(o.getSpan()), o.isSigned(), false, _getSuitableIntTypeVariantBySize(size));
     } else if (hif::operatorIsRelational(_oper) || hif::operatorIsAssignment(_oper)) {
         Bitvector *ret = hif::copy(&o);
@@ -5345,7 +5345,7 @@ int SystemCConstantTypeVisitor::visitBitValue(BitValue &o)
 
 int SystemCConstantTypeVisitor::visitBitvectorValue(BitvectorValue &o)
 {
-    Range *span = new Range(static_cast<long long>(o.getValue().size()) - 1, 0);
+    Range *span = new Range(static_cast<std::int64_t>(o.getValue().size()) - 1, 0);
     _result     = _factory.bitvector(span, !o.is01(), false, true);
     return 0;
 }
@@ -5896,7 +5896,7 @@ Type *SystemCSemantics::getSliceSemanticType(Slice *s)
         Type::SYSTEMC_BITVECTOR_PROXY);
 }
 
-long long SystemCSemantics::transformRealToInt(const double v) { return static_cast<long long>(v); }
+std::int64_t SystemCSemantics::transformRealToInt(const double v) { return static_cast<std::int64_t>(v); }
 
 Type *SystemCSemantics::isTypeAllowedAsBound(Type *t)
 {
@@ -5929,7 +5929,7 @@ bool SystemCSemantics::isCastAllowed(Type *target, Type *source)
         Int *ii = static_cast<Int *>(source);
         if (!ii->isSigned())
             return false;
-        unsigned long long size = hif::semantics::spanGetBitwidth(ii->getSpan(), this);
+        std::uint64_t size = hif::semantics::spanGetBitwidth(ii->getSpan(), this);
         return size == 32;
     } else if (dynamic_cast<Bitvector *>(target) != nullptr && dynamic_cast<Real *>(source) != nullptr) {
         return false;
@@ -5969,7 +5969,7 @@ bool SystemCSemantics::isTypeAllowed(Type *t)
         return (tv == Type::SYSTEMC_BIT_BITREF || tv == Type::NATIVE_TYPE);
     } else if (dynamic_cast<Int *>(t) != nullptr) {
         Int *i                      = static_cast<Int *>(t);
-        unsigned long long spanSize = spanGetBitwidth(i->getSpan(), this);
+        std::uint64_t spanSize = spanGetBitwidth(i->getSpan(), this);
 
         if (tv == Type::SYSTEMC_INT_BITFIELD) {
             return (spanSize > 0 && spanSize < 64);

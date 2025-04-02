@@ -44,7 +44,7 @@ bool transformAggregateRollingAlts(Aggregate *obj, const bool atLeastOne, hif::s
 
 bool transformAggregateUnrollingAlts(
     Aggregate *obj,
-    unsigned long long threshold,
+    std::uint64_t threshold,
     hif::semantics::ILanguageSemantics *sem,
     const bool force = false);
 } // namespace manipulation

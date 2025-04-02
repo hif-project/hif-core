@@ -56,10 +56,10 @@ struct SplitAssignTargetOptions {
     /// @{
 
     /// @brief Assign targets of given types are splitted in chunks of this maximum bitwidth. Default is 64.
-    unsigned long long maxBitwidth;
+    std::uint64_t maxBitwidth;
     /// @brief Sets a custom maximum unrolling factor, in order to avoid HIF code explosion.
     /// Zero means force unrolling.
-    unsigned long long unrollingUpperBound;
+    std::uint64_t unrollingUpperBound;
 
     /// @}
 };

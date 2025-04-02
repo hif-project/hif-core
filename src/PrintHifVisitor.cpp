@@ -296,7 +296,7 @@ private:
     /// @brief Utility function to print string.
     void _printString(const std::string &value, const std::string &name, const bool printAnyway = false);
     /// @brief Utility function to print integer.
-    void _printInt(long long value, const std::string &name);
+    void _printInt(std::int64_t value, const std::string &name);
     /// @brief Utility function to print Hif name.
     void _printName(const std::string &value, const std::string &name, const bool printAnyway = false);
 
@@ -1523,7 +1523,7 @@ int PrintHifVisitor::visitTransition(Transition &o)
     const bool guide = _printObjectInit(&o);
 
     _printString(o.getPrevName(), "PREV_NAME");
-    _printInt(static_cast<long long>(o.getPriority()), "PRIORITY");
+    _printInt(static_cast<std::int64_t>(o.getPriority()), "PRIORITY");
     visitAction(&o);
 
     if (guide) {
@@ -1900,7 +1900,7 @@ int PrintHifVisitor::visitState(State &o)
     _push();
     const bool guide = _printObjectInit(&o);
 
-    _printInt(static_cast<long long>(o.getPriority()), "PRIORITY");
+    _printInt(static_cast<std::int64_t>(o.getPriority()), "PRIORITY");
     _printFlag(o.isAtomic(), "ATOMIC");
     visitDeclaration(&o);
 
@@ -2681,7 +2681,7 @@ void PrintHifVisitor::_printString(const std::string &value, const std::string &
     _out << " [" << name << ": \"" << value << "\"]";
 }
 
-void PrintHifVisitor::_printInt(long long value, const std::string &name)
+void PrintHifVisitor::_printInt(std::int64_t value, const std::string &name)
 {
     _out << " [" << name << ": " << value << "]";
 }

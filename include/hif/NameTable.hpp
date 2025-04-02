@@ -72,7 +72,7 @@ public:
     /// @param n The old name.
     /// @param suffix the string suffix to be used to generate a fresh name
     /// @return The fresh name.
-    std::string getFreshName(const std::string &name, unsigned long long suffix);
+    std::string getFreshName(const std::string &name, std::uint64_t suffix);
 
     /// @brief Return the name associated to a given string.
     /// This one creates the name if it is not in the table yet.

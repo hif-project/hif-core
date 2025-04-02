@@ -104,9 +104,9 @@ void TransformOptions::swap(TransformOptions &other)
 // Support methods.
 // ////////////////////////////////////////////////////////////////////////////
 
-unsigned long long _spanGetBitwidth(Range *range, hif::semantics::ILanguageSemantics *sem)
+std::uint64_t _spanGetBitwidth(Range *range, hif::semantics::ILanguageSemantics *sem)
 {
-    unsigned long long size = hif::semantics::spanGetBitwidth(range, sem);
+    std::uint64_t size = hif::semantics::spanGetBitwidth(range, sem);
     if (size > HIF_MAX_ALLOWED_SPAN_SIZE) {
         std::string s;
         std::stringstream ss;
@@ -148,7 +148,7 @@ bool _isZeros(const std::string &s)
     return true;
 }
 
-std::string _int2BinString(unsigned long long i)
+std::string _int2BinString(std::uint64_t i)
 {
     std::string ret;
 
@@ -389,7 +389,7 @@ void TransformConstant::map(BitvectorValue *v, Array *t)
             aggBit->setType(synt);
 
             IntValue *intVal = new IntValue();
-            intVal->setValue(static_cast<long long>(i));
+            intVal->setValue(static_cast<std::int64_t>(i));
             intVal->setType(_opt.sem->getTypeForConstant(intVal));
 
             Expression *index = new Expression();
@@ -413,9 +413,9 @@ void TransformConstant::map(BitvectorValue *v, Array *t)
             delete l;
             return;
         }
-        long long bvl = static_cast<IntValue *>(l)->getValue();
+        std::int64_t bvl = static_cast<IntValue *>(l)->getValue();
         delete l;
-        Range *r = _factory.range(bvl - 1, 0ll);
+        Range *r = _factory.range(bvl - 1, 0);
         bv.setSpan(r);
         bv.setSigned(hif::typeIsSigned(t, _opt.sem));
         bv.setConstexpr(hif::typeIsConstexpr(t, _opt.sem));
@@ -429,16 +429,16 @@ void TransformConstant::map(BitvectorValue *v, Array *t)
         _opt.result = nullptr;
 
         std::string s                  = bvRet->getValue();
-        unsigned long long elementSize = hif::semantics::typeGetSpanBitwidth(t->getType(), _opt.sem);
+        std::uint64_t elementSize = hif::semantics::typeGetSpanBitwidth(t->getType(), _opt.sem);
         if (elementSize == 0)
             return;
-        unsigned long long elements = static_cast<unsigned long long>(bvl) / elementSize;
+        std::uint64_t elements = static_cast<std::uint64_t>(bvl) / elementSize;
 
         const bool isArrayDownto = t->getSpan()->getDirection() == hif::dir_downto;
 
         Aggregate *agg = new Aggregate();
-        for (unsigned long long i = 0; i < elements; ++i) {
-            unsigned long long ind = isArrayDownto ? elements - i - 1 : i;
+        for (std::uint64_t i = 0; i < elements; ++i) {
+            std::uint64_t ind = isArrayDownto ? elements - i - 1 : i;
             AggregateAlt *alt      = new AggregateAlt();
             std::string sub        = s.substr(
                 static_cast<std::string::size_type>(elementSize * i), static_cast<std::string::size_type>(elementSize));
@@ -446,11 +446,11 @@ void TransformConstant::map(BitvectorValue *v, Array *t)
             BitvectorValue *altV = _factory.bitvectorval(
                 sub,
                 _factory.bitvector(
-                    new Range(static_cast<long long>(elementSize - 1), 0), hif::typeIsLogic(t->getType(), _opt.sem),
+                    new Range(static_cast<std::int64_t>(elementSize - 1), 0), hif::typeIsLogic(t->getType(), _opt.sem),
                     hif::typeIsResolved(t->getType(), _opt.sem), true, hif::typeIsSigned(t->getType(), _opt.sem)));
 
             alt->setValue(altV);
-            alt->indices.push_back(new IntValue(static_cast<long long>(ind)));
+            alt->indices.push_back(new IntValue(static_cast<std::int64_t>(ind)));
             agg->alts.push_back(alt);
         }
         _opt.result = agg;
@@ -474,10 +474,10 @@ void TransformConstant::map(IntValue *v, Array *t)
         delete l;
         return;
     }
-    long long bvl = static_cast<IntValue *>(l)->getValue();
+    std::int64_t bvl = static_cast<IntValue *>(l)->getValue();
     delete l;
     const bool isSigned = hif::typeIsSigned(t, _opt.sem);
-    Range *r            = _factory.range(bvl - 1, 0ll);
+    Range *r            = _factory.range(bvl - 1, 0);
     intType.setSpan(r);
     intType.setSigned(isSigned);
     intType.setConstexpr(hif::typeIsConstexpr(t, _opt.sem));
@@ -506,17 +506,17 @@ void TransformConstant::map(IntValue *v, Array *t)
     std::string s = bvRet->getValue();
     delete bvRet;
 
-    unsigned long long elementSize = hif::semantics::typeGetSpanBitwidth(t->getType(), _opt.sem);
+    std::uint64_t elementSize = hif::semantics::typeGetSpanBitwidth(t->getType(), _opt.sem);
     if (elementSize == 0)
         return;
     if (elementSize > 64)
         return;
-    unsigned long long elements = static_cast<unsigned long long>(bvl) / elementSize;
+    std::uint64_t elements = static_cast<std::uint64_t>(bvl) / elementSize;
     const bool isArrayDownto    = t->getSpan()->getDirection() == hif::dir_downto;
     Aggregate *agg              = new Aggregate();
 
-    for (unsigned long long i = 0; i < elements; ++i) {
-        unsigned long long ind = isArrayDownto ? elements - i - 1 : i;
+    for (std::uint64_t i = 0; i < elements; ++i) {
+        std::uint64_t ind = isArrayDownto ? elements - i - 1 : i;
         AggregateAlt *alt      = new AggregateAlt();
         std::string sub        = s.substr(
             static_cast<std::string::size_type>(elementSize * i), static_cast<std::string::size_type>(elementSize));
@@ -529,12 +529,12 @@ void TransformConstant::map(IntValue *v, Array *t)
         }
 
         char *fake;
-        long long subVal = strtoll(sub.c_str(), &fake, 2);
+        std::int64_t subVal = strtoll(sub.c_str(), &fake, 2);
         IntValue *altV =
-            _factory.intval(subVal, _factory.integer(new Range(static_cast<long long>(elementSize - 1), 0)));
+            _factory.intval(subVal, _factory.integer(new Range(static_cast<std::int64_t>(elementSize - 1), 0)));
 
         alt->setValue(altV);
-        alt->indices.push_back(new IntValue(static_cast<long long>(ind)));
+        alt->indices.push_back(new IntValue(static_cast<std::int64_t>(ind)));
         agg->alts.push_back(alt);
     }
     _opt.result = agg;
@@ -583,8 +583,8 @@ void TransformConstant::map(BitValue *v, Bit *t)
 
 void TransformConstant::map(IntValue *v, Bit *)
 {
-    long long val    = v->getValue();
-    long long newVal = (val & 1ll);
+    std::int64_t val    = v->getValue();
+    std::int64_t newVal = (val & 1ll);
     if (newVal != val && !_opt.allowTruncation)
         return;
 
@@ -659,7 +659,7 @@ void TransformConstant::map(CharValue *v, Bit *)
 
 void TransformConstant::map(RealValue *v, Bit *t)
 {
-    long long ii = _opt.sem->transformRealToInt(v->getValue());
+    std::int64_t ii = _opt.sem->transformRealToInt(v->getValue());
     if ((double(ii) < v->getValue() || double(ii) > v->getValue()) && !_opt.allowTruncation) {
         return;
     }
@@ -693,13 +693,13 @@ void TransformConstant::map(BitvectorValue *v, Bitvector *t)
 
     // 1- resizing to t dimension
     const std::string &val     = v->getValue();
-    unsigned long long valSize = static_cast<unsigned long long>(val.size());
+    std::uint64_t valSize = static_cast<std::uint64_t>(val.size());
     Range *cvTypeSpan          = hif::typeGetSpan(cvType, _opt.sem);
     const bool cvIsSigned      = typeIsSigned(cvType, _opt.sem);
     const bool cvIsLogic       = typeIsLogic(cvType, _opt.sem);
     const bool cvIsDownto      = (cvTypeSpan->getDirection() == dir_downto);
 
-    unsigned long long tSize = _spanGetBitwidth(t->getSpan(), _opt.sem);
+    std::uint64_t tSize = _spanGetBitwidth(t->getSpan(), _opt.sem);
     if (tSize == 0) {
         if (!_isZeros(val)) {
             return;
@@ -799,8 +799,8 @@ void TransformConstant::map(IntValue *v, Bitvector *t)
     Type *cvType = hif::semantics::getSemanticType(v, _opt.sem);
     messageAssert(cvType != nullptr, "Cannot type bitvector value", v, _opt.sem);
 
-    unsigned long long tSize = _spanGetBitwidth(t->getSpan(), _opt.sem);
-    long long val            = v->getValue();
+    std::uint64_t tSize = _spanGetBitwidth(t->getSpan(), _opt.sem);
+    std::int64_t val            = v->getValue();
     if (tSize == 0) {
         if (val != 0LL) {
             return;
@@ -810,7 +810,7 @@ void TransformConstant::map(IntValue *v, Bitvector *t)
         return;
     }
 
-    std::string valString(_int2BinString(static_cast<unsigned long long>(val)));
+    std::string valString(_int2BinString(static_cast<std::uint64_t>(val)));
     if (valString.size() < 64)
         valString = "0" + valString;
     BitvectorValue bvVal(valString);
@@ -821,7 +821,7 @@ void TransformConstant::map(IntValue *v, Bitvector *t)
 }
 void TransformConstant::map(RealValue *v, Bitvector *t)
 {
-    long long ii = _opt.sem->transformRealToInt(v->getValue());
+    std::int64_t ii = _opt.sem->transformRealToInt(v->getValue());
     if ((double(ii) < v->getValue() || double(ii) > v->getValue()) && !_opt.allowTruncation) {
         return;
     }
@@ -1105,9 +1105,9 @@ void TransformConstant::map(CharValue *v, Char *) { _opt.result = hif::copy(v); 
 
 void TransformConstant::map(IntValue *v, Char *)
 {
-    long long val    = v->getValue();
+    std::int64_t val    = v->getValue();
     const char c     = static_cast<char>(val);
-    long long newVal = static_cast<long long>(c);
+    std::int64_t newVal = static_cast<std::int64_t>(c);
     if (newVal != val && !_opt.allowTruncation) {
         return;
     }
@@ -1136,7 +1136,7 @@ void TransformConstant::map(BitValue *v, Char *)
 
 void TransformConstant::map(RealValue *v, Char *t)
 {
-    long long ii = _opt.sem->transformRealToInt(v->getValue());
+    std::int64_t ii = _opt.sem->transformRealToInt(v->getValue());
     if ((double(ii) < v->getValue() || double(ii) > v->getValue()) && !_opt.allowTruncation) {
         return;
     }
@@ -1181,7 +1181,7 @@ void TransformConstant::map(BitValue *v, Int *)
     _opt.result = new IntValue(val == '1' ? 1 : 0);
 }
 
-void TransformConstant::map(BoolValue *v, Int *) { _opt.result = new IntValue(static_cast<long long>(v->getValue())); }
+void TransformConstant::map(BoolValue *v, Int *) { _opt.result = new IntValue(static_cast<std::int64_t>(v->getValue())); }
 
 void TransformConstant::map(CharValue *v, Int *t)
 {
@@ -1191,8 +1191,8 @@ void TransformConstant::map(CharValue *v, Int *t)
 
 void TransformConstant::map(IntValue *v, Int *t)
 {
-    unsigned long long size = hif::semantics::spanGetBitwidth(t->getSpan(), _opt.sem);
-    long long val           = v->getValue();
+    std::uint64_t size = hif::semantics::spanGetBitwidth(t->getSpan(), _opt.sem);
+    std::int64_t val           = v->getValue();
     if (size == 0 || size >= 64) {
         _opt.result = hif::copy(v);
         return;
@@ -1201,17 +1201,17 @@ void TransformConstant::map(IntValue *v, Int *t)
     Type *cvType = hif::semantics::getSemanticType(v, _opt.sem);
     messageAssert(cvType != nullptr, "Cannot type int value", v, _opt.sem);
 
-    long long res      = 0;
+    std::int64_t res      = 0;
     std::uint64_t uval = static_cast<std::uint64_t>(val);
 
-    const std::uint64_t trunkMask = size == 0ULL ? 0ULL : std::uint64_t(-1) >> (64 - size);
+    const std::uint64_t trunkMask = size == 0 ? 0 : std::uint64_t(-1) >> (64 - size);
     uval                          = uval & trunkMask;
 
     const bool isSigned = typeIsSigned(t, _opt.sem);
-    const bool msb      = (size == 0ULL ? 0ULL : uval >> (size - 1)) == 1;
+    const bool msb      = (size == 0 ? 0 : uval >> (size - 1)) == 1;
 
     if (isSigned && msb) {
-        const std::uint64_t signMask = size == sizeof(std::uint64_t) * 8 ? 0ULL : std::uint64_t(-1) << (size);
+        const std::uint64_t signMask = size == sizeof(std::uint64_t) * 8 ? 0 : std::uint64_t(-1) << (size);
         res                          = int64_t(uval | signMask);
     } else {
         res = int64_t(uval);
@@ -1224,7 +1224,7 @@ void TransformConstant::map(IntValue *v, Int *t)
 
 void TransformConstant::map(RealValue *v, Int *i)
 {
-    long long ii = _opt.sem->transformRealToInt(v->getValue());
+    std::int64_t ii = _opt.sem->transformRealToInt(v->getValue());
     if ((double(ii) < v->getValue() || double(ii) > v->getValue()) && !_opt.allowTruncation) {
         return;
     }
@@ -1262,7 +1262,7 @@ void TransformConstant::map(BitvectorValue *v, Int *t)
         newVal = '0' + newVal;
 
     char *ptr;
-    long long newIntVal = strtoll(newVal.c_str(), &ptr, 2);
+    std::int64_t newIntVal = strtoll(newVal.c_str(), &ptr, 2);
 
     IntValue iVal(newIntVal);
     iVal.setType(_factory.integer(_factory.range(63, 0), cvIsSigned));
@@ -1382,7 +1382,7 @@ void TransformConstant::map(CharValue *v, Real *) { _opt.result = new RealValue(
 
 void TransformConstant::map(RealValue *v, Real *t)
 {
-    unsigned long long size = hif::semantics::spanGetBitwidth(t->getSpan(), _opt.sem);
+    std::uint64_t size = hif::semantics::spanGetBitwidth(t->getSpan(), _opt.sem);
     const double val        = v->getValue();
     if (size == 0 || size > 32) {
         _opt.result = new RealValue(val);

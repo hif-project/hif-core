@@ -176,12 +176,12 @@ Value *HifEqualsVisitor::_spanGetSize(Range *r)
 {
     Value *rangeSpan = nullptr;
     messageAssert(_options.sem != nullptr, "Expected semantics", nullptr, nullptr);
-    unsigned long long rangeSize = hif::semantics::spanGetBitwidth(r, _options.sem);
+    std::uint64_t rangeSize = hif::semantics::spanGetBitwidth(r, _options.sem);
     if (rangeSize == 0) {
         Value *lBound = hif::copy(r->getLeftBound());
         Value *rBound = hif::copy(r->getRightBound());
 
-        IntValue *rightAddendum = new IntValue(1ll);
+        IntValue *rightAddendum = new IntValue(1);
 
         if (r->getDirection() == dir_upto) {
             // Generate Expression (SUP-INF)
@@ -210,7 +210,7 @@ Value *HifEqualsVisitor::_spanGetSize(Range *r)
             delete rightAddendum;
         }
     } else {
-        rangeSpan = new IntValue(static_cast<long long>(rangeSize));
+        rangeSpan = new IntValue(static_cast<std::int64_t>(rangeSize));
     }
 
     return rangeSpan;

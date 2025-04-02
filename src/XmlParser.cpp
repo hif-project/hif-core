@@ -220,7 +220,7 @@ private:
     /// Return a int corresponding to the value of attribute \p s, nullptr if
     /// Attribute is not found.
     /// If attribute is required, print and exit with error if it is not found.
-    long long _getIntAttributeByName(Poco::XML::Node *n, std::string s, bool required = false);
+    std::int64_t _getIntAttributeByName(Poco::XML::Node *n, std::string s, bool required = false);
 
     /// Return a int corresponding to the value of attribute \p s, nullptr if
     /// Attribute is not found.
@@ -3169,9 +3169,9 @@ bool XmlParser::_getBoolAttributeByName(Poco::XML::Node *n, std::string s, bool 
     messageError("Unexpected value of boolean attribute for node " + n->nodeName() + ": " + str, nullptr, nullptr);
 }
 
-long long XmlParser::_getIntAttributeByName(Poco::XML::Node *n, std::string s, bool required)
+std::int64_t XmlParser::_getIntAttributeByName(Poco::XML::Node *n, std::string s, bool required)
 {
-    long long ret;
+    std::int64_t ret;
     std::stringstream val;
     val << _getAttributeByName(n, s, required);
     val >> ret;

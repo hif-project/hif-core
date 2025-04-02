@@ -264,7 +264,7 @@ public:
     /// SystemC truncates).
     /// @param v The value to convert.
     /// @return The converted value.
-    virtual long long transformRealToInt(const double v)                                                       = 0;
+    virtual std::int64_t transformRealToInt(const double v)                                                    = 0;
 
     /// @brief Function that given a member returns its semantic type
     /// according to semantics rules (e.g., SystemC with Bitvector prefix type

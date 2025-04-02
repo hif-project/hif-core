@@ -33,8 +33,8 @@ Range *_rangeGetMinMax(Range *r1, Range *r2, ILanguageSemantics *sem, const bool
         return nullptr;
     }
 
-    unsigned long long span1 = spanGetBitwidth(r1, sem);
-    unsigned long long span2 = spanGetBitwidth(r2, sem);
+    std::uint64_t span1 = spanGetBitwidth(r1, sem);
+    std::uint64_t span2 = spanGetBitwidth(r2, sem);
 
     if (span1 != 0 && span2 != 0) {
         if (getMax) {

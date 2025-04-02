@@ -25,7 +25,7 @@ namespace manipulation
 /// @return The new span with the upper bound incremented by one.
 ///
 
-Range *rangeGetIncremented(Range *range, hif::semantics::ILanguageSemantics *refLang, long long increment = 1);
+Range *rangeGetIncremented(Range *range, hif::semantics::ILanguageSemantics *refLang, std::int64_t increment = 1);
 
 } // namespace manipulation
 } // namespace hif

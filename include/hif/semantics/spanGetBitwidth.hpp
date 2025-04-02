@@ -27,7 +27,7 @@ namespace semantics
 /// @return The numebr of elements in the span @p r if statically computable,
 /// 0 otherwise.
 
-unsigned long long spanGetBitwidth(
+std::uint64_t spanGetBitwidth(
     Range *r,
     ILanguageSemantics *sem                        = HIFSemantics::getInstance(),
     const bool simplify                            = true,
@@ -42,7 +42,7 @@ unsigned long long spanGetBitwidth(
 /// @param opts The simplify options.
 /// @return size of <tt>t</tt> measured in number of bits if it is found, 0 otherwise.
 
-unsigned long long typeGetSpanBitwidth(
+std::uint64_t typeGetSpanBitwidth(
     Type *type,
     ILanguageSemantics *sem,
     const bool simplify                            = true,

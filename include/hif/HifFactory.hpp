@@ -467,37 +467,19 @@ public:
     /// 32-bit integer, signed if \p n is < 0, unsigned otherwise.
     /// @param n the integer value.
     /// @param syntactic_type the syntactic type of the integer value.
-    IntValue *intval(long long n, Type *syntactic_type = nullptr);
+    template <
+        typename T,
+        typename std::enable_if<std::is_integral_v<T> && !std::is_same_v<T, std::int64_t>, int>::type = 0>
+    IntValue *intval(T int_value, Type *syntactic_type = nullptr)
+    {
+        return intval(static_cast<std::int64_t>(int_value), syntactic_type);
+    }
 
     /// @brief Creates an integer value. By default, the syntactic type is
     /// 32-bit integer, signed if \p n is < 0, unsigned otherwise.
     /// @param n the integer value.
     /// @param syntactic_type the syntactic type of the integer value.
-    IntValue *intval(unsigned long long n, Type *syntactic_type = nullptr);
-
-    /// @brief Creates an integer value. By default, the syntactic type is
-    /// 32-bit integer, signed if \p n is < 0, unsigned otherwise.
-    /// @param n the integer value.
-    /// @param syntactic_type the syntactic type of the integer value.
-    IntValue *intval(long n, Type *syntactic_type = nullptr);
-
-    /// @brief Creates an integer value. By default, the syntactic type is
-    /// 32-bit integer, signed if \p n is < 0, unsigned otherwise.
-    /// @param n the integer value.
-    /// @param syntactic_type the syntactic type of the integer value.
-    IntValue *intval(unsigned long n, Type *syntactic_type = nullptr);
-
-    /// @brief Creates an integer value. By default, the syntactic type is
-    /// 32-bit integer, signed if \p n is < 0, unsigned otherwise.
-    /// @param n the integer value.
-    /// @param syntactic_type the syntactic type of the integer value.
-    IntValue *intval(int n, Type *syntactic_type = nullptr);
-
-    /// @brief Creates an integer value. By default, the syntactic type is
-    /// 32-bit integer, signed if \p n is < 0, unsigned otherwise.
-    /// @param n the integer value.
-    /// @param syntactic_type the syntactic type of the integer value.
-    IntValue *intval(unsigned int n, Type *syntactic_type = nullptr);
+    IntValue *intval(std::int64_t int_value, Type *syntactic_type = nullptr);
 
     /// @brief Creates a field reference.
     /// @param prefix the name of the prefix (i.e., the structure containing the field being referenced).
@@ -548,32 +530,18 @@ public:
     /// @brief Creates a simple range.
     /// @param l the left bound of the range.
     /// @param r the right bound of the range.
-    Range *range(long long l, long long r);
-
-    /// @brief Creates a simple range.
-    /// @param l the left bound of the range.
-    /// @param r the right bound of the range.
-    Range *range(unsigned long long l, unsigned long long r);
-
-    /// @brief Creates a simple range.
-    /// @param l the left bound of the range.
-    /// @param r the right bound of the range.
-    Range *range(const int l, const int r);
-
-    /// @brief Creates a simple range.
-    /// @param l the left bound of the range.
-    /// @param r the right bound of the range.
-    Range *range(unsigned int l, unsigned int r);
-
-    /// @brief Creates a simple range.
-    /// @param l the left bound of the range.
-    /// @param r the right bound of the range.
-    Range *range(long long l, const int r);
-
-    /// @brief Creates a simple range.
-    /// @param l the left bound of the range.
-    /// @param r the right bound of the range.
-    Range *range(const int l, long long r);
+    template <
+        typename T1,
+        typename T2,
+        typename std::enable_if<std::is_integral<T1>::value && !std::is_same<T1, bool>::value, int>::type = 0,
+        typename std::enable_if<std::is_integral<T2>::value && !std::is_same<T2, bool>::value, int>::type = 0>
+    Range *range(T1 l, T2 r)
+    {
+        return range(
+            intval(static_cast<std::int64_t>(l)),
+            static_cast<std::int64_t>(l) >= static_cast<std::int64_t>(r) ? dir_downto : dir_upto,
+            intval(static_cast<std::int64_t>(r)));
+    }
 
     /// @brief Creates a simple range.
     /// @param l the left bound of the range.
@@ -642,7 +610,8 @@ public:
     /// @param actions The actions.
     /// @param label The the while label.
     /// @param doWhile true if is a do-while.
-    While *whileLoop(Value *cond, action_t actions, const std::string &label = std::string(), const bool doWhile = false);
+    While *
+    whileLoop(Value *cond, action_t actions, const std::string &label = std::string(), const bool doWhile = false);
 
     /// @brief Creates an alias.
     /// @param name The name of the alias.

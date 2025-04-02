@@ -20,7 +20,7 @@ namespace semantics
 /// @name References management.
 /// @{
 
-class GetReferencesOptions;
+struct GetReferencesOptions;
 
 /// @brief Set for getAllreferences().
 using ReferencesSet = std::set<Object *>;
@@ -57,8 +57,6 @@ struct GetReferencesOptions {
 /// @param refSem The reference semantics.
 /// @param root The starting root object.
 /// @param opt The given options.
-///
-
 void getReferences(
     Declaration *decl,
     ReferencesSet &list,
@@ -78,8 +76,6 @@ void getReferences(
 /// @param refSem The reference semantics.
 /// @param root The starting root object.
 /// @param opt The given options.
-///
-
 void getReferences(
     Declaration *decl,
     ReferencesSet &list,
@@ -99,7 +95,6 @@ void getReferences(
 /// @param refSem The reference semantics.
 /// @param root The starting root object.
 /// @param opt The given options.
-///
 template <typename T>
 void getReferences(
     Declaration *decl,
@@ -119,8 +114,6 @@ void getReferences(
 /// @param refSem The reference semantics.
 /// @param root The starting root object.
 /// @param opt The given options.
-///
-
 void getAllReferences(
     ReferencesMap &refMap,
     ILanguageSemantics *refSem,
@@ -138,8 +131,6 @@ void getAllReferences(
 /// @param refSem The reference semantics.
 /// @param root The starting root object.
 /// @param opt The given options.
-///
-
 void getAllReferences(
     ReferencesMap &refMap,
     ILanguageSemantics *refSem,
@@ -157,7 +148,6 @@ void getAllReferences(
 /// @param refSem The reference semantics.
 /// @param root The starting root object.
 /// @param opt The given options.
-///
 template <typename T>
 void getAllReferences(
     ReferencesMap &refMap,

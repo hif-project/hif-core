@@ -188,10 +188,10 @@ struct AnalyzeProcessOptions {
 
     /// @name Configuration Options
     /// @{
-    std::string clock;             ///< Main clock name (default: nullptr).
-    std::string reset;             ///< Main reset name (default: nullptr).
+    std::string clock;               ///< Main clock name (default: nullptr).
+    std::string reset;               ///< Main reset name (default: nullptr).
     bool skip_standard_declarations; ///< Skip standard declarations (default: true).
-    bool printWarnings;            ///< Print warnings (default: false).
+    bool printWarnings;              ///< Print warnings (default: false).
     /// @}
 
     /// @brief Constructor.

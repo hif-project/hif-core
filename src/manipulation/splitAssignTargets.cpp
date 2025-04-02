@@ -71,9 +71,9 @@ private:
     _createRange(Value *targetId, Type *originalTargetType, Value *assignSource, RangeDirection dir, Value *&minBound);
     bool _splitRecordValue(Assign *o);
     Slice *_fixSlice(Slice *inner, Slice *sl);
-    Range *_makeRange(const RangeDirection dir, unsigned long long minIndex, unsigned long long maxIndex, Value *v);
-    Value *_makeBound(unsigned long long index, Value *v);
-    Value *_makeElement(Value *val, Type *sourceType, Type *targetType, Value *min, unsigned long long i);
+    Range *_makeRange(const RangeDirection dir, std::uint64_t minIndex, std::uint64_t maxIndex, Value *v);
+    Value *_makeBound(std::uint64_t index, Value *v);
+    Value *_makeElement(Value *val, Type *sourceType, Type *targetType, Value *min, std::uint64_t i);
 
     SplitConcats(const SplitConcats &);
     SplitConcats &operator=(const SplitConcats &);
@@ -283,11 +283,11 @@ bool SplitConcats::_splitNonArrayType(Assign *o)
         return false;
 
     Range *span           = hif::typeGetSpan(baseType, _sem);
-    unsigned long long bw = hif::semantics::spanGetBitwidth(span, _sem);
+    std::uint64_t bw = hif::semantics::spanGetBitwidth(span, _sem);
     if (bw == 0 || bw <= _opt.maxBitwidth)
         return false;
 
-    unsigned long long replicates = bw / _opt.maxBitwidth;
+    std::uint64_t replicates = bw / _opt.maxBitwidth;
     if (bw % _opt.maxBitwidth != 0) {
         ++replicates;
         messageError("TODO: Unsupported case of non-multiple bitwidth", nullptr, nullptr);
@@ -313,7 +313,7 @@ bool SplitConcats::_splitNonArrayType(Assign *o)
     // b_128[63:0][63:0] = expr[63:0]
     BList<Object>::iterator it(o);
 
-    for (unsigned long long i = 0; i < replicates; ++i) {
+    for (std::uint64_t i = 0; i < replicates; ++i) {
         Assign *as = new Assign();
 
         Slice *left = _factory.slice(
@@ -353,7 +353,7 @@ bool SplitConcats::_splitArrayType(Assign *o)
         return false;
 
     Range *targetSpan     = hif::typeGetSpan(baseType, _sem);
-    unsigned long long bw = hif::semantics::spanGetBitwidth(targetSpan, _sem);
+    std::uint64_t bw = hif::semantics::spanGetBitwidth(targetSpan, _sem);
     if (bw == 0)
         return false;
     if (bw > _opt.unrollingUpperBound && _opt.unrollingUpperBound > 0)
@@ -373,7 +373,7 @@ bool SplitConcats::_splitArrayType(Assign *o)
     BList<Object>::iterator it(o);
     hif::CopyOptions opt;
     opt.copySemanticsTypes = true;
-    for (unsigned long long i = 0; i < bw; ++i) {
+    for (std::uint64_t i = 0; i < bw; ++i) {
         Assign *ass = new Assign();
         ass->setLeftHandSide(_factory.member(hif::copy(target), _makeBound(i, min)));
 
@@ -597,7 +597,7 @@ Slice *SplitConcats::_fixSlice(Slice *inner, Slice *sl)
 }
 
 Range *
-SplitConcats::_makeRange(const RangeDirection dir, unsigned long long minIndex, unsigned long long maxIndex, Value *v)
+SplitConcats::_makeRange(const RangeDirection dir, std::uint64_t minIndex, std::uint64_t maxIndex, Value *v)
 {
     Range *ret = new Range();
     ret->setDirection(dir);
@@ -608,7 +608,7 @@ SplitConcats::_makeRange(const RangeDirection dir, unsigned long long minIndex, 
     return ret;
 }
 
-Value *SplitConcats::_makeBound(unsigned long long index, Value *v)
+Value *SplitConcats::_makeBound(std::uint64_t index, Value *v)
 {
     const bool isZero =
         (v == nullptr) || (dynamic_cast<IntValue *>(v) != nullptr && static_cast<IntValue *>(v)->getValue() == 0);
@@ -624,10 +624,10 @@ Value *SplitConcats::_makeBound(unsigned long long index, Value *v)
     return ret;
 }
 
-Value *SplitConcats::_makeElement(Value *val, Type *sourceType, Type *targetType, Value *min, unsigned long long i)
+Value *SplitConcats::_makeElement(Value *val, Type *sourceType, Type *targetType, Value *min, std::uint64_t i)
 {
     Value *ret                    = nullptr;
-    long long ill                 = static_cast<long long>(i);
+    std::int64_t ill                 = static_cast<std::int64_t>(i);
     const bool isSourceVectorType = hif::semantics::isVectorType(sourceType, _sem);
     const bool isTargetArray      = (dynamic_cast<Array *>(targetType) != nullptr);
 

@@ -143,7 +143,7 @@ typeGetCardinality(Type *type, hif::semantics::ILanguageSemantics *refLang, cons
 /// @return The inner type of in case of composite, nullptr otherwise.
 ///
 
-Type *typeGetNestedType(Type *t, hif::semantics::ILanguageSemantics *refLang, long long depth = -1);
+Type *typeGetNestedType(Type *t, hif::semantics::ILanguageSemantics *refLang, std::int64_t depth = -1);
 
 /// @brief Checks whether givent type has symbols referring to templates.
 ///

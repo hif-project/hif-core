@@ -21,9 +21,9 @@ namespace semantics
 namespace /*anon*/
 {
 
-long long intvalsize(long long x)
+std::int64_t intvalsize(std::int64_t x)
 {
-    long long r;
+    std::int64_t r;
 
     if (x < 0LL)
         x = ~x;
@@ -69,7 +69,7 @@ unsigned int rangeGetBitwidth(Range *r, ILanguageSemantics *sem)
     IntValue *ivo2 = dynamic_cast<IntValue *>(hif::manipulation::transformConstant(cv2, &it2, sem));
     messageAssert(ivo1 != nullptr && ivo2 != nullptr, "Unexpected case", cv1, sem);
 
-    long long maxsize, lbound, rbound;
+    std::int64_t maxsize, lbound, rbound;
 
     lbound = ivo1->getValue();
     rbound = ivo2->getValue();

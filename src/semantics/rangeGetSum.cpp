@@ -42,14 +42,14 @@ Range *rangeGetSum(Range *r1, Range *r2, ILanguageSemantics *refLang)
         return retInfo;
     }
 
-    unsigned long long span1 = spanGetBitwidth(r1, refLang);
-    unsigned long long span2 = spanGetBitwidth(r2, refLang);
+    std::uint64_t span1 = spanGetBitwidth(r1, refLang);
+    std::uint64_t span2 = spanGetBitwidth(r2, refLang);
 
     if (span1 != 0 && span2 != 0) {
         if (dir_result == dir_upto) {
-            ret = f.range(0ll, static_cast<long long>(span1 + span2 - 1));
+            ret = f.range(0, static_cast<std::int64_t>(span1 + span2 - 1));
         } else {
-            ret = f.range(static_cast<long long>(span1 + span2 - 1), 0ll);
+            ret = f.range(static_cast<std::int64_t>(span1 + span2 - 1), 0);
         }
         return ret;
     }

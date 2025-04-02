@@ -702,7 +702,7 @@ bool RemoveStandardMethodsVisitor::_fixCastRealToInt(FunctionCall *fc)
             d = min;
         if (d > max)
             d = max;
-        long long dd = static_cast<long long>(d);
+        std::int64_t dd = static_cast<std::int64_t>(d);
 
         _isFixed = true;
         Value *v = _factory.intval(dd);
@@ -811,7 +811,7 @@ bool RemoveStandardMethodsVisitor::_fixConvUnsigned(FunctionCall *fc)
             return true;
         messageError("Unsupported function with non-constant size argument", fc, _sem);
     }
-    Range *span = _factory.range(size->getValue() - 1, 0ll);
+    Range *span = _factory.range(size->getValue() - 1, 0);
 
     const bool isLogic = hif::typeIsLogic(paramType, _sem);
 
@@ -872,9 +872,9 @@ bool RemoveStandardMethodsVisitor::_fixShr(FunctionCall *fc)
     bvv->to01();
 
     Type *argType   = hif::semantics::getBaseType(param1, false, _sem);
-    long long argBw = static_cast<long long>(hif::semantics::typeGetSpanBitwidth(argType, _sem));
+    std::int64_t argBw = static_cast<std::int64_t>(hif::semantics::typeGetSpanBitwidth(argType, _sem));
     std::stringstream ss(bvv->getValue());
-    long long count = 0;
+    std::int64_t count = 0;
     ss >> count;
 
     Value *sign = nullptr;
@@ -884,13 +884,13 @@ bool RemoveStandardMethodsVisitor::_fixShr(FunctionCall *fc)
         sign = _factory.bitval(hif::bit_zero);
     }
 
-    long long delta = argBw - count;
+    std::int64_t delta = argBw - count;
     if (delta > 0) {
         _isFixed            = true;
         Expression *shifted = _factory.expression(param1, hif::op_srl, _factory.intval(count, _factory.integer()));
-        Range *span         = _factory.range(delta - 1, 0ll);
+        Range *span         = _factory.range(delta - 1, 0);
         Value *ret          = _factory.slice(shifted, span);
-        for (long long i = delta; i < argBw; ++i)
+        for (std::int64_t i = delta; i < argBw; ++i)
             ret = _factory.expression(hif::copy(sign), hif::op_concat, ret);
         fc->replace(ret);
         delete sign;
@@ -900,7 +900,7 @@ bool RemoveStandardMethodsVisitor::_fixShr(FunctionCall *fc)
 
     _isFixed   = true;
     Value *ret = sign;
-    for (long long i = 1; i < argBw; ++i)
+    for (std::int64_t i = 1; i < argBw; ++i)
         ret = _factory.expression(hif::copy(sign), hif::op_concat, ret);
     fc->replace(ret);
     delete fc;

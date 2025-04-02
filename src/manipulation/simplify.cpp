@@ -43,7 +43,7 @@
 #ifndef NDEBUG
 //#define DEBUG_EXPR_SCREEN
 #    ifdef DEBUG_EXPR_SCREEN
-long long unsigned int __expressionId = 0ULL;
+std::int64_t unsigned int __expressionId = 0;
 #    endif
 #endif
 
@@ -657,14 +657,14 @@ private:
         BList<Action> &initValues,
         Value *condition,
         BList<Action> &steps,
-        long long &loops,
-        long long &min,
-        long long &max);
+        std::int64_t &loops,
+        std::int64_t &min,
+        std::int64_t &max);
 
     /// @brief Determines how many iterations are performed by a for statement
     /// (which may be a For or ForGenerate).
     /// Special case for Range condition.
-    bool _resolveForLoopBound_rangeCase(Value *condition, long long &loops, long long &min, long long &max);
+    bool _resolveForLoopBound_rangeCase(Value *condition, std::int64_t &loops, std::int64_t &min, std::int64_t &max);
 
     /// @brief Determines the end value of a for statement (which may be
     /// a For or ForGenerate).
@@ -681,9 +681,9 @@ private:
     /// @brief Determines the number of iterations performed by a for statement
     /// (which may be a For or ForGenerate) basing on the extracted infos.
     bool _resolveForLoopBound_calculateIterations(
-        long long &loops,
-        long long &min,
-        long long &max,
+        std::int64_t &loops,
+        std::int64_t &min,
+        std::int64_t &max,
         Value *initVal,
         Expression *exprCond,
         Value *lastVal,
@@ -1200,7 +1200,7 @@ bool SimplifyVisitor::_simplifyIteratedConcat(FunctionCall *o)
     if (times == nullptr)
         return false;
     Value *ret = param2;
-    for (long long i = 1; i < times->getValue(); ++i) {
+    for (std::int64_t i = 1; i < times->getValue(); ++i) {
         Expression *expr = _factory.expression(hif::copy(param2), hif::op_concat, ret);
         ret              = expr;
     }
@@ -1224,7 +1224,7 @@ template <typename T> bool SimplifyVisitor::_simplifyUselessFor(T *o)
 bool SimplifyVisitor::_simplifyConstantLoopFor(For *o)
 {
     // If only 1 loop is requested, move actions outside for statement.
-    long long iter, min, max;
+    std::int64_t iter, min, max;
     if (!_resolveForLoopBound(o->initDeclarations, o->initValues, o->getCondition(), o->stepActions, iter, min, max)) {
         return 0;
     }
@@ -1247,7 +1247,7 @@ bool SimplifyVisitor::_simplifyConstantLoopFor(For *o)
         return 0;
 
     // Heuristic to choose whether simplify for statemente.
-    long long threshold = o->forActions.size() * iter;
+    auto threshold = static_cast<std::int64_t>(o->forActions.size()) * iter;
     if (threshold > FOR_UNROLL_THRESHOLD)
         return 0;
 
@@ -1263,7 +1263,7 @@ bool SimplifyVisitor::_simplifyConstantLoopFor(For *o)
         }
     }
 
-    for (long long counter = 0; counter < iter; ++counter) {
+    for (std::int64_t counter = 0; counter < iter; ++counter) {
         BList<Action> acts;
         hif::copy(o->forActions, acts);
         for (BList<DataDeclaration>::iterator i = o->initDeclarations.begin(); i != o->initDeclarations.end(); ++i) {
@@ -1387,9 +1387,9 @@ bool SimplifyVisitor::_simplifyBitvectorValueMember(Member *o)
     t->setTypeVariant(Type::NATIVE_TYPE);
     char bitValue = '0';
     if (r->getDirection() == dir_upto) {
-        bitValue = val[static_cast<long unsigned>(iv->getValue())];
+        bitValue = val[static_cast<std::size_t>(iv->getValue())];
     } else if (r->getDirection() == dir_downto) {
-        bitValue = val[static_cast<long unsigned>(static_cast<long long>(val.length()) - iv->getValue() - 1)];
+        bitValue = val[static_cast<std::size_t>(static_cast<std::int64_t>(val.length()) - iv->getValue() - 1)];
     } else {
         messageError("Unexpected range direction", r, _sem);
     }
@@ -1515,24 +1515,24 @@ bool SimplifyVisitor::_simplifyConcatMember(Member *o)
 
     std::vector<Value *> concatElements;
     _getConcatElements(concatElements, prefix);
-    std::vector<long long> concatBW;
+    std::vector<std::int64_t> concatBW;
     for (std::vector<Value *>::iterator it = concatElements.begin(); it != concatElements.end(); ++it) {
-        Type *t                      = hif::semantics::getSemanticType(*it, _sem);
-        unsigned long long elementBw = hif::semantics::typeGetSpanBitwidth(t, _sem);
+        Type *t                 = hif::semantics::getSemanticType(*it, _sem);
+        std::uint64_t elementBw = hif::semantics::typeGetSpanBitwidth(t, _sem);
         if (elementBw == 0)
             return false;
-        concatBW.push_back(static_cast<long long>(elementBw));
+        concatBW.push_back(static_cast<std::int64_t>(elementBw));
     }
 
     IntValue *index = dynamic_cast<IntValue *>(o->getIndex());
     if (index == nullptr)
         return false;
-    long long memberVal = index->getValue();
-    Value *selected     = nullptr;
+    std::int64_t memberVal = index->getValue();
+    Value *selected        = nullptr;
 
     if (isPrefixDownto) {
-        std::vector<Value *>::reverse_iterator v_it    = concatElements.rbegin();
-        std::vector<long long>::reverse_iterator bw_it = concatBW.rbegin();
+        std::vector<Value *>::reverse_iterator v_it       = concatElements.rbegin();
+        std::vector<std::int64_t>::reverse_iterator bw_it = concatBW.rbegin();
 
         for (; v_it != concatElements.rend() && bw_it != concatBW.rend(); ++v_it, ++bw_it) {
             if (memberVal < *bw_it) {
@@ -1543,8 +1543,8 @@ bool SimplifyVisitor::_simplifyConcatMember(Member *o)
             memberVal = memberVal - *bw_it;
         }
     } else {
-        std::vector<Value *>::iterator v_it    = concatElements.begin();
-        std::vector<long long>::iterator bw_it = concatBW.begin();
+        std::vector<Value *>::iterator v_it       = concatElements.begin();
+        std::vector<std::int64_t>::iterator bw_it = concatBW.begin();
 
         for (; v_it != concatElements.end() && bw_it != concatBW.end(); ++v_it, ++bw_it) {
             if (memberVal < *bw_it) {
@@ -1590,10 +1590,10 @@ bool SimplifyVisitor::_simplifyUnrollAggregate(Member *o)
     Aggregate *aggr = dynamic_cast<Aggregate *>(o->getPrefix());
     if (aggr == nullptr)
         return false;
-    Type *semType         = hif::semantics::getSemanticType(o->getIndex(), _sem);
-    Type *baseType        = hif::semantics::getBaseType(aggr, false, _sem);
-    Range *span           = hif::typeGetSpan(baseType, _sem);
-    unsigned long long bw = hif::semantics::spanGetBitwidth(span, _sem);
+    Type *semType    = hif::semantics::getSemanticType(o->getIndex(), _sem);
+    Type *baseType   = hif::semantics::getBaseType(aggr, false, _sem);
+    Range *span      = hif::typeGetSpan(baseType, _sem);
+    std::uint64_t bw = hif::semantics::spanGetBitwidth(span, _sem);
     if (bw == 0)
         return false;
 
@@ -2247,8 +2247,8 @@ bool SimplifyVisitor::_simplifyArithBitOperation(Expression *e)
     hif::semantics::ILanguageSemantics::ExpressionTypeInfo info = _sem->getExprType(t1, t2, e->getOperator(), e);
     if (hif::typeIsLogic(info.returnedType, _sem) || hif::typeIsLogic(info.operationPrecision, _sem))
         return false;
-    unsigned long long returnSize    = hif::semantics::typeGetSpanBitwidth(info.returnedType, _sem);
-    unsigned long long precisionSize = hif::semantics::typeGetSpanBitwidth(info.operationPrecision, _sem);
+    std::uint64_t returnSize    = hif::semantics::typeGetSpanBitwidth(info.returnedType, _sem);
+    std::uint64_t precisionSize = hif::semantics::typeGetSpanBitwidth(info.operationPrecision, _sem);
     if (returnSize != 1 || precisionSize != 1)
         return false;
 
@@ -3600,7 +3600,7 @@ bool SimplifyVisitor::_transformCastToAggregate(Cast * /*c*/)
     if (dynamic_cast<Bit*>(t) == nullptr && dynamic_cast<Bool*>(t) == nullptr) return false;
 
     Range* span = hif::typeGetSpan(c->getType(), _sem);
-    unsigned long long size = hif::semantics::spanGetBitwidth(span, _sem);
+    std::uint64_t size = hif::semantics::spanGetBitwidth(span, _sem);
     Value* lower = hif::rangeGetMinBound(span);
 
     Bit* bitT = new Bit();
@@ -3734,18 +3734,18 @@ bool SimplifyVisitor::_transformCastFromArrayOfBoolToInt(
                                      dynamic_cast<Bit *>(valueBaseType->getType()) == nullptr))
         return false;
 
-    long long bw = static_cast<long long>(hif::semantics::typeGetSpanBitwidth(valueBaseType, _sem));
+    std::int64_t bw = static_cast<std::int64_t>(hif::semantics::typeGetSpanBitwidth(valueBaseType, _sem));
     if (bw == 0)
         return false;
 
     const bool isDownto = valueBaseType->getSpan()->getDirection() == hif::dir_downto;
 
-    long long firstShift = isDownto ? 0 : (bw - 1);
+    std::int64_t firstShift = isDownto ? 0 : (bw - 1);
     Value *expr =
         _factory.cast(hif::copy(externalType), _factory.member(hif::copy(internalExpr), new IntValue(firstShift)));
-    for (long long i = 1; i < bw; ++i) {
-        long long shift = isDownto ? i : (bw - i - 1);
-        Value *tmp      = _factory.expression(
+    for (std::int64_t i = 1; i < bw; ++i) {
+        std::int64_t shift = isDownto ? i : (bw - i - 1);
+        Value *tmp         = _factory.expression(
             _factory.cast(hif::copy(externalType), _factory.member(hif::copy(internalExpr), new IntValue(i))),
             hif::op_sll, _factory.intval(shift));
 
@@ -3779,34 +3779,34 @@ bool SimplifyVisitor::_simplifyCastOfVectorMultiplication(Cast *c)
     info = _sem->getExprType(type1, type2, e->getOperator(), e);
     if (dynamic_cast<Array *>(type1) != nullptr || dynamic_cast<Array *>(type2) != nullptr)
         return false;
-    unsigned long long retBw  = hif::semantics::typeGetSpanBitwidth(info.returnedType, _sem);
-    unsigned long long precBw = hif::semantics::typeGetSpanBitwidth(info.operationPrecision, _sem);
+    std::uint64_t retBw  = hif::semantics::typeGetSpanBitwidth(info.returnedType, _sem);
+    std::uint64_t precBw = hif::semantics::typeGetSpanBitwidth(info.operationPrecision, _sem);
     if (retBw <= 64 && precBw <= 64)
         return false;
 
-    unsigned long long typeBW = hif::semantics::typeGetSpanBitwidth(c->getType(), _sem);
+    std::uint64_t typeBW = hif::semantics::typeGetSpanBitwidth(c->getType(), _sem);
     if (typeBW == 0 || typeBW > 64)
         return false;
 
-    Type *t1        = hif::semantics::getSemanticType(e->getValue1(), _sem);
-    Type *t2        = hif::semantics::getSemanticType(e->getValue2(), _sem);
-    long long op1Bw = static_cast<long long>(hif::semantics::typeGetSpanBitwidth(t1, _sem));
-    long long op2Bw = static_cast<long long>(hif::semantics::typeGetSpanBitwidth(t2, _sem));
+    Type *t1           = hif::semantics::getSemanticType(e->getValue1(), _sem);
+    Type *t2           = hif::semantics::getSemanticType(e->getValue2(), _sem);
+    std::int64_t op1Bw = static_cast<std::int64_t>(hif::semantics::typeGetSpanBitwidth(t1, _sem));
+    std::int64_t op2Bw = static_cast<std::int64_t>(hif::semantics::typeGetSpanBitwidth(t2, _sem));
     if (op1Bw == 0 || op2Bw == 0)
         return false;
 
     if (op1Bw == op2Bw) {
-        Range *span = _factory.range(static_cast<long long>(typeBW) / 2 - 1, 0);
+        Range *span = _factory.range(static_cast<std::int64_t>(typeBW) / 2 - 1, 0);
         e->setValue1(_factory.slice(e->getValue1(), span));
         e->setValue2(_factory.slice(e->getValue2(), hif::copy(span)));
     } else {
         if (op1Bw > op2Bw) {
-            long long lBound = static_cast<long long>(typeBW) - op2Bw - 1;
-            Range *rng       = _factory.range(lBound, 0);
+            std::int64_t lBound = static_cast<std::int64_t>(typeBW) - op2Bw - 1;
+            Range *rng          = _factory.range(lBound, 0);
             e->setValue1(_factory.slice(e->getValue1(), rng));
         } else {
-            long long lBound = static_cast<long long>(typeBW) - op1Bw - 1;
-            Range *rng       = _factory.range(lBound, 0);
+            std::int64_t lBound = static_cast<std::int64_t>(typeBW) - op1Bw - 1;
+            Range *rng          = _factory.range(lBound, 0);
             e->setValue2(_factory.slice(e->getValue2(), rng));
         }
     }
@@ -3866,9 +3866,9 @@ bool SimplifyVisitor::_transformCastOfConcat(Cast *c)
     if (retType == nullptr)
         return false;
 
-    unsigned long long castbw = 0;
-    unsigned long long argbw  = 0;
-    Type *castType            = hif::semantics::getBaseType(c->getType(), false, _sem);
+    std::uint64_t castbw = 0;
+    std::uint64_t argbw  = 0;
+    Type *castType       = hif::semantics::getBaseType(c->getType(), false, _sem);
     if (dynamic_cast<Array *>(castType) != nullptr) {
         Array *a       = static_cast<Array *>(castType);
         Value *totalbw = hif::semantics::typeGetTotalSpanSize(a, _sem);
@@ -3877,7 +3877,7 @@ bool SimplifyVisitor::_transformCastOfConcat(Cast *c)
             delete totalbw;
             return false;
         }
-        castbw = static_cast<unsigned long long>(ivbw->getValue());
+        castbw = static_cast<std::uint64_t>(ivbw->getValue());
         delete ivbw;
     } else {
         castbw = hif::semantics::typeGetSpanBitwidth(castType, _sem);
@@ -3889,7 +3889,7 @@ bool SimplifyVisitor::_transformCastOfConcat(Cast *c)
         IntValue *tmp = dynamic_cast<IntValue *>(hif::semantics::typeGetTotalSpanSize(a, _sem));
         if (tmp == nullptr)
             return false;
-        argbw = static_cast<unsigned long long>(tmp->getValue());
+        argbw = static_cast<std::uint64_t>(tmp->getValue());
     } else if (isStringCast) {
         // Special case!
         // Cast to string of vectors: it is ok to pushcast on operands:
@@ -3911,22 +3911,22 @@ bool SimplifyVisitor::_transformCastOfConcat(Cast *c)
     // Retrive all elements inside concat
     std::vector<Value *> concatElements;
     _getConcatElements(concatElements, expr);
-    std::vector<long long> concatBW;
+    std::vector<std::int64_t> concatBW;
     for (std::vector<Value *>::iterator it = concatElements.begin(); it != concatElements.end(); ++it) {
-        Type *t                      = hif::semantics::getSemanticType(*it, _sem);
-        unsigned long long elementBw = hif::semantics::typeGetSpanBitwidth(t, _sem);
+        Type *t                 = hif::semantics::getSemanticType(*it, _sem);
+        std::uint64_t elementBw = hif::semantics::typeGetSpanBitwidth(t, _sem);
         if (elementBw == 0)
             return false;
-        concatBW.push_back(static_cast<long long>(elementBw));
+        concatBW.push_back(static_cast<std::int64_t>(elementBw));
     }
 
     // Take only the elements considered by the cast
-    unsigned long long totalbw = 0;
+    std::uint64_t totalbw = 0;
     std::vector<Value *> saved;
-    std::vector<Value *>::reverse_iterator v_it    = concatElements.rbegin();
-    std::vector<long long>::reverse_iterator bw_it = concatBW.rbegin();
+    std::vector<Value *>::reverse_iterator v_it       = concatElements.rbegin();
+    std::vector<std::int64_t>::reverse_iterator bw_it = concatBW.rbegin();
     for (; v_it != concatElements.rend() && bw_it != concatBW.rend(); ++v_it, ++bw_it) {
-        totalbw += static_cast<unsigned long long>(*bw_it);
+        totalbw += static_cast<std::uint64_t>(*bw_it);
         saved.push_back(hif::copy(*v_it));
         if (totalbw >= castbw)
             break;
@@ -3940,12 +3940,12 @@ bool SimplifyVisitor::_transformCastOfConcat(Cast *c)
     Value *v    = saved.at(0);
     Value *last = v;
     if (saved.size() > 1) {
-        std::vector<long long>::reverse_iterator bw_jt = ++concatBW.rbegin();
+        std::vector<std::int64_t>::reverse_iterator bw_jt = ++concatBW.rbegin();
         for (std::vector<Value *>::iterator it = ++(saved.begin()); it != saved.end() && bw_jt != concatBW.rend();
              ++it, ++bw_jt) {
             Value *el = *it;
 
-            Range *r          = _factory.range(*bw_jt - 1, 0ll);
+            Range *r          = _factory.range(*bw_jt - 1, 0);
             Type *newCastType = hif::copy(retType);
             // ref. design openCores_generic_ahb_arbiter_verilog2hif_ddt
             newCastType->setTypeVariant(hif::Type::NATIVE_TYPE);
@@ -3960,9 +3960,9 @@ bool SimplifyVisitor::_transformCastOfConcat(Cast *c)
     }
     if (totalbw > castbw) {
         // Last element is sliced
-        unsigned long long max = static_cast<unsigned long long>(*bw_it) - (totalbw - castbw) - 1;
-        Type *lastType         = hif::semantics::getBaseType(last, false, _sem);
-        Range *lastSpan        = hif::typeGetSpan(lastType, _sem);
+        std::uint64_t max = static_cast<std::uint64_t>(*bw_it) - (totalbw - castbw) - 1;
+        Type *lastType    = hif::semantics::getBaseType(last, false, _sem);
+        Range *lastSpan   = hif::typeGetSpan(lastType, _sem);
         messageAssert(lastSpan != nullptr, "Span not found", lastType, _sem);
         Slice *sl = new Slice();
         sl->setSpan(_factory.range(
@@ -3976,9 +3976,9 @@ bool SimplifyVisitor::_transformCastOfConcat(Cast *c)
         sl->setPrefix(last);
     } else if (totalbw < castbw) {
         // Last element must be cast-extended
-        unsigned long long max = castbw - totalbw + static_cast<unsigned long long>(*bw_it) - 1;
-        Type *lastType         = hif::semantics::getBaseType(last, false, _sem);
-        Range *lastSpan        = hif::typeGetSpan(lastType, _sem);
+        std::uint64_t max = castbw - totalbw + static_cast<std::uint64_t>(*bw_it) - 1;
+        Type *lastType    = hif::semantics::getBaseType(last, false, _sem);
+        Range *lastSpan   = hif::typeGetSpan(lastType, _sem);
         messageAssert(lastSpan != nullptr, "Span not found", lastType, _sem);
         Range *r = _factory.range(
             _factory.expression(
@@ -3995,10 +3995,10 @@ bool SimplifyVisitor::_transformCastOfConcat(Cast *c)
         cast->setValue(last);
 
         if (dynamic_cast<Expression *>(v) != nullptr) {
-            Expression *concatExpr   = static_cast<Expression *>(v);
-            Type *v2CastType         = hif::copy(newCastType);
-            unsigned long long v2Max = totalbw - static_cast<unsigned long long>(*bw_it) - 1;
-            Range *v2Span            = _factory.range(v2Max, 0ull);
+            Expression *concatExpr = static_cast<Expression *>(v);
+            Type *v2CastType       = hif::copy(newCastType);
+            std::uint64_t v2Max    = totalbw - static_cast<std::uint64_t>(*bw_it) - 1;
+            Range *v2Span          = _factory.range(v2Max, 0);
             hif::typeSetSpan(v2CastType, v2Span, _sem);
             concatExpr->setValue2(_factory.cast(v2CastType, concatExpr->getValue2()));
         }
@@ -4024,13 +4024,13 @@ bool SimplifyVisitor::_fixCastFromBitvectorToArray(Cast *c)
     if (valType == nullptr || dynamic_cast<Bitvector *>(valType) == nullptr)
         return false;
 
-    Bitvector *bv = dynamic_cast<Bitvector *>(valType);
-    long long bw  = static_cast<long long>(hif::semantics::spanGetBitwidth(hif::typeGetSpan(bv, _sem), _sem));
+    Bitvector *bv   = dynamic_cast<Bitvector *>(valType);
+    std::int64_t bw = static_cast<std::int64_t>(hif::semantics::spanGetBitwidth(hif::typeGetSpan(bv, _sem), _sem));
     if (bw == 0)
         return false;
 
-    long long elements  = static_cast<long long>(hif::semantics::typeGetSpanBitwidth(arr, _sem));
-    long long elementBw = static_cast<long long>(hif::semantics::typeGetSpanBitwidth(arr->getType(), _sem));
+    std::int64_t elements  = static_cast<std::int64_t>(hif::semantics::typeGetSpanBitwidth(arr, _sem));
+    std::int64_t elementBw = static_cast<std::int64_t>(hif::semantics::typeGetSpanBitwidth(arr->getType(), _sem));
 
     if (elementBw == 0 || elementBw == 1)
         return false;
@@ -4044,7 +4044,7 @@ bool SimplifyVisitor::_fixCastFromBitvectorToArray(Cast *c)
     const bool arrIsDownto = arrElementSpan->getDirection() == hif::dir_downto;
 
     Aggregate *agg = new Aggregate();
-    for (long long i = 0; i < elements; ++i) {
+    for (std::int64_t i = 0; i < elements; ++i) {
         AggregateAlt *alt = new AggregateAlt();
 
         Range *span = nullptr;
@@ -4165,7 +4165,7 @@ bool SimplifyVisitor::_isNullRange(Range *range)
     r.setLeftBound(hif::copy(cv1));
     r.setRightBound(hif::copy(cv2));
     range->replace(&r);
-    unsigned long long size = hif::semantics::spanGetBitwidth(&r, _sem, false);
+    std::uint64_t size = hif::semantics::spanGetBitwidth(&r, _sem, false);
     r.replace(range);
 
     if (size != 0)
@@ -4282,9 +4282,9 @@ bool SimplifyVisitor::_simplifyForGenerate(ForGenerate *o)
     _opt = optBkp;
 
     // Getting number of iteration
-    long long iter = 0;
-    long long max  = 0;
-    long long min  = 0;
+    std::int64_t iter = 0;
+    std::int64_t max  = 0;
+    std::int64_t min  = 0;
     if (!_resolveForLoopBound(o->initDeclarations, o->initValues, o->getCondition(), o->stepActions, iter, min, max)) {
         messageDebugAssert(!_opt.simplify_generates, "Cannot resolve for generate loop bound", o, _sem);
         return false;
@@ -4313,7 +4313,7 @@ bool SimplifyVisitor::_simplifyForGenerate(ForGenerate *o)
     // component_0_1
     // component_1_0
     // ...
-    for (long long i = min; i <= max; ++i) {
+    for (std::int64_t i = min; i <= max; ++i) {
         std::stringstream ss;
         ss << "_" << i;
         std::string suffix;
@@ -4445,9 +4445,9 @@ bool SimplifyVisitor::_resolveForLoopBound(
     BList<Action> &initValues,
     Value *condition,
     BList<Action> &steps,
-    long long &loops,
-    long long &min,
-    long long &max)
+    std::int64_t &loops,
+    std::int64_t &min,
+    std::int64_t &max)
 {
     if (_opt.simplify_statements) {
         SimplifyOptions localOpts(_opt);
@@ -4516,10 +4516,14 @@ bool SimplifyVisitor::_resolveForLoopBound(
     return ret;
 }
 
-bool SimplifyVisitor::_resolveForLoopBound_rangeCase(Value *condition, long long &loops, long long &min, long long &max)
+bool SimplifyVisitor::_resolveForLoopBound_rangeCase(
+    Value *condition,
+    std::int64_t &loops,
+    std::int64_t &min,
+    std::int64_t &max)
 {
     Range *r = static_cast<Range *>(condition);
-    loops    = static_cast<long long>(hif::semantics::spanGetBitwidth(r, _sem));
+    loops    = static_cast<std::int64_t>(hif::semantics::spanGetBitwidth(r, _sem));
     if (loops == 0)
         return false;
     IntValue *iLeft  = dynamic_cast<IntValue *>(r->getLeftBound());
@@ -4625,9 +4629,9 @@ Value *SimplifyVisitor::_resolveForLoopBound_getSteps(
 }
 
 bool SimplifyVisitor::_resolveForLoopBound_calculateIterations(
-    long long &loops,
-    long long &min,
-    long long &max,
+    std::int64_t &loops,
+    std::int64_t &min,
+    std::int64_t &max,
     Value *initVal,
     Expression *exprCond,
     Value *lastVal,
@@ -4925,17 +4929,17 @@ bool SimplifyVisitor::_simplifyConstantConcatSlice(Slice *o)
     IntValue *minBoundVal     = dynamic_cast<IntValue *>(hif::rangeGetMinBound(prefixSpan));
     if (minBoundVal == nullptr)
         return false;
-    long long minBound = minBoundVal->getValue();
+    std::int64_t minBound = minBoundVal->getValue();
 
     std::vector<Value *> concatElements;
     _getConcatElements(concatElements, prefix);
-    std::vector<long long> concatBW;
+    std::vector<std::int64_t> concatBW;
     for (std::vector<Value *>::iterator it = concatElements.begin(); it != concatElements.end(); ++it) {
-        Type *t                      = hif::semantics::getSemanticType(*it, _sem);
-        unsigned long long elementBw = hif::semantics::typeGetSpanBitwidth(t, _sem);
+        Type *t                 = hif::semantics::getSemanticType(*it, _sem);
+        std::uint64_t elementBw = hif::semantics::typeGetSpanBitwidth(t, _sem);
         if (elementBw == 0)
             return false;
-        concatBW.push_back(static_cast<long long>(elementBw));
+        concatBW.push_back(static_cast<std::int64_t>(elementBw));
     }
 
     Range *span          = o->getSpan();
@@ -4943,19 +4947,19 @@ bool SimplifyVisitor::_simplifyConstantConcatSlice(Slice *o)
     IntValue *leftBound  = dynamic_cast<IntValue *>(span->getLeftBound());
     if (rightBound == nullptr || leftBound == nullptr)
         return false;
-    long long rBound = rightBound->getValue() - minBound;
-    long long lBound = leftBound->getValue() - minBound;
+    std::int64_t rBound = rightBound->getValue() - minBound;
+    std::int64_t lBound = leftBound->getValue() - minBound;
     std::vector<Value *> toConcat;
-    long long remainder = 0;
+    std::int64_t remainder = 0;
 
     if (isPrefixDownto) {
-        std::vector<Value *>::reverse_iterator v_it    = concatElements.rbegin();
-        std::vector<long long>::reverse_iterator bw_it = concatBW.rbegin();
+        std::vector<Value *>::reverse_iterator v_it       = concatElements.rbegin();
+        std::vector<std::int64_t>::reverse_iterator bw_it = concatBW.rbegin();
         for (; v_it != concatElements.rend() && bw_it != concatBW.rend(); ++v_it, ++bw_it) {
             if (lBound < 0)
                 break;
             if (rBound < *bw_it) {
-                long long newLBound = lBound >= *bw_it ? *bw_it - 1 : lBound;
+                std::int64_t newLBound = lBound >= *bw_it ? *bw_it - 1 : lBound;
                 if (newLBound - rBound + 1 == *bw_it) {
                     // Covers all the Value's bits
                     toConcat.push_back(hif::copy(*v_it));
@@ -4972,13 +4976,13 @@ bool SimplifyVisitor::_simplifyConstantConcatSlice(Slice *o)
         }
         remainder = lBound + 1;
     } else {
-        std::vector<Value *>::iterator v_it    = concatElements.begin();
-        std::vector<long long>::iterator bw_it = concatBW.begin();
+        std::vector<Value *>::iterator v_it       = concatElements.begin();
+        std::vector<std::int64_t>::iterator bw_it = concatBW.begin();
         for (; v_it != concatElements.end() && bw_it != concatBW.end(); ++v_it, ++bw_it) {
             if (rBound < 0)
                 break;
             if (lBound < *bw_it) {
-                long long newRBound = rBound >= *bw_it ? *bw_it - 1 : rBound;
+                std::int64_t newRBound = rBound >= *bw_it ? *bw_it - 1 : rBound;
                 if (newRBound - lBound + 1 == *bw_it) {
                     // Covers all the Value's bits
                     toConcat.push_back(hif::copy(*v_it));
@@ -5015,7 +5019,7 @@ bool SimplifyVisitor::_simplifyConstantConcatSlice(Slice *o)
         if (!hif::semantics::isVectorType(prefixType, _sem)) {
             messageError("Unsupported case", prefixType, _sem);
         }
-        long long bw;
+        std::int64_t bw;
         if (isPrefixDownto)
             bw = leftBound->getValue() - rightBound->getValue() + 1;
         else
@@ -5065,7 +5069,7 @@ bool SimplifyVisitor::_simplifyNonConstantConcatSlice(Slice *o)
 
     Type *exprType      = hif::semantics::getSemanticType(expr, _sem);
     Value *exprMinBound = hif::rangeGetMinBound(hif::typeGetSpan(exprType, _sem));
-    if (dynamic_cast<IntValue *>(exprMinBound) == nullptr || static_cast<IntValue *>(exprMinBound)->getValue() != 0ll)
+    if (dynamic_cast<IntValue *>(exprMinBound) == nullptr || static_cast<IntValue *>(exprMinBound)->getValue() != 0)
         return false;
 
     Value *a         = expr->getValue1();
@@ -5147,9 +5151,9 @@ void SimplifyVisitor::_getConcatElements(std::vector<Value *> &elements, Express
         if (dynamic_cast<Array *>(t1) == nullptr) {
             elements.push_back(v1);
         } else {
-            Array *a       = static_cast<Array *>(t1);
-            long long size = static_cast<long long>(hif::semantics::typeGetSpanBitwidth(a, _sem));
-            for (long long i = 0; i < size; ++i) {
+            Array *a          = static_cast<Array *>(t1);
+            std::int64_t size = static_cast<std::int64_t>(hif::semantics::typeGetSpanBitwidth(a, _sem));
+            for (std::int64_t i = 0; i < size; ++i) {
                 Member *mem = _factory.member(hif::copy(v1), new IntValue(i));
                 elements.push_back(mem);
             }
@@ -5163,9 +5167,9 @@ void SimplifyVisitor::_getConcatElements(std::vector<Value *> &elements, Express
         if (dynamic_cast<Array *>(t2) == nullptr) {
             elements.push_back(v2);
         } else {
-            Array *a       = static_cast<Array *>(t2);
-            long long size = static_cast<long long>(hif::semantics::typeGetSpanBitwidth(a, _sem));
-            for (long long i = 0; i < size; ++i) {
+            Array *a          = static_cast<Array *>(t2);
+            std::int64_t size = static_cast<std::int64_t>(hif::semantics::typeGetSpanBitwidth(a, _sem));
+            for (std::int64_t i = 0; i < size; ++i) {
                 Member *mem = _factory.member(hif::copy(v2), new IntValue(i));
                 elements.push_back(mem);
             }
@@ -5368,10 +5372,9 @@ bool SimplifyVisitor::_pushSliceIntoCast(Slice *o)
             return false;
         }
 
-        unsigned long long sliceBw =
-            static_cast<unsigned long long>(sliceMaxBound->getValue() - sliceMinBound->getValue() + 1);
-        Value *concat = sign;
-        for (unsigned long long i = 1; i < sliceBw; ++i) {
+        std::uint64_t sliceBw = static_cast<std::uint64_t>(sliceMaxBound->getValue() - sliceMinBound->getValue() + 1);
+        Value *concat         = sign;
+        for (std::uint64_t i = 1; i < sliceBw; ++i) {
             concat = _factory.expression(concat, hif::op_concat, hif::copy(sign));
         }
 
@@ -5557,7 +5560,7 @@ bool SimplifyVisitor::_simplifyBitvectorAggregate(Aggregate *obj, Type *t)
         return false;
 
     // If the span is not constant, cannot determine how many elements.
-    unsigned long long aggSize = hif::semantics::typeGetSpanBitwidth(bt, _sem);
+    std::uint64_t aggSize = hif::semantics::typeGetSpanBitwidth(bt, _sem);
     if (aggSize == 0 && obj->alts.empty() && obj->getOthers() != nullptr)
         return false;
 
@@ -5603,7 +5606,7 @@ bool SimplifyVisitor::_simplifyBitvectorAggregate(Aggregate *obj, Type *t)
                 Range *ind = static_cast<Range *>(index);
 
                 // If the span is not constant, cannot determine how many elements.
-                unsigned long long size = hif::semantics::spanGetBitwidth(ind, _sem);
+                std::uint64_t size = hif::semantics::spanGetBitwidth(ind, _sem);
                 if (size == 0)
                     return false;
 
@@ -5612,15 +5615,15 @@ bool SimplifyVisitor::_simplifyBitvectorAggregate(Aggregate *obj, Type *t)
                 if (lbV == nullptr && rbV == nullptr)
                     return false;
 
-                long long lb;
-                long long rb;
+                std::int64_t lb;
+                std::int64_t rb;
                 if (lbV != nullptr) {
                     lb = lbV->getValue();
-                    rb = lb + static_cast<long long>(size) - 1;
+                    rb = lb + static_cast<std::int64_t>(size) - 1;
                 } else // if (rbV != nullptr)
                 {
                     rb = rbV->getValue();
-                    lb = rb + static_cast<long long>(size) - 1;
+                    lb = rb + static_cast<std::int64_t>(size) - 1;
                 }
 
                 // Swap bounds if needed
@@ -5644,14 +5647,14 @@ bool SimplifyVisitor::_simplifyBitvectorAggregate(Aggregate *obj, Type *t)
                         str_bvv = std::string(str_bvv.rbegin(), str_bvv.rend());
                     }
 
-                    for (long long k = lb; k <= rb; ++k) {
+                    for (std::int64_t k = lb; k <= rb; ++k) {
                         _resize(bvValue, newBit, static_cast<long unsigned int>(k) + 1);
                         bvValue[static_cast<long unsigned int>(k)] = str_bvv[static_cast<long unsigned int>(k)];
                     }
                 } else if (dynamic_cast<BitValue *>(alt->getValue()) != nullptr) {
                     BitValue *bv = static_cast<BitValue *>(alt->getValue());
 
-                    for (long long k = lb; k <= rb; ++k) {
+                    for (std::int64_t k = lb; k <= rb; ++k) {
                         _resize(bvValue, newBit, static_cast<long unsigned int>(k) + 1);
                         bvValue[static_cast<long unsigned int>(k)] = bv->toString()[0];
                     }
@@ -5715,7 +5718,7 @@ bool SimplifyVisitor::_simplifyStringAggregate(Aggregate *obj, Type *t)
     if (cv->getValue() == '\0') {
         val = "";
     } else {
-        unsigned long long bw = hif::semantics::spanGetBitwidth(s->getSpanInformation(), _sem);
+        std::uint64_t bw = hif::semantics::spanGetBitwidth(s->getSpanInformation(), _sem);
         if (bw == 0)
             return false;
         std::string ss(static_cast<size_t>(bw), cv->getValue());
@@ -5799,7 +5802,7 @@ bool SimplifyVisitor::_simplifyAggregateWithSameAlts(Aggregate *obj, Type *t)
         return false;
     if (obj->getOthers() != nullptr)
         return false;
-    typedef std::map<long long, long long> Indexes;
+    typedef std::map<std::int64_t, std::int64_t> Indexes;
     Indexes indexes;
     Value *prefix = nullptr;
     // Create a map <aggregate index, member index>
@@ -5844,9 +5847,9 @@ bool SimplifyVisitor::_simplifyAggregateWithSameAlts(Aggregate *obj, Type *t)
 
             const bool isRngDownto   = indexLeft->getValue() > indexRight->getValue();
             const bool isValueDownto = left->getValue() > right->getValue();
-            long long rngBw          = isRngDownto ? (indexLeft->getValue() - indexRight->getValue() + 1)
+            std::int64_t rngBw       = isRngDownto ? (indexLeft->getValue() - indexRight->getValue() + 1)
                                                    : (indexRight->getValue() - indexLeft->getValue() + 1);
-            long long valueBw =
+            std::int64_t valueBw =
                 isValueDownto ? (left->getValue() - right->getValue() + 1) : (right->getValue() - left->getValue() + 1);
             if (rngBw != valueBw)
                 return false;
@@ -5858,13 +5861,13 @@ bool SimplifyVisitor::_simplifyAggregateWithSameAlts(Aggregate *obj, Type *t)
                     return false;
             }
 
-            long long rngMinBound   = isRngDownto ? indexRight->getValue() : indexLeft->getValue();
-            long long valueMinBound = isValueDownto ? right->getValue() : left->getValue();
-            long long valueMaxBound = isValueDownto ? left->getValue() : right->getValue();
-            const bool isSameDir    = isValueDownto == isRngDownto;
-            long long valueStart    = isSameDir ? valueMinBound : valueMaxBound;
-            long long i             = rngMinBound;
-            long long j             = valueStart;
+            std::int64_t rngMinBound   = isRngDownto ? indexRight->getValue() : indexLeft->getValue();
+            std::int64_t valueMinBound = isValueDownto ? right->getValue() : left->getValue();
+            std::int64_t valueMaxBound = isValueDownto ? left->getValue() : right->getValue();
+            const bool isSameDir       = isValueDownto == isRngDownto;
+            std::int64_t valueStart    = isSameDir ? valueMinBound : valueMaxBound;
+            std::int64_t i             = rngMinBound;
+            std::int64_t j             = valueStart;
             for (; i != rngMinBound + rngBw - 1; ++i) {
                 indexes[i] = j;
                 if (isSameDir)
@@ -5886,9 +5889,9 @@ bool SimplifyVisitor::_simplifyAggregateWithSameAlts(Aggregate *obj, Type *t)
         isSameDir                = isIndexDownto == isValueDownto;
     }
 
-    Indexes::iterator it   = indexes.begin();
-    long long currentIndex = it->first;
-    long long currentValue = it->second;
+    Indexes::iterator it      = indexes.begin();
+    std::int64_t currentIndex = it->first;
+    std::int64_t currentValue = it->second;
     ++it;
     for (; it != indexes.end(); ++it) {
         if (currentIndex + 1 != it->first)
@@ -5904,8 +5907,8 @@ bool SimplifyVisitor::_simplifyAggregateWithSameAlts(Aggregate *obj, Type *t)
         currentValue = it->second;
     }
     // Collapse aggregate
-    long long min = indexes.begin()->second;
-    long long max = (--indexes.end())->second;
+    std::int64_t min = indexes.begin()->second;
+    std::int64_t max = (--indexes.end())->second;
 
     Type *valueType = hif::semantics::getBaseType(prefix, false, _sem);
     if (valueType == nullptr)
@@ -5945,7 +5948,7 @@ bool SimplifyVisitor::_simplifySigleBitExpressionAggregate(Aggregate *obj, Type 
     Value *minBound = hif::rangeGetMinBound(span);
     if (!hif::equals(minBound, obj->alts.front()->indices.front()))
         return false;
-    unsigned long long bw = hif::semantics::spanGetBitwidth(span, _sem);
+    std::uint64_t bw = hif::semantics::spanGetBitwidth(span, _sem);
     if (bw != 1) {
         if (dynamic_cast<BitValue *>(obj->getOthers()) == nullptr)
             return false;
@@ -5970,18 +5973,18 @@ bool SimplifyVisitor::_simplifyAggregateToConcat(Aggregate *obj, Type *t)
     Range *span = hif::typeGetSpan(baseType, _sem);
     if (span == nullptr)
         return false;
-    long long bw = static_cast<long long>(hif::semantics::spanGetBitwidth(span, _sem));
+    std::int64_t bw = static_cast<std::int64_t>(hif::semantics::spanGetBitwidth(span, _sem));
     if (bw == 0)
         return false;
     IntValue *minBound = dynamic_cast<IntValue *>(hif::rangeGetMinBound(span));
     if (minBound == nullptr)
         return false;
 
-    typedef std::map<long long, Value *> Indexes;
+    typedef std::map<std::int64_t, Value *> Indexes;
     Indexes indexes;
 
     // Create a map <aggregate index, alt value>
-    long long minIndexValue = std::numeric_limits<long long>::max();
+    std::int64_t minIndexValue = std::numeric_limits<std::int64_t>::max();
     for (BList<AggregateAlt>::iterator it = obj->alts.begin(); it != obj->alts.end(); ++it) {
         AggregateAlt *alt = *it;
         Value *altValue   = alt->getValue();
@@ -5994,7 +5997,7 @@ bool SimplifyVisitor::_simplifyAggregateToConcat(Aggregate *obj, Type *t)
                 return false;
 
             if (indexVal != nullptr) {
-                long long ii = indexVal->getValue();
+                std::int64_t ii = indexVal->getValue();
                 if (ii < minIndexValue)
                     minIndexValue = ii;
                 indexes[ii] = altValue;
@@ -6006,7 +6009,7 @@ bool SimplifyVisitor::_simplifyAggregateToConcat(Aggregate *obj, Type *t)
                 if (minIndex->getValue() < minIndexValue)
                     minIndexValue = minIndex->getValue();
 
-                for (long long ii = minIndex->getValue(); ii <= maxIndex->getValue(); ++ii) {
+                for (std::int64_t ii = minIndex->getValue(); ii <= maxIndex->getValue(); ++ii) {
                     indexes[ii] = altValue;
                 }
             } else {
@@ -6019,7 +6022,7 @@ bool SimplifyVisitor::_simplifyAggregateToConcat(Aggregate *obj, Type *t)
     // and creating resulting concat
     Value *concat       = nullptr;
     const bool isDownto = span->getDirection() == hif::dir_downto;
-    for (long long ii = minBound->getValue(); ii < minBound->getValue() + bw; ++ii) {
+    for (std::int64_t ii = minBound->getValue(); ii < minBound->getValue() + bw; ++ii) {
         Indexes::iterator it = indexes.find(ii);
         if (it == indexes.end()) {
             if (obj->getOthers() == nullptr) {

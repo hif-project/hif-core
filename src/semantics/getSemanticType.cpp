@@ -293,8 +293,8 @@ int TypeVisitor::visitAggregate(Aggregate &o)
 
     // 3- Tryes to auto-determinate the type
     Value *sizeExpr              = nullptr;
-    long long size               = 0;
-    long long min                = -1;
+    std::int64_t size               = 0;
+    std::int64_t min                = -1;
     const bool isAutoDeterminate = _aggregateIsAutoDeterminate(&o, sizeExpr, size, min);
     messageDebugAssert(
         o.getOthers() != nullptr || isAutoDeterminate, "Unexpected aggregate without others non-autodeterminate", &o,
@@ -738,7 +738,7 @@ Type *TypeVisitor::_aggregateGetInternalType(Aggregate *o)
     return refType;
 }
 
-bool TypeVisitor::_getBoundMin(Value *v, long long &min)
+bool TypeVisitor::_getBoundMin(Value *v, std::int64_t &min)
 {
     IntValue *iv   = dynamic_cast<IntValue *>(hif::getChildSkippingCasts(v));
     ConstValue *cv = dynamic_cast<ConstValue *>(hif::getChildSkippingCasts(v));
@@ -759,7 +759,7 @@ bool TypeVisitor::_getBoundMin(Value *v, long long &min)
     return false;
 }
 
-bool TypeVisitor::_aggregateIsAutoDeterminate(Aggregate *o, Value *&sizeExpr, long long &size, long long &min)
+bool TypeVisitor::_aggregateIsAutoDeterminate(Aggregate *o, Value *&sizeExpr, std::int64_t &size, std::int64_t &min)
 {
     if (o->getOthers() != nullptr)
         return false;
@@ -773,7 +773,7 @@ bool TypeVisitor::_aggregateIsAutoDeterminate(Aggregate *o, Value *&sizeExpr, lo
             Range *r          = dynamic_cast<Range *>(simplified);
 
             if (r == nullptr) {
-                long long tmp    = 0;
+                std::int64_t tmp    = 0;
                 const bool found = _getBoundMin(simplified, tmp);
                 delete simplified;
                 if (!found) {
@@ -786,7 +786,7 @@ bool TypeVisitor::_aggregateIsAutoDeterminate(Aggregate *o, Value *&sizeExpr, lo
                 if (min == -1 || min > tmp)
                     min = tmp;
             } else {
-                long long tmp    = 0;
+                std::int64_t tmp    = 0;
                 const bool found = _getBoundMin(hif::rangeGetMinBound(r), tmp);
                 if (!found) {
                     delete r;
@@ -799,10 +799,10 @@ bool TypeVisitor::_aggregateIsAutoDeterminate(Aggregate *o, Value *&sizeExpr, lo
                     min = tmp;
 
                 hif::semantics::updateDeclarations(r, _sem);
-                unsigned long long rangeSize = hif::semantics::spanGetBitwidth(r, _sem);
+                std::uint64_t rangeSize = hif::semantics::spanGetBitwidth(r, _sem);
                 if (rangeSize != 0) {
                     delete r;
-                    size += static_cast<long long>(rangeSize);
+                    size += static_cast<std::int64_t>(rangeSize);
                     continue;
                 }
 
@@ -820,7 +820,7 @@ bool TypeVisitor::_aggregateIsAutoDeterminate(Aggregate *o, Value *&sizeExpr, lo
     return isAutoDeterminable;
 }
 
-bool TypeVisitor::_aggregateCalulateSize(Value *&sizeExpr, long long size, long long min)
+bool TypeVisitor::_aggregateCalulateSize(Value *&sizeExpr, std::int64_t size, std::int64_t min)
 {
     // calculate the size
     if (sizeExpr == nullptr) {

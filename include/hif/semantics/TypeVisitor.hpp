@@ -120,7 +120,7 @@ public:
     /// @param v Pointer to the value object.
     /// @param min Reference to store the minimum bound.
     /// @return True if the minimum bound is successfully determined.
-    bool _getBoundMin(Value *v, long long &min);
+    bool _getBoundMin(Value *v, std::int64_t &min);
 
     /// @brief Checks if an aggregate is auto-determinate.
     /// @param o Pointer to the aggregate object.
@@ -128,14 +128,14 @@ public:
     /// @param size Reference to store the size.
     /// @param min Reference to store the minimum bound.
     /// @return True if the aggregate is auto-determinate.
-    bool _aggregateIsAutoDeterminate(Aggregate *o, Value *&sizeExpr, long long &size, long long &min);
+    bool _aggregateIsAutoDeterminate(Aggregate *o, Value *&sizeExpr, std::int64_t &size, std::int64_t &min);
 
     /// @brief Calculates the size of an aggregate.
     /// @param sizeExpr Reference to the size expression.
     /// @param size The calculated size.
     /// @param min The minimum bound.
     /// @return True if the size is successfully calculated.
-    bool _aggregateCalulateSize(Value *&sizeExpr, long long size, long long min);
+    bool _aggregateCalulateSize(Value *&sizeExpr, std::int64_t size, std::int64_t min);
 
     /// @}
 };

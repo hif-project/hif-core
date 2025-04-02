@@ -1581,7 +1581,7 @@ int CheckHifDescription::visitSlice(Slice &o)
     }
 
     if (dynamic_cast<Bool *>(prefixBaseType) != nullptr) {
-        unsigned long long bw = hif::semantics::spanGetBitwidth(o.getSpan(), _sem);
+        std::uint64_t bw = hif::semantics::spanGetBitwidth(o.getSpan(), _sem);
         if (bw != 1 && bw != 0) {
             _printError("Invalid slice on single bit type", o);
             return 1;
@@ -2591,7 +2591,7 @@ void CheckHifDescription::_printError(
     }
 
     messageWarning(msg, &o, _sem);
-    long long index = 1;
+    std::int64_t index = 1;
     for (ObjectList::const_iterator i = list.begin(); i != list.end(); ++i, ++index) {
         Object *involved = *i;
         std::stringstream ss;

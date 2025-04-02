@@ -8,6 +8,7 @@
 #pragma once
 
 #include "hif/application_utils/portability.hpp"
+#include "hif/classes/IntValue.hpp"
 #include "hif/classes/Value.hpp"
 #include "hif/hifEnums.hpp"
 
@@ -30,7 +31,19 @@ public:
     /// @brief Constructor.
     /// @param lbound The left integer bound of the range.
     /// @param rbound The right integer bound of the range.
-    Range(long long lbound, long long rbound);
+    template <
+        typename T1,
+        typename T2,
+        typename std::enable_if<std::is_integral<T1>::value && !std::is_same<T1, bool>::value, int>::type = 0,
+        typename std::enable_if<std::is_integral<T2>::value && !std::is_same<T2, bool>::value, int>::type = 0>
+    Range(T1 lbound, T2 rbound)
+        : Range(
+              new IntValue(lbound),
+              new IntValue(rbound),
+              static_cast<std::int64_t>(lbound) >= static_cast<std::int64_t>(rbound) ? dir_downto : dir_upto)
+    {
+        // Nothing to do here.
+    }
 
     /// @brief Destructor.
     virtual ~Range();

@@ -130,7 +130,7 @@ public:
     /// SystemC truncates).
     /// @param v The value to convert.
     /// @return The converted value.
-    virtual long long transformRealToInt(const double v);
+    virtual std::int64_t transformRealToInt(const double v);
     /// @name Semantic checks methods
     ///@{
 

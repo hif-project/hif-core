@@ -283,7 +283,7 @@ Int *HifFactory::integer(Range *span, const bool is_signed, bool isConstexpr, co
     ret->setTypeVariant(variant);
 
     if (span == nullptr) {
-        IntValue ivo(is_signed ? -1ll : 0ll);
+        IntValue ivo(is_signed ? -1 : 0);
         Type *tt = _sem->getTypeForConstant(&ivo);
 
         Range *s = hif::typeGetSpan(tt, _sem);
@@ -316,7 +316,7 @@ Real *HifFactory::real(Range *span, bool isConstexpr, const Type::TypeVariant va
 {
     Real *ret = new Real();
     if (span == nullptr) {
-        ret->setSpan(range(63ll, 0ll));
+        ret->setSpan(range(63, 0));
     } else {
         ret->setSpan(span);
     }
@@ -363,7 +363,7 @@ Int *HifFactory::unsignedChar()
 {
     Int *ret = new Int();
 
-    ret->setSpan(range(7ll, 0ll));
+    ret->setSpan(range(7, 0));
     ret->setSigned(false);
     ret->setConstexpr(true);
 
@@ -530,16 +530,6 @@ Expression *HifFactory::expression(Value *v1, Operator o, Value *v2)
     return ret;
 }
 
-Range *HifFactory::range(long long l, long long r)
-{
-    Range *ret = new Range();
-    ret->setLeftBound(new IntValue(l));
-    ret->setRightBound(new IntValue(r));
-    ret->setDirection(l >= r ? dir_downto : dir_upto);
-
-    return ret;
-}
-
 Range *HifFactory::range(Value *l, RangeDirection dir, Value *r)
 {
     Range *ret = new Range();
@@ -613,9 +603,9 @@ BoolValue *HifFactory::boolval(const bool b, Bool *syntactic_type)
 
 Identifier *HifFactory::identifier(const std::string &id) { return new Identifier(id); }
 
-IntValue *HifFactory::intval(long long n, Type *syntactic_type)
+IntValue *HifFactory::intval(std::int64_t int_value, Type *syntactic_type)
 {
-    IntValue *ret = new IntValue(n);
+    IntValue *ret = new IntValue(int_value);
     if (syntactic_type == nullptr) {
         messageAssert(_sem != nullptr, "Expected semantics", nullptr, nullptr);
         ret->setType(_sem->getTypeForConstant(ret));
@@ -624,25 +614,6 @@ IntValue *HifFactory::intval(long long n, Type *syntactic_type)
 
     hif::typeSetConstexpr(ret->getType(), true);
     return ret;
-}
-
-IntValue *HifFactory::intval(unsigned long long n, Type *syntactic_type)
-{
-    return intval(static_cast<long long>(n), syntactic_type);
-}
-
-IntValue *HifFactory::intval(long n, Type *syntactic_type) { return intval(static_cast<long long>(n), syntactic_type); }
-
-IntValue *HifFactory::intval(unsigned long n, Type *syntactic_type)
-{
-    return intval(static_cast<long long>(n), syntactic_type);
-}
-
-IntValue *HifFactory::intval(int n, Type *syntactic_type) { return intval(static_cast<long long>(n), syntactic_type); }
-
-IntValue *HifFactory::intval(unsigned int n, Type *syntactic_type)
-{
-    return intval(static_cast<long long>(n), syntactic_type);
 }
 
 CharValue *HifFactory::charval(char c, Char *syntactic_type)
@@ -817,25 +788,6 @@ HifFactory::parameterArgument_t HifFactory::parameterArgument(const std::string 
     return ret;
 }
 
-Range *HifFactory::range(unsigned long long l, unsigned long long r)
-{
-    return range(static_cast<long long>(l), static_cast<long long>(r));
-}
-
-Range *HifFactory::range(const int l, const int r)
-{
-    return range(static_cast<long long>(l), static_cast<long long>(r));
-}
-
-Range *HifFactory::range(unsigned int l, unsigned int r)
-{
-    return range(static_cast<long long>(l), static_cast<long long>(r));
-}
-
-Range *HifFactory::range(long long l, const int r) { return range(l, static_cast<long long>(r)); }
-
-Range *HifFactory::range(const int l, long long r) { return range(static_cast<long long>(l), r); }
-
 When *HifFactory::when(whenAlt_t alts, Value *def, const bool logicTernary)
 {
     When *w = new When();
@@ -930,9 +882,9 @@ Cast *HifFactory::nullval(Type *t, const bool autoPtr)
 {
     messageDebugAssert(t != nullptr, "Unexpected case", nullptr, nullptr);
     if (autoPtr)
-        return cast(pointer(t), intval(0ll, integer()));
+        return cast(pointer(t), intval(0, integer()));
 
-    return cast(t, intval(0ll, integer()));
+    return cast(t, intval(0, integer()));
 }
 
 Slice *HifFactory::slice(Value *prefix, Range *span)

@@ -39,7 +39,7 @@ narrowToCardinality(Value *v, unsigned int c, hif::semantics::ILanguageSemantics
             current = static_cast<Member *>(current)->getPrefix();
         } else if (dynamic_cast<Slice *>(current) != nullptr) {
             Slice *s                     = static_cast<Slice *>(current);
-            unsigned long long sliceSize = hif::semantics::spanGetBitwidth(s->getSpan(), sem);
+            std::uint64_t sliceSize = hif::semantics::spanGetBitwidth(s->getSpan(), sem);
             if (sliceSize == 1ull) // acts as Member
             {
                 // typeGetCardinality does not distinguish between N-span Slice and 1-span Slice

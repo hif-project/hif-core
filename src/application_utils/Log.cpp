@@ -54,7 +54,7 @@ struct UniqueInfos {
 
     std::string file;
     unsigned int line;
-    unsigned long long counter;
+    std::uint64_t counter;
 };
 
 UniqueInfos::UniqueInfos()
@@ -1204,7 +1204,7 @@ void _printRaisePoint(
     const std::string &file,
     unsigned int line,
     const bool callFromPrintUniqueWarnings = false,
-    unsigned long long counter             = 0)
+    std::uint64_t counter             = 0)
 {
     // We are interested to the collected raise points, not the current one.
     if (callFromPrintUniqueWarnings)

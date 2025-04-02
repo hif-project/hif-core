@@ -87,7 +87,7 @@ private:
     void _propagateConcatInitialValueToPrefixedReference(
         PrefixedReference *pr,
         const std::string &str,
-        unsigned long long &index);
+        std::uint64_t &index);
     bool _decomposeConcat(Value *v, std::list<Value *> &members);
     void _propagateMemberInitialValue(Member *m, DataDeclaration *destination, Value *source);
     void _propagateSliceInitialValue(Slice *s, DataDeclaration *destination, Value *source);
@@ -655,7 +655,7 @@ void Flattener::_propagateConcatInitialValue(Expression *expr, Value *source)
         return;
     }
     std::string str(bvs->getValue());
-    unsigned long long index = 0ULL;
+    std::uint64_t index = 0;
     for (std::list<Value *>::iterator iter = members.begin(); iter != members.end(); ++iter) {
         Value *v              = *iter;
         PrefixedReference *pr = dynamic_cast<PrefixedReference *>(v);
@@ -687,7 +687,7 @@ void Flattener::_propagateConcatInitialValue(Expression *expr, Value *source)
             _initialValueWarnings2.insert(info);
             continue;
         }
-        unsigned long long w = hif::semantics::spanGetBitwidth(t2->getSpan(), _sem);
+        std::uint64_t w = hif::semantics::spanGetBitwidth(t2->getSpan(), _sem);
         bvd->setValue(str.substr(static_cast<std::string::size_type>(index), static_cast<std::string::size_type>(w)));
         index += w;
     }
@@ -696,7 +696,7 @@ void Flattener::_propagateConcatInitialValue(Expression *expr, Value *source)
 void Flattener::_propagateConcatInitialValueToPrefixedReference(
     PrefixedReference *pr,
     const std::string &str,
-    unsigned long long &index)
+    std::uint64_t &index)
 {
     hif::HifFactory factory(_sem);
     Member *m                   = dynamic_cast<Member *>(pr);
@@ -720,7 +720,7 @@ void Flattener::_propagateConcatInitialValueToPrefixedReference(
         ++index;
         return;
     } else if (s != nullptr) {
-        unsigned long long w = hif::semantics::spanGetBitwidth(s->getSpan(), _sem);
+        std::uint64_t w = hif::semantics::spanGetBitwidth(s->getSpan(), _sem);
         BitvectorValue *bv   = factory.bitvectorval(
             str.substr(static_cast<std::string::size_type>(index), static_cast<std::string::size_type>(w)),
             factory.bitvector(
@@ -766,7 +766,7 @@ void Flattener::_propagateMemberInitialValue(Member *m, DataDeclaration *destina
     BitValue *bi       = dynamic_cast<BitValue *>(source);
     if ((bi != nullptr) && (bv != nullptr)) {
         std::string str(bv->getValue());
-        unsigned long long j = str.length() - static_cast<unsigned long long>(index->getValue()) - 1ULL;
+        std::uint64_t j = str.length() - static_cast<std::uint64_t>(index->getValue()) - 1ULL;
         str[static_cast<std::string::size_type>(j)] = hif::bitConstantToString(bi->getValue())[0];
         bv->setValue(str);
         return;
@@ -785,8 +785,8 @@ void Flattener::_propagateSliceInitialValue(Slice *s, DataDeclaration *destinati
         _initialValueWarnings5.insert(info);
         return;
     }
-    long long hi = upper->getValue();
-    long long lo = lower->getValue();
+    std::int64_t hi = upper->getValue();
+    std::int64_t lo = lower->getValue();
     if (destination->getValue() == nullptr) {
         destination->setValue(_sem->getTypeDefaultValue(destination->getType(), destination));
     }
@@ -795,8 +795,8 @@ void Flattener::_propagateSliceInitialValue(Slice *s, DataDeclaration *destinati
     if ((bvs != nullptr) && (bvd != nullptr)) {
         std::string strd(bvd->getValue());
         std::string strs(bvs->getValue());
-        hi   = static_cast<long long>(strd.length()) - hi - 1LL;
-        lo   = static_cast<long long>(strd.length()) - lo - 1LL;
+        hi   = static_cast<std::int64_t>(strd.length()) - hi - 1LL;
+        lo   = static_cast<std::int64_t>(strd.length()) - lo - 1LL;
         strd = strd.substr(0, static_cast<std::string::size_type>(hi)) + strs +
                strd.substr(static_cast<std::string::size_type>(lo));
         bvd->setValue(strd);

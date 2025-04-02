@@ -50,7 +50,7 @@ public:
 
     /// @brief Struct containing information about the current version of HIF.
     struct VersionInfo {
-        typedef unsigned long long VersionNumber;
+        typedef std::uint64_t VersionNumber;
 
         VersionInfo();
         ~VersionInfo();

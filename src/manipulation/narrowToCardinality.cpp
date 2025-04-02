@@ -23,7 +23,7 @@ namespace /*anon*/
 } // namespace
 
 Value *
-narrowToCardinality(Value *v, unsigned int c, hif::semantics::ILanguageSemantics *sem, const bool considerOnlyBits)
+narrowToCardinality(Value *v, unsigned int c, hif::semantics::ILanguageSemantics *sem, bool considerOnlyBits)
 {
     Value *current = v;
     for (;;) // while(true)

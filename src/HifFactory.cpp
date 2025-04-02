@@ -272,7 +272,7 @@ HifFactory::aggregatealt_t HifFactory::noAggregateAlts() { return aggregatealt_t
 // /////////////////////////////////////////////////////////////
 // Types.
 // /////////////////////////////////////////////////////////////
-Int *HifFactory::integer(Range *span, const bool is_signed, bool isConstexpr, const Type::TypeVariant variant)
+Int *HifFactory::integer(Range *span, bool is_signed, bool isConstexpr, const Type::TypeVariant variant)
 {
     messageAssert(_sem != nullptr, "Unexpected case", nullptr, nullptr);
 
@@ -296,7 +296,7 @@ Int *HifFactory::integer(Range *span, const bool is_signed, bool isConstexpr, co
     return ret;
 }
 
-Bool *HifFactory::boolean(const bool isConstexpr, const Type::TypeVariant variant)
+Bool *HifFactory::boolean(bool isConstexpr, const Type::TypeVariant variant)
 {
     Bool *ret = new Bool();
     ret->setConstexpr(isConstexpr);
@@ -304,7 +304,7 @@ Bool *HifFactory::boolean(const bool isConstexpr, const Type::TypeVariant varian
     return ret;
 }
 
-Char *HifFactory::character(const bool isConstexpr, const Type::TypeVariant variant)
+Char *HifFactory::character(bool isConstexpr, const Type::TypeVariant variant)
 {
     Char *ret = new Char();
     ret->setConstexpr(isConstexpr);
@@ -332,7 +332,7 @@ Pointer *HifFactory::pointer(Type *type)
 
     return ret;
 }
-Time *HifFactory::time(const bool isConstexpr, const Type::TypeVariant variant)
+Time *HifFactory::time(bool isConstexpr, const Type::TypeVariant variant)
 {
     Time *ret = new Time();
     ret->setConstexpr(isConstexpr);
@@ -390,7 +390,7 @@ File *HifFactory::file(Type *t)
     return ret;
 }
 
-TypeDef *HifFactory::recordTypeDef(const std::string &n, field_t f, const bool external)
+TypeDef *HifFactory::recordTypeDef(const std::string &n, field_t f, bool external)
 {
     TypeDef *ret = new TypeDef();
     ret->setName(n);
@@ -404,7 +404,7 @@ TypeDef *HifFactory::recordTypeDef(const std::string &n, field_t f, const bool e
     return ret;
 }
 
-Bit *HifFactory::bit(const bool logic, const bool resolved, const bool const_expr, const Type::TypeVariant variant)
+Bit *HifFactory::bit(bool logic, bool resolved, bool const_expr, const Type::TypeVariant variant)
 {
     Bit *b = new Bit();
     b->setLogic(logic);
@@ -416,10 +416,10 @@ Bit *HifFactory::bit(const bool logic, const bool resolved, const bool const_exp
 
 Bitvector *HifFactory::bitvector(
     Range *span,
-    const bool logic,
-    const bool resolved,
-    const bool const_expr,
-    const bool isSigned,
+    bool logic,
+    bool resolved,
+    bool const_expr,
+    bool isSigned,
     const Type::TypeVariant variant)
 {
     Bitvector *b = new Bitvector();
@@ -432,7 +432,7 @@ Bitvector *HifFactory::bitvector(
     return b;
 }
 
-Signed *HifFactory::signedType(Range *span, const bool const_expr)
+Signed *HifFactory::signedType(Range *span, bool const_expr)
 {
     Signed *b = new Signed();
     b->setSpan(span);
@@ -440,7 +440,7 @@ Signed *HifFactory::signedType(Range *span, const bool const_expr)
     return b;
 }
 
-String *HifFactory::string(const bool const_expr, const Type::TypeVariant variant, Range *span)
+String *HifFactory::string(bool const_expr, const Type::TypeVariant variant, Range *span)
 {
     String *s = new String();
     s->setSpanInformation(span);
@@ -449,7 +449,7 @@ String *HifFactory::string(const bool const_expr, const Type::TypeVariant varian
     return s;
 }
 
-Unsigned *HifFactory::unsignedType(Range *span, const bool const_expr)
+Unsigned *HifFactory::unsignedType(Range *span, bool const_expr)
 {
     Unsigned *b = new Unsigned();
     b->setSpan(span);
@@ -457,7 +457,7 @@ Unsigned *HifFactory::unsignedType(Range *span, const bool const_expr)
     return b;
 }
 
-Array *HifFactory::array(Range *span, Type *type, const bool signed_)
+Array *HifFactory::array(Range *span, Type *type, bool signed_)
 {
     Array *a = new Array();
     a->setSpan(span);
@@ -493,7 +493,7 @@ HifFactory::viewRef(const std::string &du, const std::string &v, ReferencedType 
 }
 
 Library *
-HifFactory::library(const std::string &n, ReferencedType *i, const std::string &fn, const bool s, const bool sy)
+HifFactory::library(const std::string &n, ReferencedType *i, const std::string &fn, bool s, bool sy)
 {
     Library *ret = new Library();
     ret->setName(n);
@@ -588,7 +588,7 @@ BitvectorValue *HifFactory::bitvectorval(const std::string &b, Bitvector *syntac
     return ret;
 }
 
-BoolValue *HifFactory::boolval(const bool b, Bool *syntactic_type)
+BoolValue *HifFactory::boolval(bool b, Bool *syntactic_type)
 {
     BoolValue *ret = new BoolValue(b);
     if (syntactic_type == nullptr) {
@@ -704,7 +704,7 @@ HifFactory::instance(ReferencedType *refType, const std::string &name, portassig
     return ret;
 }
 
-Instance *HifFactory::libraryInstance(const std::string &name, const bool s, const bool sy)
+Instance *HifFactory::libraryInstance(const std::string &name, bool s, bool sy)
 {
     Library *refType = new Library();
     refType->setName(name);
@@ -788,7 +788,7 @@ HifFactory::parameterArgument_t HifFactory::parameterArgument(const std::string 
     return ret;
 }
 
-When *HifFactory::when(whenAlt_t alts, Value *def, const bool logicTernary)
+When *HifFactory::when(whenAlt_t alts, Value *def, bool logicTernary)
 {
     When *w = new When();
     w->setLogicTernary(logicTernary);
@@ -807,7 +807,7 @@ HifFactory::whenAlt_t HifFactory::whenalt(Value *cond, Value *value)
     return ret;
 }
 
-While *HifFactory::whileLoop(Value *cond, HifFactory::action_t actions, const std::string &label, const bool doWhile)
+While *HifFactory::whileLoop(Value *cond, HifFactory::action_t actions, const std::string &label, bool doWhile)
 {
     While *ret = new While();
     ret->setCondition(cond);
@@ -878,7 +878,7 @@ ValueStatement *HifFactory::valueStatement(Value *value)
     return ret;
 }
 
-Cast *HifFactory::nullval(Type *t, const bool autoPtr)
+Cast *HifFactory::nullval(Type *t, bool autoPtr)
 {
     messageDebugAssert(t != nullptr, "Unexpected case", nullptr, nullptr);
     if (autoPtr)
@@ -918,7 +918,7 @@ HifFactory::parameter(Type *t, const std::string &n, Value *v, Range *r, const P
     return ret;
 }
 
-Port *HifFactory::port(Type *t, const std::string &n, PortDirection d, Value *init, Range *r, const bool w)
+Port *HifFactory::port(Type *t, const std::string &n, PortDirection d, Value *init, Range *r, bool w)
 {
     messageDebugAssert(t != nullptr, "Unexpected case (1)", nullptr, nullptr);
 
@@ -948,7 +948,7 @@ HifFactory::portassign_t HifFactory::portAssign(const std::string &n, Value *v, 
     return ret;
 }
 
-Signal *HifFactory::signal(Type *t, const std::string &n, Value *init, Range *r, const bool s, const bool w)
+Signal *HifFactory::signal(Type *t, const std::string &n, Value *init, Range *r, bool s, bool w)
 {
     messageDebugAssert(t != nullptr, "Unexpected case (1)", nullptr, nullptr);
 
@@ -968,7 +968,7 @@ HifFactory::stateTable_t HifFactory::stateTable(
     const std::string &n,
     HifFactory::declaration_t decls,
     HifFactory::action_t actions,
-    const bool dontInitialize,
+    bool dontInitialize,
     const ProcessFlavour pf)
 {
     stateTable_t ret;
@@ -1013,7 +1013,7 @@ HifFactory::template_t HifFactory::templateTypeParameter(Type *t, const std::str
 }
 
 HifFactory::template_t
-HifFactory::templateValueParameter(Type *t, const std::string &n, Value *v, Range *r, const bool compileTimeConstant)
+HifFactory::templateValueParameter(Type *t, const std::string &n, Value *v, Range *r, bool compileTimeConstant)
 {
     messageDebugAssert(t != nullptr, "Unexpected case (1)", nullptr, nullptr);
 
@@ -1029,7 +1029,7 @@ HifFactory::templateValueParameter(Type *t, const std::string &n, Value *v, Rang
     return ret;
 }
 
-TypeDef *HifFactory::typeDef(const std::string &n, Type *t, const bool opaque, Range *r, const bool external)
+TypeDef *HifFactory::typeDef(const std::string &n, Type *t, bool opaque, Range *r, bool external)
 {
     TypeDef *ret = new TypeDef();
     ret->setName(n);
@@ -1041,7 +1041,7 @@ TypeDef *HifFactory::typeDef(const std::string &n, Type *t, const bool opaque, R
     return ret;
 }
 
-TypeDef *HifFactory::typeDef(const std::string &n, Type *t, const bool opaque, template_t tp, const bool external)
+TypeDef *HifFactory::typeDef(const std::string &n, Type *t, bool opaque, template_t tp, bool external)
 {
     TypeDef *ret = new TypeDef();
     ret->setName(n);
@@ -1112,7 +1112,7 @@ View *HifFactory::view(
     declaration_t d,
     library_t l,
     template_t t,
-    const bool s,
+    bool s,
     const std::string &fileName)
 {
     return view(n, c, e, lid, d, l, t, s, noViewReferences(), fileName);
@@ -1126,7 +1126,7 @@ View *HifFactory::view(
     declaration_t d,
     library_t l,
     template_t t,
-    const bool s,
+    bool s,
     viewReference_t parents,
     const std::string &fileName)
 {

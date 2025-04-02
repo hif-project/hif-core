@@ -73,7 +73,7 @@ public:
 
     /// @brief Sets whether this is a standard declaration.
     /// @param standard <tt>true</tt> if this is a standard declaration, <tt>false</tt> otherwise.
-    void setStandard(const bool standard);
+    void setStandard(bool standard);
 
     /// @brief Return string representation of given subprogram kind.
     /// @param t The subprogram kind.

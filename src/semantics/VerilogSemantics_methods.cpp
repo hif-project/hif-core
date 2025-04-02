@@ -18,7 +18,7 @@ namespace hif
 {
 namespace semantics
 {
-LibraryDef *VerilogSemantics::getStandardPackage(const bool hifFormat)
+LibraryDef *VerilogSemantics::getStandardPackage(bool hifFormat)
 {
     LibraryDef *ld = new LibraryDef();
     ld->setName(_makeHifName("standard", hifFormat));
@@ -403,7 +403,7 @@ LibraryDef *VerilogSemantics::getStandardPackage(const bool hifFormat)
     return ld;
 }
 
-LibraryDef *VerilogSemantics::getVAMSStandardPackage(const bool hifFormat)
+LibraryDef *VerilogSemantics::getVAMSStandardPackage(bool hifFormat)
 {
     LibraryDef *ld = new LibraryDef();
     ld->setName(_makeHifName("vams_standard", hifFormat));
@@ -1197,7 +1197,7 @@ LibraryDef *VerilogSemantics::getVAMSStandardPackage(const bool hifFormat)
     return ld;
 }
 
-LibraryDef *VerilogSemantics::getVAMSConstantsPackage(const bool hifFormat)
+LibraryDef *VerilogSemantics::getVAMSConstantsPackage(bool hifFormat)
 {
     LibraryDef *ld = new LibraryDef();
     ld->setName(_makeHifName("vams_constants", hifFormat));
@@ -1271,7 +1271,7 @@ LibraryDef *VerilogSemantics::getVAMSConstantsPackage(const bool hifFormat)
     return ld;
 }
 
-LibraryDef *VerilogSemantics::getVAMSDisciplinesPackage(const bool hifFormat)
+LibraryDef *VerilogSemantics::getVAMSDisciplinesPackage(bool hifFormat)
 {
     LibraryDef *ld = new LibraryDef();
     ld->setName(_makeHifName("vams_disciplines", hifFormat));
@@ -1729,7 +1729,7 @@ LibraryDef *VerilogSemantics::getVAMSDisciplinesPackage(const bool hifFormat)
     return ld;
 }
 
-LibraryDef *VerilogSemantics::getVAMSDriverAccessPackage(const bool hifFormat)
+LibraryDef *VerilogSemantics::getVAMSDriverAccessPackage(bool hifFormat)
 {
     LibraryDef *ld = new LibraryDef();
     ld->setName(_makeHifName("vams_driver_access", hifFormat));
@@ -1866,18 +1866,18 @@ VerilogSemantics::MapCases VerilogSemantics::mapStandardSymbol(
     ILanguageSemantics * /*srcSem*/)
 {
     std::string libName;
-    const bool isMine = _isHifPrefixed(key.first, libName);
+    bool isMine = _isHifPrefixed(key.first, libName);
     // messageAssert(isMine, "Asked name not prefixed with 'hif_': " + unprefixed, nullptr, nullptr);
     if (isMine) {
         std::string symName;
-        const bool ok = _isHifPrefixed(key.second, symName);
+        bool ok = _isHifPrefixed(key.second, symName);
         messageAssert(ok, "Found not prefixed symbol in prefixed library", decl, this);
 
         value.libraries.clear();
         value.libraries.push_back(libName);
         value.mappedSymbol   = symName;
         // Libraries are always replaced, therefore internal symbols must be kept
-        const bool isLibrary = (libName == symName);
+        bool isLibrary = (libName == symName);
         value.mapAction      = isLibrary ? MAP_DELETE : MAP_KEEP;
         return value.mapAction;
     }
@@ -1895,7 +1895,7 @@ Object *VerilogSemantics::getSimplifiedSymbol(KeySymbol & /*key*/, Object *s)
     messageError("Not implemented yet", s, this);
 }
 
-bool VerilogSemantics::isStandardInclusion(const std::string &n, const bool /*isLibInclusion*/)
+bool VerilogSemantics::isStandardInclusion(const std::string &n, bool /*isLibInclusion*/)
 {
     if (n == "standard")
         return true;
@@ -1903,7 +1903,7 @@ bool VerilogSemantics::isStandardInclusion(const std::string &n, const bool /*is
     return false;
 }
 
-std::string VerilogSemantics::getEventMethodName(const bool /*hifFormat*/)
+std::string VerilogSemantics::getEventMethodName(bool /*hifFormat*/)
 {
     // has no event method
     return NameTable::getInstance()->none();

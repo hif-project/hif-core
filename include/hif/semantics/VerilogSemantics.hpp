@@ -79,7 +79,7 @@ public:
     /// a valid operation in current semantics  (if possible).
     ///
     virtual Type *
-    getSuggestedTypeForOp(Type *t, Operator operation, Type *opType, Object *startingObject, const bool isOp1);
+    getSuggestedTypeForOp(Type *t, Operator operation, Type *opType, Object *startingObject, bool isOp1);
     ///
     /// @brief Function that given a ConstValue returns a Type
     /// pointer representing the type to associate to the constant according
@@ -241,11 +241,11 @@ public:
     /// @name Standard packages
     /// @{
 
-    LibraryDef *getStandardPackage(const bool hifFormat = false);
-    LibraryDef *getVAMSStandardPackage(const bool hifFormat = false);
-    LibraryDef *getVAMSConstantsPackage(const bool hifFormat = false);
-    LibraryDef *getVAMSDisciplinesPackage(const bool hifFormat = false);
-    LibraryDef *getVAMSDriverAccessPackage(const bool hifFormat = false);
+    LibraryDef *getStandardPackage(bool hifFormat = false);
+    LibraryDef *getVAMSStandardPackage(bool hifFormat = false);
+    LibraryDef *getVAMSConstantsPackage(bool hifFormat = false);
+    LibraryDef *getVAMSDisciplinesPackage(bool hifFormat = false);
+    LibraryDef *getVAMSDriverAccessPackage(bool hifFormat = false);
 
     /// @brief Get the eventual LibraryDef matching the given name.
     /// @param n The name.
@@ -253,7 +253,7 @@ public:
     virtual LibraryDef *getStandardLibrary(const std::string &n);
 
     /// @brief Return True if the given library is native for the semantics.
-    virtual bool isNativeLibrary(const std::string &n, const bool hifFormat = false);
+    virtual bool isNativeLibrary(const std::string &n, bool hifFormat = false);
 
     /// @brief Starting from system adds all required standard packages.
     /// @param s The system.
@@ -264,13 +264,13 @@ public:
     mapStandardSymbol(Declaration *decl, KeySymbol &key, ValueSymbol &value, ILanguageSemantics *srcSem);
 
     /// @brief Returns true if no namespaces is needed for given library name.
-    virtual bool isStandardInclusion(const std::string &n, const bool isLibInclusion);
+    virtual bool isStandardInclusion(const std::string &n, bool isLibInclusion);
 
     /// @brief Returns the mapped symbol w.r.t. the current semantics.
     virtual Object *getSimplifiedSymbol(KeySymbol &key, Object *s);
 
     /// @brief Returns the event method name w.r.t. current semantics.
-    virtual std::string getEventMethodName(const bool hifFormat = false);
+    virtual std::string getEventMethodName(bool hifFormat = false);
 
     /// @brief Returns <tt>true</tt> if the given call is an event call w.r.t.
     /// the current semantics, <tt>false</tt> otherwise.

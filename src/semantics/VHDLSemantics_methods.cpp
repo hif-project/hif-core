@@ -19,7 +19,7 @@ namespace hif
 namespace semantics
 {
 
-LibraryDef *VHDLSemantics::getStandardPackage(const bool hifFormat)
+LibraryDef *VHDLSemantics::getStandardPackage(bool hifFormat)
 {
     LibraryDef *ld = new LibraryDef();
     ld->setName(_makeHifName("standard", hifFormat));
@@ -249,7 +249,7 @@ LibraryDef *VHDLSemantics::getStandardPackage(const bool hifFormat)
 
     return ld;
 }
-LibraryDef *VHDLSemantics::getIeeeStdLogic1164Package(const bool hifFormat)
+LibraryDef *VHDLSemantics::getIeeeStdLogic1164Package(bool hifFormat)
 {
     LibraryDef *ld = new LibraryDef();
     ld->setName(_makeHifName("ieee_std_logic_1164", hifFormat));
@@ -437,7 +437,7 @@ LibraryDef *VHDLSemantics::getIeeeStdLogic1164Package(const bool hifFormat)
 
     return ld;
 }
-LibraryDef *VHDLSemantics::getIeeeStdLogicArithPackage(const bool hifFormat)
+LibraryDef *VHDLSemantics::getIeeeStdLogicArithPackage(bool hifFormat)
 {
     LibraryDef *ld = new LibraryDef();
     ld->setName(_makeHifName("ieee_std_logic_arith", hifFormat));
@@ -681,7 +681,7 @@ LibraryDef *VHDLSemantics::getIeeeStdLogicArithPackage(const bool hifFormat)
 
     return ld;
 }
-LibraryDef *VHDLSemantics::getIeeeStdLogicArithExPackage(const bool hifFormat)
+LibraryDef *VHDLSemantics::getIeeeStdLogicArithExPackage(bool hifFormat)
 {
     LibraryDef *ld = new LibraryDef();
     ld->setName(_makeHifName("ieee_std_logic_arith_ex", hifFormat));
@@ -868,7 +868,7 @@ LibraryDef *VHDLSemantics::getIeeeStdLogicArithExPackage(const bool hifFormat)
 
     return ld;
 }
-LibraryDef *VHDLSemantics::getIeeeNumericStdPackage(const bool hifFormat)
+LibraryDef *VHDLSemantics::getIeeeNumericStdPackage(bool hifFormat)
 {
     LibraryDef *ld = new LibraryDef();
     ld->setName(_makeHifName("ieee_numeric_std", hifFormat));
@@ -1059,7 +1059,7 @@ LibraryDef *VHDLSemantics::getIeeeNumericStdPackage(const bool hifFormat)
 
     return ld;
 }
-LibraryDef *VHDLSemantics::getIeeeNumericBitPackage(const bool hifFormat)
+LibraryDef *VHDLSemantics::getIeeeNumericBitPackage(bool hifFormat)
 {
     LibraryDef *ld = new LibraryDef();
     ld->setName(_makeHifName("ieee_numeric_bit", hifFormat));
@@ -1120,7 +1120,7 @@ LibraryDef *VHDLSemantics::getIeeeNumericBitPackage(const bool hifFormat)
 
     return ld;
 }
-LibraryDef *VHDLSemantics::getIeeeStdLogicMiscPackage(const bool hifFormat)
+LibraryDef *VHDLSemantics::getIeeeStdLogicMiscPackage(bool hifFormat)
 {
     LibraryDef *ld = new LibraryDef();
     ld->setName(_makeHifName("ieee_std_logic_misc", hifFormat));
@@ -1329,7 +1329,7 @@ LibraryDef *VHDLSemantics::getIeeeStdLogicMiscPackage(const bool hifFormat)
     delete ux01;
     return ld;
 }
-LibraryDef *VHDLSemantics::getIeeeStdLogicSignedPackage(const bool hifFormat)
+LibraryDef *VHDLSemantics::getIeeeStdLogicSignedPackage(bool hifFormat)
 {
     LibraryDef *ld = new LibraryDef();
     ld->setName(_makeHifName("ieee_std_logic_signed", hifFormat));
@@ -1403,7 +1403,7 @@ LibraryDef *VHDLSemantics::getIeeeStdLogicSignedPackage(const bool hifFormat)
     return ld;
 }
 
-LibraryDef *VHDLSemantics::getIeeeStdLogicTextIOPackage(const bool hifFormat)
+LibraryDef *VHDLSemantics::getIeeeStdLogicTextIOPackage(bool hifFormat)
 {
     LibraryDef *ld = new LibraryDef();
     ld->setName(_makeHifName("ieee_std_logic_textio", hifFormat));
@@ -1701,7 +1701,7 @@ LibraryDef *VHDLSemantics::getIeeeStdLogicTextIOPackage(const bool hifFormat)
     return ld;
 }
 
-LibraryDef *VHDLSemantics::getIeeeStdLogicUnsignedPackage(const bool hifFormat)
+LibraryDef *VHDLSemantics::getIeeeStdLogicUnsignedPackage(bool hifFormat)
 {
     LibraryDef *ld = new LibraryDef();
     ld->setName(_makeHifName("ieee_std_logic_unsigned", hifFormat));
@@ -1773,7 +1773,7 @@ LibraryDef *VHDLSemantics::getIeeeStdLogicUnsignedPackage(const bool hifFormat)
 
     return ld;
 }
-LibraryDef *VHDLSemantics::getIeeeMathComplexPackage(const bool hifFormat)
+LibraryDef *VHDLSemantics::getIeeeMathComplexPackage(bool hifFormat)
 {
     LibraryDef *ld = new LibraryDef();
     ld->setName(_makeHifName("ieee_math_complex", hifFormat));
@@ -1886,7 +1886,7 @@ LibraryDef *VHDLSemantics::getIeeeMathComplexPackage(const bool hifFormat)
     return ld;
 }
 
-LibraryDef *VHDLSemantics::getTextIOPackage(const bool hifFormat)
+LibraryDef *VHDLSemantics::getTextIOPackage(bool hifFormat)
 {
     LibraryDef *ld = new LibraryDef();
     ld->setName(_makeHifName("std_textio", hifFormat));
@@ -2209,7 +2209,7 @@ LibraryDef *VHDLSemantics::getTextIOPackage(const bool hifFormat)
     return ld;
 }
 
-LibraryDef *VHDLSemantics::getIeeeMathRealPackage(const bool hifFormat)
+LibraryDef *VHDLSemantics::getIeeeMathRealPackage(bool hifFormat)
 {
     LibraryDef *ld = new LibraryDef();
     ld->setName(_makeHifName("ieee_math_real", hifFormat));
@@ -2390,7 +2390,7 @@ LibraryDef *VHDLSemantics::getIeeeMathRealPackage(const bool hifFormat)
     return ld;
 }
 
-LibraryDef *VHDLSemantics::getPSLStandardPackage(const bool hifFormat)
+LibraryDef *VHDLSemantics::getPSLStandardPackage(bool hifFormat)
 {
     LibraryDef *ld = new LibraryDef();
     ld->setName(_makeHifName("psl_standard", hifFormat));
@@ -2577,7 +2577,7 @@ LibraryDef *VHDLSemantics::getStandardLibrary(const std::string &n)
     return nullptr;
 }
 
-bool VHDLSemantics::isNativeLibrary(const std::string &n, const bool hifFormat)
+bool VHDLSemantics::isNativeLibrary(const std::string &n, bool hifFormat)
 {
     if (n == _makeHifName("ieee_math_complex", hifFormat) || n == _makeHifName("ieee_math_real", hifFormat) ||
         n == _makeHifName("ieee_numeric_std", hifFormat) || n == _makeHifName("ieee_numeric_bit", hifFormat) ||
@@ -2610,7 +2610,7 @@ VHDLSemantics::MapCases
 VHDLSemantics::mapStandardSymbol(Declaration *decl, KeySymbol &key, ValueSymbol &value, ILanguageSemantics * /*srcSem*/)
 {
     std::string libName;
-    const bool isMine = _isHifPrefixed(key.first, libName);
+    bool isMine = _isHifPrefixed(key.first, libName);
     // messageAssert(isMine, "Asked name not prefixed with 'hif_': " + unprefixed, nullptr, nullptr);
     if (isMine) {
         std::string symName;
@@ -2620,7 +2620,7 @@ VHDLSemantics::mapStandardSymbol(Declaration *decl, KeySymbol &key, ValueSymbol 
         value.libraries.push_back(libName);
         value.mappedSymbol   = symName;
         // Libraries are always replaced, therefore internal symbols must be kept
-        const bool isLibrary = (libName == symName);
+        bool isLibrary = (libName == symName);
         value.mapAction      = isLibrary ? MAP_DELETE : MAP_KEEP;
         return value.mapAction;
     }
@@ -2641,7 +2641,7 @@ VHDLSemantics::mapStandardSymbol(Declaration *decl, KeySymbol &key, ValueSymbol 
 
 Object *VHDLSemantics::getSimplifiedSymbol(KeySymbol & /*key*/, Object *s) { messageError("TODO", s, this); }
 
-bool VHDLSemantics::isStandardInclusion(const std::string &n, const bool /*isLibInclusion*/)
+bool VHDLSemantics::isStandardInclusion(const std::string &n, bool /*isLibInclusion*/)
 {
     if (n == "standard")
         return true;
@@ -2651,7 +2651,7 @@ bool VHDLSemantics::isStandardInclusion(const std::string &n, const bool /*isLib
     return false;
 }
 
-std::string VHDLSemantics::getEventMethodName(const bool hifFormat) { return _makeHifName("event", hifFormat); }
+std::string VHDLSemantics::getEventMethodName(bool hifFormat) { return _makeHifName("event", hifFormat); }
 
 bool VHDLSemantics::isEventCall(FunctionCall *call)
 {

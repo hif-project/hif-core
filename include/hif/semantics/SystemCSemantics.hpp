@@ -75,7 +75,7 @@ public:
     /// a valid operation in current semantics  (if possible).
     ///
     virtual Type *
-    getSuggestedTypeForOp(Type *t, Operator operation, Type *opType, Object *startingObject, const bool isOp1);
+    getSuggestedTypeForOp(Type *t, Operator operation, Type *opType, Object *startingObject, bool isOp1);
     /// @brief Function that given a ConstValue returns a Type
     /// pointer representing the type to associate to the constant according
     /// SystemC requirements (opportunely setting flags of the type).
@@ -256,19 +256,19 @@ public:
     /// @{
 
     /// @brief Set if Semantics have to use hdtlib library types.
-    void setUseHdtlib(const bool v);
+    void setUseHdtlib(bool v);
 
     /// @brief Get if Semantics have use hdtlib library types.
     bool usingHdtlib();
 
     /// @brief Set if Semantics have to keep bit deprecated bit type
-    void setKeepBit(const bool v);
+    void setKeepBit(bool v);
 
     /// @brief Get if Semantics have to keep bit deprecated bit type
     bool getKeepBit();
 
     /// @brief Set if Semantics have to preserve resolved types.
-    void setResolvedTypes(const bool v);
+    void setResolvedTypes(bool v);
 
     /// @brief Get if Semantics have to preserve resolved types.
     bool getResolvedTypes();
@@ -276,26 +276,26 @@ public:
     /// @name Standard libraries.
     /// @{
 
-    LibraryDef *getStandardPackage(const bool hifFormat = false);
-    LibraryDef *getNewPackage(const bool hifFormat = false);
-    LibraryDef *getSystemVueModelBuilder(const bool hifFormat = false);
-    LibraryDef *getCMathPackage(const bool hifFormat = false);
-    LibraryDef *getCStdIOPackage(const bool hifFormat = false);
-    LibraryDef *getCStdLibPackage(const bool hifFormat = false);
-    LibraryDef *getCTimePackage(const bool hifFormat = false);
-    LibraryDef *getDdtClibPackage(const bool hifFormat = false);
-    LibraryDef *getHdtlibPackage(const bool hifFormat = false);
-    LibraryDef *getIOStreamPackage(const bool hifFormat = false);
-    LibraryDef *getScAmsELNPackage(const bool hifFormat = false);
-    LibraryDef *getScCorePackage(const bool hifFormat = false);
-    LibraryDef *getStringPackage(const bool hifFormat = false);
-    LibraryDef *getCStringPackage(const bool hifFormat = false);
-    LibraryDef *getCStdDefPackage(const bool hifFormat = false);
-    LibraryDef *getSystemcExtensionsPackage(const bool hifFormat = false);
-    LibraryDef *getTlmPackage(const bool hifFormat = false);
-    LibraryDef *getVectorPackage(const bool hifFormat = false);
-    LibraryDef *getTlmUtils(const bool hifFormat = false);
-    LibraryDef *getScDtPackage(const bool hifFormat = false);
+    LibraryDef *getStandardPackage(bool hifFormat = false);
+    LibraryDef *getNewPackage(bool hifFormat = false);
+    LibraryDef *getSystemVueModelBuilder(bool hifFormat = false);
+    LibraryDef *getCMathPackage(bool hifFormat = false);
+    LibraryDef *getCStdIOPackage(bool hifFormat = false);
+    LibraryDef *getCStdLibPackage(bool hifFormat = false);
+    LibraryDef *getCTimePackage(bool hifFormat = false);
+    LibraryDef *getDdtClibPackage(bool hifFormat = false);
+    LibraryDef *getHdtlibPackage(bool hifFormat = false);
+    LibraryDef *getIOStreamPackage(bool hifFormat = false);
+    LibraryDef *getScAmsELNPackage(bool hifFormat = false);
+    LibraryDef *getScCorePackage(bool hifFormat = false);
+    LibraryDef *getStringPackage(bool hifFormat = false);
+    LibraryDef *getCStringPackage(bool hifFormat = false);
+    LibraryDef *getCStdDefPackage(bool hifFormat = false);
+    LibraryDef *getSystemcExtensionsPackage(bool hifFormat = false);
+    LibraryDef *getTlmPackage(bool hifFormat = false);
+    LibraryDef *getVectorPackage(bool hifFormat = false);
+    LibraryDef *getTlmUtils(bool hifFormat = false);
+    LibraryDef *getScDtPackage(bool hifFormat = false);
 
     /// @brief Get the eventual LibraryDef matching the given name.
     /// @param n The name.
@@ -303,7 +303,7 @@ public:
     virtual LibraryDef *getStandardLibrary(const std::string &n);
 
     /// @brief Return True if the given library is native for the semantics.
-    virtual bool isNativeLibrary(const std::string &n, const bool hifFormat = false);
+    virtual bool isNativeLibrary(const std::string &n, bool hifFormat = false);
 
     /// @brief Map an input symbol into the corresponding output one.
     virtual MapCases
@@ -313,10 +313,10 @@ public:
     virtual Object *getSimplifiedSymbol(KeySymbol &key, Object *s);
 
     /// @brief Returns true if no namespaces is needed for given library name.
-    virtual bool isStandardInclusion(const std::string &n, const bool isLibInclusion);
+    virtual bool isStandardInclusion(const std::string &n, bool isLibInclusion);
 
     /// @brief Returns the event method name w.r.t. current semantics.
-    virtual std::string getEventMethodName(const bool hifFormat = false);
+    virtual std::string getEventMethodName(bool hifFormat = false);
 
     /// @brief Returns <tt>true</tt> if the given call is an event call w.r.t.
     /// the current semantics, <tt>false</tt> otherwise.
@@ -348,7 +348,7 @@ private:
         const char *duName,
         Type *aggregateType,
         Type *parameterType,
-        const bool hifFormat);
+        bool hifFormat);
 
     /// @name Methods used by canRemoveCastOnOperands.
     /// @{

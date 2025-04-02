@@ -126,51 +126,51 @@ auto hif_getCurrentDateAndTimeAsFMIStringFormat() -> std::string;
 
 /// @brief Read, write, and execute permissions for the user.
 
-extern const int PERMISSION_RWX_USR;
+extern int PERMISSION_RWX_USR;
 
 /// @brief Read permission for the user.
 
-extern const int PERMISSION_R_USR;
+extern int PERMISSION_R_USR;
 
 /// @brief Write permission for the user.
 
-extern const int PERMISSION_W_USR;
+extern int PERMISSION_W_USR;
 
 /// @brief Execute permission for the user.
 
-extern const int PERMISSION_X_USR;
+extern int PERMISSION_X_USR;
 
 /// @brief Read, write, and execute permissions for the group.
 
-extern const int PERMISSION_RWX_GRP;
+extern int PERMISSION_RWX_GRP;
 
 /// @brief Read permission for the group.
 
-extern const int PERMISSION_R_GRP;
+extern int PERMISSION_R_GRP;
 
 /// @brief Write permission for the group.
 
-extern const int PERMISSION_W_GRP;
+extern int PERMISSION_W_GRP;
 
 /// @brief Execute permission for the group.
 
-extern const int PERMISSION_X_GRP;
+extern int PERMISSION_X_GRP;
 
 /// @brief Read, write, and execute permissions for others.
 
-extern const int PERMISSION_RWX_OTH;
+extern int PERMISSION_RWX_OTH;
 
 /// @brief Read permission for others.
 
-extern const int PERMISSION_R_OTH;
+extern int PERMISSION_R_OTH;
 
 /// @brief Write permission for others.
 
-extern const int PERMISSION_W_OTH;
+extern int PERMISSION_W_OTH;
 
 /// @brief Execute permission for others.
 
-extern const int PERMISSION_X_OTH;
+extern int PERMISSION_X_OTH;
 
 /// @}
 

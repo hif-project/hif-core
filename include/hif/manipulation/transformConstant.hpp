@@ -28,7 +28,7 @@ ConstValue *transformConstant(
     ConstValue *cvo,
     Type *to,
     hif::semantics::ILanguageSemantics *sem = hif::semantics::HIFSemantics::getInstance(),
-    const bool allowTruncation              = true);
+    bool allowTruncation              = true);
 
 /// @brief Transforms a value into a desired type.
 /// For example, an aggregate can be transformed into a bitvector value.
@@ -45,6 +45,6 @@ Value *transformValue(
     Value *vo,
     Type *to,
     hif::semantics::ILanguageSemantics *sem = hif::semantics::HIFSemantics::getInstance(),
-    const bool allowTruncation              = true);
+    bool allowTruncation              = true);
 } // namespace manipulation
 } // namespace hif

@@ -215,33 +215,33 @@ bool DeclarationIsPartOfStandardOptions::areAllAllowFlagsSet() const
            allowVhdl || allowVhdlPSL || allowVerilog || allowVerilogAMS;
 }
 
-void DeclarationIsPartOfStandardOptions::enableCppFamily(const bool enable)
+void DeclarationIsPartOfStandardOptions::enableCppFamily(bool enable)
 {
     allowC            = enable;
     allowCpp          = enable;
     allowCppExtraLibs = enable;
 }
 
-void DeclarationIsPartOfStandardOptions::enableSystemCFamily(const bool enable)
+void DeclarationIsPartOfStandardOptions::enableSystemCFamily(bool enable)
 {
     allowSystemCRTL = enable;
     allowSystemCTLM = enable;
 }
 
-void DeclarationIsPartOfStandardOptions::enableSystemCAMSFamily(const bool enable)
+void DeclarationIsPartOfStandardOptions::enableSystemCAMSFamily(bool enable)
 {
     allowSystemCRTL = enable;
     allowSystemCTLM = enable;
     allowSystemCAMS = enable;
 }
 
-void DeclarationIsPartOfStandardOptions::enableVhdlFamily(const bool enable)
+void DeclarationIsPartOfStandardOptions::enableVhdlFamily(bool enable)
 {
     allowVhdl    = enable;
     allowVhdlPSL = enable;
 }
 
-void DeclarationIsPartOfStandardOptions::enableVerilogFamily(const bool enable)
+void DeclarationIsPartOfStandardOptions::enableVerilogFamily(bool enable)
 {
     allowVerilog    = enable;
     allowVerilogAMS = enable;

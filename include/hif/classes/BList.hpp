@@ -117,7 +117,7 @@ public:
     /// @brief Function to remove duplicated elements from the current list.
     /// @param strict If <tt>true</tt>, remove duplicated elements if pointers
     /// to objects are the same.
-    void remove_dopplegangers(const bool strict = false);
+    void remove_dopplegangers(bool strict = false);
 
     /// @brief Function to get the parent object of the list in the Hif tree.
     /// @return The parent object of the list in the Hif tree.
@@ -154,7 +154,7 @@ public:
     /// @param pos The position.
     /// @param expand If <tt>false</tt>, replace the element ati the given position.
     /// @return The previous element at the given position (if any).
-    T *insert(T *o, std::size_t pos, const bool expand);
+    T *insert(T *o, std::size_t pos, bool expand);
 
     /// @brief Returns the element at the given position, or <tt>nullptr</tt> in case of error.
     /// @param pos The position.
@@ -212,7 +212,7 @@ public:
     /// @param hasAll If <tt>true</tt> checks that all objects has the property.
     /// @return <tt>true</tt> if the objects contains at least one property
     /// named @p n, <tt>false</tt> otherwise.
-    bool checkProperty(const std::string &n, const bool hasAll) const;
+    bool checkProperty(const std::string &n, bool hasAll) const;
 
     /// @brief Checks whether the objects contains at least one property
     /// having @p n as its name.
@@ -220,7 +220,7 @@ public:
     /// @param hasAll If <tt>true</tt> checks that all objects has the property.
     /// @return <tt>true</tt> if the objects contains at least one property
     /// named @p n, <tt>false</tt> otherwise.
-    bool checkProperty(const PropertyId n, const bool hasAll) const;
+    bool checkProperty(const PropertyId n, bool hasAll) const;
 
     /// @brief Clears all the properties from the objects.
     void clearProperties();
@@ -228,7 +228,7 @@ public:
     /// @brief Check if has properties.
     /// @param hasAll If <tt>true</tt> checks that all objects has properties.
     /// @return true if has properties.
-    bool hasProperties(const bool hasAll) const;
+    bool hasProperties(bool hasAll) const;
 
     /// @}
 

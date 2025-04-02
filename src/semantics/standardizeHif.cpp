@@ -687,7 +687,7 @@ template <typename T> bool HifStdVisitor::_dstCopyObject(T *v)
         if (isSemanticsType(dynamic_cast<Type *>(v)))
             return false;
         Object *oParent   = _mapGet(v->getParent());
-        const bool result = hif::manipulation::matchedInsert(o, oParent, v, v->getParent(), type);
+        bool result = hif::manipulation::matchedInsert(o, oParent, v, v->getParent(), type);
 
         messageDebugIfFails(result, "o = ", o, _dstSem);
         messageDebugIfFails(result, "oParent = ", oParent, _dstSem);
@@ -739,7 +739,7 @@ template <typename T> bool HifStdVisitor::_dstCopyObject(T *v)
     }
     if (isSemanticsType(dynamic_cast<Type *>(v)))
         return true;
-    const bool result = hif::manipulation::matchedInsert(dstObj, newParent, v, v->getParent(), type);
+    bool result = hif::manipulation::matchedInsert(dstObj, newParent, v, v->getParent(), type);
 
     messageAssert(result, "Matched insert fails (2).", v, _srcSem);
     return true;
@@ -839,7 +839,7 @@ void HifStdVisitor::_dstGetDeclaration(Object *obj)
     messageAssert(dstObj != nullptr, "Object not found in map", obj, _dstSem);
 
     Declaration *decl        = getDeclaration(obj, _srcSem);
-    const bool declIsInCache = hif::manipulation::isInCache(decl);
+    bool declIsInCache = hif::manipulation::isInCache(decl);
 
     if (dynamic_cast<Instance *>(obj) != nullptr) {
         Instance *ii      = static_cast<Instance *>(obj);
@@ -889,7 +889,7 @@ Type *HifStdVisitor::_dstGetType(Type *o, bool /*fresh*/)
 {
     Type *t = nullptr;
 
-    const bool restore = _canRebaseTypes;
+    bool restore = _canRebaseTypes;
     _canRebaseTypes    = false;
 
     t = _mapTypedGet(o);
@@ -1617,11 +1617,11 @@ void HifStdVisitor::_mapSlice(Slice *o) { _mapSliceSpan(o); }
 
 void HifStdVisitor::_mapSliceSpan(Slice *o)
 {
-    const bool srcTr = _srcSem->isSyntacticTypeRebased();
-    const bool srcSr = _srcSem->isSliceTypeRebased();
+    bool srcTr = _srcSem->isSyntacticTypeRebased();
+    bool srcSr = _srcSem->isSliceTypeRebased();
 
-    const bool dstTr = _dstSem->isSyntacticTypeRebased();
-    const bool dstSr = _dstSem->isSliceTypeRebased();
+    bool dstTr = _dstSem->isSyntacticTypeRebased();
+    bool dstSr = _dstSem->isSliceTypeRebased();
 
     // skip cases where fix is not necessary
     if (srcTr == dstTr && srcSr == dstSr)
@@ -1698,11 +1698,11 @@ void HifStdVisitor::_mapMember(Member *o) { _mapMemberIndex(o); }
 
 void HifStdVisitor::_mapMemberIndex(Member *o)
 {
-    const bool srcTr = _srcSem->isSyntacticTypeRebased();
-    const bool srcSr = _srcSem->isSliceTypeRebased();
+    bool srcTr = _srcSem->isSyntacticTypeRebased();
+    bool srcSr = _srcSem->isSliceTypeRebased();
 
-    const bool dstTr = _dstSem->isSyntacticTypeRebased();
-    const bool dstSr = _dstSem->isSliceTypeRebased();
+    bool dstTr = _dstSem->isSyntacticTypeRebased();
+    bool dstSr = _dstSem->isSliceTypeRebased();
 
     // skip cases where fix is not necessary
     if (srcTr == dstTr && srcSr == dstSr)
@@ -2124,7 +2124,7 @@ void HifStdVisitor::_handleLength(Type *source, Type *dest, Type *resultType, An
     Value *sourceSpanSize = spanGetSize(sourceSpan, _dstSem);
     Value *destSpanSize   = spanGetSize(destSpan, _dstSem);
 
-    const bool equalSpans = hif::equals(sourceSpanSize, destSpanSize);
+    bool equalSpans = hif::equals(sourceSpanSize, destSpanSize);
     delete sourceSpanSize;
     delete destSpanSize;
 
@@ -2181,7 +2181,7 @@ bool HifStdVisitor::_isTypedRange(Range *tSpan, hif::semantics::ILanguageSemanti
     Identifier *rb = dynamic_cast<Identifier *>(tSpan->getRightBound());
     ValueTP *lbDec = dynamic_cast<ValueTP *>(hif::semantics::getDeclaration(lb, sem));
     ValueTP *rbDec = dynamic_cast<ValueTP *>(hif::semantics::getDeclaration(rb, sem));
-    const bool isTyped =
+    bool isTyped =
         (lb != nullptr && rb != nullptr && lbDec != nullptr && rbDec != nullptr && lbDec->isInBList() &&
          rbDec->isInBList() && lbDec->getBList() == rbDec->getBList());
 

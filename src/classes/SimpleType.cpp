@@ -23,7 +23,7 @@ SimpleType::~SimpleType()
 
 bool SimpleType::isConstexpr() const { return _isConstexpr; }
 
-void SimpleType::setConstexpr(const bool flag) { _isConstexpr = flag; }
+void SimpleType::setConstexpr(bool flag) { _isConstexpr = flag; }
 
 void SimpleType::_calculateFields() { Type::_calculateFields(); }
 

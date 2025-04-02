@@ -89,7 +89,7 @@ protected:
     /// @brief Create the process that updates the clock support signal.
     void _createClkSupportSignalUpdProc(Value *clk);
 
-    bool _checkUnsupported(const bool flag, const std::string &msg, Object *o);
+    bool _checkUnsupported(bool flag, const std::string &msg, Object *o);
 
     hif::Trash _trash;
 
@@ -151,14 +151,14 @@ private:
     bool _fixVhdlTypeReference(TypeReference *o);
 
     void _checkStandardDecl(Object *obj);
-    bool _addHifLibrary(const char *c, const bool standard = false);
-    bool _sortPrintMethodParameters(ProcedureCall *o, const bool isDisplay);
+    bool _addHifLibrary(const char *c, bool standard = false);
+    bool _sortPrintMethodParameters(ProcedureCall *o, bool isDisplay);
     char _getMod(char n, ParameterAssign *pa, bool &needStringLib, bool &needScCoreLib);
     void _addCast(Value *v, Type *t, bool &needStringLib, bool &needScCoreLib);
-    bool _manageFileWriteIOCalls(ProcedureCall *o, const bool isDisplay, const bool isScan);
+    bool _manageFileWriteIOCalls(ProcedureCall *o, bool isDisplay, bool isScan);
     bool _fixPrintMethodParamNames(ProcedureCall *o);
 
-    bool _manageVhdlExtensions(FunctionCall *fc, const bool isSigned);
+    bool _manageVhdlExtensions(FunctionCall *fc, bool isSigned);
 
     /// @brief Disabled copy constructor.
     RemoveStandardMethodsVisitor(const RemoveStandardMethodsVisitor &s);
@@ -476,7 +476,7 @@ void RemoveStandardMethodsVisitor::_createClkSupportSignalUpdProc(Value *clk)
     contents->stateTables.push_back(stb);
 }
 
-bool RemoveStandardMethodsVisitor::_checkUnsupported(const bool flag, const std::string &msg, Object *o)
+bool RemoveStandardMethodsVisitor::_checkUnsupported(bool flag, const std::string &msg, Object *o)
 {
     if (flag)
         return false;
@@ -683,7 +683,7 @@ bool RemoveStandardMethodsVisitor::_fixCastRealToInt(FunctionCall *fc)
     IntValue *size   = dynamic_cast<IntValue *>(param2);
     BoolValue *sign  = dynamic_cast<BoolValue *>(param3);
     messageAssert(sign != nullptr, "Unxepected non constant sign", fc, _sem);
-    const bool signVal = sign->getValue();
+    bool signVal = sign->getValue();
 
     if (param != nullptr && size != nullptr) {
         double d       = round(param->getValue());
@@ -813,7 +813,7 @@ bool RemoveStandardMethodsVisitor::_fixConvUnsigned(FunctionCall *fc)
     }
     Range *span = _factory.range(size->getValue() - 1, 0);
 
-    const bool isLogic = hif::typeIsLogic(paramType, _sem);
+    bool isLogic = hif::typeIsLogic(paramType, _sem);
 
     if (isLogic && !_opt.useBinaryLogic) {
         _checkUnsupported(_opt.allowSupportLibrary, "Mapping requires allowSupportLibrary or useBinaryLogic", fc);
@@ -1685,14 +1685,14 @@ void RemoveStandardMethodsVisitor::_checkStandardDecl(Object *obj)
     messageError("Unmanaged object", obj, _sem);
 }
 
-bool RemoveStandardMethodsVisitor::_addHifLibrary(const char *c, const bool standard)
+bool RemoveStandardMethodsVisitor::_addHifLibrary(const char *c, bool standard)
 {
-    const bool ret = hif::backends::addHifLibrary(c, _currentScope, _system, _sem, standard);
+    bool ret = hif::backends::addHifLibrary(c, _currentScope, _system, _sem, standard);
     messageAssert(ret, "Unable to add library", nullptr, nullptr);
     return ret;
 }
 
-bool RemoveStandardMethodsVisitor::_sortPrintMethodParameters(ProcedureCall *o, const bool isDisplay)
+bool RemoveStandardMethodsVisitor::_sortPrintMethodParameters(ProcedureCall *o, bool isDisplay)
 {
     hif::semantics::resetTypes(o);
     hif::semantics::UpdateDeclarationOptions dopt;
@@ -2050,7 +2050,7 @@ void RemoveStandardMethodsVisitor::_addCast(Value *v, Type *t, bool &needStringL
     }
 }
 
-bool RemoveStandardMethodsVisitor::_manageFileWriteIOCalls(ProcedureCall *o, const bool isDisplay, const bool isScan)
+bool RemoveStandardMethodsVisitor::_manageFileWriteIOCalls(ProcedureCall *o, bool isDisplay, bool isScan)
 {
     // Temporary remove first parameter assign (file descriptor) to call common method.
     ParameterAssign *pa = o->parameterAssigns.front();
@@ -2108,7 +2108,7 @@ bool RemoveStandardMethodsVisitor::_fixPrintMethodParamNames(ProcedureCall *o)
     return true;
 }
 
-bool RemoveStandardMethodsVisitor::_manageVhdlExtensions(FunctionCall *fc, const bool isSigned)
+bool RemoveStandardMethodsVisitor::_manageVhdlExtensions(FunctionCall *fc, bool isSigned)
 {
     Value *param1 = fc->parameterAssigns.at(0)->getValue();
     Value *param2;
@@ -2128,16 +2128,16 @@ bool RemoveStandardMethodsVisitor::_manageVhdlExtensions(FunctionCall *fc, const
     Type *type      = hif::semantics::getSemanticType(fc, _sem);
     Range *typeSpan = hif::typeGetSpan(type, _sem);
     messageAssert(typeSpan != nullptr, "Span not found", type, _sem);
-    const bool isDownto = typeSpan->getDirection() == hif::dir_downto;
-    const bool isLogic  = hif::typeIsLogic(argType, _sem);
+    bool isDownto = typeSpan->getDirection() == hif::dir_downto;
+    bool isLogic  = hif::typeIsLogic(argType, _sem);
 
-    const bool sameSize = hif::equals(argSize, newSize);
+    bool sameSize = hif::equals(argSize, newSize);
     Value *extension =
         _factory.cast(_factory.boolean(), _factory.expression(hif::copy(argSize), hif::op_le, hif::copy(newSize)));
     Value *check           = hif::manipulation::simplify(extension, _sem);
     BoolValue *boolValue   = dynamic_cast<BoolValue *>(check);
-    const bool isExtension = boolValue != nullptr && boolValue->getValue();
-    const bool isTrunc     = boolValue != nullptr && !boolValue->getValue();
+    bool isExtension = boolValue != nullptr && boolValue->getValue();
+    bool isTrunc     = boolValue != nullptr && !boolValue->getValue();
     delete boolValue;
 
     // same span case:

@@ -373,7 +373,7 @@ void VHDLAnalysis::map(Object *)
 
 void VHDLAnalysis::map(Bitvector *op)
 {
-    const bool isStdLV = _isStandardLogicVector(op);
+    bool isStdLV = _isStandardLogicVector(op);
 
     // VHDL Logical not returns 0, if value is not zero, 1 otherwise.
     if (_currOperator == op_bnot) {
@@ -520,8 +520,8 @@ void VHDLAnalysis::map(Array *op1, Array *op2)
     // for the operations in one library fails, there could be the
     // possibility that the check success for another library.
     //
-    const bool isRelational = hif::operatorIsRelational(_currOperator);
-    const bool isAssignment = hif::operatorIsAssignment(_currOperator);
+    bool isRelational = hif::operatorIsRelational(_currOperator);
+    bool isAssignment = hif::operatorIsAssignment(_currOperator);
     // relational operators permitted
     if (isRelational || isAssignment) {
         Range *resultSpan = rangeGetMax(span1, span2, _sem);
@@ -576,8 +576,8 @@ void VHDLAnalysis::map(Array *op1, Array *op2)
         // NOTE: was not recoursive
         Type *arr1BaseType = getBaseType(t1, false, _sem, false);
         Type *arr2BaseType = getBaseType(t2, false, _sem, false);
-        const bool isBit1  = (dynamic_cast<Bit *>(arr1BaseType) != nullptr);
-        const bool isBit2  = (dynamic_cast<Bit *>(arr2BaseType) != nullptr);
+        bool isBit1  = (dynamic_cast<Bit *>(arr1BaseType) != nullptr);
+        bool isBit2  = (dynamic_cast<Bit *>(arr2BaseType) != nullptr);
         if (bv != nullptr) {
             if (isBit1 && isBit2) {
                 Bit *ret = new Bit();
@@ -679,7 +679,7 @@ void VHDLAnalysis::map(TypeReference *op1, Array *op2) { map(op1, static_cast<Ty
 
 void VHDLAnalysis::map(Record *op1, Array *op2)
 {
-    const bool strict = _sem->getStrictTypeChecks();
+    bool strict = _sem->getStrictTypeChecks();
     if (strict || (!hif::operatorIsAssignment(_currOperator) && _currOperator != op_eq && _currOperator != op_case_eq &&
                    _currOperator != op_neq && _currOperator != op_case_neq)) {
         map(static_cast<Type *>(op1), op2);
@@ -726,15 +726,15 @@ void VHDLAnalysis::map(Bitvector *op1, Bitvector *op2)
     // for the operations in one library fails, there could be the
     // possibility that the check success for another library.
     //
-    const bool isRelational = hif::operatorIsRelational(_currOperator);
-    const bool isAssignment = hif::operatorIsAssignment(_currOperator);
+    bool isRelational = hif::operatorIsRelational(_currOperator);
+    bool isAssignment = hif::operatorIsAssignment(_currOperator);
     // relational operators permitted
     if (isRelational || isAssignment) {
         Range *resultRange = nullptr;
         if (isAssignment) {
             Value *s1            = spanGetSize(span1, _sem);
             Value *s2            = spanGetSize(span2, _sem);
-            const bool areEquals = hif::equals(s1, s2);
+            bool areEquals = hif::equals(s1, s2);
             delete s1;
             delete s2;
             if (!areEquals && _sem->getStrictTypeChecks())
@@ -780,10 +780,10 @@ void VHDLAnalysis::map(Bitvector *op1, Bitvector *op2)
         return;
     }
 
-    const bool isBv1      = _isBitVectorType(op1);
-    const bool isBv2      = _isBitVectorType(op2);
-    const bool std_logic  = _isStandardLogicVector(op1) && _isStandardLogicVector(op2);
-    const bool std_ulogic = _isStandardUlogicVector(op1) && _isStandardUlogicVector(op2);
+    bool isBv1      = _isBitVectorType(op1);
+    bool isBv2      = _isBitVectorType(op2);
+    bool std_logic  = _isStandardLogicVector(op1) && _isStandardLogicVector(op2);
+    bool std_ulogic = _isStandardUlogicVector(op1) && _isStandardUlogicVector(op2);
 
     // logical operators permitted on bit vectors
     if (hif::operatorIsBitwise(_currOperator)) {
@@ -886,8 +886,8 @@ void VHDLAnalysis::map(String *op1, Bitvector *op2)
         return;
     }
 
-    const bool isRelational = hif::operatorIsRelational(_currOperator);
-    const bool isAssignment = hif::operatorIsAssignment(_currOperator);
+    bool isRelational = hif::operatorIsRelational(_currOperator);
+    bool isAssignment = hif::operatorIsAssignment(_currOperator);
     // relational operators permitted
     if (isRelational || isAssignment) {
         // arbitrary precision
@@ -902,15 +902,15 @@ void VHDLAnalysis::map(String *op1, Bitvector *op2)
 
 void VHDLAnalysis::map(Signed *op1, Signed *op2)
 {
-    const bool isRelational = hif::operatorIsRelational(_currOperator);
-    const bool isAssignment = hif::operatorIsAssignment(_currOperator);
+    bool isRelational = hif::operatorIsRelational(_currOperator);
+    bool isAssignment = hif::operatorIsAssignment(_currOperator);
     // relational operators permitted
     if (isRelational || isAssignment) {
         if (isAssignment) {
             // only equals spans
             Value *s1            = spanGetSize(op1->getSpan(), _sem);
             Value *s2            = spanGetSize(op2->getSpan(), _sem);
-            const bool areEquals = hif::equals(s1, s2);
+            bool areEquals = hif::equals(s1, s2);
             delete s1;
             delete s2;
             if (!areEquals && _sem->getStrictTypeChecks())
@@ -1030,15 +1030,15 @@ void VHDLAnalysis::map(Bitvector *op1, Signed *op2)
 
 void VHDLAnalysis::map(Unsigned *op1, Unsigned *op2)
 {
-    const bool isRelational = hif::operatorIsRelational(_currOperator);
-    const bool isAssignment = hif::operatorIsAssignment(_currOperator);
+    bool isRelational = hif::operatorIsRelational(_currOperator);
+    bool isAssignment = hif::operatorIsAssignment(_currOperator);
     // relational operators permitted
     if (isRelational || isAssignment) {
         if (hif::operatorIsAssignment(_currOperator)) {
             // only equals spans
             Value *s1            = spanGetSize(op1->getSpan(), _sem);
             Value *s2            = spanGetSize(op2->getSpan(), _sem);
-            const bool areEquals = hif::equals(s1, s2);
+            bool areEquals = hif::equals(s1, s2);
             delete s1;
             delete s2;
             if (!areEquals && _sem->getStrictTypeChecks())
@@ -1093,8 +1093,8 @@ void VHDLAnalysis::map(Unsigned *op1, Unsigned *op2)
 
 void VHDLAnalysis::map(Signed *op1, Unsigned *op2)
 {
-    const bool isRelational = hif::operatorIsRelational(_currOperator);
-    const bool isAssignment = hif::operatorIsAssignment(_currOperator);
+    bool isRelational = hif::operatorIsRelational(_currOperator);
+    bool isAssignment = hif::operatorIsAssignment(_currOperator);
     // relational operators permitted
     if (isRelational || isAssignment) {
         _result.operationPrecision = hif::copy(op1);
@@ -1206,8 +1206,8 @@ void VHDLAnalysis::map(Int *op1, Int *op2)
 {
     bool sign = op1->isSigned() || op2->isSigned();
 
-    const bool isRelational = hif::operatorIsRelational(_currOperator);
-    const bool isAssignment = hif::operatorIsAssignment(_currOperator);
+    bool isRelational = hif::operatorIsRelational(_currOperator);
+    bool isAssignment = hif::operatorIsAssignment(_currOperator);
     // relational operators permitted
     if (isRelational || isAssignment) {
         // returned precision is the max precision between operands
@@ -1235,11 +1235,11 @@ void VHDLAnalysis::map(Int *op1, Int *op2)
 void VHDLAnalysis::map(Signed *op1, Int * /*op2*/)
 {
     // relational operators permitted
-    const bool isAssignment = hif::operatorIsAssignment(_currOperator);
+    bool isAssignment = hif::operatorIsAssignment(_currOperator);
     if (isAssignment)
         return;
 
-    const bool isRelational = hif::operatorIsRelational(_currOperator);
+    bool isRelational = hif::operatorIsRelational(_currOperator);
     if (isRelational) {
         _result.operationPrecision = hif::copy(op1);
         _result.returnedType       = new Bool();
@@ -1281,11 +1281,11 @@ void VHDLAnalysis::map(Signed *op1, Int * /*op2*/)
 void VHDLAnalysis::map(Unsigned *op1, Int * /*op2*/)
 {
     // relational operators permitted
-    const bool isAssignment = hif::operatorIsAssignment(_currOperator);
+    bool isAssignment = hif::operatorIsAssignment(_currOperator);
     if (isAssignment)
         return;
 
-    const bool isRelational = hif::operatorIsRelational(_currOperator);
+    bool isRelational = hif::operatorIsRelational(_currOperator);
     if (isRelational) {
         if (hif::operatorIsAssignment(_currOperator))
             return;
@@ -1351,8 +1351,8 @@ void VHDLAnalysis::map(Bit *op1, Bit *op2)
     resultPrecision->setResolved(op1->isResolved() || op2->isResolved());
 
     // relational operators permitted
-    const bool isRelational = hif::operatorIsRelational(_currOperator);
-    const bool isAssignment = hif::operatorIsAssignment(_currOperator);
+    bool isRelational = hif::operatorIsRelational(_currOperator);
+    bool isAssignment = hif::operatorIsAssignment(_currOperator);
     if (isRelational || isAssignment) {
         _result.operationPrecision = resultPrecision;
         if (isAssignment)
@@ -1410,8 +1410,8 @@ void VHDLAnalysis::map(Bool *op1, Bit *op2)
 
 void VHDLAnalysis::map(Unsigned *op1, Bit *op2)
 {
-    const bool isRelational = hif::operatorIsRelational(_currOperator);
-    const bool isAssignment = hif::operatorIsAssignment(_currOperator);
+    bool isRelational = hif::operatorIsRelational(_currOperator);
+    bool isAssignment = hif::operatorIsAssignment(_currOperator);
     // relational operators permitted
     if (isRelational || isAssignment) {
         _result.operationPrecision = hif::copy(op1);
@@ -1449,8 +1449,8 @@ void VHDLAnalysis::map(Unsigned *op1, Bit *op2)
 
 void VHDLAnalysis::map(Signed *op1, Bit *op2)
 {
-    const bool isRelational = hif::operatorIsRelational(_currOperator);
-    const bool isAssignment = hif::operatorIsAssignment(_currOperator);
+    bool isRelational = hif::operatorIsRelational(_currOperator);
+    bool isAssignment = hif::operatorIsAssignment(_currOperator);
     // relational operators permitted
     if (isRelational || isAssignment) {
         _result.operationPrecision = hif::copy(op1);
@@ -1488,8 +1488,8 @@ void VHDLAnalysis::map(Signed *op1, Bit *op2)
 
 void VHDLAnalysis::map(Bitvector *op1, Bit *op2)
 {
-    const bool isRelational = hif::operatorIsRelational(_currOperator);
-    const bool isAssignment = hif::operatorIsAssignment(_currOperator);
+    bool isRelational = hif::operatorIsRelational(_currOperator);
+    bool isAssignment = hif::operatorIsAssignment(_currOperator);
     // relational operators permitted
     if (isRelational || isAssignment) {
         _result.operationPrecision = hif::copy(op1);
@@ -1503,8 +1503,8 @@ void VHDLAnalysis::map(Bitvector *op1, Bit *op2)
 
     // concatenation permitted on same types
     if (_currOperator == op_concat) {
-        const bool op1IsConst = op1->isConstexpr();
-        const bool op2IsConst = op2->isConstexpr();
+        bool op1IsConst = op1->isConstexpr();
+        bool op2IsConst = op2->isConstexpr();
         if (!op1IsConst && !op2IsConst) {
             // must be both logic or both ulogic
             if (op2->isLogic() != op1->isLogic())
@@ -1562,9 +1562,9 @@ void VHDLAnalysis::map(Bitvector *op1, Bit *op2)
 
 void VHDLAnalysis::map(Bool * /*op1*/, Bool * /*op2*/)
 {
-    const bool isLogical    = hif::operatorIsLogical(_currOperator);
-    const bool isRelational = hif::operatorIsRelational(_currOperator);
-    const bool isAssignment = hif::operatorIsAssignment(_currOperator);
+    bool isLogical    = hif::operatorIsLogical(_currOperator);
+    bool isRelational = hif::operatorIsRelational(_currOperator);
+    bool isAssignment = hif::operatorIsAssignment(_currOperator);
     // relational operators permitted
     if (!isLogical && !isRelational && !isAssignment)
         return;
@@ -1733,8 +1733,8 @@ void VHDLAnalysis::map(Bitvector *op1, String *op2)
         return;
     }
 
-    const bool isRelational = hif::operatorIsRelational(_currOperator);
-    const bool isAssignment = hif::operatorIsAssignment(_currOperator);
+    bool isRelational = hif::operatorIsRelational(_currOperator);
+    bool isAssignment = hif::operatorIsAssignment(_currOperator);
     // relational operators permitted
     if (isRelational || isAssignment) {
         // arbitrary precision
@@ -1799,8 +1799,8 @@ void VHDLAnalysis::map(File *op1, File *op2)
 
 void VHDLAnalysis::map(Enum *op1, Enum *op2)
 {
-    const bool isRelational = hif::operatorIsRelational(_currOperator);
-    const bool isAssignment = hif::operatorIsAssignment(_currOperator);
+    bool isRelational = hif::operatorIsRelational(_currOperator);
+    bool isAssignment = hif::operatorIsAssignment(_currOperator);
     if (!isRelational && !isAssignment)
         return;
     if (!hif::equals(op1, op2))
@@ -1815,8 +1815,8 @@ void VHDLAnalysis::map(Enum *op1, Enum *op2)
 
 void VHDLAnalysis::map(Char *op1, Char *op2)
 {
-    const bool isRelational = hif::operatorIsRelational(_currOperator);
-    const bool isAssignment = hif::operatorIsAssignment(_currOperator);
+    bool isRelational = hif::operatorIsRelational(_currOperator);
+    bool isAssignment = hif::operatorIsAssignment(_currOperator);
     // relational operators permitted
     if (isRelational || isAssignment) {
         // arbitrary precision
@@ -2814,7 +2814,7 @@ Type *VHDLSemantics::getSuggestedTypeForOp(
     Operator operation,
     Type * /*opType*/,
     Object *startingObject,
-    const bool /*isOp1*/)
+    bool /*isOp1*/)
 {
     if (hif::operatorIsArithmetic(operation)) {
         if (dynamic_cast<Bitvector *>(t) != nullptr) {
@@ -2971,13 +2971,13 @@ bool VHDLSemantics::isCastAllowed(Type *target, Type *source)
     if (bt == nullptr || st == nullptr)
         return false;
 
-    const bool tIsVector = isVectorType(bt, this);
-    const bool sIsVector = isVectorType(st, this);
+    bool tIsVector = isVectorType(bt, this);
+    bool sIsVector = isVectorType(st, this);
     if (tIsVector && sIsVector) {
         Value *spanT = typeGetSpanSize(bt, this);
         Value *spanS = typeGetSpanSize(st, this);
 
-        const bool ret = hif::equals(spanT, spanS);
+        bool ret = hif::equals(spanT, spanS);
 
         delete spanT;
         delete spanS;
@@ -2985,10 +2985,10 @@ bool VHDLSemantics::isCastAllowed(Type *target, Type *source)
         return ret;
     }
 
-    const bool tIsInt  = dynamic_cast<Int *>(bt) != nullptr;
-    const bool sIsInt  = dynamic_cast<Int *>(st) != nullptr;
-    const bool tIsReal = dynamic_cast<Real *>(bt) != nullptr;
-    const bool sIsReal = dynamic_cast<Real *>(st) != nullptr;
+    bool tIsInt  = dynamic_cast<Int *>(bt) != nullptr;
+    bool sIsInt  = dynamic_cast<Int *>(st) != nullptr;
+    bool tIsReal = dynamic_cast<Real *>(bt) != nullptr;
+    bool sIsReal = dynamic_cast<Real *>(st) != nullptr;
     if ((tIsInt || tIsReal) && (sIsInt || sIsReal))
         return true;
 
@@ -3036,13 +3036,13 @@ bool VHDLSemantics::isTypeAllowedForConstValue(ConstValue *cv, Type *synType)
     opt.checkOnlyTypes    = true;
     opt.handleVectorTypes = true;
 
-    const bool res = hif::equals(dt, baseSynType, opt);
+    bool res = hif::equals(dt, baseSynType, opt);
     delete dt;
 
     return res;
 }
 
-bool VHDLSemantics::hasBitwiseOperationsOnBits(const bool isLogic) const { return isLogic; }
+bool VHDLSemantics::hasBitwiseOperationsOnBits(bool isLogic) const { return isLogic; }
 bool VHDLSemantics::isSupported(Operator operation)
 {
     return operation != op_none && operation != op_pow && operation != op_ref && operation != op_deref;
@@ -3063,7 +3063,7 @@ bool VHDLSemantics::isSliceTypeRebased() { return false; }
 
 bool VHDLSemantics::isSyntacticTypeRebased() { return false; }
 
-void VHDLSemantics::setUsePsl(const bool v) { _usingPsl = v; }
+void VHDLSemantics::setUsePsl(bool v) { _usingPsl = v; }
 
 bool VHDLSemantics::usingPsl() { return _usingPsl; }
 

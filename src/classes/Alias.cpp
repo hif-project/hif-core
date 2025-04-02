@@ -27,6 +27,6 @@ void Alias::_calculateFields() { DataDeclaration::_calculateFields(); }
 
 bool Alias::isStandard() const { return _isStandard; }
 
-void Alias::setStandard(const bool standard) { _isStandard = standard; }
+void Alias::setStandard(bool standard) { _isStandard = standard; }
 
 } // namespace hif

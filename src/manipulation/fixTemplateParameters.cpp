@@ -207,7 +207,7 @@ std::string _addStringEnumEntry(Object *o, std::string n, hif::semantics::ILangu
 /// @param decl The declaration.
 /// @return True if is already a template.
 ///
-bool _checkIsAlreadyTemplate(Declaration *decl, const bool fixCompileTimeConstant)
+bool _checkIsAlreadyTemplate(Declaration *decl, bool fixCompileTimeConstant)
 {
     if (dynamic_cast<ValueTP *>(decl) != nullptr) {
         ValueTP *vtp = static_cast<ValueTP *>(decl);
@@ -680,7 +680,7 @@ bool MoveVisitor::_isAlredyTemplate(Declaration *decl)
         return true;
     }
 
-    const bool isInTrash = _trash.contains(decl);
+    bool isInTrash = _trash.contains(decl);
     return isInTrash;
 }
 
@@ -986,7 +986,7 @@ int MoveVisitor::visitParameterAssign(ParameterAssign &o)
         messageAssert(param != nullptr, "Declaration not found", &o, _sem);
 
         if (_standardConstDecls.find(param) != _standardConstDecls.end()) {
-            const bool restore = _isInBadScope;
+            bool restore = _isInBadScope;
             _isInBadScope      = true;
             GuideVisitor::visitParameterAssign(o);
             _isInBadScope = restore;
@@ -1352,7 +1352,7 @@ template <typename T> void FixReferencesVisitor::_fixReference(T *ref, typename 
     }
 
     Const *constDecl         = dynamic_cast<Const *>(ddecl);
-    const bool isConstDefine = (constDecl != nullptr && constDecl->isDefine());
+    bool isConstDefine = (constDecl != nullptr && constDecl->isDefine());
 
     // If declaration type is good there is nothing to do.
     if (_opt.checkSem->isTemplateAllowedType(badType) && !isConstDefine) {
@@ -2357,7 +2357,7 @@ void _fixAssignments(System *o, hif::semantics::ILanguageSemantics *sem)
     // {
     //    module M1
     //    {
-    //        const int c = 5;
+    //        int c = 5;
     //    }
     //
     //    typedef sc_lv<M1::c> TD;

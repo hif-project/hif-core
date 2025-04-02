@@ -505,7 +505,7 @@ private:
 class SystemCSuggestedTypeVisitor : public HifVisitor
 {
 public:
-    SystemCSuggestedTypeVisitor(Operator operation, Type *opType, Object *startingObject, const bool isOp1);
+    SystemCSuggestedTypeVisitor(Operator operation, Type *opType, Object *startingObject, bool isOp1);
     virtual ~SystemCSuggestedTypeVisitor();
 
     Type *getResult();
@@ -521,7 +521,7 @@ private:
     Operator _oper;
     Type *_opType;
     Object *_startingObject;
-    const bool _isOp1;
+    bool _isOp1;
     SystemCSemantics *_sem;
     HifFactory _factory;
     Type *_result;
@@ -631,7 +631,7 @@ bool _isBuiltinInt(Int *i)
     return _isBuiltinIntSize(size);
 }
 
-Int *_getBuiltinInt(Int *i, const bool fresh, const bool atLeast32 = false)
+Int *_getBuiltinInt(Int *i, bool fresh, bool atLeast32 = false)
 {
     Int *ret = fresh ? hif::copy(i) : i;
     ret->setTypeVariant(Type::NATIVE_TYPE);
@@ -657,7 +657,7 @@ Int *_getBuiltinInt(Int *i, const bool fresh, const bool atLeast32 = false)
     return ret;
 }
 
-Int *_getBuiltinInt(Type *i, const bool atLeast32 = false)
+Int *_getBuiltinInt(Type *i, bool atLeast32 = false)
 {
     if (i == nullptr)
         return nullptr;
@@ -669,7 +669,7 @@ Int *_getBuiltinInt(Type *i, const bool atLeast32 = false)
     return _getBuiltinInt(&ret, true, atLeast32);
 }
 
-void _setLogicFlagByTypes(Type *ref, Type *t1, Type *t2, const bool orMode = true)
+void _setLogicFlagByTypes(Type *ref, Type *t1, Type *t2, bool orMode = true)
 {
     SystemCSemantics *sem = SystemCSemantics::getInstance();
     messageAssert(ref != nullptr && t1 != nullptr && t2 != nullptr, "Expected instantiated objects", nullptr, sem);
@@ -681,7 +681,7 @@ void _setLogicFlagByTypes(Type *ref, Type *t1, Type *t2, const bool orMode = tru
     }
 }
 
-void _setResolveFlagByTypes(Type *ref, Type *t1, Type *t2, const bool orMode = true)
+void _setResolveFlagByTypes(Type *ref, Type *t1, Type *t2, bool orMode = true)
 {
     SystemCSemantics *sem = SystemCSemantics::getInstance();
     messageAssert(ref != nullptr && t1 != nullptr && t2 != nullptr, "Expected instantiated objects", nullptr, sem);
@@ -693,7 +693,7 @@ void _setResolveFlagByTypes(Type *ref, Type *t1, Type *t2, const bool orMode = t
     }
 }
 
-void _setSignedFlagByTypes(Type *ref, Type *t1, Type *t2, const bool orMode = true)
+void _setSignedFlagByTypes(Type *ref, Type *t1, Type *t2, bool orMode = true)
 {
     SystemCSemantics *sem = SystemCSemantics::getInstance();
     messageAssert(ref != nullptr && t1 != nullptr && t2 != nullptr, "Expected instantiated objects", nullptr, sem);
@@ -705,7 +705,7 @@ void _setSignedFlagByTypes(Type *ref, Type *t1, Type *t2, const bool orMode = tr
     }
 }
 
-void _setConstexprFlagByTypes(Type *ref, Type *t1, Type *t2, const bool orMode = false)
+void _setConstexprFlagByTypes(Type *ref, Type *t1, Type *t2, bool orMode = false)
 {
     SystemCSemantics *sem = SystemCSemantics::getInstance();
     messageAssert(ref != nullptr && t1 != nullptr && t2 != nullptr, "Expected instantiated objects", nullptr, sem);
@@ -717,7 +717,7 @@ void _setConstexprFlagByTypes(Type *ref, Type *t1, Type *t2, const bool orMode =
     }
 }
 
-void _setTypeVariantFlagByTypes(Type *ref, Type *t1, Type *t2, const bool error = true)
+void _setTypeVariantFlagByTypes(Type *ref, Type *t1, Type *t2, bool error = true)
 {
     SystemCSemantics *sem = SystemCSemantics::getInstance();
     messageAssert(ref != nullptr && t1 != nullptr && t2 != nullptr, "Expected instantiated objects", nullptr, sem);
@@ -730,7 +730,7 @@ void _setTypeVariantFlagByTypes(Type *ref, Type *t1, Type *t2, const bool error 
     messageAssert(!error, "Unexpected different type variants", t1, sem);
 }
 
-bool _getExpressionValue(Object *sourceObj, std::int64_t &retval, const bool value2 = true)
+bool _getExpressionValue(Object *sourceObj, std::int64_t &retval, bool value2 = true)
 {
     SystemCSemantics *sem = SystemCSemantics::getInstance();
 
@@ -847,8 +847,8 @@ Pointer *_makeSystemCPointer(Type *to)
 
 Int *_makeSystemCIntFromSize(
     std::int64_t spanSize,
-    const bool sign,
-    const bool constExpr,
+    bool sign,
+    bool constExpr,
     const Type::TypeVariant variant = Type::NATIVE_TYPE)
 {
     hif::HifFactory f(SystemCSemantics::getInstance());
@@ -857,8 +857,8 @@ Int *_makeSystemCIntFromSize(
 
 Int *_makeSystemCIntFromRange(
     Range *r,
-    const bool sign,
-    const bool constExpr,
+    bool sign,
+    bool constExpr,
     const Type::TypeVariant variant = Type::NATIVE_TYPE)
 {
     hif::HifFactory f(SystemCSemantics::getInstance());
@@ -983,8 +983,8 @@ bool SystemCAnalysis::_manageSmallBuiltinIntImplicitConversion(Int *op1)
 
 bool SystemCAnalysis::_manageSmallBuiltinIntImplicitConversion(Int *op1, Int *op2)
 {
-    const bool isSmall1 = _isSmallBuiltinInt(op1);
-    const bool isSmall2 = _isSmallBuiltinInt(op2);
+    bool isSmall1 = _isSmallBuiltinInt(op1);
+    bool isSmall2 = _isSmallBuiltinInt(op2);
     if (!isSmall1 && !isSmall2)
         return false;
 
@@ -1154,7 +1154,7 @@ bool SystemCAnalysis::_isAllowedOnInt_Bitvector(Int *op1, Bitvector *op2)
 {
     messageAssert(op2->getSpan() != nullptr, "Array without span", op2, _sem);
 
-    const bool hif_hdtlib = _systemcSem->usingHdtlib();
+    bool hif_hdtlib = _systemcSem->usingHdtlib();
     if (hif_hdtlib && hif::operatorIsBitwise(_currOperator))
         return false;
 
@@ -1213,7 +1213,7 @@ bool SystemCAnalysis::_isAllowedOnInt_Int(Int *op1, Int *op2)
 
 bool SystemCAnalysis::_isAllowedOnBitvector_Int(Bitvector *op1, Int *op2)
 {
-    const bool isScBigInt = op2->getTypeVariant() == Type::SYSTEMC_INT_SC_BIGINT;
+    bool isScBigInt = op2->getTypeVariant() == Type::SYSTEMC_INT_SC_BIGINT;
     if (_isShiftNoRotateOp(_currOperator)) {
         // There are not allowed operations with big int op2
         if (isScBigInt)
@@ -1243,7 +1243,7 @@ bool SystemCAnalysis::_isAllowedOnBit_Int(Bit *op1, Int *op2)
     // - shift currOperators
     // - currOperator div
     // - currOperator rem
-    const bool isScBigInt = op2->getTypeVariant() == Type::SYSTEMC_INT_SC_BIGINT;
+    bool isScBigInt = op2->getTypeVariant() == Type::SYSTEMC_INT_SC_BIGINT;
 
     if (_isShiftNoRotateOp(_currOperator)) {
         // Allowed for bit not logic and int not "big"
@@ -1261,7 +1261,7 @@ bool SystemCAnalysis::_isAllowedOnReal_Int(Real *op1, Int *op2) { return _isAllo
 
 bool SystemCAnalysis::_isAllowedOnBool_Int(Bool *op1, Int *op2)
 {
-    const bool isScBigInt = op2->getTypeVariant() == Type::SYSTEMC_INT_SC_BIGINT;
+    bool isScBigInt = op2->getTypeVariant() == Type::SYSTEMC_INT_SC_BIGINT;
 
     // all operator are allowed for int bool except:
     // - div
@@ -1335,8 +1335,8 @@ bool SystemCAnalysis::_isAllowedOnBitvector_Bit(Bitvector *op1, Bit *op2)
 
 bool SystemCAnalysis::_isAllowedOnInt_Bit(Int *op1, Bit *op2)
 {
-    const bool isBuiltinInt = (op1->getTypeVariant() == Type::NATIVE_TYPE);
-    const bool isScBigInt   = (op1->getTypeVariant() == Type::SYSTEMC_INT_SC_BIGINT);
+    bool isBuiltinInt = (op1->getTypeVariant() == Type::NATIVE_TYPE);
+    bool isScBigInt   = (op1->getTypeVariant() == Type::SYSTEMC_INT_SC_BIGINT);
 
     if (op2->isLogic()) {
         // the only allowed currOperators for logic are:
@@ -1423,8 +1423,8 @@ bool SystemCAnalysis::_isAllowedOnReal_Bool(Real * /*op1*/, Bool * /*op2*/)
 
 bool SystemCAnalysis::_isAllowedOnInt_Bool(Int *op1, Bool * /*op2*/)
 {
-    const bool isScBigInt   = op1->getTypeVariant() == Type::SYSTEMC_INT_SC_BIGINT;
-    const bool isBuiltinInt = op1->getTypeVariant() == Type::NATIVE_TYPE;
+    bool isScBigInt   = op1->getTypeVariant() == Type::SYSTEMC_INT_SC_BIGINT;
+    bool isBuiltinInt = op1->getTypeVariant() == Type::NATIVE_TYPE;
 
     // all currOperator is allowed except:
     // - logical not bitwise currOperator between big integer and bool
@@ -1461,7 +1461,7 @@ bool SystemCAnalysis::_isAllowedOnBitvector_Real(Bitvector *op1, Real * /*op2*/)
 
 bool SystemCAnalysis::_isAllowedOnInt_Real(Int *op1, Real * /*op2*/)
 {
-    const bool isScBigInt = op1->getTypeVariant() == Type::SYSTEMC_INT_SC_BIGINT;
+    bool isScBigInt = op1->getTypeVariant() == Type::SYSTEMC_INT_SC_BIGINT;
 
     if (hif::operatorIsBitwise(_currOperator) || _isShiftNoRotateOp(_currOperator) || _currOperator == op_rem ||
         _currOperator == op_mod || _currOperator == op_concat) {
@@ -1607,7 +1607,7 @@ void SystemCAnalysis::map(Bitvector *op1)
     if (!_isAllowedUnaryOpOnBitvector(op1))
         return;
 
-    const bool hif_hdtlib = _systemcSem->usingHdtlib();
+    bool hif_hdtlib = _systemcSem->usingHdtlib();
 
     if (hif::operatorIsReduce(_currOperator)) {
         // reduction, return type is bool, precision is array.
@@ -1677,7 +1677,7 @@ void SystemCAnalysis::map(Int *op1)
     if (!_isAllowedUnaryOpOnInt(op1))
         return;
 
-    const bool hif_hdtlib = _systemcSem->usingHdtlib();
+    bool hif_hdtlib = _systemcSem->usingHdtlib();
 
     if (_isBuiltinInt(op1) || op1->getTypeVariant() == Type::SYSTEMC_INT_BITFIELD) {
         if (_currOperator == op_not) {
@@ -1892,7 +1892,7 @@ void SystemCAnalysis::map(Bitvector *op1, Bitvector *op2)
         std::uint64_t size2 = spanGetBitwidth(op2->getSpan(), _sem, true);
 
         // If array2 is unsigned, or assign implies a truncation, padding with 0 is ok
-        const bool checkSize       = !hif::operatorIsAssignment(_currOperator) || (op2->isSigned() && size1 > size2);
+        bool checkSize       = !hif::operatorIsAssignment(_currOperator) || (op2->isSigned() && size1 > size2);
         Bitvector *resultPrecision = nullptr;
         if (size1 == 0 || size2 == 0) {
             Value *s1 = spanGetSize(op1->getSpan(), _sem);
@@ -1900,7 +1900,7 @@ void SystemCAnalysis::map(Bitvector *op1, Bitvector *op2)
 
             hif::EqualsOptions eqOpt;
             eqOpt.checkConstexprFlag = false;
-            const bool error         = checkSize && !hif::equals(s1, s2, eqOpt);
+            bool error         = checkSize && !hif::equals(s1, s2, eqOpt);
             delete s1;
             delete s2;
             if (error) {
@@ -2048,7 +2048,7 @@ void SystemCAnalysis::map(Bitvector *op1, Bit *op2)
     if (!_isAllowedOnBitvector_Bit(op1, op2))
         return;
 
-    const bool hif_hdtlib = _systemcSem->usingHdtlib();
+    bool hif_hdtlib = _systemcSem->usingHdtlib();
 
     if (hif::operatorIsRelational(_currOperator) || hif::operatorIsAssignment(_currOperator)) {
         // Op is == or != => boolean type.
@@ -2155,17 +2155,17 @@ void SystemCAnalysis::map(Int *op1, Int *op2)
     if (!_isAllowedOnInt_Int(op1, op2))
         return;
 
-    const bool hif_hdtlib = _systemcSem->usingHdtlib();
+    bool hif_hdtlib = _systemcSem->usingHdtlib();
 
     Type::TypeVariant tv1 = op1->getTypeVariant();
     Type::TypeVariant tv2 = op2->getTypeVariant();
 
-    const bool isBuiltin1  = _isBuiltinInt(op1);
-    const bool isBuiltin2  = _isBuiltinInt(op2);
-    const bool isScInt1    = tv1 == Type::SYSTEMC_INT_SC_INT;
-    const bool isScInt2    = tv2 == Type::SYSTEMC_INT_SC_INT;
-    const bool isScBigInt1 = tv1 == Type::SYSTEMC_INT_SC_BIGINT;
-    const bool isScBigInt2 = tv2 == Type::SYSTEMC_INT_SC_BIGINT;
+    bool isBuiltin1  = _isBuiltinInt(op1);
+    bool isBuiltin2  = _isBuiltinInt(op2);
+    bool isScInt1    = tv1 == Type::SYSTEMC_INT_SC_INT;
+    bool isScInt2    = tv2 == Type::SYSTEMC_INT_SC_INT;
+    bool isScBigInt1 = tv1 == Type::SYSTEMC_INT_SC_BIGINT;
+    bool isScBigInt2 = tv2 == Type::SYSTEMC_INT_SC_BIGINT;
 
     messageAssert(isBuiltin1 || isScInt1 || isScBigInt1, "Unexpected operand 1", op1, _sem);
     messageAssert(isBuiltin2 || isScInt2 || isScBigInt2, "Unexpected operand 2", op2, _sem);
@@ -2205,7 +2205,7 @@ void SystemCAnalysis::map(Int *op1, Int *op2)
         if (!isBuiltin1 && !isBuiltin2) {
             Value *s1            = typeGetSpanSize(op1, _sem);
             Value *s2            = typeGetSpanSize(op2, _sem);
-            const bool areEquals = hif::equals(s1, s2);
+            bool areEquals = hif::equals(s1, s2);
             delete s1;
             delete s2;
             if (!areEquals)
@@ -2281,7 +2281,7 @@ void SystemCAnalysis::map(Int *op1, Int *op2)
 
     // Shift operation management: return type is left.
     if (_isShiftNoRotateOp(_currOperator)) {
-        const bool opIsLeftShift = (_currOperator == op_sla || _currOperator == op_sll);
+        bool opIsLeftShift = (_currOperator == op_sla || _currOperator == op_sll);
         if (isBuiltin1) {
             // special management for small int
             if (_manageSmallBuiltinIntImplicitConversion(op1, op2))
@@ -2420,8 +2420,8 @@ void SystemCAnalysis::map(Int *op1, Int *op2)
 
         // try to set the correct span in case of mixed operations between
         // signed and unsigned and max span is determinable.
-        const bool canFindGreather  = (size1 != 0 && size2 != 0 && size1 != size2);
-        const bool isMixedOperation = (op1->isSigned() != !op2->isSigned());
+        bool canFindGreather  = (size1 != 0 && size2 != 0 && size1 != size2);
+        bool isMixedOperation = (op1->isSigned() != !op2->isSigned());
         if (canFindGreather && isMixedOperation) {
             bool greatherIsSigned  = (size1 > size2) ? op1->isSigned() : op2->isSigned();
             spanSizeFinalVariation = greatherIsSigned ? 1 : -1;
@@ -2433,7 +2433,7 @@ void SystemCAnalysis::map(Int *op1, Int *op2)
         // In this is necessary to check for operation that modifies span size
         // and raise some warnings since some operations may lead to different
         // span size in some peculiar cases.
-        const bool bothBig = isScBigInt1 && isScBigInt2;
+        bool bothBig = isScBigInt1 && isScBigInt2;
         if (_currOperator == op_plus) {
             spanSizeFinalVariation += 1;
             _printSystemCLPlusOnBigsWarning();
@@ -2538,7 +2538,7 @@ void SystemCAnalysis::map(Int *op1, Bitvector *op2)
     if (!_isAllowedOnInt_Bitvector(op1, op2))
         return;
 
-    const bool hif_hdtlib = _systemcSem->usingHdtlib();
+    bool hif_hdtlib = _systemcSem->usingHdtlib();
     if (_isEqualityOp(_currOperator) || hif::operatorIsAssignment(_currOperator)) {
         /// @warning This case was was disabled before refectoring..
         /// Don't know why! Operations are possible.. therefore reactivated!
@@ -2575,8 +2575,8 @@ void SystemCAnalysis::map(Int *op1, Bit *op2)
     if (!_isAllowedOnInt_Bit(op1, op2))
         return;
 
-    const bool isBuiltinInt = _isBuiltinInt(op1);
-    const bool isScInt      = (op1->getTypeVariant() == Type::SYSTEMC_INT_SC_INT);
+    bool isBuiltinInt = _isBuiltinInt(op1);
+    bool isScInt      = (op1->getTypeVariant() == Type::SYSTEMC_INT_SC_INT);
 
     // Relational and assignment op management
     if (hif::operatorIsRelational(_currOperator) || hif::operatorIsAssignment(_currOperator)) {
@@ -2809,12 +2809,12 @@ void SystemCAnalysis::map(Bitvector *op1, Real *op2)
     if (!_isAllowedOnBitvector_Real(op1, op2))
         return;
 
-    const bool hif_hdtlib = _systemcSem->usingHdtlib();
+    bool hif_hdtlib = _systemcSem->usingHdtlib();
 
     // Shift op management
     if (_isShiftNoRotateOp(_currOperator)) {
         Bitvector *retType       = nullptr;
-        const bool opIsLeftShift = (_currOperator == op_sla || _currOperator == op_sll);
+        bool opIsLeftShift = (_currOperator == op_sla || _currOperator == op_sll);
         if (opIsLeftShift) {
             // returned type is the op1 with range incremented
             // of the value 2 value.
@@ -3101,8 +3101,8 @@ void SystemCAnalysis::map(Int *op1, Bool *op2)
     if (!_isAllowedOnInt_Bool(op1, op2))
         return;
 
-    const bool isBuiltinInt = _isBuiltinInt(op1);
-    const bool isScBigInt   = op1->getTypeVariant() == Type::SYSTEMC_INT_SC_BIGINT;
+    bool isBuiltinInt = _isBuiltinInt(op1);
+    bool isScBigInt   = op1->getTypeVariant() == Type::SYSTEMC_INT_SC_BIGINT;
 
     // Bitwise op managment
     if (hif::operatorIsBitwise(_currOperator)) {
@@ -3645,8 +3645,8 @@ void SystemCAnalysis::map(Time *op1, Int *op2)
     if (!_isAllowedOnTime_Int(op1, op2))
         return;
 
-    const bool hif_hdtlib   = _systemcSem->usingHdtlib();
-    const bool isBuiltinInt = _isBuiltinInt(op2);
+    bool hif_hdtlib   = _systemcSem->usingHdtlib();
+    bool isBuiltinInt = _isBuiltinInt(op2);
 
     if (hif_hdtlib && !isBuiltinInt)
         return;
@@ -3837,13 +3837,13 @@ void SystemCCastAnalysis::map(Object *s, Object *d)
 
 void SystemCCastAnalysis::map(Int *vi, Int *i)
 {
-    const bool isBuiltinInt1 = _isBuiltinInt(vi) || vi->getTypeVariant() == Type::SYSTEMC_INT_BITFIELD;
+    bool isBuiltinInt1 = _isBuiltinInt(vi) || vi->getTypeVariant() == Type::SYSTEMC_INT_BITFIELD;
     messageAssert(
         isBuiltinInt1 || vi->getTypeVariant() == Type::SYSTEMC_INT_SC_INT ||
             vi->getTypeVariant() == Type::SYSTEMC_INT_SC_BIGINT,
         "Unexpected int", vi, _sem);
 
-    const bool isBuiltinInt2 = _isBuiltinInt(i);
+    bool isBuiltinInt2 = _isBuiltinInt(i);
     if (isBuiltinInt1 || !isBuiltinInt2) {
         // NOTE: also for bitfield
         _result = _getCastFromValueToType(_inputVal, i);
@@ -3869,7 +3869,7 @@ void SystemCCastAnalysis::map(Bitvector *vi, Int *i)
         return;
     }
 
-    const bool isBuiltinInt = _isBuiltinInt(i) || i->getTypeVariant() == Type::SYSTEMC_INT_BITFIELD;
+    bool isBuiltinInt = _isBuiltinInt(i) || i->getTypeVariant() == Type::SYSTEMC_INT_BITFIELD;
     if (isBuiltinInt) {
         if (i->isSigned()) {
             Int *unsignedInt = hif::copy(i);
@@ -4250,9 +4250,9 @@ void SystemCCastAnalysis::map(Int *i, Bit *bit)
     Int *int32Type = _makeSystemCIntFromSize(32, true, false);
     hif::EqualsOptions eopt;
     eopt.checkConstexprFlag = false;
-    const bool eqToint32    = hif::equals(int32Type, i, eopt);
+    bool eqToint32    = hif::equals(int32Type, i, eopt);
     delete int32Type;
-    const bool isBuiltinInt = _isBuiltinInt(i) || i->getTypeVariant() == Type::SYSTEMC_INT_BITFIELD;
+    bool isBuiltinInt = _isBuiltinInt(i) || i->getTypeVariant() == Type::SYSTEMC_INT_BITFIELD;
     if (!isBuiltinInt) {
         // ref. design: verilog/openCores/fht with hdtlib
         std::string toInt(_getToIntFCallName(i));
@@ -4348,7 +4348,7 @@ void SystemCCastAnalysis::map(Bitvector * /*vi*/, String *)
 
 void SystemCCastAnalysis::map(Int *vi, String * /*s*/)
 {
-    const bool isBuiltinInt = _isBuiltinInt(vi) || vi->getTypeVariant() == Type::SYSTEMC_INT_BITFIELD;
+    bool isBuiltinInt = _isBuiltinInt(vi) || vi->getTypeVariant() == Type::SYSTEMC_INT_BITFIELD;
     if (isBuiltinInt)
         return;
 
@@ -4448,7 +4448,7 @@ void SystemCCastAnalysis::map(Int *vi, Real *r)
         _result = _getCastFromValueToType(_inputVal, r);
         _neededIncludes.insert("sc_core");
     } else {
-        const bool isBuiltinInt = _isBuiltinInt(vi) || vi->getTypeVariant() == Type::SYSTEMC_INT_BITFIELD;
+        bool isBuiltinInt = _isBuiltinInt(vi) || vi->getTypeVariant() == Type::SYSTEMC_INT_BITFIELD;
         if (!isBuiltinInt) {
             _result = _makeMemberFunctionCall("to_double", _inputVal);
             _neededIncludes.insert("sc_core");
@@ -5191,7 +5191,7 @@ SystemCSuggestedTypeVisitor::SystemCSuggestedTypeVisitor(
     Operator operation,
     Type *opType,
     Object *startingObject,
-    const bool isOp1)
+    bool isOp1)
     : HifVisitor()
     , _oper(operation)
     , _opType(opType)
@@ -5364,9 +5364,9 @@ int SystemCConstantTypeVisitor::visitCharValue(CharValue & /*o*/)
 
 int SystemCConstantTypeVisitor::visitIntValue(IntValue &o)
 {
-    const int32_t i32  = int32_t(o.getValue());
-    const int64_t i64  = int64_t(o.getValue());
-    const int64_t left = int64_t(i32) == i64 ? 31 : 63;
+    int32_t i32  = int32_t(o.getValue());
+    int64_t i64  = int64_t(o.getValue());
+    int64_t left = int64_t(i32) == i64 ? 31 : 63;
     _result            = _factory.integer(new Range(left, 0), true, true);
     return 0;
 }
@@ -5658,15 +5658,15 @@ bool SystemCSemantics::isSliceTypeRebased() { return true; }
 
 bool SystemCSemantics::isSyntacticTypeRebased() { return true; }
 
-void SystemCSemantics::setUseHdtlib(const bool v) { _useHdtlib = v; }
+void SystemCSemantics::setUseHdtlib(bool v) { _useHdtlib = v; }
 
 bool SystemCSemantics::usingHdtlib() { return _useHdtlib; }
 
-void SystemCSemantics::setKeepBit(const bool v) { _keepBit = v; }
+void SystemCSemantics::setKeepBit(bool v) { _keepBit = v; }
 
 bool SystemCSemantics::getKeepBit() { return _keepBit; }
 
-void SystemCSemantics::setResolvedTypes(const bool v) { _resolvedTypes = v; }
+void SystemCSemantics::setResolvedTypes(bool v) { _resolvedTypes = v; }
 
 bool SystemCSemantics::getResolvedTypes() { return _resolvedTypes; }
 
@@ -5736,7 +5736,7 @@ Type *SystemCSemantics::getSuggestedTypeForOp(
     Operator operation,
     Type *opType,
     Object *startingObject,
-    const bool isOp1)
+    bool isOp1)
 {
     if (t == nullptr)
         return nullptr;
@@ -5889,7 +5889,7 @@ Type *SystemCSemantics::getSliceSemanticType(Slice *s)
     messageAssert(tMin != nullptr, "Cannot type bound 2", min, this);
 
     Expression *e      = _factory.expression(hif::copy(max), op_minus, hif::copy(min));
-    const bool isConst = bv->isConstexpr() && hif::typeIsConstexpr(tMax, this) && hif::typeIsConstexpr(tMin, this);
+    bool isConst = bv->isConstexpr() && hif::typeIsConstexpr(tMax, this) && hif::typeIsConstexpr(tMin, this);
 
     return _factory.bitvector(
         new Range(e, _factory.intval(0), dir_downto), bv->isLogic(), false, isConst, bv->isSigned(),
@@ -6055,7 +6055,7 @@ bool SystemCSemantics::isTypeAllowedForConstValue(ConstValue *cv, Type *synType)
     opt.checkOnlyTypes    = true;
     opt.handleVectorTypes = true;
 
-    const bool res = hif::equals(dt, baseSynType, opt);
+    bool res = hif::equals(dt, baseSynType, opt);
     delete dt;
 
     return res;
@@ -6077,10 +6077,10 @@ bool SystemCSemantics::_checkConcatCasts(
     // Special case:
     // concat of bv and int implicitely converts int to bool.
     // Therefore cannot remove cast.
-    const bool isBvCastT1 = dynamic_cast<Bitvector *>(castT1) != nullptr;
-    const bool isBvCastT2 = dynamic_cast<Bitvector *>(castT2) != nullptr;
-    const bool isIntSubT1 = dynamic_cast<Int *>(subT1) != nullptr;
-    const bool isIntSubT2 = dynamic_cast<Int *>(subT2) != nullptr;
+    bool isBvCastT1 = dynamic_cast<Bitvector *>(castT1) != nullptr;
+    bool isBvCastT2 = dynamic_cast<Bitvector *>(castT2) != nullptr;
+    bool isIntSubT1 = dynamic_cast<Int *>(subT1) != nullptr;
+    bool isIntSubT2 = dynamic_cast<Int *>(subT2) != nullptr;
 
     if ((isBvCastT1 && isIntSubT1) || (isBvCastT2 && isIntSubT2)) {
         return false;

@@ -185,7 +185,7 @@ auto ConeRefiner::_getPath(Object *orig, Object *copy) -> State *
         messageError("Unexpected parent", parent, _sem);
     }
 
-    const bool ok = hif::manipulation::matchedInsert(
+    bool ok = hif::manipulation::matchedInsert(
         copy, parentCopy, orig, parent, hif::manipulation::MatchedInsertType::TYPE_EXPAND);
 #ifndef NDEBUG
     if (!ok) {
@@ -726,7 +726,7 @@ auto _split_mergeSynchLogicCones(
                 continue;
             }
 
-            const bool hasIntersections = _checkIntersections(otherInfos.outputVariables, info1.inputVariables);
+            bool hasIntersections = _checkIntersections(otherInfos.outputVariables, info1.inputVariables);
             if (!hasIntersections) {
                 continue;
             }
@@ -905,8 +905,8 @@ auto _split_refineVariables(
         ProcessInfos &infos = map[st];
 
         for (auto *v : newVariables) {
-            const bool isRead  = infos.inputVariables.find(v) != infos.inputVariables.end();
-            const bool isWrite = infos.outputVariables.find(v) != infos.outputVariables.end();
+            bool isRead  = infos.inputVariables.find(v) != infos.inputVariables.end();
+            bool isWrite = infos.outputVariables.find(v) != infos.outputVariables.end();
             if (isRead && !isWrite) {
                 readSet.insert(v);
             } else if (!isRead && isWrite) {
@@ -921,9 +921,9 @@ auto _split_refineVariables(
 
     // Deleting vars.
     for (auto *v : newVariables) {
-        const bool isRead      = readSet.find(v) != readSet.end();
-        const bool isWrite     = writeSet.find(v) != writeSet.end();
-        const bool isReadWrite = readWriteSet.find(v) != readWriteSet.end();
+        bool isRead      = readSet.find(v) != readSet.end();
+        bool isWrite     = writeSet.find(v) != writeSet.end();
+        bool isReadWrite = readWriteSet.find(v) != readWriteSet.end();
         messageAssert(!isReadWrite || (!isRead && !isWrite), "Unexpected case.", v, sem);
 
         // Actually, since previous steps split and copy logic cones,

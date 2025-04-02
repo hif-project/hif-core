@@ -23,7 +23,7 @@ namespace /*anon*/
 } // namespace
 
 std::uint64_t
-spanGetBitwidth(Range *r, ILanguageSemantics *sem, const bool simplify, const manipulation::SimplifyOptions &opts)
+spanGetBitwidth(Range *r, ILanguageSemantics *sem, bool simplify, const manipulation::SimplifyOptions &opts)
 {
     if (r == nullptr)
         return 0;
@@ -65,7 +65,7 @@ spanGetBitwidth(Range *r, ILanguageSemantics *sem, const bool simplify, const ma
 std::uint64_t typeGetSpanBitwidth(
     Type *type,
     ILanguageSemantics *sem,
-    const bool simplify,
+    bool simplify,
     const hif::manipulation::SimplifyOptions &opts)
 {
     Range *span = hif::typeGetSpan(type, sem);

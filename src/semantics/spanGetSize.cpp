@@ -30,7 +30,7 @@ Value *typeGetSpanSize(Type *t, ILanguageSemantics *refLang)
     return hif::semantics::spanGetSize(range, refLang);
 }
 Value *
-spanGetSize(Range *r, ILanguageSemantics *sem, const bool simplify, const hif::manipulation::SimplifyOptions &opts)
+spanGetSize(Range *r, ILanguageSemantics *sem, bool simplify, const hif::manipulation::SimplifyOptions &opts)
 {
     messageAssert(r != nullptr, "Passed nullptr range", nullptr, sem);
 

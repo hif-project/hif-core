@@ -27,6 +27,6 @@ void transformGlobalActions(
     Object *o,
     std::set<StateTable *> &list,
     semantics::ILanguageSemantics *sem,
-    const bool addVariablesInSensitivity = false);
+    bool addVariablesInSensitivity = false);
 } // namespace manipulation
 } // namespace hif

@@ -93,7 +93,7 @@ std::string Transition::_getBListName(const BList<Object> &list) const
     return Action::_getBListName(list);
 }
 
-void Transition::setEnablingOrCondition(const bool flag) { _enablingLabelOrMode = flag; }
+void Transition::setEnablingOrCondition(bool flag) { _enablingLabelOrMode = flag; }
 
 ClassId Transition::getClassId() const { return CLASSID_TRANSITION; }
 

@@ -12,14 +12,14 @@
 
 #include "hif/application_utils/application.hpp"
 
-static inline void segfaultHandler(const int /*signal*/)
+static inline void segfaultHandler(int /*signal*/)
 {
     std::cerr << "-- FATAL_ERROR (SF): detected unexpected statement inside the design.\n"
               << "   Please contact the HIF support team.\n\n";
     std::exit(EXIT_FAILURE);
 }
 
-static inline void fpeHandler(const int /*signal*/)
+static inline void fpeHandler(int /*signal*/)
 {
     std::cerr << "-- FATAL_ERROR (FP): detected unexpected expression inside the design.\n"
               << "   Please contact the HIF support team.\n\n";

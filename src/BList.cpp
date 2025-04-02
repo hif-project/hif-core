@@ -102,7 +102,7 @@ template <class T> bool BList<T>::_checkSuitable(Object *o) { return dynamic_cas
 
 template <class T> std::size_t BList<T>::getPosition(T *o) const { return BListHost::getPosition(o); }
 
-template <class T> T *BList<T>::insert(T *o, std::size_t pos, const bool expand)
+template <class T> T *BList<T>::insert(T *o, std::size_t pos, bool expand)
 {
     return static_cast<T *>(BListHost::insert(o, pos, expand));
 }
@@ -126,19 +126,19 @@ template <class T> void BList<T>::removeProperty(const std::string &n) { BListHo
 
 template <class T> void BList<T>::removeProperty(const PropertyId n) { BListHost::removeProperty(n); }
 
-template <class T> bool BList<T>::checkProperty(const std::string &n, const bool hasAll) const
+template <class T> bool BList<T>::checkProperty(const std::string &n, bool hasAll) const
 {
     return BListHost::checkProperty(n, hasAll);
 }
 
-template <class T> bool BList<T>::checkProperty(const PropertyId n, const bool hasAll) const
+template <class T> bool BList<T>::checkProperty(const PropertyId n, bool hasAll) const
 {
     return BListHost::checkProperty(n, hasAll);
 }
 
 template <class T> void BList<T>::clearProperties() { BListHost::clearProperties(); }
 
-template <class T> bool BList<T>::hasProperties(const bool hasAll) const { return BListHost::hasProperties(hasAll); }
+template <class T> bool BList<T>::hasProperties(bool hasAll) const { return BListHost::hasProperties(hasAll); }
 
 // //////////////////////////////////////////////////////////////////////////
 // BList iterator

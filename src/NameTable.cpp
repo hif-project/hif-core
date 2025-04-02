@@ -48,7 +48,7 @@ NameTable *NameTable::getInstance()
     return &instance;
 }
 
-bool NameTable::setForbiddenListFromFile(std::string file_name, bool append)
+bool NameTable::setForbiddenListFromFile(const std::string &file_name, bool append)
 {
     if (!append) {
         fobbidden_name_list.clear();
@@ -114,7 +114,7 @@ std::string NameTable::registerName(const std::string &name)
     return name;
 }
 
-std::string NameTable::registerName(const std::string &name, const int index)
+std::string NameTable::registerName(const std::string &name, int index)
 {
     return this->registerName(name + "_" + std::to_string(index));
 }

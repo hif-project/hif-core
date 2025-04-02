@@ -23,7 +23,7 @@ namespace manipulation
 namespace /*anon*/
 {
 
-//const int MAX_INT_VAL = 2147483647;
+//int MAX_INT_VAL = 2147483647;
 
 /// this function is used to avoid the approximations due to floating point
 /// calculation of c99 log2 (double)
@@ -60,7 +60,7 @@ Value *get_num_bits(Value *n, bool is_signed, hif::semantics::ILanguageSemantics
 
 } // namespace
 
-Range *transformRangeToSpan(Range *range, hif::semantics::ILanguageSemantics *refLang, const bool isSigned)
+Range *transformRangeToSpan(Range *range, hif::semantics::ILanguageSemantics *refLang, bool isSigned)
 {
     messageDebugAssert(range != nullptr, "Unexpected nullptr range", nullptr, refLang);
     if (range->getDirection() != dir_upto && range->getDirection() != dir_downto) {

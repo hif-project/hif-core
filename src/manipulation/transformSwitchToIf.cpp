@@ -57,7 +57,7 @@ void _makeSupportVariable(T *sw, hif::semantics::ILanguageSemantics *sem, Transf
         Declaration *decl      = hif::semantics::getDeclaration(cond, sem);
         Port *port             = dynamic_cast<Port *>(decl);
         Signal *signal         = dynamic_cast<Signal *>(decl);
-        const bool isSigOrPort = (port != nullptr || signal != nullptr) && !opt.fixSignalOrPortCondition;
+        bool isSigOrPort = (port != nullptr || signal != nullptr) && !opt.fixSignalOrPortCondition;
         if ((id != nullptr || fr != nullptr) && !isSigOrPort)
             return;
     }

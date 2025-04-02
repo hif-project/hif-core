@@ -29,7 +29,7 @@ public:
 
     /// @brief Sets the <tt>constexpr</tt> attribute.
     /// @param v The <tt>constexpr</tt> attribute to be set.
-    void setConstexpr(const bool v);
+    void setConstexpr(bool v);
 
     /// @brief Destructor.
     virtual ~ScopedType();

@@ -280,7 +280,7 @@ bool VerilogSemantics::isSyntacticTypeRebased() { return false; }
 Value *VerilogSemantics::getTypeDefaultValue(Type *type, Declaration *d)
 {
     // in case of nets, use 'Z' as default value instead of 'X'
-    const bool isNetDecl = (dynamic_cast<Signal *>(d) != nullptr) || (dynamic_cast<Port *>(d) != nullptr);
+    bool isNetDecl = (dynamic_cast<Signal *>(d) != nullptr) || (dynamic_cast<Port *>(d) != nullptr);
 
     if (dynamic_cast<Real *>(type) != nullptr) {
         Real *tt = static_cast<Real *>(type);
@@ -425,7 +425,7 @@ Operator VerilogSemantics::getMapForOperator(
 {
     return srcOperation;
 }
-Type *VerilogSemantics::getSuggestedTypeForOp(Type *t, Operator, Type * /*opType*/, Object *, const bool /*isOp1*/)
+Type *VerilogSemantics::getSuggestedTypeForOp(Type *t, Operator, Type * /*opType*/, Object *, bool /*isOp1*/)
 {
     return hif::copy(t);
 }
@@ -616,7 +616,7 @@ bool VerilogSemantics::isTypeAllowedForConstValue(ConstValue *cv, Type *synType)
     opt.checkOnlyTypes    = true;
     opt.handleVectorTypes = true;
 
-    const bool res = hif::equals(dt, synType, opt);
+    bool res = hif::equals(dt, synType, opt);
     delete dt;
 
     return res;
@@ -1347,7 +1347,7 @@ bool _isArithmetic(Operator operation)
 bool _isLogical(Operator operation) { return hif::operatorIsLogical(operation); }
 bool _isUnary(Operator operation) { return hif::operatorIsUnary(operation); }
 bool _isReduce(Operator operation) { return hif::operatorIsReduce(operation); }
-Bit *_makeVerilogBitType(const bool isConstexpr)
+Bit *_makeVerilogBitType(bool isConstexpr)
 {
     Bit *b = new Bit();
     b->setLogic(true);
@@ -1355,7 +1355,7 @@ Bit *_makeVerilogBitType(const bool isConstexpr)
     b->setConstexpr(isConstexpr);
     return b;
 }
-Bitvector *_makeVerilogRegisterType(Range *range, const bool isConstexpr, const bool isSigned)
+Bitvector *_makeVerilogRegisterType(Range *range, bool isConstexpr, bool isSigned)
 {
     Bitvector *ret = new Bitvector();
     ret->setLogic(true);

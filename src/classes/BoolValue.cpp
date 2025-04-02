@@ -17,7 +17,7 @@ BoolValue::BoolValue()
     // ntd
 }
 
-BoolValue::BoolValue(const bool b)
+BoolValue::BoolValue(bool b)
     : _value(b)
 {
     // ntd
@@ -36,6 +36,6 @@ void BoolValue::_calculateFields() { ConstValue::_calculateFields(); }
 
 bool BoolValue::getValue() const { return _value; }
 
-void BoolValue::setValue(const bool x) { _value = x; }
+void BoolValue::setValue(bool x) { _value = x; }
 
 } // namespace hif

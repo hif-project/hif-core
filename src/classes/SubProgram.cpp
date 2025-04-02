@@ -37,7 +37,7 @@ void SubProgram::setKind(Kind k) { _kind = k; }
 
 bool SubProgram::isStandard() const { return _isStandard; }
 
-void SubProgram::setStandard(const bool standard) { _isStandard = standard; }
+void SubProgram::setStandard(bool standard) { _isStandard = standard; }
 
 std::string SubProgram::kindToString(const Kind t)
 {

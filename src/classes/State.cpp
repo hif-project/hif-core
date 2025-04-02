@@ -62,7 +62,7 @@ void State::setPriority(const priority_t p) { _priority = p; }
 
 State::priority_t State::getPriority() const { return _priority; }
 
-void State::setAtomic(const bool v) { _atomic = v; }
+void State::setAtomic(bool v) { _atomic = v; }
 
 bool State::isAtomic() const { return _atomic; }
 

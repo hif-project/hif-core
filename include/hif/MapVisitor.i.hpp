@@ -573,7 +573,7 @@ namespace __conversion
 
 /// @brief Template structure for internal object rebinding.
 /// @details Handles runtime-to-compile-time polymorphism based on subclass status.
-template <const bool isSub, class rebind_t> struct internal_rebind_t {
+template <bool isSub, class rebind_t> struct internal_rebind_t {
     /// @brief Constructor for the general case.
     /// @param o1 First object.
     /// @param o2 Second object.
@@ -583,7 +583,7 @@ template <const bool isSub, class rebind_t> struct internal_rebind_t {
 /// @brief General case constructor implementation.
 /// @param o1 First object.
 /// @param o2 Second object.
-template <const bool isSub, class rebind_t>
+template <bool isSub, class rebind_t>
 internal_rebind_t<isSub, rebind_t>::internal_rebind_t(Object *o1, Object *o2)
 {
     rebind_t::FR_t::map(o1, o2); // Call the static map() function for object mapping.

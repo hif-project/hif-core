@@ -29,7 +29,7 @@ Value *When::setDefault(Value *x) { return setChild(_defaultvalue, x); }
 
 bool When::isLogicTernary() const { return _logicTernary; }
 
-void When::setLogicTernary(const bool logicTernary) { _logicTernary = logicTernary; }
+void When::setLogicTernary(bool logicTernary) { _logicTernary = logicTernary; }
 
 ClassId When::getClassId() const { return CLASSID_WHEN; }
 

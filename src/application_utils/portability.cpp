@@ -97,7 +97,7 @@ auto hif_fmemopen(const char *buffer, int size, const char *mode) -> FILE *
 auto hif_getCurrentTimeAsString() -> std::string
 {
 #if (defined _MSC_VER)
-    const int MAX_LEN = 200;
+    int MAX_LEN = 200;
     char buffer[MAX_LEN];
     if (GetTimeFormatA(LOCALE_USER_DEFAULT, 0, 0, "HH':'mm':'ss", buffer, MAX_LEN) == 0)
         return "Error in NowTime()";
@@ -181,31 +181,31 @@ auto hif_getCurrentDateAndTimeAsFMIStringFormat() -> std::string
 // Constants.
 // Also for MinGW
 #if (defined _WIN32)
-const int PERMISSION_RWX_USR = _S_IWRITE | _S_IREAD;
-const int PERMISSION_R_USR   = _S_IREAD;
-const int PERMISSION_W_USR   = _S_IWRITE;
-const int PERMISSION_X_USR   = 0;
-const int PERMISSION_RWX_GRP = _S_IWRITE | _S_IREAD;
-const int PERMISSION_R_GRP   = _S_IREAD;
-const int PERMISSION_W_GRP   = _S_IWRITE;
-const int PERMISSION_X_GRP   = 0;
-const int PERMISSION_RWX_OTH = _S_IWRITE | _S_IREAD;
-const int PERMISSION_R_OTH   = _S_IREAD;
-const int PERMISSION_W_OTH   = _S_IWRITE;
-const int PERMISSION_X_OTH   = 0;
+int PERMISSION_RWX_USR = _S_IWRITE | _S_IREAD;
+int PERMISSION_R_USR   = _S_IREAD;
+int PERMISSION_W_USR   = _S_IWRITE;
+int PERMISSION_X_USR   = 0;
+int PERMISSION_RWX_GRP = _S_IWRITE | _S_IREAD;
+int PERMISSION_R_GRP   = _S_IREAD;
+int PERMISSION_W_GRP   = _S_IWRITE;
+int PERMISSION_X_GRP   = 0;
+int PERMISSION_RWX_OTH = _S_IWRITE | _S_IREAD;
+int PERMISSION_R_OTH   = _S_IREAD;
+int PERMISSION_W_OTH   = _S_IWRITE;
+int PERMISSION_X_OTH   = 0;
 #else
-const int PERMISSION_RWX_USR = S_IRWXU;
-const int PERMISSION_R_USR   = S_IRUSR;
-const int PERMISSION_W_USR   = S_IWUSR;
-const int PERMISSION_X_USR   = S_IXUSR;
-const int PERMISSION_RWX_GRP = S_IRWXG;
-const int PERMISSION_R_GRP   = S_IRGRP;
-const int PERMISSION_W_GRP   = S_IWGRP;
-const int PERMISSION_X_GRP   = S_IXGRP;
-const int PERMISSION_RWX_OTH = S_IRWXO;
-const int PERMISSION_R_OTH   = S_IROTH;
-const int PERMISSION_W_OTH   = S_IWOTH;
-const int PERMISSION_X_OTH   = S_IXOTH;
+int PERMISSION_RWX_USR = S_IRWXU;
+int PERMISSION_R_USR   = S_IRUSR;
+int PERMISSION_W_USR   = S_IWUSR;
+int PERMISSION_X_USR   = S_IXUSR;
+int PERMISSION_RWX_GRP = S_IRWXG;
+int PERMISSION_R_GRP   = S_IRGRP;
+int PERMISSION_W_GRP   = S_IWGRP;
+int PERMISSION_X_GRP   = S_IXGRP;
+int PERMISSION_RWX_OTH = S_IRWXO;
+int PERMISSION_R_OTH   = S_IROTH;
+int PERMISSION_W_OTH   = S_IWOTH;
+int PERMISSION_X_OTH   = S_IXOTH;
 
 #endif
 } // namespace application_utils

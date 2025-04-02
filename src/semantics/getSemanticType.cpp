@@ -115,7 +115,7 @@ bool _isInTypeCache(Scope *scope, Type *rawType, hif::semantics::ILanguageSemant
     e.scope          = scope;
     e.rawType        = rawType;
     e.sem            = sem;
-    const bool found = (entriesSet.find(e) != entriesSet.end());
+    bool found = (entriesSet.find(e) != entriesSet.end());
     e.rawType        = nullptr;
     return found;
 }
@@ -152,7 +152,7 @@ void addTypeCacheEntry(Scope *scope, Type *rawType, hif::semantics::ILanguageSem
 // Utility methods
 // ///////////////////////////////////////////////////////////////////
 
-void _checkError(const bool error, TypedObject *o, ILanguageSemantics *sem)
+void _checkError(bool error, TypedObject *o, ILanguageSemantics *sem)
 {
     if (o->getSemanticType() != nullptr)
         return;
@@ -171,7 +171,7 @@ void _checkError(const bool error, TypedObject *o, ILanguageSemantics *sem)
 //
 // /////////////////////////////////////////////////////////////////////
 // Constructor
-TypeVisitor::TypeVisitor(ILanguageSemantics *ref, const bool error)
+TypeVisitor::TypeVisitor(ILanguageSemantics *ref, bool error)
     : GuideVisitor(0)
     , _sem(ref)
     , _error(error)
@@ -200,7 +200,7 @@ bool TypeVisitor::_getTypeForConstant(ConstValue *o)
     return false;
 }
 
-void TypeVisitor::_updateCachedDeclarations(TypedObject *obj, const bool onlySignature)
+void TypeVisitor::_updateCachedDeclarations(TypedObject *obj, bool onlySignature)
 {
     // See ticket #1311.
     Type *t = obj->getSemanticType();
@@ -232,7 +232,7 @@ void TypeVisitor::_updateCachedDeclarations(TypedObject *obj, const bool onlySig
 
     bool isPrefixVr = false;
     if (instVr != nullptr) {
-        const bool isSymb  = (dynamic_cast<hif::features::ISymbol *>(t) != nullptr);
+        bool isSymb  = (dynamic_cast<hif::features::ISymbol *>(t) != nullptr);
         Declaration *tdecl = nullptr;
         if (isSymb) {
             tdecl = getDeclaration(t, _sem);
@@ -268,7 +268,7 @@ void TypeVisitor::_updateCachedDeclarations(TypedObject *obj, const bool onlySig
     // Ref design: vhdl/openCores/uart, w/ and w/o a2t
     if (isPrefixVr) {
         ViewReference *typePrefix = hif::copy(instVr);
-        const bool instanceSet    = hif::objectSetInstance(t, typePrefix);
+        bool instanceSet    = hif::objectSetInstance(t, typePrefix);
         if (!instanceSet)
             delete typePrefix;
     }
@@ -282,7 +282,7 @@ int TypeVisitor::visitAggregate(Aggregate &o)
     GuideVisitor::visitAggregate(o);
 
     // 1- Check if result must be constexpr
-    const bool isConstExpr = _aggregateIsConstExpr(&o);
+    bool isConstExpr = _aggregateIsConstExpr(&o);
 
     // 2- Calculate the aggregate internal type
     Type *internal = _aggregateGetInternalType(&o);
@@ -295,7 +295,7 @@ int TypeVisitor::visitAggregate(Aggregate &o)
     Value *sizeExpr              = nullptr;
     std::int64_t size               = 0;
     std::int64_t min                = -1;
-    const bool isAutoDeterminate = _aggregateIsAutoDeterminate(&o, sizeExpr, size, min);
+    bool isAutoDeterminate = _aggregateIsAutoDeterminate(&o, sizeExpr, size, min);
     messageDebugAssert(
         o.getOthers() != nullptr || isAutoDeterminate, "Unexpected aggregate without others non-autodeterminate", &o,
         _sem);
@@ -367,10 +367,10 @@ int TypeVisitor::visitAggregate(Aggregate &o)
             semType = hif::copy(otherBaseType);
         } else if (span != nullptr) {
             delete internal;
-            const bool isSigned   = hif::typeIsSigned(otherBaseType, _sem);
+            bool isSigned   = hif::typeIsSigned(otherBaseType, _sem);
             Type *othersBaseType  = hif::semantics::getBaseType(o.getOthers(), false, _sem);
-            const bool isResolved = hif::typeIsResolved(othersBaseType, _sem);
-            const bool isLogic    = hif::typeIsLogic(othersBaseType, _sem);
+            bool isResolved = hif::typeIsResolved(othersBaseType, _sem);
+            bool isLogic    = hif::typeIsLogic(othersBaseType, _sem);
             Bitvector *bv         = _factory.bitvector(hif::copy(span), isLogic, isResolved, false, isSigned);
             semType               = bv;
         } else {
@@ -406,7 +406,7 @@ int TypeVisitor::visitAggregate(Aggregate &o)
     return 0;
 }
 
-void TypeVisitor::_simplify(Type *o, const bool simplified)
+void TypeVisitor::_simplify(Type *o, bool simplified)
 {
     if (o == nullptr)
         return;
@@ -457,8 +457,8 @@ void TypeVisitor::_simplify(Type *o, const bool simplified)
 
 void TypeVisitor::_getTypeOfParameterAssign(
     ParameterAssign *o,
-    const bool checkAllCandidates,
-    const bool looseTypeChecks)
+    bool checkAllCandidates,
+    bool looseTypeChecks)
 {
     FunctionCall *fc  = dynamic_cast<FunctionCall *>(o->getParent());
     ProcedureCall *pc = dynamic_cast<ProcedureCall *>(o->getParent());
@@ -774,7 +774,7 @@ bool TypeVisitor::_aggregateIsAutoDeterminate(Aggregate *o, Value *&sizeExpr, st
 
             if (r == nullptr) {
                 std::int64_t tmp    = 0;
-                const bool found = _getBoundMin(simplified, tmp);
+                bool found = _getBoundMin(simplified, tmp);
                 delete simplified;
                 if (!found) {
                     isAutoDeterminable = false;
@@ -787,7 +787,7 @@ bool TypeVisitor::_aggregateIsAutoDeterminate(Aggregate *o, Value *&sizeExpr, st
                     min = tmp;
             } else {
                 std::int64_t tmp    = 0;
-                const bool found = _getBoundMin(hif::rangeGetMinBound(r), tmp);
+                bool found = _getBoundMin(hif::rangeGetMinBound(r), tmp);
                 if (!found) {
                     delete r;
                     isAutoDeterminable = false;
@@ -851,7 +851,7 @@ int TypeVisitor::visitBitValue(BitValue &o)
     if (o.getSemanticType() != nullptr)
         return 0;
     GuideVisitor::visitBitValue(o);
-    const bool simplified = _getTypeForConstant(&o);
+    bool simplified = _getTypeForConstant(&o);
     _simplify(o.getSemanticType(), simplified);
     _checkError(_error, &o, _sem);
     return 0;
@@ -863,7 +863,7 @@ int TypeVisitor::visitBitvectorValue(BitvectorValue &o)
     if (o.getSemanticType() != nullptr)
         return 0;
     GuideVisitor::visitBitvectorValue(o);
-    const bool simplified = _getTypeForConstant(&o);
+    bool simplified = _getTypeForConstant(&o);
     _simplify(o.getSemanticType(), simplified);
     _checkError(_error, &o, _sem);
     return 0;
@@ -875,7 +875,7 @@ int TypeVisitor::visitBoolValue(BoolValue &o)
     if (o.getSemanticType() != nullptr)
         return 0;
     GuideVisitor::visitBoolValue(o);
-    const bool simplified = _getTypeForConstant(&o);
+    bool simplified = _getTypeForConstant(&o);
     _simplify(o.getSemanticType(), simplified);
     _checkError(_error, &o, _sem);
     return 0;
@@ -904,7 +904,7 @@ int TypeVisitor::visitCharValue(CharValue &o)
     if (o.getSemanticType() != nullptr)
         return 0;
     GuideVisitor::visitCharValue(o);
-    const bool simplified = _getTypeForConstant(&o);
+    bool simplified = _getTypeForConstant(&o);
     _simplify(o.getSemanticType(), simplified);
     _checkError(_error, &o, _sem);
     return 0;
@@ -1013,7 +1013,7 @@ int TypeVisitor::visitFieldReference(FieldReference &o)
             messageError("Instantiate failed", &o, _sem);
         }
 
-        const bool canReplace = (origView->getParent() != nullptr);
+        bool canReplace = (origView->getParent() != nullptr);
         if (canReplace)
             origView->replace(instantiatedDecl);
 
@@ -1149,7 +1149,7 @@ int TypeVisitor::visitIntValue(IntValue &o)
     // Set the type for this constant according with
     // reference semantics
     GuideVisitor::visitIntValue(o);
-    const bool simplified = _getTypeForConstant(&o);
+    bool simplified = _getTypeForConstant(&o);
     _simplify(o.getSemanticType(), simplified);
     _checkError(_error, &o, _sem);
     return 0;
@@ -1229,7 +1229,7 @@ int TypeVisitor::visitRealValue(RealValue &o)
     if (o.getSemanticType() != nullptr)
         return 0;
     GuideVisitor::visitRealValue(o);
-    const bool simplified = _getTypeForConstant(&o);
+    bool simplified = _getTypeForConstant(&o);
     _simplify(o.getSemanticType(), simplified);
     _checkError(_error, &o, _sem);
     return 0;
@@ -1353,7 +1353,7 @@ int TypeVisitor::visitStringValue(StringValue &o)
     if (o.getSemanticType() != nullptr)
         return 0;
     GuideVisitor::visitStringValue(o);
-    const bool simplified = _getTypeForConstant(&o);
+    bool simplified = _getTypeForConstant(&o);
     _simplify(o.getSemanticType(), simplified);
     _checkError(_error, &o, _sem);
     return 0;
@@ -1365,7 +1365,7 @@ int TypeVisitor::visitTimeValue(TimeValue &o)
     if (o.getSemanticType() != nullptr)
         return 0;
     GuideVisitor::visitTimeValue(o);
-    const bool simplified = _getTypeForConstant(&o);
+    bool simplified = _getTypeForConstant(&o);
     _simplify(o.getSemanticType(), simplified);
     _checkError(_error, &o, _sem);
     return 0;
@@ -1502,7 +1502,7 @@ int TypeVisitor::visitWith(With &o)
 // Public methods.
 ////////////////////////////////////////////////////////////////////////////////////
 
-Type *getSemanticType(TypedObject *v, ILanguageSemantics *ref_sem, const bool error)
+Type *getSemanticType(TypedObject *v, ILanguageSemantics *ref_sem, bool error)
 {
     messageAssert(v != nullptr, "getSemanticType() called with nullptr argument", nullptr, nullptr);
 
@@ -1514,7 +1514,7 @@ Type *getSemanticType(TypedObject *v, ILanguageSemantics *ref_sem, const bool er
     return v->getSemanticType();
 }
 
-void typeTree(Object *root, ILanguageSemantics *ref_sem, const bool error)
+void typeTree(Object *root, ILanguageSemantics *ref_sem, bool error)
 {
     messageDebugAssert(root != nullptr, "Passed null root", nullptr, ref_sem);
     if (root == nullptr)
@@ -1524,13 +1524,13 @@ void typeTree(Object *root, ILanguageSemantics *ref_sem, const bool error)
     root->acceptVisitor(tv);
 }
 
-void typeTree(BList<Object> &root, ILanguageSemantics *ref_sem, const bool error)
+void typeTree(BList<Object> &root, ILanguageSemantics *ref_sem, bool error)
 {
     for (BList<Object>::iterator i = root.begin(); i != root.end(); ++i) {
         typeTree(*i, ref_sem, error);
     }
 }
-template <typename T> void typeTree(BList<T> &root, ILanguageSemantics *ref_sem, const bool error)
+template <typename T> void typeTree(BList<T> &root, ILanguageSemantics *ref_sem, bool error)
 {
     typeTree(root.template toOtherBList<Object>(), ref_sem, error);
 }
@@ -1581,10 +1581,10 @@ getPrefixedType(Type *t, ILanguageSemantics *sem, const hif::manipulation::Prefi
     if (context != t)
         location = context;
 
-    const bool simplifyByContext = hif::isInTree(context);
+    bool simplifyByContext = hif::isInTree(context);
 
     Type *copy            = hif::copy(t);
-    const bool canReplace = t->getParent() != nullptr;
+    bool canReplace = t->getParent() != nullptr;
     if (canReplace)
         t->replace(copy);
     hif::semantics::UpdateDeclarationOptions dopt;
@@ -1616,7 +1616,7 @@ getPrefixedType(Type *t, ILanguageSemantics *sem, const hif::manipulation::Prefi
     return copy;
 }
 
-#define HIF_TEMPLATE_METHOD(T) void typeTree<T>(BList<T> & root, ILanguageSemantics *, const bool)
+#define HIF_TEMPLATE_METHOD(T) void typeTree<T>(BList<T> & root, ILanguageSemantics *, bool)
 
 HIF_INSTANTIATE_METHOD()
 #undef HIF_TEMPLATE_METHOD

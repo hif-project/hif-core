@@ -35,6 +35,6 @@ void Port::_calculateFields() { DataDeclaration::_calculateFields(); }
 
 bool Port::isWrapper() const { return _isWrapper; }
 
-void Port::setWrapper(const bool wrapper) { _isWrapper = wrapper; }
+void Port::setWrapper(bool wrapper) { _isWrapper = wrapper; }
 
 } // namespace hif

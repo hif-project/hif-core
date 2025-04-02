@@ -293,8 +293,8 @@ void PreRefine_ranges::_fixIndex(Value *indexToFix, Range *refSpan, Value *prefi
     Value *maxBound = hif::manipulation::assureSyntacticType(hif::copy(hif::rangeGetMaxBound(refSpan)), _sem);
     Value *minBound = hif::manipulation::assureSyntacticType(hif::copy(hif::rangeGetMinBound(refSpan)), _sem);
 
-    const bool bothSet   = (maxBound != nullptr && minBound != nullptr);
-    const bool bothUnset = (maxBound == nullptr && minBound == nullptr);
+    bool bothSet   = (maxBound != nullptr && minBound != nullptr);
+    bool bothUnset = (maxBound == nullptr && minBound == nullptr);
 
     if (bothSet) {
         Expression *bound = new Expression(hif::op_plus, maxBound, minBound);
@@ -354,8 +354,8 @@ void PreRefine_ranges::_fixRange(Range *spanToFix, Range *refSpan, Value *prefix
     Value *maxBound = hif::manipulation::assureSyntacticType(hif::copy(hif::rangeGetMaxBound(refSpan)), _sem);
     Value *minBound = hif::manipulation::assureSyntacticType(hif::copy(hif::rangeGetMinBound(refSpan)), _sem);
 
-    const bool bothSet   = (maxBound != nullptr && minBound != nullptr);
-    const bool bothUnset = (maxBound == nullptr && minBound == nullptr);
+    bool bothSet   = (maxBound != nullptr && minBound != nullptr);
+    bool bothUnset = (maxBound == nullptr && minBound == nullptr);
     messageAssert(bothSet || bothUnset, "Unsupporte case", refSpan, _sem);
 
     if (bothSet) {
@@ -407,12 +407,12 @@ bool PreRefine_ranges::_mustBeReverted(Range *r)
 {
     if (r == nullptr)
         return false;
-    const bool isString   = (dynamic_cast<String *>(r->getParent()) != nullptr);
+    bool isString   = (dynamic_cast<String *>(r->getParent()) != nullptr);
     // If enabling this:
     // - check systemc_semantics_methods and switch array bounds.
     // - check ref designs: vhdl/gaisler/can_oc and vhdl/custom/polar2rect.
-    //const bool isArray = (dynamic_cast <Array *>(r->getParent()) != nullptr);
-    const bool mustBeUpto = isString /*|| isArray*/;
+    //bool isArray = (dynamic_cast <Array *>(r->getParent()) != nullptr);
+    bool mustBeUpto = isString /*|| isArray*/;
     if (r->getDirection() == dir_downto && !mustBeUpto)
         return false;
     if (r->getDirection() == dir_upto && mustBeUpto)

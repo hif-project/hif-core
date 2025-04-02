@@ -99,8 +99,8 @@ public:
     void addOption(
         const char shortName,
         const std::string &longName,
-        const bool hasArgument,
-        const bool isActive,
+        bool hasArgument,
+        bool isActive,
         const std::string &description,
         const std::string &defaultValue = "");
 
@@ -203,7 +203,7 @@ public:
 
     /// @brief Adds the configuration file option to the command-line parser.
     /// @param generateStub add option to generate a stub config file with given file name.
-    void addConfigFile(const bool generateStub);
+    void addConfigFile(bool generateStub);
 
     /// @brief Adds the optimization option to the command-line parser.
     void addOptimization();

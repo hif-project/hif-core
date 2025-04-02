@@ -44,7 +44,7 @@ Range *Array::setSpan(Range *x) { return setChild(_span, x); }
 
 bool Array::isSigned() const { return _isSigned; }
 
-void Array::setSigned(const bool sign) { _isSigned = sign; }
+void Array::setSigned(bool sign) { _isSigned = sign; }
 
 Object *Array::toObject() { return this; }
 

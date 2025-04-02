@@ -47,7 +47,7 @@ public:
 
     /// @brief Sets the <tt>plain</tt> attribute.
     /// @param plain The <tt>plain</tt> attribute.
-    void setPlain(const bool plain);
+    void setPlain(bool plain);
 
     /// @brief Returns the <tt>plain</tt> attribute.
     /// @return The <tt>plain</tt> attribute.

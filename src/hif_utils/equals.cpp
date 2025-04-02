@@ -1925,8 +1925,8 @@ int HifEqualsVisitor::visitView(View &o)
 {
     View *obj2 = static_cast<View *>(_objToCompare);
 
-    const bool areComponents         = (o.getContents() == nullptr) || (obj2->getContents() == nullptr);
-    const bool isComponentComparison = _options.skipDeclarationBodies && areComponents;
+    bool areComponents         = (o.getContents() == nullptr) || (obj2->getContents() == nullptr);
+    bool isComponentComparison = _options.skipDeclarationBodies && areComponents;
     if (!isComponentComparison) {
         if (o.getName() != obj2->getName())
             return false;

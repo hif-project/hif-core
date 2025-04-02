@@ -438,7 +438,7 @@ void SimplifyMap::_resolveRealExpr(double r1, double r2, Value *v1, Value *v2)
             std::int64_t intResult = 0;
 
             Type *t1            = hif::semantics::getSemanticType(v1, _data.sem);
-            const bool isSigned = hif::typeIsSigned(t1, _data.sem);
+            bool isSigned = hif::typeIsSigned(t1, _data.sem);
             if (static_cast<std::int64_t>(r2) >= 64LL) {
                 std::int64_t tmp = static_cast<std::int64_t>(r1);
                 if (!isSigned)
@@ -572,10 +572,10 @@ void SimplifyMap::_resolveBitExpr(BitConstant b1, BitConstant b2, Value *v1, Val
         return;
     }
 
-    const bool a  = (b1 == bit_one || b1 == bit_h);
-    const bool b  = (b2 == bit_one || b2 == bit_h);
-    const bool ax = (b1 == bit_x || b1 == bit_u || b1 == bit_z || b1 == bit_w);
-    const bool bx = (b2 == bit_x || b2 == bit_u || b2 == bit_z || b1 == bit_w);
+    bool a  = (b1 == bit_one || b1 == bit_h);
+    bool b  = (b2 == bit_one || b2 == bit_h);
+    bool ax = (b1 == bit_x || b1 == bit_u || b1 == bit_z || b1 == bit_w);
+    bool bx = (b2 == bit_x || b2 == bit_u || b2 == bit_z || b1 == bit_w);
 
     bool res     = false;
     bool unknown = false;
@@ -684,9 +684,9 @@ void SimplifyMap::_resolveConstRealExpr(double r1, Value *v1, Value *v2)
     } else if (hif::operatorIsBitwise(_data.oper)) {
         Value *res              = nullptr;
         Type *operandType       = hif::semantics::getBaseType(v2, false, _data.sem);
-        const bool operandIsExr = (dynamic_cast<Expression *>(operandType) != nullptr);
+        bool operandIsExr = (dynamic_cast<Expression *>(operandType) != nullptr);
         Expression *innerExpr   = operandIsExr ? static_cast<Expression *>(v2) : nullptr;
-        const bool isIntOperand =
+        bool isIntOperand =
             (innerExpr != nullptr) ? (dynamic_cast<IntValue *>(innerExpr->getValue2()) != nullptr) : false;
 
         if (_data.oper == op_band && only_integers) {
@@ -742,17 +742,17 @@ void SimplifyMap::_resolveConstRealExpr(double r1, Value *v1, Value *v2)
         return;
     } else if (hif::operatorIsRelational(_data.oper)) {
         ConstValue *res   = nullptr;
-        const bool isZero = (r1 <= 0.0 && r1 >= 0.0);
+        bool isZero = (r1 <= 0.0 && r1 >= 0.0);
 
         Type *prec            = _getOperationPrecision(v1, v2);
-        const bool isUnsigned = !hif::typeIsSigned(prec, _data.sem);
+        bool isUnsigned = !hif::typeIsSigned(prec, _data.sem);
         delete prec;
 
         Cast *c2            = dynamic_cast<Cast *>(v2);
         Type *castInnerType = (c2 == nullptr) ? nullptr : hif::semantics::getBaseType(c2->getValue(), false, _data.sem);
-        const bool isCastOfBool = (dynamic_cast<Bool *>(castInnerType) != nullptr);
-        const bool isOne        = (r1 <= 1.0 && r1 >= 1.0);
-        const bool isPositive   = (r1 >= 0.0);
+        bool isCastOfBool = (dynamic_cast<Bool *>(castInnerType) != nullptr);
+        bool isOne        = (r1 <= 1.0 && r1 >= 1.0);
+        bool isPositive   = (r1 >= 0.0);
 
         bool isNegativeBitwise = false;
         Expression *expr2      = dynamic_cast<Expression *>(v2);
@@ -927,9 +927,9 @@ void SimplifyMap::_resolveConstRealExpr(Value *v1, double r2, Value *v2)
     } else if (hif::operatorIsBitwise(_data.oper)) {
         Value *res              = nullptr;
         Type *operandType       = hif::semantics::getBaseType(v1, false, _data.sem);
-        const bool operandIsExr = (dynamic_cast<Expression *>(operandType) != nullptr);
+        bool operandIsExr = (dynamic_cast<Expression *>(operandType) != nullptr);
         Expression *innerExpr   = operandIsExr ? static_cast<Expression *>(v1) : nullptr;
-        const bool isIntOperand =
+        bool isIntOperand =
             (innerExpr != nullptr) ? (dynamic_cast<IntValue *>(innerExpr->getValue2()) != nullptr) : false;
         if (_data.oper == op_band && only_integers) {
             IntValue *iv2 = dynamic_cast<IntValue *>(v2);
@@ -984,17 +984,17 @@ void SimplifyMap::_resolveConstRealExpr(Value *v1, double r2, Value *v2)
         return;
     } else if (hif::operatorIsRelational(_data.oper)) {
         ConstValue *res   = nullptr;
-        const bool isZero = (r2 <= 0.0 && r2 >= 0.0);
+        bool isZero = (r2 <= 0.0 && r2 >= 0.0);
 
         Type *prec            = _getOperationPrecision(v1, v2);
-        const bool isUnsigned = !hif::typeIsSigned(prec, _data.sem);
+        bool isUnsigned = !hif::typeIsSigned(prec, _data.sem);
         delete prec;
 
         Cast *c1            = dynamic_cast<Cast *>(v1);
         Type *castInnerType = (c1 == nullptr) ? nullptr : hif::semantics::getBaseType(c1->getValue(), false, _data.sem);
-        const bool isCastOfBool = (dynamic_cast<Bool *>(castInnerType) != nullptr);
-        const bool isOne        = (r2 <= 1.0 && r2 >= 1.0);
-        const bool isPositive   = (r2 >= 0.0);
+        bool isCastOfBool = (dynamic_cast<Bool *>(castInnerType) != nullptr);
+        bool isOne        = (r2 <= 1.0 && r2 >= 1.0);
+        bool isPositive   = (r2 >= 0.0);
 
         bool isNegativeBitwise = false;
         Expression *expr1      = dynamic_cast<Expression *>(v1);
@@ -1439,8 +1439,8 @@ void SimplifyMap::map(BitValue *v1, Value *v2)
         return;
 
     const BitConstant bitval = v1->getValue();
-    const bool val           = (bitval == bit_h) || (bitval == bit_one);
-    const bool notVal        = (bitval == bit_l) || (bitval == bit_zero);
+    bool val           = (bitval == bit_h) || (bitval == bit_one);
+    bool notVal        = (bitval == bit_l) || (bitval == bit_zero);
     if (_data.oper == op_band || _data.oper == op_and) {
         if (val)
             _data.result = hif::copy(v2);
@@ -1504,7 +1504,7 @@ void SimplifyMap::map(BitvectorValue *v1, BitvectorValue *v2)
         if (!v1->is01() || !v2->is01()) {
             if (_data.oper == op_eq || _data.oper == op_neq || _data.oper == op_case_eq || _data.oper == op_case_neq) {
                 BitValue *bv    = new BitValue();
-                const bool isEq = v1->getValue() == v2->getValue();
+                bool isEq = v1->getValue() == v2->getValue();
                 if (_data.oper == op_eq)
                     bv->setValue(bit_x);
                 else if (_data.oper == op_neq)
@@ -1653,7 +1653,7 @@ void SimplifyMap::map(BitvectorValue *v1, IntValue *v2)
             Type *t1 = hif::semantics::getSemanticType(v1, _data.sem);
             if (t1 == nullptr)
                 return;
-            const bool isSigned = hif::typeIsSigned(t1, _data.sem);
+            bool isSigned = hif::typeIsSigned(t1, _data.sem);
             // Sign extension
             if (!isSigned)
                 sign = '0';
@@ -1806,7 +1806,7 @@ void SimplifyMap::map(BoolValue *v1, Value *v2)
     if (!hif::operatorIsLogical(_data.oper))
         return;
 
-    const bool val = v1->getValue();
+    bool val = v1->getValue();
     if (_data.oper == op_and) {
         if (val)
             _data.result = hif::copy(v2);
@@ -1830,7 +1830,7 @@ void SimplifyMap::map(Value *v1, BoolValue *v2)
     if (!hif::operatorIsLogical(_data.oper))
         return;
 
-    const bool val = v2->getValue();
+    bool val = v2->getValue();
     if (_data.oper == op_and) {
         if (val)
             _data.result = hif::copy(v1);
@@ -2216,13 +2216,13 @@ void SimplifyMap::map(Value *v1, Value *v2)
 {
     EqualsOptions eqOpts;
     eqOpts.checkConstexprFlag = false;
-    const bool res            = hif::equals(v1, v2, eqOpts);
+    bool res            = hif::equals(v1, v2, eqOpts);
     if (!res)
         return;
     Type *rType = _getOperationType(v1, v2);
     if (rType == nullptr)
         return;
-    const bool isLogic = hif::typeIsLogic(rType, _data.sem);
+    bool isLogic = hif::typeIsLogic(rType, _data.sem);
     delete rType;
     if (_data.oper == op_eq || _data.oper == op_neq) {
         // only not logic, since 'x' == 'x' --> 'x' !!!
@@ -2317,7 +2317,7 @@ Value *simplifyExpression(Expression *e, hif::semantics::ILanguageSemantics *sem
     // ID * ID
     // CAST(x)(BV) + CAST(x)(BV) should be CAST(x)(BV) * 2
     // but it is not allowed by HIFSemantics (different types)
-    const bool complexOps =
+    bool complexOps =
         (dynamic_cast<ConstValue *>(e->getValue1()) == nullptr ||
          dynamic_cast<ConstValue *>(e->getValue2()) == nullptr);
 
@@ -2330,7 +2330,7 @@ Value *simplifyExpression(Expression *e, hif::semantics::ILanguageSemantics *sem
 
     // Known case3: in case of logic/logic_vector op_eq/op_neq logic, it must not be simplified.
     Type *exprType     = hif::semantics::getBaseType(hif::semantics::getSemanticType(e, sem), false, sem);
-    const bool isOpRel = hif::operatorIsRelational(e->getOperator()) && hif::typeIsLogic(exprType, sem);
+    bool isOpRel = hif::operatorIsRelational(e->getOperator()) && hif::typeIsLogic(exprType, sem);
     cannotBeSimplified |= isOpRel;
 
 #    if 0 // ENABLE TO DEBUG SIMPLIFICATION

@@ -136,9 +136,9 @@ public:
 private:
     std::stringstream _result;
 
-    inline void _flag2String(const bool v) { _result << '[' << (v ? '1' : '0') << ']'; }
+    inline void _flag2String(bool v) { _result << '[' << (v ? '1' : '0') << ']'; }
 
-    inline void _enum2String(const int v) { _result << '[' << v << ']'; }
+    inline void _enum2String(int v) { _result << '[' << v << ']'; }
 
     inline void _int2String(std::int64_t v) { _result << v; }
 

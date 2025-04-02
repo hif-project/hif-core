@@ -75,7 +75,7 @@ public:
     /// a valid operation in current semantics  (if possible).
     ///
     virtual Type *
-    getSuggestedTypeForOp(Type *t, Operator operation, Type *opType, Object *startingObject, const bool isOp1);
+    getSuggestedTypeForOp(Type *t, Operator operation, Type *opType, Object *startingObject, bool isOp1);
     ///
     /// @brief Function that given a ConstValue returns a Type
     /// pointer representing the type to associate to the constant according
@@ -208,7 +208,7 @@ public:
     /// @param isLogic If the type is logic.
     /// @return True if operators are bitwise, false if they are logical.
     ///
-    virtual bool hasBitwiseOperationsOnBits(const bool isLogic) const;
+    virtual bool hasBitwiseOperationsOnBits(bool isLogic) const;
 
     ///@}
     /// @name Template related stuff
@@ -251,7 +251,7 @@ public:
     /// @{
 
     /// @brief Set if Semantics have to use PSL relaxed checks.
-    void setUsePsl(const bool v);
+    void setUsePsl(bool v);
 
     /// @brief Get if Semantics have use PSL relaxed checks.
     bool usingPsl();
@@ -261,20 +261,20 @@ public:
     /// @name Standard packages
     /// @{
 
-    LibraryDef *getIeeeMathComplexPackage(const bool hifFormat = false);
-    LibraryDef *getIeeeMathRealPackage(const bool hifFormat = false);
-    LibraryDef *getIeeeNumericBitPackage(const bool hifFormat = false);
-    LibraryDef *getIeeeNumericStdPackage(const bool hifFormat = false);
-    LibraryDef *getIeeeStdLogic1164Package(const bool hifFormat = false);
-    LibraryDef *getIeeeStdLogicArithPackage(const bool hifFormat = false);
-    LibraryDef *getIeeeStdLogicArithExPackage(const bool hifFormat = false);
-    LibraryDef *getIeeeStdLogicMiscPackage(const bool hifFormat = false);
-    LibraryDef *getIeeeStdLogicSignedPackage(const bool hifFormat = false);
-    LibraryDef *getIeeeStdLogicTextIOPackage(const bool hifFormat = false);
-    LibraryDef *getIeeeStdLogicUnsignedPackage(const bool hifFormat = false);
-    LibraryDef *getStandardPackage(const bool hifFormat = false);
-    LibraryDef *getTextIOPackage(const bool hifFormat = false);
-    LibraryDef *getPSLStandardPackage(const bool hifFormat = false);
+    LibraryDef *getIeeeMathComplexPackage(bool hifFormat = false);
+    LibraryDef *getIeeeMathRealPackage(bool hifFormat = false);
+    LibraryDef *getIeeeNumericBitPackage(bool hifFormat = false);
+    LibraryDef *getIeeeNumericStdPackage(bool hifFormat = false);
+    LibraryDef *getIeeeStdLogic1164Package(bool hifFormat = false);
+    LibraryDef *getIeeeStdLogicArithPackage(bool hifFormat = false);
+    LibraryDef *getIeeeStdLogicArithExPackage(bool hifFormat = false);
+    LibraryDef *getIeeeStdLogicMiscPackage(bool hifFormat = false);
+    LibraryDef *getIeeeStdLogicSignedPackage(bool hifFormat = false);
+    LibraryDef *getIeeeStdLogicTextIOPackage(bool hifFormat = false);
+    LibraryDef *getIeeeStdLogicUnsignedPackage(bool hifFormat = false);
+    LibraryDef *getStandardPackage(bool hifFormat = false);
+    LibraryDef *getTextIOPackage(bool hifFormat = false);
+    LibraryDef *getPSLStandardPackage(bool hifFormat = false);
 
     /// @brief Get the eventual library def matching the given name.
     /// @param n The name.
@@ -282,7 +282,7 @@ public:
     virtual LibraryDef *getStandardLibrary(const std::string &n);
 
     /// @brief Return True if the given library is native for the semantics.
-    virtual bool isNativeLibrary(const std::string &n, const bool hifFormat = false);
+    virtual bool isNativeLibrary(const std::string &n, bool hifFormat = false);
 
     /// @brief Starting from system adds all required standard packeges.
     /// @param s The system.
@@ -296,10 +296,10 @@ public:
     virtual Object *getSimplifiedSymbol(KeySymbol &key, Object *s);
 
     /// @brief Returns true if no namespaces is needed for given library name.
-    virtual bool isStandardInclusion(const std::string &n, const bool isLibInclusion);
+    virtual bool isStandardInclusion(const std::string &n, bool isLibInclusion);
 
     /// @brief Returns the event method name w.r.t. current semantics.
-    virtual std::string getEventMethodName(const bool hifFormat = false);
+    virtual std::string getEventMethodName(bool hifFormat = false);
 
     /// @brief Returns <tt>true</tt> if the given call is an event call w.r.t.
     /// the current semantics, <tt>false</tt> otherwise.

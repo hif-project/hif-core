@@ -316,7 +316,7 @@ Type *HIFSemantics::getMemberSemanticType(Member *m)
 
 LibraryDef *HIFSemantics::getStandardPackage()
 {
-    const bool hifFormat = true;
+    bool hifFormat = true;
     LibraryDef *ld       = new LibraryDef();
     ld->setName(_makeHifName("hif_standard", hifFormat));
     ld->setStandard(true);
@@ -586,7 +586,7 @@ Operator HIFSemantics::getMapForOperator(
 {
     return srcOperation;
 }
-Type *HIFSemantics::getSuggestedTypeForOp(Type *t, Operator operation, Type *opType, Object *, const bool isOp1)
+Type *HIFSemantics::getSuggestedTypeForOp(Type *t, Operator operation, Type *opType, Object *, bool isOp1)
 {
     if (operation == op_sll || operation == op_sla || operation == op_srl || operation == op_sra) {
         if (!isOp1) {
@@ -616,8 +616,8 @@ Type *HIFSemantics::getTypeForConstant(ConstValue *c)
     // Otherwise try to figure out the type
     if (dynamic_cast<IntValue *>(c) != nullptr) {
         IntValue *iv      = dynamic_cast<IntValue *>(c);
-        const int32_t i32 = int32_t(iv->getValue());
-        const int64_t i64 = int64_t(iv->getValue());
+        int32_t i32 = int32_t(iv->getValue());
+        int64_t i64 = int64_t(iv->getValue());
         std::int64_t left    = int64_t(i32) == i64 ? 31 : 63;
         Int *iType        = new Int();
         iType->setConstexpr(true);
@@ -910,7 +910,7 @@ bool HIFSemantics::isTypeAllowedForConstValue(ConstValue *cv, Type *synType)
     opt.checkOnlyTypes    = true;
     opt.handleVectorTypes = true;
 
-    const bool res = hif::equals(dt, baseSynType, opt);
+    bool res = hif::equals(dt, baseSynType, opt);
     delete dt;
 
     return res;
@@ -1134,8 +1134,8 @@ void HIFAnalysis::map(Array *op1, Array *op2)
 
         Type *arr1BaseType = getBaseType(op1->getType(), false, _sem);
         Type *arr2BaseType = getBaseType(op2->getType(), false, _sem);
-        const bool isBit1  = dynamic_cast<Bit *>(arr1BaseType) != nullptr;
-        const bool isBit2  = dynamic_cast<Bit *>(arr2BaseType) != nullptr;
+        bool isBit1  = dynamic_cast<Bit *>(arr1BaseType) != nullptr;
+        bool isBit2  = dynamic_cast<Bit *>(arr2BaseType) != nullptr;
         if (bv != nullptr) {
             if (isBit1 && isBit2) {
                 Bit *ret = new Bit();
@@ -1545,7 +1545,7 @@ void HIFAnalysis::map(Pointer *op1, Pointer *op2)
     _result.returnedType       = nullptr;
     _result.operationPrecision = nullptr;
 
-    const bool isAssign = hif::operatorIsAssignment(_currOperator);
+    bool isAssign = hif::operatorIsAssignment(_currOperator);
     if (!isAssign && (_currOperator != op_eq) && (_currOperator != op_neq) && (_currOperator != op_case_eq) &&
         (_currOperator != op_case_neq)) {
         // only assignment and check for equality/inequality are allowed at the moment
@@ -2134,7 +2134,7 @@ void HIFAnalysis::_baseMap(Type *t1, Type *t2)
         refType = hif::copy(t1);
         typeSetSpan(refType, resSpan, _sem, true);
 
-        const bool setSigned = typeIsSigned(t1, _sem, true) || typeIsSigned(t2, _sem, true);
+        bool setSigned = typeIsSigned(t1, _sem, true) || typeIsSigned(t2, _sem, true);
         typeSetSigned(refType, setSigned, _sem);
     } else if (!isConstexpr1 && isConstexpr2) {
         refType = hif::copy(t1);
@@ -2154,7 +2154,7 @@ void HIFAnalysis::_baseMap(Type *t1, Type *t2)
     }
     // otherwise the operation is permitted
     if (_isRelationalOrAssignment(_currOperator)) {
-        const bool alwaysBool =
+        bool alwaysBool =
             (dynamic_cast<Signed *>(t1) != nullptr || dynamic_cast<Unsigned *>(t1) != nullptr ||
              dynamic_cast<Signed *>(t2) != nullptr || dynamic_cast<Unsigned *>(t2) != nullptr);
         if (!alwaysBool && (typeIsLogic(t1, _sem) || typeIsLogic(t2, _sem))) {

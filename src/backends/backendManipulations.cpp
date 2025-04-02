@@ -21,9 +21,9 @@ template <typename T>
 void _makeParametersAssignable(
     T *call,
     hif::semantics::ILanguageSemantics *sem,
-    const bool shiftToZero,
+    bool shiftToZero,
     unsigned int skip,
-    const bool removeCastOnOutputs)
+    bool removeCastOnOutputs)
 {
     if (shiftToZero) {
         unsigned int count = 0;
@@ -200,9 +200,9 @@ Scope *_getNearestIncludeScope(Scope *scope)
 void makeParametersAssignable(
     ProcedureCall *call,
     hif::semantics::ILanguageSemantics *sem,
-    const bool shiftToZero,
+    bool shiftToZero,
     unsigned int skip,
-    const bool removeCastOnOutputs)
+    bool removeCastOnOutputs)
 {
     _makeParametersAssignable(call, sem, shiftToZero, skip, removeCastOnOutputs);
 }
@@ -210,9 +210,9 @@ void makeParametersAssignable(
 void makeParametersAssignable(
     FunctionCall *call,
     hif::semantics::ILanguageSemantics *sem,
-    const bool shiftToZero,
+    bool shiftToZero,
     unsigned int skip,
-    const bool removeCastOnOutputs)
+    bool removeCastOnOutputs)
 {
     _makeParametersAssignable(call, sem, shiftToZero, skip, removeCastOnOutputs);
 }
@@ -234,7 +234,7 @@ bool addHifLibrary(
     Object *scope,
     System *system,
     hif::semantics::ILanguageSemantics *sem,
-    const bool standard)
+    bool standard)
 {
     hif::HifFactory factory(sem);
 

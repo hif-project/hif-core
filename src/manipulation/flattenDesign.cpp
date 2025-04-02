@@ -483,7 +483,7 @@ void Flattener::_renameDeclarations(View *view, const std::string &prefix, Insta
                 c->setType(hif::copy(port->getType()));
                 v = c;
             }
-            const bool isBoundToCast = dynamic_cast<Cast *>(v) != nullptr;
+            bool isBoundToCast = dynamic_cast<Cast *>(v) != nullptr;
             for (ObjectsSet::iterator jter = set.begin(); jter != set.end(); ++jter) {
                 Object *obj = *jter;
                 // Skip replacement of PortAssign objects

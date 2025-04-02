@@ -765,7 +765,7 @@ auto analyzeSpans(
 {
     hif::application_utils::initializeLogHeader("HIF", "SpanAnalyzer");
     SpanAnalyzer analyzer(sem);
-    const bool ret = analyzer.analyzeSpans(spanType, indexMap, others);
+    bool ret = analyzer.analyzeSpans(spanType, indexMap, others);
     hif::application_utils::restoreLogHeader();
 
     if (!ret) {

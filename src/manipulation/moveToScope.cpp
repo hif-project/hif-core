@@ -88,7 +88,7 @@ void _moveToScope(
         newName = n + suffixToAppend;
     }
 
-    const bool isConflicting = checkConflictingName(newName, newScope);
+    bool isConflicting = checkConflictingName(newName, newScope);
     // If it does not conflict, this is a simple move.
     if (!isConflicting && suffixToAppend == "") {
         _actualMove(obj, destList);

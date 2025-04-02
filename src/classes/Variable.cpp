@@ -25,7 +25,7 @@ Variable::~Variable()
 
 bool Variable::isInstance() const { return _isInstance; }
 
-void Variable::setInstance(const bool instance) { _isInstance = instance; }
+void Variable::setInstance(bool instance) { _isInstance = instance; }
 
 ClassId Variable::getClassId() const { return CLASSID_VARIABLE; }
 
@@ -35,6 +35,6 @@ void Variable::_calculateFields() { DataDeclaration::_calculateFields(); }
 
 bool Variable::isStandard() const { return _isStandard; }
 
-void Variable::setStandard(const bool standard) { _isStandard = standard; }
+void Variable::setStandard(bool standard) { _isStandard = standard; }
 
 } // namespace hif

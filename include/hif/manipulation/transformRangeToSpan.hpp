@@ -23,7 +23,7 @@ namespace manipulation
 /// @return The corresponding span.
 ///
 
-Range *transformRangeToSpan(Range *r, hif::semantics::ILanguageSemantics *refLang, const bool isSigned = true);
+Range *transformRangeToSpan(Range *r, hif::semantics::ILanguageSemantics *refLang, bool isSigned = true);
 
 } // namespace manipulation
 } // namespace hif

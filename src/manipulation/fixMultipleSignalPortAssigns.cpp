@@ -449,7 +449,7 @@ int CollectAssignmentVisitor::visitAssign(Assign &o)
 int CollectAssignmentVisitor::visitStateTable(StateTable &o)
 {
     // Skip Function/Procedure StateTables.
-    const bool hasCurrentProcess = (_currentProcess != nullptr);
+    bool hasCurrentProcess = (_currentProcess != nullptr);
     if (dynamic_cast<hif::BaseContents *>(o.getParent()) == nullptr && !hasCurrentProcess)
         return 0;
 
@@ -645,7 +645,7 @@ bool _mspwCreateSupportSignals(
     DataDeclaration *decl,
     Signals &supportSignals,
     hif::semantics::ILanguageSemantics *sem,
-    const bool isSrc)
+    bool isSrc)
 {
     Type *baseType = hif::semantics::getBaseType(decl->getType(), false, sem);
     Record *rec    = dynamic_cast<Record *>(baseType);
@@ -717,7 +717,7 @@ void _mspwCreateUpdatingProcess(
     DataDeclaration *decl,
     Signals &supportSignals,
     hif::BaseContents *scope,
-    const bool isRecord,
+    bool isRecord,
     hif::semantics::ILanguageSemantics *sem)
 {
     UpdatingProcesses::iterator it = _updatingProcesses1.find(decl);
@@ -772,7 +772,7 @@ void _mspwCreateUpdatingProcess(
     Signals &supportSignals,
     DataDeclaration *decl,
     hif::BaseContents *scope,
-    const bool isRecord,
+    bool isRecord,
     hif::semantics::ILanguageSemantics *sem)
 {
     UpdatingProcesses::iterator it = _updatingProcesses2.find(decl);
@@ -947,7 +947,7 @@ bool _fixSensitivityProcesses(
                 // If the occurence is the prefix of an event call it must be fixed.
                 // Reference design: vhdl/unott/dig_proc.
                 FunctionCall *parentFCall = hif::getNearestParent<FunctionCall>(iidd);
-                const bool isPrefixOfEventCall =
+                bool isPrefixOfEventCall =
                     (parentFCall != nullptr && sem->isEventCall(parentFCall) &&
                      hif::isSubNode(iidd, parentFCall->getInstance()));
 
@@ -1026,7 +1026,7 @@ bool _fixBetweenProcesses(CollectAssignmentVisitor::Targets &targets, hif::seman
 
         // 1
         Signals supportSignals;
-        const bool isRecord = _mspwCreateSupportSignals(decl, supportSignals, sem, false);
+        bool isRecord = _mspwCreateSupportSignals(decl, supportSignals, sem, false);
 
         for (Signals::iterator supportIter = supportSignals.begin(); supportIter != supportSignals.end();
              ++supportIter) {
@@ -1261,7 +1261,7 @@ void _addInitialAssign(StateTable *currentSt, Assign *firstAssign, hif::semantic
     std::list<hif::Object *> list;
     hif::search(list, currentSt, q1);
 
-    const bool isProcess = (dynamic_cast<BaseContents *>(currentSt->getParent()) != nullptr);
+    bool isProcess = (dynamic_cast<BaseContents *>(currentSt->getParent()) != nullptr);
     if (list.empty() && isProcess) {
         currentSt->states.front()->actions.push_front(firstAssign);
     }
@@ -1296,7 +1296,7 @@ void _addSignalAssign(StateTable *currentSt, Assign *lastAssign, hif::semantics:
     std::list<hif::Object *> list;
     hif::search(list, currentSt, q1);
 
-    const bool isProcess = (dynamic_cast<BaseContents *>(currentSt->getParent()) != nullptr);
+    bool isProcess = (dynamic_cast<BaseContents *>(currentSt->getParent()) != nullptr);
     if (list.empty() && isProcess) {
         currentSt->states.front()->actions.push_back(lastAssign);
     }

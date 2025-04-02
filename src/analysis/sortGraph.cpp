@@ -54,7 +54,7 @@ struct Comp {
     bool _reverse;
 };
 
-Comp::Comp(List *list, const bool reverse)
+Comp::Comp(List *list, bool reverse)
     : _list(list)
     , _reverse(reverse)
 {
@@ -106,7 +106,7 @@ auto Comp::operator()(Object *o1, Object *o2) const -> bool
 void sortGraph(
     Types<Object, Object>::Graph &graph,
     Types<Object, Object>::List &list,
-    const bool fromLeaves,
+    bool fromLeaves,
     Types<Object, Object>::List *stableList)
 {
     using ObjectsMap  = Types<Object, Object>::Map;

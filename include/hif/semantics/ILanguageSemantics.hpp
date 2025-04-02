@@ -158,7 +158,7 @@ public:
     ///
     /// @param v The mode.
     ///
-    void setStrictTypeChecks(const bool v);
+    void setStrictTypeChecks(bool v);
 
     /// @brief Function to get the semantic checks mode.
     ///
@@ -215,7 +215,7 @@ public:
     /// a valid operation in current semantics  (if possible).
     ///
     virtual Type *
-    getSuggestedTypeForOp(Type *t, Operator operation, Type *opType, Object *startingObject, const bool isOp1) = 0;
+    getSuggestedTypeForOp(Type *t, Operator operation, Type *opType, Object *startingObject, bool isOp1) = 0;
     /// @brief Function that given a ConstValue returns a Type
     /// pointer representing the type to associate to the constant according
     /// with target language requirements (opportunely setting flags of the type).
@@ -393,7 +393,7 @@ public:
     /// @param isLogic If the type is logic.
     /// @return True if operators are bitwise, false if they are logical.
     ///
-    virtual bool hasBitwiseOperationsOnBits(const bool isLogic) const;
+    virtual bool hasBitwiseOperationsOnBits(bool isLogic) const;
 
     ///@}
     /// @name Template related stuff
@@ -456,7 +456,7 @@ public:
     virtual void addStandardPackages(System *s);
 
     /// @brief Return True if the given library is native for the semantics.
-    virtual bool isNativeLibrary(const std::string &n, const bool hifFormat = false) = 0;
+    virtual bool isNativeLibrary(const std::string &n, bool hifFormat = false) = 0;
 
     /// @brief Map an input symbol into the corresponding output one.
     /// @return True if map succeed.
@@ -470,7 +470,7 @@ public:
     virtual Object *getSimplifiedSymbol(KeySymbol &key, Object *s) = 0;
 
     /// @brief Returns true if no namespaces is needed for given library name.
-    virtual bool isStandardInclusion(const std::string &n, const bool isLibInclusion);
+    virtual bool isStandardInclusion(const std::string &n, bool isLibInclusion);
 
     /// @brief Creates a copy of the declaration renaming it adding
     /// the given suffix, and return the fresh new declaration.
@@ -481,7 +481,7 @@ public:
     virtual std::string getStandardFilename(const std::string &n);
 
     /// @brief Returns the event method name w.r.t. current semantics.
-    virtual std::string getEventMethodName(const bool hifFormat = false) = 0;
+    virtual std::string getEventMethodName(bool hifFormat = false) = 0;
 
     /// @brief Returns <tt>true</tt> if the given call is an event call w.r.t.
     /// the current semantics, <tt>false</tt> otherwise.
@@ -490,7 +490,7 @@ public:
     /// @}
 
     bool useNativeSemantics() const;
-    void setUseNativeSemantics(const bool b);
+    void setUseNativeSemantics(bool b);
 
     std::string makeHifName(const std::string &reqName) const;
 
@@ -519,10 +519,10 @@ protected:
     /// @{
 
     /// @brief Wrapper for a string with possibility to add a prefix "hif_"
-    std::string _makeHifName(const std::string &reqName, const bool hifFormat) const;
+    std::string _makeHifName(const std::string &reqName, bool hifFormat) const;
 
     /// @brief Wrapper for Enum creation with possibility to add a prefix "hif_".
-    TypeDef *_makeEnum(const char *enumName, const char *values[], size_t size, const bool hifFormat);
+    TypeDef *_makeEnum(const char *enumName, const char *values[], size_t size, bool hifFormat);
 
     /// @brief Create a SubProgram with at most one parameter.
     SubProgram *_makeAttribute(
@@ -530,8 +530,8 @@ protected:
         Type *retType,
         Type *paramType,
         Value *paramValue,
-        const bool unsupported,
-        const bool hifFormat);
+        bool unsupported,
+        bool hifFormat);
 
     /// @brief Create a SubProgram with two parameters.
     SubProgram *_makeBinaryAttribute(
@@ -541,8 +541,8 @@ protected:
         Value *param1Value,
         Type *param2Type,
         Value *param2Value,
-        const bool unsupported,
-        const bool hifFormat);
+        bool unsupported,
+        bool hifFormat);
 
     /// @brief Create a SubProgram with two parameters.
     SubProgram *_makeTernaryAttribute(
@@ -554,8 +554,8 @@ protected:
         Value *param2Value,
         Type *param3Type,
         Value *param3Value,
-        const bool unsupported,
-        const bool hifFormat);
+        bool unsupported,
+        bool hifFormat);
 
     /// @brief Create a SubProgram parameter.
     void _makeAttributeParameter(
@@ -563,9 +563,9 @@ protected:
         Type *paramType,
         Value *paramValue,
         const std::string &paramIndex,
-        const bool hifFormat);
+        bool hifFormat);
     void
-    _addMultiparamFunction(LibraryDef *ld, const char *name, hif::HifFactory &factory, const bool hifFormat, Type *ret);
+    _addMultiparamFunction(LibraryDef *ld, const char *name, hif::HifFactory &factory, bool hifFormat, Type *ret);
 
     /// @brief Make an array of type @p t with span <tt>left downto right</tt>.
     /// @param index The suffix for left and right.

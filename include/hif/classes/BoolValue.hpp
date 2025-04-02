@@ -25,7 +25,7 @@ public:
 
     /// @brief Constructor.
     /// @param b The boolean value to be assigned. Default is <tt>false</tt>.
-    explicit BoolValue(const bool b);
+    explicit BoolValue(bool b);
 
     /// @brief Destructor.
     virtual ~BoolValue();
@@ -40,7 +40,7 @@ public:
 
     /// @brief Sets the boolean value.
     /// @param b The boolean value to be set.
-    void setValue(const bool b);
+    void setValue(bool b);
 
     /// @brief Accepts a visitor to visit the current object.
     /// @param vis The visitor.

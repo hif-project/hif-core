@@ -20,7 +20,7 @@ namespace semantics
 namespace /*anon*/
 {
 
-Range *_rangeGetMinMax(Range *r1, Range *r2, ILanguageSemantics *sem, const bool getMax)
+Range *_rangeGetMinMax(Range *r1, Range *r2, ILanguageSemantics *sem, bool getMax)
 {
     messageAssert(r1 != nullptr && r2 != nullptr, "Unexpected parameters", nullptr, sem);
 

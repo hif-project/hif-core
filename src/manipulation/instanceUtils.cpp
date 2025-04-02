@@ -211,7 +211,7 @@ void _simplifyTemplates(
     Declaration *decl,
     hif::semantics::ILanguageSemantics *ref_sem,
     Object * /*context*/,
-    const bool simplifyParameters = false)
+    bool simplifyParameters = false)
 {
     hif::manipulation::SimplifyOptions opt;
     opt.simplify_parameters          = simplifyParameters;
@@ -269,8 +269,8 @@ void _addCacheEntry(
     Declaration *origDecl,
     hif::semantics::ILanguageSemantics *sem,
     Cache &cache,
-    const bool sigDependsOnActualParams = false,
-    const bool onlySignature            = false)
+    bool sigDependsOnActualParams = false,
+    bool onlySignature            = false)
 {
     if (sigDependsOnActualParams) {
         trashCache.insert(newInstance);
@@ -316,7 +316,7 @@ Declaration *_searchCacheEntry(
     Declaration *origDecl,
     hif::semantics::ILanguageSemantics *sem,
     Cache &cache,
-    const bool isSignature)
+    bool isSignature)
 {
     Cache::iterator it = cache.find(origDecl);
     if (it == cache.end())
@@ -346,7 +346,7 @@ T *_searchCacheEntry(
     T *origDecl,
     hif::semantics::ILanguageSemantics *sem,
     Cache &cache,
-    const bool isSignature = false)
+    bool isSignature = false)
 {
     return static_cast<T *>(
         _searchCacheEntry(templates, static_cast<Declaration *>(origDecl), sem, cache, isSignature));
@@ -374,7 +374,7 @@ View *_instantiate(
     hif::semantics::updateDeclarations(symbol, sem);
     SymbolType *symbolCopy = hif::copy(symbol);
 
-    const bool canReplaceSymbol = symbol->getParent() != nullptr;
+    bool canReplaceSymbol = symbol->getParent() != nullptr;
     if (canReplaceSymbol)
         symbol->replace(symbolCopy);
 
@@ -417,7 +417,7 @@ View *_instantiate(
 
     // Temporary fix: replace should be not necessary.
     // Reference design: Built_In_FIR into step: bindOpenPortAssign.
-    const bool canReplace = (originalDecl->getParent() != nullptr);
+    bool canReplace = (originalDecl->getParent() != nullptr);
     if (canReplace)
         originalDecl->replace(declarationCopy);
 
@@ -441,7 +441,7 @@ _isInstanceMethodSubProgram(T *symbol, hif::semantics::ILanguageSemantics *sem, 
     typedef typename SymbolType::DeclarationType DeclarationType;
 
     DeclarationType *candidate = dynamic_cast<DeclarationType *>(opt.candidate);
-    const bool hasCandidate    = (candidate != nullptr);
+    bool hasCandidate    = (candidate != nullptr);
 
     Value *symbolInstance = symbol->getInstance();
     if (symbolInstance == nullptr)
@@ -513,7 +513,7 @@ typename T::DeclarationType *_instantiateInstanceMethodSubProgram(
     typedef typename SymbolType::DeclarationType DeclarationType;
 
     DeclarationType *candidate = dynamic_cast<DeclarationType *>(opt.candidate);
-    const bool hasCandidate    = (candidate != nullptr);
+    bool hasCandidate    = (candidate != nullptr);
 
     // Searching subprogram inside instantiated method class.
     View *vv = hif::manipulation::instantiate(instanceVr, sem);
@@ -522,7 +522,7 @@ typename T::DeclarationType *_instantiateInstanceMethodSubProgram(
         return nullptr;
     }
 
-    const bool canReplaceInstView = (viewDecl->getParent() != nullptr);
+    bool canReplaceInstView = (viewDecl->getParent() != nullptr);
     if (canReplaceInstView)
         viewDecl->replace(vv);
 
@@ -583,7 +583,7 @@ _instantiateSubprogram(T *symbol, hif::semantics::ILanguageSemantics *sem, const
     typedef typename SymbolType::DeclarationType DeclarationType;
 
     DeclarationType *candidate = dynamic_cast<DeclarationType *>(opt.candidate);
-    const bool hasCandidate    = (candidate != nullptr);
+    bool hasCandidate    = (candidate != nullptr);
 
     ViewReference *instVr = _isInstanceMethodSubProgram(symbol, sem, opt);
     if (instVr != nullptr) {
@@ -600,7 +600,7 @@ _instantiateSubprogram(T *symbol, hif::semantics::ILanguageSemantics *sem, const
         return nullptr;
 
     Parameters dependingParams;
-    const bool dependsOnActualParameters = hif::signatureDependsOnActualParameters(originalDecl, dependingParams);
+    bool dependsOnActualParameters = hif::signatureDependsOnActualParameters(originalDecl, dependingParams);
 
     // This check should be just an optimization, since the return type of instantiated method
     // will be simplifyed by getSemanticType().
@@ -626,7 +626,7 @@ _instantiateSubprogram(T *symbol, hif::semantics::ILanguageSemantics *sem, const
         symbolCopy = hif::copy(symbol);
         symbolCopy->addProperty(PROPERTY_TEMPORARY_OBJECT);
     }
-    const bool canReplaceSymbol = symbol->getParent() != nullptr;
+    bool canReplaceSymbol = symbol->getParent() != nullptr;
     if (canReplaceSymbol)
         symbol->replace(symbolCopy);
 
@@ -698,7 +698,7 @@ _instantiateSubprogram(T *symbol, hif::semantics::ILanguageSemantics *sem, const
 
     // Temporary fix: replace should be not necessary.
     // Reference design: Built_In_FIR into step: bindOpenPortAssign.
-    const bool canReplace = (originalDecl->getParent() != nullptr);
+    bool canReplace = (originalDecl->getParent() != nullptr);
     if (canReplace)
         originalDecl->replace(declarationCopy);
 
@@ -735,7 +735,7 @@ TypeDef *_instantiate(TypeReference *symbol, hif::semantics::ILanguageSemantics 
     hif::semantics::updateDeclarations(symbol, sem);
     SymbolType *symbolCopy = hif::copy(symbol);
 
-    const bool canReplaceSymbol = symbol->getParent() != nullptr;
+    bool canReplaceSymbol = symbol->getParent() != nullptr;
     if (canReplaceSymbol)
         symbol->replace(symbolCopy);
 
@@ -768,7 +768,7 @@ TypeDef *_instantiate(TypeReference *symbol, hif::semantics::ILanguageSemantics 
 
     // Temporary fix: replace should be not necessary.
     // Reference design: Built_In_FIR into step: bindOpenPortAssign.
-    const bool canReplace = (originalDecl->getParent() != nullptr);
+    bool canReplace = (originalDecl->getParent() != nullptr);
     if (canReplace)
         originalDecl->replace(declarationCopy);
 

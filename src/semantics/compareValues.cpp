@@ -21,7 +21,7 @@ namespace /*anon*/
 
 } // namespace
 
-CompareResult compareValues(Value *v1, Value *v2, hif::semantics::ILanguageSemantics *refSem, const bool simplify)
+CompareResult compareValues(Value *v1, Value *v2, hif::semantics::ILanguageSemantics *refSem, bool simplify)
 {
     hif::manipulation::SimplifyOptions opt;
     opt.replace_result = false;

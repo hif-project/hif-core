@@ -37,7 +37,7 @@ public:
 
     /// @brief Sets the <tt>constexpr</tt> attribute.
     /// @param flag The <tt>constexpr</tt> attribute to be set.
-    void setConstexpr(const bool flag);
+    void setConstexpr(bool flag);
 
 protected:
     /// @brief Flag to store the <tt>constexpr</tt>.

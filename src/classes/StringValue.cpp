@@ -32,7 +32,7 @@ StringValue::~StringValue()
 
 void StringValue::setValue(const std::string &text) { _text = text; }
 
-void StringValue::setPlain(const bool plain) { _isPlain = plain; }
+void StringValue::setPlain(bool plain) { _isPlain = plain; }
 
 bool StringValue::isPlain() const { return _isPlain; }
 

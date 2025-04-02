@@ -52,11 +52,11 @@ bool _getIndexOfAggregate(
 }
 
 } // namespace
-bool transformAggregateRollingAlts(Aggregate *obj, const bool atLeastOne, hif::semantics::ILanguageSemantics * /*sem*/)
+bool transformAggregateRollingAlts(Aggregate *obj, bool atLeastOne, hif::semantics::ILanguageSemantics * /*sem*/)
 {
     if (obj->alts.empty())
         return false;
-    const bool hasOthers = (obj->getOthers() != nullptr);
+    bool hasOthers = (obj->getOthers() != nullptr);
 
     Value *refAltValue = obj->alts.front()->getValue();
     bool allAltsEquals = !hasOthers; // Note: works only without others.
@@ -112,7 +112,7 @@ bool transformAggregateUnrollingAlts(
     Aggregate *obj,
     std::uint64_t threshold,
     hif::semantics::ILanguageSemantics *sem,
-    const bool force)
+    bool force)
 {
     if (obj->getOthers() == nullptr)
         return false;

@@ -48,7 +48,7 @@ private:
     ILanguageSemantics *_sem;
     const UpdateDeclarationOptions &_opt;
 
-    void checkFound(Declaration *decl, Object &obj, const bool mustBe = true);
+    void checkFound(Declaration *decl, Object &obj, bool mustBe = true);
 
     template <typename T> typename T::DeclarationType *_getDeclaration(T *obj);
 
@@ -70,7 +70,7 @@ UpdateDeclarationsVisitor::~UpdateDeclarationsVisitor()
     // ntd
 }
 
-void UpdateDeclarationsVisitor::checkFound(Declaration *decl, Object &obj, const bool mustBe)
+void UpdateDeclarationsVisitor::checkFound(Declaration *decl, Object &obj, bool mustBe)
 {
     if (!_opt.error)
         return;
@@ -162,7 +162,7 @@ int UpdateDeclarationsVisitor::visitInstance(Instance &o)
     if (_opt.onlyVisible && o.GetDeclaration() == nullptr) {
         hif::semantics::setDeclaration(&o, s);
     }
-    const bool mustBe = dynamic_cast<Library *>(o.getReferencedType()) == nullptr;
+    bool mustBe = dynamic_cast<Library *>(o.getReferencedType()) == nullptr;
     checkFound(_getDeclaration(&o), o, mustBe);
     return 0;
 }

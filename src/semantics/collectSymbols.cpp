@@ -33,7 +33,7 @@ namespace /*anon*/
 class CollectSymbolsVisitor : public GuideVisitor
 {
 public:
-    CollectSymbolsVisitor(std::list<Object *> &list, ILanguageSemantics *sem, const bool skip_standard_declarations);
+    CollectSymbolsVisitor(std::list<Object *> &list, ILanguageSemantics *sem, bool skip_standard_declarations);
     ~CollectSymbolsVisitor();
 
     virtual int visitIdentifier(Identifier &);
@@ -53,7 +53,7 @@ public:
 private:
     std::list<Object *> &_list;
     ILanguageSemantics *_sem;
-    const bool _skipStandardDeclarations;
+    bool _skipStandardDeclarations;
 
     template <typename T>
 
@@ -65,7 +65,7 @@ private:
 CollectSymbolsVisitor::CollectSymbolsVisitor(
     std::list<Object *> &list,
     ILanguageSemantics *sem,
-    const bool skip_standard_declarations)
+    bool skip_standard_declarations)
     : GuideVisitor()
     , _list(list)
     , _sem(sem)
@@ -164,7 +164,7 @@ int CollectSymbolsVisitor::visitViewReference(ViewReference &o)
 }
 } // namespace
 
-void collectSymbols(SymbolList &list, Object *root, ILanguageSemantics *sem, const bool skip_standard_declarations)
+void collectSymbols(SymbolList &list, Object *root, ILanguageSemantics *sem, bool skip_standard_declarations)
 {
     hif::application_utils::initializeLogHeader("HIF", "collectSymbols");
 

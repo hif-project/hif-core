@@ -99,7 +99,7 @@ public:
     ///
     /// @param flag boolean value of the enablingLabelOrMode flag.
     ///
-    void setEnablingOrCondition(const bool flag);
+    void setEnablingOrCondition(bool flag);
 
     /// @brief Function to get the value of the enablingLabelOrMode flag.
     ///

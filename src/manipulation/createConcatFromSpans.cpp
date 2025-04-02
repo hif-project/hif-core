@@ -24,7 +24,7 @@ Value *_makeConcat(
     Value *resultValue,
     Value *value,
     const hif::RangeDirection spanDirection,
-    const bool copy,
+    bool copy,
     hif::semantics::ILanguageSemantics *sem)
 {
     HifFactory factory(sem);
@@ -51,7 +51,7 @@ Value *createConcatFromSpans(
     Value *others)
 {
     AnalyzeSpansResult res;
-    const bool ret = hif::analysis::analyzeSpans(spanType, indexMap, sem, others, res);
+    bool ret = hif::analysis::analyzeSpans(spanType, indexMap, sem, others, res);
     if (!ret)
         return nullptr;
     if (!res.allSpecified && others == nullptr)

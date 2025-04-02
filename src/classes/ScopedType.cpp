@@ -23,7 +23,7 @@ ScopedType::~ScopedType()
 
 void ScopedType::_calculateFields() { Type::_calculateFields(); }
 
-void ScopedType::setConstexpr(const bool v) { _isConstexpr = v; }
+void ScopedType::setConstexpr(bool v) { _isConstexpr = v; }
 
 bool ScopedType::isConstexpr() { return _isConstexpr; }
 

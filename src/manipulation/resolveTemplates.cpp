@@ -727,7 +727,7 @@ public:
     int visitTypeDef(TypeDef &o);
 
 private:
-    bool _checkRange(Range *range, const bool noError);
+    bool _checkRange(Range *range, bool noError);
     bool _checkBound(Value *v);
     bool _checkDeclaration(Declaration *o);
 
@@ -774,7 +774,7 @@ int RangeVisitor::visitFunctionCall(FunctionCall &o)
     if (!hif::semantics::isVectorType(baseType, _sem) && dynamic_cast<Int *>(baseType) == nullptr)
         return 0;
 
-    const bool ok = _checkRange(hif::typeGetSpan(baseType, _sem), true);
+    bool ok = _checkRange(hif::typeGetSpan(baseType, _sem), true);
     if (ok)
         return 0;
 
@@ -785,7 +785,7 @@ int RangeVisitor::visitFunctionCall(FunctionCall &o)
     // Checking that simplify() has done a good job:
     hif::semantics::resetTypes(&o);
     baseType           = hif::semantics::getBaseType(&o, false, _sem);
-    const bool checkOk = _checkRange(hif::typeGetSpan(baseType, _sem), true);
+    bool checkOk = _checkRange(hif::typeGetSpan(baseType, _sem), true);
     if (!checkOk) {
         messageDebug("Non-constant span type:", baseType, _sem);
         messageDebug("Unable to get a constant span", &o, _sem);
@@ -807,7 +807,7 @@ int RangeVisitor::visitRange(hif::Range &o)
 
 int RangeVisitor::visitView(View &o)
 {
-    const bool restore = _needConstant;
+    bool restore = _needConstant;
     if (_checkDeclaration(&o))
         return 0;
     hif::GuideVisitor::visitView(o);
@@ -824,7 +824,7 @@ int RangeVisitor::visitLibraryDef(LibraryDef &o)
 
 int RangeVisitor::visitFunction(Function &o)
 {
-    const bool restore = _needConstant;
+    bool restore = _needConstant;
     if (_checkDeclaration(&o))
         return 0;
     hif::GuideVisitor::visitFunction(o);
@@ -834,7 +834,7 @@ int RangeVisitor::visitFunction(Function &o)
 
 int RangeVisitor::visitProcedure(Procedure &o)
 {
-    const bool restore = _needConstant;
+    bool restore = _needConstant;
     if (_checkDeclaration(&o))
         return 0;
     hif::GuideVisitor::visitProcedure(o);
@@ -844,7 +844,7 @@ int RangeVisitor::visitProcedure(Procedure &o)
 
 int RangeVisitor::visitTypeDef(TypeDef &o)
 {
-    const bool restore = _needConstant;
+    bool restore = _needConstant;
     if (_checkDeclaration(&o))
         return 0;
     hif::GuideVisitor::visitTypeDef(o);
@@ -852,7 +852,7 @@ int RangeVisitor::visitTypeDef(TypeDef &o)
     return 0;
 }
 
-bool RangeVisitor::_checkRange(Range *range, const bool noError)
+bool RangeVisitor::_checkRange(Range *range, bool noError)
 {
     if (range == nullptr)
         return true;
@@ -870,13 +870,13 @@ bool RangeVisitor::_checkRange(Range *range, const bool noError)
             return true;
     }
 
-    const bool isSpanInformation = dynamic_cast<String *>(range->getParent()) != nullptr;
+    bool isSpanInformation = dynamic_cast<String *>(range->getParent()) != nullptr;
 
     Value *v               = range->getLeftBound();
-    const bool isLeftError = !_checkBound(v) && (v != nullptr || !isSpanInformation);
+    bool isLeftError = !_checkBound(v) && (v != nullptr || !isSpanInformation);
 
     v                       = range->getRightBound();
-    const bool isRightError = !_checkBound(v) && (v != nullptr || !isSpanInformation);
+    bool isRightError = !_checkBound(v) && (v != nullptr || !isSpanInformation);
 
     std::uint64_t bw = hif::semantics::spanGetBitwidth(range, _sem);
     if (bw == 0) {
@@ -920,7 +920,7 @@ bool RangeVisitor::_checkBound(Value *v)
         SubProgram *sub = valTp != nullptr ? dynamic_cast<SubProgram *>(valTp->getParent()) : nullptr;
         for (hif::semantics::ReferencesSet::iterator jt = refSet.begin(); jt != refSet.end(); ++jt) {
             Identifier *id        = dynamic_cast<Identifier *>(*jt);
-            const bool isTemplate = hif::isSubNode(id, td) || hif::isSubNode(id, sub);
+            bool isTemplate = hif::isSubNode(id, td) || hif::isSubNode(id, sub);
             if (!isTemplate)
                 return false;
         }

@@ -60,8 +60,8 @@ CommandLineParser::CommandLineParser()
 void CommandLineParser::addOption(
     const char shortName,
     const std::string &longName,
-    const bool hasArgument,
-    const bool isActive,
+    bool hasArgument,
+    bool isActive,
     const std::string &description,
     const std::string &defaultValue)
 {
@@ -261,7 +261,7 @@ void CommandLineParser::addParseOnly()
     addOption('P', "parseonly", false, HIF_IS_ACTIVE, "Only parses input files without building the HIF tree.", "");
 }
 
-void CommandLineParser::addConfigFile(const bool generateStub)
+void CommandLineParser::addConfigFile(bool generateStub)
 {
     addOption('C', "config", true, true, "Specifies input configuration file.", "");
     if (generateStub) {
@@ -423,15 +423,19 @@ auto CommandLineParser::_formatLine(
     return ret;
 }
 
-void CommandLineParser::_makeChunks(Chunks &chunks, std::string s, const std::size_t maxSize, const std::size_t margin)
+void CommandLineParser::_makeChunks(
+    Chunks &chunks,
+    std::string s,
+    const std::size_t maxSize,
+    const std::size_t margin)
 
 {
     std::string line;
 
     while (!s.empty()) {
         std::string::size_type pos(s.find_first_of(" \n"));
-        const bool isNewline = (pos != std::string::npos && s[pos] == '\n');
-        std::string c        = s.substr(0, pos);
+        bool isNewline = (pos != std::string::npos && s[pos] == '\n');
+        std::string c  = s.substr(0, pos);
         if (line.size() + c.size() + 1 < maxSize) {
             if (!line.empty()) {
                 line += " ";

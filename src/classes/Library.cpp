@@ -37,11 +37,11 @@ void Library::setFilename(const std::string &f) { _filename = f; }
 
 bool Library::isStandard() const { return _isStandard; }
 
-void Library::setStandard(const bool standard) { _isStandard = standard; }
+void Library::setStandard(bool standard) { _isStandard = standard; }
 
 bool Library::isSystem() const { return _isSystem; }
 
-void Library::setSystem(const bool system) { _isSystem = system; }
+void Library::setSystem(bool system) { _isSystem = system; }
 
 Object *Library::toObject() { return this; }
 

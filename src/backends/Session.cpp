@@ -69,7 +69,7 @@ void CNode::SetPath(std::string &sPath)
 
 //
 // SetInstName(std::stringsName)
-void CNode::SetInstName(std::string sName) { m_sInstName = std::move(sName); }
+void CNode::SetInstName(const std::string &sName) { m_sInstName = sName; }
 
 //
 // SetEntName(std::stringsName)

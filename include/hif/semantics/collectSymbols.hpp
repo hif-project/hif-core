@@ -31,7 +31,7 @@ void collectSymbols(
     SymbolList &list,
     Object *root,
     ILanguageSemantics *sem               = hif::semantics::HIFSemantics::getInstance(),
-    const bool skip_standard_declarations = false);
+    bool skip_standard_declarations = false);
 
 } // namespace semantics
 } // namespace hif

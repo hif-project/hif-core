@@ -26,7 +26,7 @@ ClassId ValueTP::getClassId() const { return CLASSID_VALUETP; }
 
 bool ValueTP::isCompileTimeConstant() const { return _isCompileTimeConstant; }
 
-void ValueTP::setCompileTimeConstant(const bool compileTimeConstant) { _isCompileTimeConstant = compileTimeConstant; }
+void ValueTP::setCompileTimeConstant(bool compileTimeConstant) { _isCompileTimeConstant = compileTimeConstant; }
 
 int ValueTP::acceptVisitor(HifVisitor &vis) { return vis.visitValueTP(*this); }
 

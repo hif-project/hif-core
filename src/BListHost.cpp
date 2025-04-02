@@ -284,7 +284,7 @@ void BListHost::swap(iterator a, iterator b)
 {
     _toBLink((*a)->_getParentLink())->swap(_toBLink((*b)->_getParentLink()));
 }
-void BListHost::remove_dopplegangers(const bool strict)
+void BListHost::remove_dopplegangers(bool strict)
 {
     for (BLink *i = _head; i != nullptr; i = i->next) {
         for (BLink *j = i->next; j != nullptr;) {
@@ -318,7 +318,7 @@ std::size_t BListHost::getPosition(Object *o) const
 
     return count;
 }
-Object *BListHost::insert(Object *o, std::size_t pos, const bool expand)
+Object *BListHost::insert(Object *o, std::size_t pos, bool expand)
 {
     BListHost::iterator i = this->begin();
     i                     = i + pos;
@@ -395,12 +395,12 @@ void BListHost::removeProperty(const PropertyId n)
     }
 }
 
-bool BListHost::checkProperty(const std::string &n, const bool hasAll) const
+bool BListHost::checkProperty(const std::string &n, bool hasAll) const
 {
     if (this->empty())
         return false;
     for (BListHost::iterator i = this->begin(); i != this->end(); ++i) {
-        const bool has = (*i)->checkProperty(n);
+        bool has = (*i)->checkProperty(n);
         if (hasAll && !has)
             return false;
         else if (!hasAll && has)
@@ -410,12 +410,12 @@ bool BListHost::checkProperty(const std::string &n, const bool hasAll) const
     return hasAll;
 }
 
-bool BListHost::checkProperty(const PropertyId n, const bool hasAll) const
+bool BListHost::checkProperty(const PropertyId n, bool hasAll) const
 {
     if (this->empty())
         return false;
     for (BListHost::iterator i = this->begin(); i != this->end(); ++i) {
-        const bool has = (*i)->checkProperty(n);
+        bool has = (*i)->checkProperty(n);
         if (hasAll && !has)
             return false;
         else if (!hasAll && has)
@@ -432,12 +432,12 @@ void BListHost::clearProperties()
     }
 }
 
-bool BListHost::hasProperties(const bool hasAll) const
+bool BListHost::hasProperties(bool hasAll) const
 {
     if (this->empty())
         return false;
     for (BListHost::iterator i = this->begin(); i != this->end(); ++i) {
-        const bool has = (*i)->hasProperties();
+        bool has = (*i)->hasProperties();
         if (hasAll && !has)
             return false;
         else if (!hasAll && has)

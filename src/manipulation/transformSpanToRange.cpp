@@ -23,7 +23,7 @@ namespace /*anon*/
 
 } // namespace
 
-Range *transformSpanToRange(Range *r, hif::semantics::ILanguageSemantics *refLang, const bool isSigned)
+Range *transformSpanToRange(Range *r, hif::semantics::ILanguageSemantics *refLang, bool isSigned)
 {
     messageDebugAssert(r != nullptr, "Unexpected nullptr range", nullptr, refLang);
 

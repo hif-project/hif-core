@@ -96,7 +96,7 @@ bool _isComponent(View *view)
     CopyOptions opt;
     opt.copyChildObjects    = false;
     Contents *emptyContents = hif::copy(viewContent, opt);
-    const bool ret          = hif::equals(viewContent, emptyContents);
+    bool ret          = hif::equals(viewContent, emptyContents);
     delete emptyContents;
     return ret;
 }
@@ -299,8 +299,8 @@ ViewSet _searchTopCandidates(System *root, hif::semantics::ILanguageSemantics *s
     }
 
     // Both heuristics does not resolve candidates.
-    const bool allMore  = h1Result.size() > 1 && h2Result.size() > 1;
-    const bool allEmpty = h1Result.empty() && h2Result.empty();
+    bool allMore  = h1Result.size() > 1 && h2Result.size() > 1;
+    bool allEmpty = h1Result.empty() && h2Result.empty();
     if (allMore && opt.checkAtMostOne) {
         _printCandidates(candidatesList);
         messageError("Found more the one top-level design unit.", nullptr, nullptr);

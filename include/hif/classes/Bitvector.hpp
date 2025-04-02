@@ -55,7 +55,7 @@ public:
 
     /// @brief Sets the <tt>logic</tt> attribute.
     /// @param logic The <tt>logic</tt> attribute to be set.
-    void setLogic(const bool logic);
+    void setLogic(bool logic);
 
     /// @brief Sets the <tt>resolved</tt> attribute.
     /// @return The <tt>resolved</tt> attribute.
@@ -63,7 +63,7 @@ public:
 
     /// @brief Set the <tt>resolved</tt> attribute.
     /// @param resolved The <tt>resolved</tt> attribute to be set.
-    void setResolved(const bool resolved);
+    void setResolved(bool resolved);
 
     /// @brief Sets the span of the bit vector.
     /// @param t The new span of the bit vector.
@@ -73,7 +73,7 @@ public:
 
     /// @brief Sets the <tt>signed</tt> attribute.
     /// @param sign The <tt>signed</tt> attribute.
-    void setSigned(const bool sign);
+    void setSigned(bool sign);
 
     /// @brief Returns the <tt>signed</tt> attribute.
     /// @return The <tt>signed</tt> attribute.

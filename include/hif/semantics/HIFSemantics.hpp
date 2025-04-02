@@ -76,7 +76,7 @@ public:
     /// a valid operation in current semantics  (if possible).
     ///
     virtual Type *
-    getSuggestedTypeForOp(Type *t, Operator operation, Type *opType, Object *startingObject, const bool isOp1);
+    getSuggestedTypeForOp(Type *t, Operator operation, Type *opType, Object *startingObject, bool isOp1);
     ///
     /// @brief Function that given a ConstValue returns a Type
     /// pointer representing the type to associate to the constant according
@@ -246,7 +246,7 @@ public:
     virtual LibraryDef *getStandardLibrary(const std::string &name);
 
     /// @brief Return True if the given library is native for the semantics.
-    virtual bool isNativeLibrary(const std::string &name, const bool hifFormat = false);
+    virtual bool isNativeLibrary(const std::string &name, bool hifFormat = false);
 
     /// @brief Map an input symbol into the corresponding output one.
     virtual MapCases
@@ -256,7 +256,7 @@ public:
     virtual Object *getSimplifiedSymbol(KeySymbol &key, Object *s);
 
     /// @brief Returns the event method name w.r.t. current semantics.
-    virtual std::string getEventMethodName(const bool hifFormat = false);
+    virtual std::string getEventMethodName(bool hifFormat = false);
 
     /// @brief Returns <tt>true</tt> if the given call is an event call w.r.t.
     /// the current semantics, <tt>false</tt> otherwise.

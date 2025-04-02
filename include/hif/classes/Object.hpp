@@ -24,7 +24,7 @@ namespace semantics
 {
 class ILanguageSemantics;
 
-Type *getBaseType(Type *type, const bool consider_opacity, ILanguageSemantics *, const bool compositeRecurse);
+Type *getBaseType(Type *type, bool consider_opacity, ILanguageSemantics *, bool compositeRecurse);
 
 } // namespace semantics
 
@@ -351,9 +351,9 @@ private:
 
     friend Type *hif::semantics::getBaseType(
         Type *type,
-        const bool consider_opacity,
+        bool consider_opacity,
         hif::semantics::ILanguageSemantics *,
-        const bool compositeRecurse);
+        bool compositeRecurse);
 
     friend bool hif::manipulation::matchedInsert(
         Object *newObj,

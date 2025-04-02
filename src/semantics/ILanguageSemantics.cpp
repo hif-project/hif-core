@@ -547,7 +547,7 @@ ILanguageSemantics::SemanticOptions &ILanguageSemantics::SemanticOptions::operat
 
 const ILanguageSemantics::SemanticOptions &ILanguageSemantics::getSemanticsOptions() const { return _semanticOptions; }
 
-void ILanguageSemantics::setStrictTypeChecks(const bool v) { _strictChecking = v; }
+void ILanguageSemantics::setStrictTypeChecks(bool v) { _strictChecking = v; }
 
 bool ILanguageSemantics::getStrictTypeChecks() const { return _strictChecking; }
 
@@ -677,7 +677,7 @@ bool ILanguageSemantics::canRemoveCastOnOperands(
     return isSafe;
 }
 
-bool ILanguageSemantics::hasBitwiseOperationsOnBits(const bool /*isLogic*/) const { return true; }
+bool ILanguageSemantics::hasBitwiseOperationsOnBits(bool /*isLogic*/) const { return true; }
 
 ILanguageSemantics *ILanguageSemantics::getInstance(SupportedLanguages lang)
 {
@@ -730,7 +730,7 @@ std::string ILanguageSemantics::getStandardFilename(const std::string &n)
 
 bool ILanguageSemantics::useNativeSemantics() const { return _useNativeSemantics; }
 
-void ILanguageSemantics::setUseNativeSemantics(const bool b) { _useNativeSemantics = b; }
+void ILanguageSemantics::setUseNativeSemantics(bool b) { _useNativeSemantics = b; }
 
 std::string ILanguageSemantics::makeHifName(const std::string &reqName) const { return _makeHifName(reqName, true); }
 template <typename T> T *ILanguageSemantics::getSuffixedCopy(T *obj, const std::string &suffix)
@@ -755,7 +755,7 @@ bool ILanguageSemantics::_checkConcatCasts(
     hif::EqualsOptions retOpt;
     retOpt.checkConstexprFlag = false;
 
-    const bool equalType = hif::equals(exprInfo.returnedType, info.returnedType, retOpt);
+    bool equalType = hif::equals(exprInfo.returnedType, info.returnedType, retOpt);
     if (!equalType)
         return false;
 
@@ -793,9 +793,9 @@ bool ILanguageSemantics::_checkShiftCasts(
     hif::EqualsOptions retOpt;
     retOpt.checkConstexprFlag = false;
 
-    const bool equalType = hif::equals(exprInfo.returnedType, info.returnedType, retOpt);
+    bool equalType = hif::equals(exprInfo.returnedType, info.returnedType, retOpt);
 
-    const bool equalPrecision = hif::equals(exprInfo.operationPrecision, info.operationPrecision, retOpt);
+    bool equalPrecision = hif::equals(exprInfo.operationPrecision, info.operationPrecision, retOpt);
 
     const hif::semantics::precision_type_t rhsPrec = hif::semantics::comparePrecision(castT2, subT2, this);
 
@@ -875,20 +875,20 @@ bool ILanguageSemantics::_checkRelationalCasts(
     precOpt.checkTypeVariantField = false;
 
     // ref. design:vhdl/custom/test_library_equality
-    const bool equalPrec = hif::equals(origInfo.operationPrecision, simplifiedInfo.operationPrecision, precOpt);
-    const bool equalType = hif::equals(origInfo.returnedType, simplifiedInfo.returnedType, retOpt);
+    bool equalPrec = hif::equals(origInfo.operationPrecision, simplifiedInfo.operationPrecision, precOpt);
+    bool equalType = hif::equals(origInfo.returnedType, simplifiedInfo.returnedType, retOpt);
 
     // In case of bit vs bool, we assume that anything is fine for all semantics.
     // Ref. design: b03 vhdl2hif2vhdl.
     // Ref design: mios_MainControlUnit_verilog2hif for unsimplified whenalt
-    const bool newSingleBit =
+    bool newSingleBit =
         (hif::semantics::isSingleBitType(simplifiedInfo.operationPrecision, this) &&
          hif::semantics::isSingleBitType(simplifiedInfo.returnedType, this));
-    const bool origSingleBit =
+    bool origSingleBit =
         (hif::semantics::isSingleBitType(origInfo.operationPrecision, this) &&
          hif::semantics::isSingleBitType(origInfo.returnedType, this));
     // Cannot remove cast, not equivalent expression.
-    const bool isLogicArithOrNumStd =
+    bool isLogicArithOrNumStd =
         (dynamic_cast<Signed *>(origInfo.operationPrecision) != nullptr ||
          dynamic_cast<Unsigned *>(origInfo.operationPrecision) != nullptr);
     if (isLogicArithOrNumStd && !(equalPrec && equalType) && !(newSingleBit && origSingleBit))
@@ -899,8 +899,8 @@ bool ILanguageSemantics::_checkRelationalCasts(
     // (uint)1 < (uint)-1 --> true
     // ref. design agility_complex
     if (!hif::operatorIsEquality(e->getOperator())) {
-        const bool origSigned  = hif::typeIsSigned(origInfo.operationPrecision, this);
-        const bool simplSigned = hif::typeIsSigned(simplifiedInfo.operationPrecision, this);
+        bool origSigned  = hif::typeIsSigned(origInfo.operationPrecision, this);
+        bool simplSigned = hif::typeIsSigned(simplifiedInfo.operationPrecision, this);
         if (origSigned != simplSigned)
             return false;
     }
@@ -952,16 +952,16 @@ bool ILanguageSemantics::_checkGenericCasts(
     const hif::EqualsOptions &precOpt,
     const hif::EqualsOptions &retOpt)
 {
-    const bool equalPrec = hif::equals(origInfo.operationPrecision, simplifiedInfo.operationPrecision, precOpt);
-    const bool equalType = hif::equals(origInfo.returnedType, simplifiedInfo.returnedType, retOpt);
+    bool equalPrec = hif::equals(origInfo.operationPrecision, simplifiedInfo.operationPrecision, precOpt);
+    bool equalType = hif::equals(origInfo.returnedType, simplifiedInfo.returnedType, retOpt);
 
     // In case of bit vs bool, we assume that anything is fine for all semantics.
     // Ref. design: b03 vhdl2hif2vhdl.
     // Ref design: mios_MainControlUnit_verilog2hif for unsimplified whenalt
-    const bool newSingleBit  = ( //hif::semantics::isSingleBitType(simplifiedInfo.operationPrecision, this)
+    bool newSingleBit  = ( //hif::semantics::isSingleBitType(simplifiedInfo.operationPrecision, this)
         //&&
         hif::semantics::isSingleBitType(simplifiedInfo.returnedType, this));
-    const bool origSingleBit = ( //hif::semantics::isSingleBitType(origInfo.operationPrecision, this)
+    bool origSingleBit = ( //hif::semantics::isSingleBitType(origInfo.operationPrecision, this)
         //&&
         hif::semantics::isSingleBitType(origInfo.returnedType, this));
 
@@ -970,7 +970,7 @@ bool ILanguageSemantics::_checkGenericCasts(
         return false;
 
     // Removing cast may alter operation precision?
-    const bool canRemove1 = canRemoveInternalCast(origInfo.operationPrecision, castT1, subT1, this, e);
+    bool canRemove1 = canRemoveInternalCast(origInfo.operationPrecision, castT1, subT1, this, e);
     bool canRemove2       = true;
     if (castT2 != nullptr && subT2 != nullptr)
         canRemove2 = canRemoveInternalCast(origInfo.operationPrecision, castT2, subT2, this, e);

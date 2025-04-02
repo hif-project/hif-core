@@ -27,8 +27,8 @@ namespace semantics
 Type *getOtherOperandType(
     Object *o,
     ILanguageSemantics *refSem,
-    const bool considerOverloading = false,
-    const bool looseTypeChecks     = false);
+    bool considerOverloading = false,
+    bool looseTypeChecks     = false);
 
 /// @brief Returns the direction of the other operand involved in the operation.
 /// @param o The starting value.

@@ -28,7 +28,7 @@ namespace semantics
 /// is a TypeReference.
 ///
 
-Type *getBaseType(Type *t, const bool consider_opacity, ILanguageSemantics *refSem, const bool compositeRecurse = true);
+Type *getBaseType(Type *t, bool consider_opacity, ILanguageSemantics *refSem, bool compositeRecurse = true);
 
 /// @brief Try to find the base type of the Value v according with
 /// semantics passed as parameter.
@@ -50,10 +50,10 @@ Type *getBaseType(Type *t, const bool consider_opacity, ILanguageSemantics *refS
 
 Type *getBaseType(
     TypedObject *v,
-    const bool considerOpacity,
+    bool considerOpacity,
     ILanguageSemantics *refSem,
-    const bool compositeRecurse = true,
-    const bool error            = false);
+    bool compositeRecurse = true,
+    bool error            = false);
 
 } // namespace semantics
 } // namespace hif

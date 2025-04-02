@@ -27,7 +27,7 @@ Value *While::setCondition(Value *x) { return setChild(_condition, x); }
 
 bool While::isDoWhile() const { return _doWhile; }
 
-void While::setDoWhile(const bool doWhile) { _doWhile = doWhile; }
+void While::setDoWhile(bool doWhile) { _doWhile = doWhile; }
 
 ClassId While::getClassId() const { return CLASSID_WHILE; }
 

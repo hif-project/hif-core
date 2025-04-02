@@ -28,7 +28,7 @@ namespace manipulation
 /// @return <tt>true</tt> if changes on the given aggregate are performed.
 ///
 
-bool transformAggregateRollingAlts(Aggregate *obj, const bool atLeastOne, hif::semantics::ILanguageSemantics *sem);
+bool transformAggregateRollingAlts(Aggregate *obj, bool atLeastOne, hif::semantics::ILanguageSemantics *sem);
 /// @brief Tries to transform the given aggregate by expanding its others
 /// clause value for each missing alt.
 /// This can be done only if the span is statically computable.
@@ -46,6 +46,6 @@ bool transformAggregateUnrollingAlts(
     Aggregate *obj,
     std::uint64_t threshold,
     hif::semantics::ILanguageSemantics *sem,
-    const bool force = false);
+    bool force = false);
 } // namespace manipulation
 } // namespace hif

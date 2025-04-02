@@ -203,7 +203,7 @@ public:
         const std::string &eVal,
         const std::string &before = " [",
         const std::string &after  = "]",
-        const bool manageEmpty    = false);
+        bool manageEmpty    = false);
 
     static std::string stringTypeVariant(const Type::TypeVariant t);
 
@@ -292,13 +292,13 @@ private:
     bool _checkMultiline();
 
     /// @brief Utility function to print flag.
-    void _printFlag(const bool value, const std::string &name, const bool printAnyway = false);
+    void _printFlag(bool value, const std::string &name, bool printAnyway = false);
     /// @brief Utility function to print string.
-    void _printString(const std::string &value, const std::string &name, const bool printAnyway = false);
+    void _printString(const std::string &value, const std::string &name, bool printAnyway = false);
     /// @brief Utility function to print integer.
     void _printInt(std::int64_t value, const std::string &name);
     /// @brief Utility function to print Hif name.
-    void _printName(const std::string &value, const std::string &name, const bool printAnyway = false);
+    void _printName(const std::string &value, const std::string &name, bool printAnyway = false);
 
     /// @name Custom printing methods
     /// @{
@@ -508,7 +508,7 @@ void PrintHifVisitor::printHifEnum(
     const std::string &eVal,
     const std::string &before,
     const std::string &after,
-    const bool manageEmpty)
+    bool manageEmpty)
 {
     if (manageEmpty && eVal == "")
         return;
@@ -641,7 +641,7 @@ int PrintHifVisitor::visitValue(Value *o)
 int PrintHifVisitor::visitAggregate(Aggregate &o)
 {
     _push();
-    const bool guide = _printObjectInit(&o);
+    bool guide = _printObjectInit(&o);
 
     visitValue(&o);
 
@@ -658,7 +658,7 @@ int PrintHifVisitor::visitAggregate(Aggregate &o)
 int PrintHifVisitor::visitAggregateAlt(AggregateAlt &o)
 {
     _push();
-    const bool guide = _printObjectInit(&o);
+    bool guide = _printObjectInit(&o);
 
     visitAlt(&o);
 
@@ -677,7 +677,7 @@ int PrintHifVisitor::visitAlias(Alias &o)
     PushOptions opt;
     opt.printParentField = false;
     _push(opt);
-    const bool guide = _printObjectInit(&o);
+    bool guide = _printObjectInit(&o);
 
     visitDataDeclaration(&o);
     _printFlag(o.isStandard(), "STANDARD");
@@ -697,7 +697,7 @@ int PrintHifVisitor::visitArray(Array &o)
     PushOptions opt;
     opt.printParentField = false;
     _push(opt);
-    const bool guide = _printObjectInit(&o);
+    bool guide = _printObjectInit(&o);
 
     _printFlag(o.isSigned(), "SIGNED");
     visitCompositeType(&o);
@@ -719,7 +719,7 @@ int PrintHifVisitor::visitAssign(Assign &o)
     PushOptions opt;
     opt.printParentField = false;
     _push(opt);
-    const bool guide = _printObjectInit(&o);
+    bool guide = _printObjectInit(&o);
 
     if (guide) {
         GuideVisitor::visitAssign(o);
@@ -736,7 +736,7 @@ int PrintHifVisitor::visitSystem(System &o)
     PushOptions opt;
     opt.printNameAtEndOfObject = false;
     _push(opt);
-    const bool guide = _printObjectInit(&o);
+    bool guide = _printObjectInit(&o);
 
     printHifEnum(languageIDToString(o.getLanguageID()));
     System::VersionInfo version = o.getVersionInfo();
@@ -764,7 +764,7 @@ int PrintHifVisitor::visitSystem(System &o)
 int PrintHifVisitor::visitBit(Bit &o)
 {
     _push();
-    const bool guide = _printObjectInit(&o);
+    bool guide = _printObjectInit(&o);
 
     _printFlag(o.isLogic(), "LOGIC");
     _printFlag(o.isResolved(), "RESOLVED");
@@ -785,7 +785,7 @@ int PrintHifVisitor::visitBitValue(BitValue &o)
     PushOptions opt;
     opt.printParentField = false;
     _push(opt);
-    const bool guide = _printObjectInit(&o);
+    bool guide = _printObjectInit(&o);
 
     printHifEnum(bitConstantToString(o.getValue()), " '", "'");
     visitConstValue(&o);
@@ -805,7 +805,7 @@ int PrintHifVisitor::visitBitvector(Bitvector &o)
     PushOptions opt;
     opt.printParentField = false;
     _push(opt);
-    const bool guide = _printObjectInit(&o);
+    bool guide = _printObjectInit(&o);
 
     _printFlag(o.isLogic(), "LOGIC");
     _printFlag(o.isResolved(), "RESOLVED");
@@ -827,7 +827,7 @@ int PrintHifVisitor::visitBitvectorValue(BitvectorValue &o)
     PushOptions opt;
     opt.printParentField = false;
     _push(opt);
-    const bool guide = _printObjectInit(&o);
+    bool guide = _printObjectInit(&o);
 
     _out << " " << "\"" << o.getValue() << "\"";
     visitConstValue(&o);
@@ -846,7 +846,7 @@ int PrintHifVisitor::visitBitvectorValue(BitvectorValue &o)
 int PrintHifVisitor::visitBool(Bool &o)
 {
     _push();
-    const bool guide = _printObjectInit(&o);
+    bool guide = _printObjectInit(&o);
 
     visitSimpleType(&o);
 
@@ -865,7 +865,7 @@ int PrintHifVisitor::visitBoolValue(BoolValue &o)
     PushOptions opt;
     opt.printParentField = false;
     _push(opt);
-    const bool guide = _printObjectInit(&o);
+    bool guide = _printObjectInit(&o);
 
     _out << " ";
     if (o.getValue())
@@ -888,7 +888,7 @@ int PrintHifVisitor::visitBoolValue(BoolValue &o)
 int PrintHifVisitor::visitIfAlt(IfAlt &o)
 {
     _push();
-    const bool guide = _printObjectInit(&o);
+    bool guide = _printObjectInit(&o);
 
     visitAlt(&o);
 
@@ -907,7 +907,7 @@ int PrintHifVisitor::visitIf(If &o)
     PushOptions opt;
     opt.printListIndex = true;
     _push(opt);
-    const bool guide = _printObjectInit(&o);
+    bool guide = _printObjectInit(&o);
 
     visitAction(&o);
 
@@ -926,7 +926,7 @@ int PrintHifVisitor::visitCast(Cast &o)
     PushOptions opt;
     opt.printParentField = false;
     _push(opt);
-    const bool guide = _printObjectInit(&o);
+    bool guide = _printObjectInit(&o);
 
     visitValue(&o);
 
@@ -944,7 +944,7 @@ int PrintHifVisitor::visitCast(Cast &o)
 int PrintHifVisitor::visitChar(Char &o)
 {
     _push();
-    const bool guide = _printObjectInit(&o);
+    bool guide = _printObjectInit(&o);
 
     visitSimpleType(&o);
 
@@ -964,7 +964,7 @@ int PrintHifVisitor::visitCharValue(CharValue &o)
     PushOptions opt;
     opt.printParentField = false;
     _push(opt);
-    const bool guide = _printObjectInit(&o);
+    bool guide = _printObjectInit(&o);
 
     _out << " " << "'";
     if (o.getValue() == '\0')
@@ -991,7 +991,7 @@ int PrintHifVisitor::visitConst(Const &o)
     PushOptions opt;
     opt.printParentField = false;
     _push(opt);
-    const bool guide = _printObjectInit(&o);
+    bool guide = _printObjectInit(&o);
 
     _printFlag(o.isStandard(), "STANDARD");
     _printFlag(o.isInstance(), "INSTANCE");
@@ -1013,7 +1013,7 @@ int PrintHifVisitor::visitContents(Contents &o)
     PushOptions opt;
     opt.printNameAtEndOfObject = true;
     _push(opt);
-    const bool guide = _printObjectInit(&o);
+    bool guide = _printObjectInit(&o);
 
     visitBaseContents(&o);
 
@@ -1032,7 +1032,7 @@ int PrintHifVisitor::visitDesignUnit(DesignUnit &o)
     PushOptions opt;
     opt.printNameAtEndOfObject = true;
     _push(opt);
-    const bool guide = _printObjectInit(&o);
+    bool guide = _printObjectInit(&o);
 
     visitScope(&o);
 
@@ -1051,7 +1051,7 @@ int PrintHifVisitor::visitEnum(Enum &o)
     PushOptions opt;
     opt.printListIndex = true;
     _push(opt);
-    const bool guide = _printObjectInit(&o);
+    bool guide = _printObjectInit(&o);
 
     visitScopedType(&o);
 
@@ -1070,7 +1070,7 @@ int PrintHifVisitor::visitEnumValue(EnumValue &o)
     PushOptions opt;
     opt.printParentField = false;
     _push(opt);
-    const bool guide = _printObjectInit(&o);
+    bool guide = _printObjectInit(&o);
 
     visitDataDeclaration(&o);
 
@@ -1088,7 +1088,7 @@ int PrintHifVisitor::visitEnumValue(EnumValue &o)
 int PrintHifVisitor::visitEvent(Event &o)
 {
     _push();
-    const bool guide = _printObjectInit(&o);
+    bool guide = _printObjectInit(&o);
 
     visitSimpleType(&o);
 
@@ -1105,7 +1105,7 @@ int PrintHifVisitor::visitEvent(Event &o)
 int PrintHifVisitor::visitBreak(Break &o)
 {
     _push();
-    const bool guide = _printObjectInit(&o);
+    bool guide = _printObjectInit(&o);
 
     visitAction(&o);
 
@@ -1125,7 +1125,7 @@ int PrintHifVisitor::visitExpression(Expression &o)
     opt.printParentField = false;
     opt.printClassName   = false;
     _push(opt);
-    const bool guide = _printObjectInit(&o);
+    bool guide = _printObjectInit(&o);
     printHifEnum(operatorToString(o.getOperator()), "", "");
 
     visitValue(&o);
@@ -1143,7 +1143,7 @@ int PrintHifVisitor::visitExpression(Expression &o)
 int PrintHifVisitor::visitFunctionCall(FunctionCall &o)
 {
     _push();
-    const bool guide = _printObjectInit(&o);
+    bool guide = _printObjectInit(&o);
 
     visitValue(&o);
 
@@ -1166,7 +1166,7 @@ int PrintHifVisitor::visitField(Field &o)
     PushOptions opt;
     opt.printParentField = false;
     _push(opt);
-    const bool guide = _printObjectInit(&o);
+    bool guide = _printObjectInit(&o);
 
     visitDataDeclaration(&o);
 
@@ -1189,7 +1189,7 @@ int PrintHifVisitor::visitFieldReference(FieldReference &o)
     PushOptions opt;
     opt.printParentField = false;
     _push(opt);
-    const bool guide = _printObjectInit(&o);
+    bool guide = _printObjectInit(&o);
 
     visitPrefixedReference(&o);
 
@@ -1206,7 +1206,7 @@ int PrintHifVisitor::visitFieldReference(FieldReference &o)
 int PrintHifVisitor::visitFile(File &o)
 {
     _push();
-    const bool guide = _printObjectInit(&o);
+    bool guide = _printObjectInit(&o);
 
     visitCompositeType(&o);
 
@@ -1225,7 +1225,7 @@ int PrintHifVisitor::visitFile(File &o)
 int PrintHifVisitor::visitFor(For &o)
 {
     _push();
-    const bool guide = _printObjectInit(&o);
+    bool guide = _printObjectInit(&o);
 
     visitAction(&o);
 
@@ -1243,7 +1243,7 @@ int PrintHifVisitor::visitFor(For &o)
 int PrintHifVisitor::visitForGenerate(ForGenerate &o)
 {
     _push();
-    const bool guide = _printObjectInit(&o);
+    bool guide = _printObjectInit(&o);
 
     visitGenerate(&o);
 
@@ -1261,7 +1261,7 @@ int PrintHifVisitor::visitForGenerate(ForGenerate &o)
 int PrintHifVisitor::visitFunction(Function &o)
 {
     _push();
-    const bool guide = _printObjectInit(&o);
+    bool guide = _printObjectInit(&o);
 
     visitSubProgram(&o);
 
@@ -1283,7 +1283,7 @@ int PrintHifVisitor::visitFunction(Function &o)
 int PrintHifVisitor::visitGlobalAction(GlobalAction &o)
 {
     _push();
-    const bool guide = _printObjectInit(&o);
+    bool guide = _printObjectInit(&o);
 
     if (guide) {
         GuideVisitor::visitGlobalAction(o);
@@ -1299,7 +1299,7 @@ int PrintHifVisitor::visitGlobalAction(GlobalAction &o)
 int PrintHifVisitor::visitEntity(Entity &o)
 {
     _push();
-    const bool guide = _printObjectInit(&o);
+    bool guide = _printObjectInit(&o);
 
     visitScope(&o);
 
@@ -1317,7 +1317,7 @@ int PrintHifVisitor::visitEntity(Entity &o)
 int PrintHifVisitor::visitIfGenerate(IfGenerate &o)
 {
     _push();
-    const bool guide = _printObjectInit(&o);
+    bool guide = _printObjectInit(&o);
 
     visitGenerate(&o);
 
@@ -1337,7 +1337,7 @@ int PrintHifVisitor::visitInt(Int &o)
     PushOptions opt;
     opt.printParentField = false;
     _push(opt);
-    const bool guide = _printObjectInit(&o);
+    bool guide = _printObjectInit(&o);
 
     _printFlag(o.isSigned(), "SIGNED");
     visitSimpleType(&o);
@@ -1358,7 +1358,7 @@ int PrintHifVisitor::visitIntValue(IntValue &o)
     PushOptions opt;
     opt.printParentField = false;
     _push(opt);
-    const bool guide = _printObjectInit(&o);
+    bool guide = _printObjectInit(&o);
 
     _out << " " << o.getValue();
     visitConstValue(&o);
@@ -1376,7 +1376,7 @@ int PrintHifVisitor::visitIntValue(IntValue &o)
 int PrintHifVisitor::visitInstance(Instance &o)
 {
     _push();
-    const bool guide = _printObjectInit(&o);
+    bool guide = _printObjectInit(&o);
 
     visitValue(&o);
 
@@ -1426,7 +1426,7 @@ int PrintHifVisitor::visitLibraryDef(LibraryDef &o)
 int PrintHifVisitor::visitLibrary(Library &o)
 {
     _push();
-    const bool guide = _printObjectInit(&o);
+    bool guide = _printObjectInit(&o);
 
     _printString(o.getFilename(), "FILE");
     _printFlag(o.isStandard(), "STANDARD");
@@ -1449,7 +1449,7 @@ int PrintHifVisitor::visitMember(Member &o)
     PushOptions opt;
     opt.printParentField = false;
     _push(opt);
-    const bool guide = _printObjectInit(&o);
+    bool guide = _printObjectInit(&o);
 
     visitPrefixedReference(&o);
 
@@ -1467,7 +1467,7 @@ int PrintHifVisitor::visitMember(Member &o)
 int PrintHifVisitor::visitIdentifier(Identifier &o)
 {
     _push();
-    const bool guide = _printObjectInit(&o);
+    bool guide = _printObjectInit(&o);
 
     visitValue(&o);
 
@@ -1485,7 +1485,7 @@ int PrintHifVisitor::visitIdentifier(Identifier &o)
 int PrintHifVisitor::visitContinue(Continue &o)
 {
     _push();
-    const bool guide = _printObjectInit(&o);
+    bool guide = _printObjectInit(&o);
 
     visitAction(&o);
 
@@ -1503,7 +1503,7 @@ int PrintHifVisitor::visitContinue(Continue &o)
 int PrintHifVisitor::visitNull(Null &o)
 {
     _push();
-    const bool guide = _printObjectInit(&o);
+    bool guide = _printObjectInit(&o);
 
     visitAction(&o);
 
@@ -1520,7 +1520,7 @@ int PrintHifVisitor::visitNull(Null &o)
 int PrintHifVisitor::visitTransition(Transition &o)
 {
     _push();
-    const bool guide = _printObjectInit(&o);
+    bool guide = _printObjectInit(&o);
 
     _printString(o.getPrevName(), "PREV_NAME");
     _printInt(static_cast<std::int64_t>(o.getPriority()), "PRIORITY");
@@ -1542,7 +1542,7 @@ int PrintHifVisitor::visitParameterAssign(ParameterAssign &o)
     PushOptions opt;
     opt.printParentField = false;
     _push(opt);
-    const bool guide = _printObjectInit(&o);
+    bool guide = _printObjectInit(&o);
 
     visitPPAssign(&o);
 
@@ -1561,7 +1561,7 @@ int PrintHifVisitor::visitParameter(Parameter &o)
     PushOptions opt;
     opt.printParentField = false;
     _push(opt);
-    const bool guide = _printObjectInit(&o);
+    bool guide = _printObjectInit(&o);
 
     printHifEnum(portDirectionToString(o.getDirection()));
     visitDataDeclaration(&o);
@@ -1580,7 +1580,7 @@ int PrintHifVisitor::visitParameter(Parameter &o)
 int PrintHifVisitor::visitProcedureCall(ProcedureCall &o)
 {
     _push();
-    const bool guide = _printObjectInit(&o);
+    bool guide = _printObjectInit(&o);
 
     visitAction(&o);
 
@@ -1601,7 +1601,7 @@ int PrintHifVisitor::visitProcedureCall(ProcedureCall &o)
 int PrintHifVisitor::visitPointer(Pointer &o)
 {
     _push();
-    const bool guide = _printObjectInit(&o);
+    bool guide = _printObjectInit(&o);
 
     visitCompositeType(&o);
 
@@ -1619,7 +1619,7 @@ int PrintHifVisitor::visitPointer(Pointer &o)
 int PrintHifVisitor::visitPortAssign(PortAssign &o)
 {
     _push();
-    const bool guide = _printObjectInit(&o);
+    bool guide = _printObjectInit(&o);
 
     visitPPAssign(&o);
 
@@ -1639,7 +1639,7 @@ int PrintHifVisitor::visitPort(Port &o)
     PushOptions opt;
     opt.printParentField = false;
     _push(opt);
-    const bool guide = _printObjectInit(&o);
+    bool guide = _printObjectInit(&o);
 
     printHifEnum(portDirectionToString(o.getDirection()));
     _printFlag(o.isWrapper(), "WRAPPER");
@@ -1659,7 +1659,7 @@ int PrintHifVisitor::visitPort(Port &o)
 int PrintHifVisitor::visitProcedure(Procedure &o)
 {
     _push();
-    const bool guide = _printObjectInit(&o);
+    bool guide = _printObjectInit(&o);
 
     visitSubProgram(&o);
 
@@ -1683,7 +1683,7 @@ int PrintHifVisitor::visitRange(Range &o)
     opt.printParentField = false;
     opt.printClassName   = false;
     _push(opt);
-    const bool guide = _printObjectInit(&o);
+    bool guide = _printObjectInit(&o);
 
     printHifEnum(hif::rangeDirectionToString(o.getDirection()), "", "");
     visitValue(&o);
@@ -1702,7 +1702,7 @@ int PrintHifVisitor::visitRange(Range &o)
 int PrintHifVisitor::visitReal(Real &o)
 {
     _push();
-    const bool guide = _printObjectInit(&o);
+    bool guide = _printObjectInit(&o);
 
     visitSimpleType(&o);
 
@@ -1722,7 +1722,7 @@ int PrintHifVisitor::visitRealValue(RealValue &o)
     PushOptions opt;
     opt.printParentField = false;
     _push(opt);
-    const bool guide = _printObjectInit(&o);
+    bool guide = _printObjectInit(&o);
 
     _out << " " << o.getValue();
     visitConstValue(&o);
@@ -1743,7 +1743,7 @@ int PrintHifVisitor::visitRecord(Record &o)
     PushOptions opt;
     opt.printListIndex = true;
     _push(opt);
-    const bool guide = _printObjectInit(&o);
+    bool guide = _printObjectInit(&o);
 
     _printFlag(o.isPacked(), "PACKED");
     _printFlag(o.isUnion(), "UNION");
@@ -1764,7 +1764,7 @@ int PrintHifVisitor::visitRecordValue(RecordValue &o)
     PushOptions opt;
     opt.printListIndex = true;
     _push(opt);
-    const bool guide = _printObjectInit(&o);
+    bool guide = _printObjectInit(&o);
 
     visitValue(&o);
 
@@ -1783,7 +1783,7 @@ int PrintHifVisitor::visitRecordValueAlt(RecordValueAlt &o)
     PushOptions opt;
     opt.printParentField = false;
     _push(opt);
-    const bool guide = _printObjectInit(&o);
+    bool guide = _printObjectInit(&o);
 
     visitAlt(&o);
 
@@ -1800,7 +1800,7 @@ int PrintHifVisitor::visitRecordValueAlt(RecordValueAlt &o)
 int PrintHifVisitor::visitReference(Reference &o)
 {
     _push();
-    const bool guide = _printObjectInit(&o);
+    bool guide = _printObjectInit(&o);
 
     visitCompositeType(&o);
 
@@ -1820,7 +1820,7 @@ int PrintHifVisitor::visitReturn(Return &o)
     PushOptions opt;
     opt.printParentField = false;
     _push(opt);
-    const bool guide = _printObjectInit(&o);
+    bool guide = _printObjectInit(&o);
 
     visitAction(&o);
 
@@ -1840,7 +1840,7 @@ int PrintHifVisitor::visitSignal(Signal &o)
     PushOptions opt;
     opt.printParentField = false;
     _push(opt);
-    const bool guide = _printObjectInit(&o);
+    bool guide = _printObjectInit(&o);
 
     _printFlag(o.isStandard(), "STANDARD");
     _printFlag(o.isWrapper(), "WRAPPER");
@@ -1860,7 +1860,7 @@ int PrintHifVisitor::visitSignal(Signal &o)
 int PrintHifVisitor::visitSigned(Signed &o)
 {
     _push();
-    const bool guide = _printObjectInit(&o);
+    bool guide = _printObjectInit(&o);
 
     visitSimpleType(&o);
 
@@ -1880,7 +1880,7 @@ int PrintHifVisitor::visitSlice(Slice &o)
     PushOptions opt;
     opt.printParentField = false;
     _push(opt);
-    const bool guide = _printObjectInit(&o);
+    bool guide = _printObjectInit(&o);
 
     visitPrefixedReference(&o);
 
@@ -1898,7 +1898,7 @@ int PrintHifVisitor::visitSlice(Slice &o)
 int PrintHifVisitor::visitState(State &o)
 {
     _push();
-    const bool guide = _printObjectInit(&o);
+    bool guide = _printObjectInit(&o);
 
     _printInt(static_cast<std::int64_t>(o.getPriority()), "PRIORITY");
     _printFlag(o.isAtomic(), "ATOMIC");
@@ -1918,7 +1918,7 @@ int PrintHifVisitor::visitState(State &o)
 int PrintHifVisitor::visitString(String &o)
 {
     _push();
-    const bool guide = _printObjectInit(&o);
+    bool guide = _printObjectInit(&o);
 
     visitSimpleType(&o);
 
@@ -1938,7 +1938,7 @@ int PrintHifVisitor::visitStateTable(StateTable &o)
     PushOptions opt;
     opt.printNameAtEndOfObject = true;
     _push(opt);
-    const bool guide = _printObjectInit(&o);
+    bool guide = _printObjectInit(&o);
 
     _printFlag(o.isStandard(), "STANDARD");
     printHifEnum(processFlavourToString(o.getFlavour()));
@@ -1960,7 +1960,7 @@ int PrintHifVisitor::visitStateTable(StateTable &o)
 int PrintHifVisitor::visitSwitchAlt(SwitchAlt &o)
 {
     _push();
-    const bool guide = _printObjectInit(&o);
+    bool guide = _printObjectInit(&o);
 
     visitAlt(&o);
 
@@ -1980,7 +1980,7 @@ int PrintHifVisitor::visitSwitch(Switch &o)
     opt.printParentField = false;
     opt.printListIndex   = true;
     _push(opt);
-    const bool guide = _printObjectInit(&o);
+    bool guide = _printObjectInit(&o);
 
     printHifEnum(caseSemanticsToString(o.getCaseSemantics()));
     visitAction(&o);
@@ -2001,7 +2001,7 @@ int PrintHifVisitor::visitStringValue(StringValue &o)
     PushOptions opt;
     opt.printParentField = false;
     _push(opt);
-    const bool guide = _printObjectInit(&o);
+    bool guide = _printObjectInit(&o);
 
     _out << " " << "\"" << o.getValue() << "\"";
     _printFlag(o.isPlain(), "PLAIN");
@@ -2020,7 +2020,7 @@ int PrintHifVisitor::visitStringValue(StringValue &o)
 int PrintHifVisitor::visitTime(Time &o)
 {
     _push();
-    const bool guide = _printObjectInit(&o);
+    bool guide = _printObjectInit(&o);
 
     visitSimpleType(&o);
 
@@ -2039,7 +2039,7 @@ int PrintHifVisitor::visitTimeValue(TimeValue &o)
     PushOptions opt;
     opt.printParentField = false;
     _push(opt);
-    const bool guide = _printObjectInit(&o);
+    bool guide = _printObjectInit(&o);
 
     _out << " " << o.getValue();
     printHifEnum(TimeValue::timeUnitToString(o.getUnit()), " ", "");
@@ -2060,7 +2060,7 @@ int PrintHifVisitor::visitTypeDef(TypeDef &o)
     PushOptions opt;
     opt.printParentField = false;
     _push(opt);
-    const bool guide = _printObjectInit(&o);
+    bool guide = _printObjectInit(&o);
 
     _printFlag(o.isStandard(), "STANDARD");
     _printFlag(o.isOpaque(), "OPAQUE");
@@ -2081,7 +2081,7 @@ int PrintHifVisitor::visitTypeDef(TypeDef &o)
 int PrintHifVisitor::visitTypeReference(TypeReference &o)
 {
     _push();
-    const bool guide = _printObjectInit(&o);
+    bool guide = _printObjectInit(&o);
 
     visitReferencedType(&o);
 
@@ -2101,7 +2101,7 @@ int PrintHifVisitor::visitTypeTPAssign(TypeTPAssign &o)
     PushOptions opt;
     opt.printParentField = false;
     _push(opt);
-    const bool guide = _printObjectInit(&o);
+    bool guide = _printObjectInit(&o);
 
     visitTPAssign(&o);
 
@@ -2119,7 +2119,7 @@ int PrintHifVisitor::visitTypeTPAssign(TypeTPAssign &o)
 int PrintHifVisitor::visitTypeTP(TypeTP &o)
 {
     _push();
-    const bool guide = _printObjectInit(&o);
+    bool guide = _printObjectInit(&o);
 
     visitTypeDeclaration(&o);
 
@@ -2137,7 +2137,7 @@ int PrintHifVisitor::visitTypeTP(TypeTP &o)
 int PrintHifVisitor::visitUnsigned(Unsigned &o)
 {
     _push();
-    const bool guide = _printObjectInit(&o);
+    bool guide = _printObjectInit(&o);
 
     visitSimpleType(&o);
 
@@ -2155,7 +2155,7 @@ int PrintHifVisitor::visitUnsigned(Unsigned &o)
 int PrintHifVisitor::visitValueStatement(ValueStatement &o)
 {
     _push();
-    const bool guide = _printObjectInit(&o);
+    bool guide = _printObjectInit(&o);
 
     visitAction(&o);
 
@@ -2175,7 +2175,7 @@ int PrintHifVisitor::visitValueTPAssign(ValueTPAssign &o)
     PushOptions opt;
     opt.printParentField = false;
     _push(opt);
-    const bool guide = _printObjectInit(&o);
+    bool guide = _printObjectInit(&o);
 
     visitTPAssign(&o);
 
@@ -2195,7 +2195,7 @@ int PrintHifVisitor::visitValueTP(ValueTP &o)
     PushOptions opt;
     opt.printParentField = false;
     _push(opt);
-    const bool guide = _printObjectInit(&o);
+    bool guide = _printObjectInit(&o);
 
     _printFlag(o.isCompileTimeConstant(), "CTC");
     visitDataDeclaration(&o);
@@ -2216,7 +2216,7 @@ int PrintHifVisitor::visitVariable(Variable &o)
     PushOptions opt;
     opt.printParentField = false;
     _push(opt);
-    const bool guide = _printObjectInit(&o);
+    bool guide = _printObjectInit(&o);
 
     _printFlag(o.isStandard(), "STANDARD");
     _printFlag(o.isInstance(), "INSTANCE");
@@ -2238,7 +2238,7 @@ int PrintHifVisitor::visitView(View &o)
     PushOptions opt;
     opt.printNameAtEndOfObject = true;
     _push(opt);
-    const bool guide = _printObjectInit(&o);
+    bool guide = _printObjectInit(&o);
 
     printHifEnum(languageIDToString(o.getLanguageID()));
     _printString(o.getFilename(), "FILE");
@@ -2259,7 +2259,7 @@ int PrintHifVisitor::visitView(View &o)
 int PrintHifVisitor::visitViewReference(ViewReference &o)
 {
     _push();
-    const bool guide = _printObjectInit(&o);
+    bool guide = _printObjectInit(&o);
 
     _printName(o.getDesignUnit(), "UNIT");
     visitReferencedType(&o);
@@ -2278,7 +2278,7 @@ int PrintHifVisitor::visitViewReference(ViewReference &o)
 int PrintHifVisitor::visitWait(Wait &o)
 {
     _push();
-    const bool guide = _printObjectInit(&o);
+    bool guide = _printObjectInit(&o);
 
     visitAction(&o);
 
@@ -2296,7 +2296,7 @@ int PrintHifVisitor::visitWait(Wait &o)
 int PrintHifVisitor::visitWhen(When &o)
 {
     _push();
-    const bool guide = _printObjectInit(&o);
+    bool guide = _printObjectInit(&o);
 
     _printFlag(o.isLogicTernary(), "LOGIC-TERNARY");
 
@@ -2316,7 +2316,7 @@ int PrintHifVisitor::visitWhen(When &o)
 int PrintHifVisitor::visitWhenAlt(WhenAlt &o)
 {
     _push();
-    const bool guide = _printObjectInit(&o);
+    bool guide = _printObjectInit(&o);
 
     visitAlt(&o);
 
@@ -2334,7 +2334,7 @@ int PrintHifVisitor::visitWhenAlt(WhenAlt &o)
 int PrintHifVisitor::visitWhile(While &o)
 {
     _push();
-    const bool guide = _printObjectInit(&o);
+    bool guide = _printObjectInit(&o);
 
     _printFlag(o.isDoWhile(), "DO-WHILE");
     visitAction(&o);
@@ -2353,7 +2353,7 @@ int PrintHifVisitor::visitWhile(While &o)
 int PrintHifVisitor::visitWith(With &o)
 {
     _push();
-    const bool guide = _printObjectInit(&o);
+    bool guide = _printObjectInit(&o);
 
     printHifEnum(caseSemanticsToString(o.getCaseSemantics()));
     visitValue(&o);
@@ -2372,7 +2372,7 @@ int PrintHifVisitor::visitWith(With &o)
 int PrintHifVisitor::visitWithAlt(WithAlt &o)
 {
     _push();
-    const bool guide = _printObjectInit(&o);
+    bool guide = _printObjectInit(&o);
 
     visitAlt(&o);
 
@@ -2632,7 +2632,7 @@ bool PrintHifVisitor::_skipIfSummary(Object *o)
 
 void PrintHifVisitor::_printChildenStrings()
 {
-    const bool split = _checkMultiline();
+    bool split = _checkMultiline();
 
     _out << hif::backends::indent;
 
@@ -2664,7 +2664,7 @@ bool PrintHifVisitor::_checkMultiline()
     return size > 100u;
 }
 
-void PrintHifVisitor::_printFlag(const bool value, const std::string &name, const bool printAnyway)
+void PrintHifVisitor::_printFlag(bool value, const std::string &name, bool printAnyway)
 {
     if (!value && !printAnyway)
         return;
@@ -2674,7 +2674,7 @@ void PrintHifVisitor::_printFlag(const bool value, const std::string &name, cons
     _out << name << "]";
 }
 
-void PrintHifVisitor::_printString(const std::string &value, const std::string &name, const bool printAnyway)
+void PrintHifVisitor::_printString(const std::string &value, const std::string &name, bool printAnyway)
 {
     if (value.empty() && !printAnyway)
         return;
@@ -2686,7 +2686,7 @@ void PrintHifVisitor::_printInt(std::int64_t value, const std::string &name)
     _out << " [" << name << ": " << value << "]";
 }
 
-void PrintHifVisitor::_printName(const std::string &value, const std::string &name, const bool printAnyway)
+void PrintHifVisitor::_printName(const std::string &value, const std::string &name, bool printAnyway)
 {
     if ((value.empty() || value == NAME_NONE) && !printAnyway)
         return;

@@ -21,7 +21,7 @@ class AncestorVisitor : public HifVisitor
 public:
     /// @brief Constructor.
     /// @param visitFeatures If <tt>true</tt> call visit of the features.
-    AncestorVisitor(const bool visitFeatures);
+    AncestorVisitor(bool visitFeatures);
 
     /// @brief Virtual Destructor
     virtual ~AncestorVisitor();

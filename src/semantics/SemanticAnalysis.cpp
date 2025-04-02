@@ -28,8 +28,8 @@ void SemanticAnalysis::analyzeOperands(Type *op1Type, Type *op2Type)
     if (op1Type == nullptr)
         return;
     bool resultIsConstexpr = false;
-    const bool canReplace1 = op1Type->getParent() != nullptr;
-    const bool canReplace2 = op2Type != nullptr && op2Type->getParent() != nullptr;
+    bool canReplace1 = op1Type->getParent() != nullptr;
+    bool canReplace2 = op2Type != nullptr && op2Type->getParent() != nullptr;
     Type *op1Prefixed      = getPrefixedType(op1Type, _sem, _prefixOpt, _srcObj);
     Type *op2Prefixed      = getPrefixedType(op2Type, _sem, _prefixOpt, _srcObj);
     if (canReplace1)
@@ -183,8 +183,8 @@ void SemanticAnalysis::_restoreTypeReference(TypeReference *tr, Type *base)
     hif::manipulation::prefixTree(cbase, _sem, prefOpt);
     hif::manipulation::prefixTree(crt, _sem, prefOpt);
     hif::manipulation::prefixTree(prec, _sem, prefOpt);
-    const bool retEquals  = hif::equals(crt, cbase, eopt);
-    const bool precEquals = hif::equals(prec, cbase, eopt);
+    bool retEquals  = hif::equals(crt, cbase, eopt);
+    bool precEquals = hif::equals(prec, cbase, eopt);
     delete cbase;
     delete crt;
     delete prec;
@@ -255,7 +255,7 @@ void SemanticAnalysis::_map(Type *op1, TypeReference *op2)
     delete base2Prefixed;
 }
 
-void SemanticAnalysis::_map(TypeReference *op1, TypeReference *op2, const bool checkOpacity)
+void SemanticAnalysis::_map(TypeReference *op1, TypeReference *op2, bool checkOpacity)
 {
     Type *baseOpaque1 = getBaseType(op1, true, _sem);
     Type *baseOpaque2 = getBaseType(op2, true, _sem);

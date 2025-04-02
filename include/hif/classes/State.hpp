@@ -94,7 +94,7 @@ public:
     priority_t getPriority() const;
 
     /// @brief Sets the flag atomic.
-    void setAtomic(const bool v);
+    void setAtomic(bool v);
 
     /// @brief Gets the flag atomic.
     bool isAtomic() const;

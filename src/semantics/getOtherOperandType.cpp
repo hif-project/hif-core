@@ -29,10 +29,10 @@ VisitedSetList _visitedSetList;
 Type *_getOtherOperandType(
     Object *o,
     ILanguageSemantics *sem,
-    const bool considerOverloading,
-    const bool looseTypeChecks,
-    const bool needOnlyDirection,
-    const bool isRecursive);
+    bool considerOverloading,
+    bool looseTypeChecks,
+    bool needOnlyDirection,
+    bool isRecursive);
 
 bool _isUpto   = false;
 bool _isDownto = false;
@@ -52,10 +52,10 @@ Type *_getWhenOtherOperandType(
     When *w,
     Object * /*starting*/,
     ILanguageSemantics *sem,
-    const bool considerOverloading,
-    const bool looseTypeChecks,
-    const bool needOnlyDirection,
-    const bool isRecursive)
+    bool considerOverloading,
+    bool looseTypeChecks,
+    bool needOnlyDirection,
+    bool isRecursive)
 {
     if (w->getDefault() != nullptr && !_isVisited(w->getDefault())) {
         return getSemanticType(w->getDefault(), sem);
@@ -76,10 +76,10 @@ Type *_getWhenOtherOperandType(
 Type *_getOtherOperandType(
     Object *o,
     ILanguageSemantics *sem,
-    const bool considerOverloading,
-    const bool looseTypeChecks,
-    const bool needOnlyDirection,
-    const bool isRecursive)
+    bool considerOverloading,
+    bool looseTypeChecks,
+    bool needOnlyDirection,
+    bool isRecursive)
 {
     if (o == nullptr)
         return nullptr;
@@ -302,7 +302,7 @@ Type *_getOtherOperandType(
 } // namespace
 
 Type *
-getOtherOperandType(Object *o, ILanguageSemantics *sem, const bool considerOverloading, const bool looseTypeChecks)
+getOtherOperandType(Object *o, ILanguageSemantics *sem, bool considerOverloading, bool looseTypeChecks)
 {
     VisitedSet visitedSet;
     _visitedSetList.push_back(visitedSet);

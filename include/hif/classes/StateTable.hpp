@@ -154,7 +154,7 @@ public:
     ProcessFlavour getFlavour() const;
 
     /// @brief Set whether perform initialization at time 0.
-    void setDontInitialize(const bool dontInitialize);
+    void setDontInitialize(bool dontInitialize);
 
     /// @brief Get whether perform initialization at time 0.
     bool getDontInitialize() const;
@@ -168,7 +168,7 @@ public:
     /// @param standard The boolean that identifies if this is a standard
     /// declaration.
     ///
-    void setStandard(const bool standard);
+    void setStandard(bool standard);
 
 protected:
     /// @brief Fills the internal fields and blists lists.

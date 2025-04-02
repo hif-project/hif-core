@@ -25,7 +25,7 @@ typedef std::map<Identifier::DeclarationType *, std::vector<std::string>> Declar
 // ///////////////////////////////////////////////////////////////////
 // Last value fix part
 // ///////////////////////////////////////////////////////////////////
-FunctionCall *_mapRisingFalling(Object *o, Object *root, hif::semantics::ILanguageSemantics *sem, const bool isRising)
+FunctionCall *_mapRisingFalling(Object *o, Object *root, hif::semantics::ILanguageSemantics *sem, bool isRising)
 {
     FunctionCall *call = dynamic_cast<FunctionCall *>(o);
     messageAssert(call != nullptr && call->parameterAssigns.size() == 1, "Unexpected rising/falling reference", o, sem);
@@ -77,7 +77,7 @@ bool _fixLastValueAsLibrary(
     FunctionCall *o,
     DeclarationsMap &declarations,
     hif::semantics::ILanguageSemantics *sem,
-    const bool isInline)
+    bool isInline)
 {
     Identifier *id = dynamic_cast<Identifier *>(hif::getTerminalPrefix(hif::getChildSkippingCasts(o->getInstance())));
     messageAssert(id != nullptr, "Unexpeceted instance", o, sem);
@@ -329,7 +329,7 @@ bool mapLastValueToSystemC(Object *root, const LastValueOptions &opts)
             "Found last value inside unexpected scope", f, sem);
 
         // Actual fix
-        const bool firstFixInScope = _fixLastValueAsLibrary(f, declarations, sem, opts.inlineLastValue);
+        bool firstFixInScope = _fixLastValueAsLibrary(f, declarations, sem, opts.inlineLastValue);
         ret |= firstFixInScope;
 
         if (!firstFixInScope | opts.inlineLastValue)

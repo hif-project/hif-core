@@ -58,7 +58,7 @@ public:
 
     /// @brief Sets whether this is a standard declaration.
     /// @param standard <tt>true</tt> if this is a standard declaration, <tt>false</tt> otherwise.
-    void setStandard(const bool standard);
+    void setStandard(bool standard);
 
     /// @brief Returns whether this typedef is a bookmark for a type defined elsewhenre.
     /// @return <tt>true</tt> if this is an external declaration, <tt>false</tt> otherwise.
@@ -66,7 +66,7 @@ public:
 
     /// @brief Sets whether this typedef is a bookmark for a type defined elsewhenre.
     /// @param external <tt>true</tt> if this is an external declaration, <tt>false</tt> otherwise.
-    void setExternal(const bool external);
+    void setExternal(bool external);
 
     /// @brief Accepts a visitor to visit the current object.
     /// @param vis The visitor.

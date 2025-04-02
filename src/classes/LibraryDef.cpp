@@ -33,9 +33,9 @@ LibraryDef::~LibraryDef()
 
 bool LibraryDef::isStandard() const { return _isStandard; }
 
-void LibraryDef::setStandard(const bool standard) { _isStandard = standard; }
+void LibraryDef::setStandard(bool standard) { _isStandard = standard; }
 
-void LibraryDef::setCLinkage(const bool cLinkage) { _hasCLinkage = cLinkage; }
+void LibraryDef::setCLinkage(bool cLinkage) { _hasCLinkage = cLinkage; }
 
 bool LibraryDef::hasCLinkage() const { return _hasCLinkage; }
 

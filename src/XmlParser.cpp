@@ -159,46 +159,46 @@ private:
     /// Check if node has only 1 child, if number is different
     /// print an error. Il \p s is set, check also that element has \p s
     /// as tag name.
-    void _checkExactlyOneChild(Poco::XML::Node *n, std::string s = "", Object *obj = nullptr);
+    void _checkExactlyOneChild(Poco::XML::Node *n, const std::string &s = "", Object *obj = nullptr);
 
     /// Add code line info (if present) to the object \p o. After that, code info
     /// childs are removed.
     void _addCodeInfoPropertiesComments(Poco::XML::Node *n, Object *o);
 
     /// Return true if element name s is a name of a action object element.
-    bool _isActionElement(std::string s);
+    bool _isActionElement(const std::string &s);
 
     /// Return true if element name s is a name of a declaration object element.
-    bool _isDataDeclElement(std::string s);
+    bool _isDataDeclElement(const std::string &s);
 
     /// Return true if element name s is a name of a declaration object element.
-    bool _isDeclElement(std::string s);
+    bool _isDeclElement(const std::string &s);
 
     /// Return true if element name s is a name of a generate object element.
-    bool _isGenerateElement(std::string s);
+    bool _isGenerateElement(const std::string &s);
 
     /// Return true if element name s is a name of a PPAssign object element.
-    bool _isPPAssignElement(std::string s);
+    bool _isPPAssignElement(const std::string &s);
 
     /// Return true if element name s is a name of a type object element.
-    bool _isTypeElement(std::string s);
+    bool _isTypeElement(const std::string &s);
 
     /// Return true if element name s is a name of a value object element.
-    bool _isValueElement(std::string s);
-    bool _isConstValue(std::string s);
-    bool _isPrefixedReference(std::string s);
+    bool _isValueElement(const std::string &s);
+    bool _isConstValue(const std::string &s);
+    bool _isPrefixedReference(const std::string &s);
 
     /// Return true if element name s is a name of a TPAssign object element.
-    bool _isTPAssignElement(std::string s);
+    bool _isTPAssignElement(const std::string &s);
 
     /// Return true if element name s is a name of a Viewref object element.
-    bool _isViewrefElement(std::string s);
+    bool _isViewrefElement(const std::string &s);
 
     /// Return true if element name s is a name of a TypedObject object element.
-    bool _isTypedObjectElement(std::string s);
+    bool _isTypedObjectElement(const std::string &s);
 
     /// Base call for all getAttribute functions.
-    Poco::XML::XMLString _getAttributeByName(Poco::XML::Node *n, std::string s, bool required = true);
+    Poco::XML::XMLString _getAttributeByName(Poco::XML::Node *n, const std::string &s, bool required = true);
 
     /// Check whether given nodehas an attribute with specified name.
     bool _hasAttributeWithName(Poco::XML::Node *n, const std::string &s);
@@ -208,34 +208,34 @@ private:
     /// If attribute is required, print and exit with error if it is not found.
     std::string _getStringAttributeByName(
         Poco::XML::Node *n,
-        std::string s,
+        const std::string &s,
         bool required                   = true,
         const std::string &defaultValue = "");
 
     /// Return a bool corresponding to the value of attribute \p s, nullptr if
     /// Attribute is not found.
     /// If attribute is required, print and exit with error if it is not found.
-    bool _getBoolAttributeByName(Poco::XML::Node *n, std::string s, bool required = false);
+    bool _getBoolAttributeByName(Poco::XML::Node *n, const std::string &s, bool required = false);
 
     /// Return a int corresponding to the value of attribute \p s, nullptr if
     /// Attribute is not found.
     /// If attribute is required, print and exit with error if it is not found.
-    std::int64_t _getIntAttributeByName(Poco::XML::Node *n, std::string s, bool required = false);
+    std::int64_t _getIntAttributeByName(Poco::XML::Node *n, const std::string &s, bool required = false);
 
     /// Return a int corresponding to the value of attribute \p s, nullptr if
     /// Attribute is not found.
     /// If attribute is required, print and exit with error if it is not found.
-    double _getDoubleAttributeByName(Poco::XML::Node *n, std::string s, bool required = false);
+    double _getDoubleAttributeByName(Poco::XML::Node *n, const std::string &s, bool required = false);
 
     /// Returns the typeVariant enum value corresponding to the value of attribute
     /// \p s.
     /// If attribute is required, print and exit with error if it is not found.
-    Type::TypeVariant _getTypeVariantAttributeByName(Poco::XML::Node *n, std::string s, bool required = false);
+    Type::TypeVariant _getTypeVariantAttributeByName(Poco::XML::Node *n, const std::string &s, bool required = false);
 
     /// Returns the typeVariant enum value corresponding to the value of attribute
     /// \p s.
     /// If attribute is required, print and exit with error if it is not found.
-    bool _getConstexprAttributeByName(Poco::XML::Node *n, std::string s, const bool required = true);
+    bool _getConstexprAttributeByName(Poco::XML::Node *n, const std::string &s, bool required = true);
 
     Object *_visitGenericObject(Poco::XML::Node *n);
 
@@ -744,7 +744,7 @@ Contents *XmlParser::_visitContents(Poco::XML::Node *n)
 
 DataDeclaration *XmlParser::_visitDataDeclaration(Poco::XML::Node *n)
 {
-    DataDeclaration *ret  = nullptr;
+    DataDeclaration *ret         = nullptr;
     std::string decl_name = n->nodeName();
 
     if (decl_name == "ALIAS")
@@ -771,7 +771,7 @@ DataDeclaration *XmlParser::_visitDataDeclaration(Poco::XML::Node *n)
 
 Declaration *XmlParser::_visitDeclaration(Poco::XML::Node *n)
 {
-    Declaration *ret      = nullptr;
+    Declaration *ret             = nullptr;
     std::string decl_name = n->nodeName();
 
     if (_isDataDeclElement(decl_name))
@@ -1206,7 +1206,7 @@ Function *XmlParser::_visitFunction(Poco::XML::Node *n)
 }
 Generate *XmlParser::_visitGenerate(Poco::XML::Node *n)
 {
-    Generate *ret   = nullptr;
+    Generate *ret          = nullptr;
     std::string gen = n->nodeName();
 
     if (gen == "FORGENERATE") {
@@ -2022,7 +2022,7 @@ Signed *XmlParser::_visitSigned(Poco::XML::Node *n)
 }
 Action *XmlParser::_visitAction(Poco::XML::Node *n)
 {
-    Action *ret     = nullptr;
+    Action *ret            = nullptr;
     std::string obj = n->nodeName();
 
     if (obj == "ASSIGN")
@@ -2308,7 +2308,7 @@ System *XmlParser::_visitSystem(Poco::XML::Node *n)
     version.release            = _getStringAttributeByName(n, "release", false);
     version.tool               = _getStringAttributeByName(n, "tool", false);
     version.generationDate     = _getStringAttributeByName(n, "generationDate", false);
-    std::string s              = _getStringAttributeByName(n, "formatVersion", false);
+    std::string s       = _getStringAttributeByName(n, "formatVersion", false);
     version.formatVersionMajor = 0;
     version.formatVersionMinor = 0;
     if (!s.empty()) {
@@ -3126,7 +3126,7 @@ TypedObject *XmlParser::_visitInnerTypedObject(Poco::XML::Node *n)
 }
 // --------------------------- utilities ---------------------------------
 
-Poco::XML::XMLString XmlParser::_getAttributeByName(Poco::XML::Node *n, std::string s, bool required)
+Poco::XML::XMLString XmlParser::_getAttributeByName(Poco::XML::Node *n, const std::string &s, bool required)
 {
     Poco::XML::NamedNodeMap *attributes = n->attributes();
     if (attributes->getNamedItem(s) == nullptr) {
@@ -3144,12 +3144,15 @@ Poco::XML::XMLString XmlParser::_getAttributeByName(Poco::XML::Node *n, std::str
 bool XmlParser::_hasAttributeWithName(Poco::XML::Node *n, const std::string &s)
 {
     Poco::XML::NamedNodeMap *attributes = n->attributes();
-    const bool ret                      = (attributes->getNamedItem(s) != nullptr);
+    bool ret                            = (attributes->getNamedItem(s) != nullptr);
     attributes->release();
     return ret;
 }
-std::string
-XmlParser::_getStringAttributeByName(Poco::XML::Node *n, std::string s, bool required, const std::string &defaultValue)
+std::string XmlParser::_getStringAttributeByName(
+    Poco::XML::Node *n,
+    const std::string &s,
+    bool required,
+    const std::string &defaultValue)
 {
     std::string ret = _getAttributeByName(n, s, required);
     if (ret == "")
@@ -3157,7 +3160,7 @@ XmlParser::_getStringAttributeByName(Poco::XML::Node *n, std::string s, bool req
 
     return ret;
 }
-bool XmlParser::_getBoolAttributeByName(Poco::XML::Node *n, std::string s, bool required)
+bool XmlParser::_getBoolAttributeByName(Poco::XML::Node *n, const std::string &s, bool required)
 {
     std::string str = _getAttributeByName(n, s, required);
     if (str == "")
@@ -3169,7 +3172,7 @@ bool XmlParser::_getBoolAttributeByName(Poco::XML::Node *n, std::string s, bool 
     messageError("Unexpected value of boolean attribute for node " + n->nodeName() + ": " + str, nullptr, nullptr);
 }
 
-std::int64_t XmlParser::_getIntAttributeByName(Poco::XML::Node *n, std::string s, bool required)
+std::int64_t XmlParser::_getIntAttributeByName(Poco::XML::Node *n, const std::string &s, bool required)
 {
     std::int64_t ret;
     std::stringstream val;
@@ -3177,7 +3180,7 @@ std::int64_t XmlParser::_getIntAttributeByName(Poco::XML::Node *n, std::string s
     val >> ret;
     return ret;
 }
-double XmlParser::_getDoubleAttributeByName(Poco::XML::Node *n, std::string s, bool required)
+double XmlParser::_getDoubleAttributeByName(Poco::XML::Node *n, const std::string &s, bool required)
 {
     double ret;
     std::stringstream val;
@@ -3186,7 +3189,7 @@ double XmlParser::_getDoubleAttributeByName(Poco::XML::Node *n, std::string s, b
     return ret;
 }
 
-Type::TypeVariant XmlParser::_getTypeVariantAttributeByName(Poco::XML::Node *n, std::string s, bool)
+Type::TypeVariant XmlParser::_getTypeVariantAttributeByName(Poco::XML::Node *n, const std::string &s, bool)
 {
     std::string variant;
     if (_formatVersionMajor < 1) {
@@ -3199,7 +3202,7 @@ Type::TypeVariant XmlParser::_getTypeVariantAttributeByName(Poco::XML::Node *n, 
     return Type::typeVariantFromString(variant);
 }
 
-bool XmlParser::_getConstexprAttributeByName(Poco::XML::Node *n, std::string s, const bool required)
+bool XmlParser::_getConstexprAttributeByName(Poco::XML::Node *n, const std::string &s, bool required)
 {
     bool cexpr = false;
     if (_formatVersionMajor < 1) {
@@ -3229,7 +3232,7 @@ void XmlParser::_addCodeInfoPropertiesComments(Poco::XML::Node *n, Object *o)
             for (unsigned int j = 0; j < ll->length(); ++j) {
                 if (ll->item(j)->nodeName() == "PROPERTY") {
                     std::string name = _getStringAttributeByName(ll->item(j), "name");
-                    TypedObject *val = nullptr;
+                    TypedObject *val        = nullptr;
 
                     /// CHILDREN
                     Poco::XML::Node *nVal = ll->item(j)->firstChild();
@@ -3296,7 +3299,7 @@ void XmlParser::_addCodeInfoPropertiesComments(Poco::XML::Node *n, Object *o)
     if (column_number != 0)
         o->setSourceLineNumber(column_number);
 }
-void XmlParser::_checkExactlyOneChild(Poco::XML::Node *n, std::string s, Object *obj)
+void XmlParser::_checkExactlyOneChild(Poco::XML::Node *n, const std::string &s, Object *obj)
 {
     Poco::XML::NodeList *l = n->childNodes();
     if (l->length() == 0) {
@@ -3315,49 +3318,52 @@ void XmlParser::_checkExactlyOneChild(Poco::XML::Node *n, std::string s, Object 
         return;
     }
 }
-bool XmlParser::_isDataDeclElement(std::string s)
+bool XmlParser::_isDataDeclElement(const std::string &s)
 {
     return (
         s == "ALIAS" || s == "CONSTANT" || s == "ENUMVAL" || s == "FIELD" || s == "PARAMETER" || s == "PORT" ||
         s == "SIGNAL" || s == "VALUETP" || s == "VARIABLE");
 }
 
-bool XmlParser::_isDeclElement(std::string s)
+bool XmlParser::_isDeclElement(const std::string &s)
 {
     return (
         _isDataDeclElement(s) || s == "CONTENTS" || s == "FORGENERATE" || s == "IFGENERATE" || s == "DESIGNUNIT" ||
         s == "LIBRARYDEF" || s == "FUNCTION" || s == "METHOD" || s == "PROCEDURE" || s == "SYSTEM" || s == "TYPEDEF" ||
         s == "TYPETP" || s == "INSTANCE" || s == "STATE" || s == "SYSTEM");
 }
-bool XmlParser::_isGenerateElement(std::string s) { return (s == "FORGENERATE" || s == "IFGENERATE"); }
-bool XmlParser::_isPPAssignElement(std::string s) { return (s == "PARAMETERASSIGN" || s == "PORTASSIGN"); }
+bool XmlParser::_isGenerateElement(const std::string &s) { return (s == "FORGENERATE" || s == "IFGENERATE"); }
+bool XmlParser::_isPPAssignElement(const std::string &s) { return (s == "PARAMETERASSIGN" || s == "PORTASSIGN"); }
 
-bool XmlParser::_isActionElement(std::string s)
+bool XmlParser::_isActionElement(const std::string &s)
 {
     return (
         s == "ASSIGN" || s == "CASE" || s == "EXIT" || s == "FOR" || s == "IF" || s == "NEXT" || s == "nullptr" ||
         s == "TRANSITION" || s == "PCALL" || s == "RETURN" || s == "SWITCH" || s == "WAIT" || s == "WHILE" ||
         s == "WHILE" || s == "VALUESTATEMENT");
 }
-bool XmlParser::_isTypedObjectElement(std::string s)
+bool XmlParser::_isTypedObjectElement(const std::string &s)
 {
     return (s == "PARAMASSIGN" || s == "PORTASSIGN" || _isTPAssignElement(s) || _isValueElement(s));
 }
-bool XmlParser::_isValueElement(std::string s)
+bool XmlParser::_isValueElement(const std::string &s)
 {
     return (
         s == "AGGREGATE" || s == "CAST" || _isConstValue(s) || s == "EXPRESSION" || s == "FCALL" || s == "IDENTIFIER" ||
         s == "INSTANCE" || _isPrefixedReference(s) || s == "RANGE" || s == "RECORDVALUE" || s == "TIMEVALUE" ||
         s == "WHEN" || s == "WITH");
 }
-bool XmlParser::_isConstValue(std::string s)
+bool XmlParser::_isConstValue(const std::string &s)
 {
     return (
         s == "BITVAL" || s == "BITVECTORVAL" || s == "BOOLVAL" || s == "CHARVAL" || s == "INTVAL" || s == "REALVAL" ||
         s == "STRINGVAL");
 }
-bool XmlParser::_isPrefixedReference(std::string s) { return (s == "FIELDREFERENCE" || s == "MEMBER" || s == "SLICE"); }
-bool XmlParser::_isTypeElement(std::string s)
+bool XmlParser::_isPrefixedReference(const std::string &s)
+{
+    return (s == "FIELDREFERENCE" || s == "MEMBER" || s == "SLICE");
+}
+bool XmlParser::_isTypeElement(const std::string &s)
 {
     return (
         s == "ARRAY" || s == "RECORD" || s == "BIT" || s == "BITVECTOR" || s == "BOOLEAN" || s == "CHAR" ||
@@ -3365,8 +3371,8 @@ bool XmlParser::_isTypeElement(std::string s)
         s == "SIGNED_TYPE" || s == "STRING" || s == "TIME" || s == "FILE" || s == "TYPEREFERENCE" ||
         s == "UNSIGNED_TYPE" || s == "VIEWREFERENCE" || s == "EVENT");
 }
-bool XmlParser::_isTPAssignElement(std::string s) { return (s == "TYPETPASSIGN" || s == "VALUETPASSIGN"); }
-bool XmlParser::_isViewrefElement(std::string s) { return (s == "VIEWREFERENCE"); }
+bool XmlParser::_isTPAssignElement(const std::string &s) { return (s == "TYPETPASSIGN" || s == "VALUETPASSIGN"); }
+bool XmlParser::_isViewrefElement(const std::string &s) { return (s == "VIEWREFERENCE"); }
 Object *XmlParser::_visitGenericObject(Poco::XML::Node *n)
 {
     std::string s(n->nodeName());

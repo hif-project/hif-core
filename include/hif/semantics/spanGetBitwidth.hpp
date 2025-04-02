@@ -30,7 +30,7 @@ namespace semantics
 std::uint64_t spanGetBitwidth(
     Range *r,
     ILanguageSemantics *sem                        = HIFSemantics::getInstance(),
-    const bool simplify                            = true,
+    bool simplify                            = true,
     const hif::manipulation::SimplifyOptions &opts = hif::manipulation::SimplifyOptions());
 
 /// @brief Function that return the size of <tt>t</tt>,
@@ -45,7 +45,7 @@ std::uint64_t spanGetBitwidth(
 std::uint64_t typeGetSpanBitwidth(
     Type *type,
     ILanguageSemantics *sem,
-    const bool simplify                            = true,
+    bool simplify                            = true,
     const hif::manipulation::SimplifyOptions &opts = hif::manipulation::SimplifyOptions());
 
 } // namespace semantics

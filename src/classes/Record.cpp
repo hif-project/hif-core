@@ -32,9 +32,9 @@ ClassId Record::getClassId() const { return CLASSID_RECORD; }
 
 int Record::acceptVisitor(HifVisitor &vis) { return vis.visitRecord(*this); }
 
-Type *Record::getBaseType(const bool considerOpacity) const { return considerOpacity ? _baseOpaqueType : _baseType; }
+Type *Record::getBaseType(bool considerOpacity) const { return considerOpacity ? _baseOpaqueType : _baseType; }
 
-Type *Record::setBaseType(Type *x, const bool considerOpacity)
+Type *Record::setBaseType(Type *x, bool considerOpacity)
 {
     if (considerOpacity) {
         return setChild(_baseOpaqueType, x);
@@ -59,10 +59,10 @@ std::string Record::_getBListName(const BList<Object> &list) const
 
 bool Record::isPacked() const { return _packed; }
 
-void Record::setPacked(const bool packed) { _packed = packed; }
+void Record::setPacked(bool packed) { _packed = packed; }
 
 bool Record::isUnion() const { return _union; }
 
-void Record::setUnion(const bool u) { _union = u; }
+void Record::setUnion(bool u) { _union = u; }
 
 } // namespace hif

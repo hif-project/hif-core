@@ -533,7 +533,7 @@ bool propagateSymbols(PropagationOptions &options, hif::semantics::ILanguageSema
     }
 
     Propagator p(options, sem);
-    const bool ret = p.propagateTargets();
+    bool ret = p.propagateTargets();
 
     return ret;
 }

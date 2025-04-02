@@ -51,7 +51,7 @@ void StepFileManager::setParentManager(StepFileManager *parentManager) { _parent
 
 auto StepFileManager::getPrint() const -> bool { return _print; }
 
-void StepFileManager::setPrint(const bool print) { _print = print; }
+void StepFileManager::setPrint(bool print) { _print = print; }
 
 void StepFileManager::printStep(System *s, const std::string &stepName)
 {
@@ -145,7 +145,7 @@ auto StepFileManager::checkStepName() -> bool
     if (_autoStepFile.empty()) {
         return true;
     }
-    const bool ret = (_currentAutoStepNumber > _autoStepNumber);
+    bool ret = (_currentAutoStepNumber > _autoStepNumber);
     ++_currentAutoStepNumber;
     if (!ret) {
         ++_stepNumber;

@@ -66,7 +66,7 @@ void StateTable::setFlavour(ProcessFlavour f) { _flavour = f; }
 
 ProcessFlavour StateTable::getFlavour() const { return _flavour; }
 
-void StateTable::setDontInitialize(const bool dontInitialize) { _dontInitialize = dontInitialize; }
+void StateTable::setDontInitialize(bool dontInitialize) { _dontInitialize = dontInitialize; }
 
 bool StateTable::getDontInitialize() const { return _dontInitialize; }
 
@@ -76,7 +76,7 @@ int StateTable::acceptVisitor(HifVisitor &vis) { return vis.visitStateTable(*thi
 
 bool StateTable::isStandard() const { return _isStandard; }
 
-void StateTable::setStandard(const bool standard) { _isStandard = standard; }
+void StateTable::setStandard(bool standard) { _isStandard = standard; }
 
 void StateTable::_calculateFields()
 {

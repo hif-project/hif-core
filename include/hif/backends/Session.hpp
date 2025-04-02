@@ -96,7 +96,7 @@ public:
     /// @brief Set a path (access to the node)
     void SetPath(std::string &sPath);
     /// @brief Set an instance name
-    void SetInstName(std::string sName);
+    void SetInstName(const std::string &sName);
     /// @brief Set an entity name
     void SetEntName(const std::string &sName);
     /// @brief Set an instance flag

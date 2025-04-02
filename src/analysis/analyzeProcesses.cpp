@@ -387,18 +387,18 @@ void ProcessVisitor::_classifyWrtSensitivity(ProcessInfos &infos, StateTable * /
     }
     // else maybe synch, but we do not know: already fine
     // Refining taking into account also other signals.
-    const bool noAsynch = (asynch == 0 && asynchPos == 0 && asynchNeg == 0);
+    bool noAsynch = (asynch == 0 && asynchPos == 0 && asynchNeg == 0);
     if (noAsynch) {
         return;
     }
-    const bool sameName = (asynchName.empty() || asynchPosName.empty() || asynchName == asynchPosName) &&
+    bool sameName = (asynchName.empty() || asynchPosName.empty() || asynchName == asynchPosName) &&
                           (asynchName.empty() || asynchNegName.empty() || asynchName == asynchNegName) &&
                           (asynchPosName.empty() || asynchNegName.empty() || asynchPosName == asynchNegName);
 
-    const bool oneAsynchForKind =
+    bool oneAsynchForKind =
         (asynch == 0 || asynch == 1) && (asynchPos == 0 || asynchPos == 1) && (asynchNeg == 0 || asynchNeg == 1);
 
-    const bool justOneAsynch = oneAsynchForKind && sameName;
+    bool justOneAsynch = oneAsynchForKind && sameName;
 
     if (infos.processKind == ProcessInfos::SYNCHRONOUS) {
         if (infos.resetKind == ProcessInfos::NO_RESET && justOneAsynch) {
@@ -711,9 +711,9 @@ auto ProcessVisitor::_mergeProcessStyle(ProcessInfos &infosRet, ProcessInfos &in
 
 auto ProcessVisitor::_mergeSignals(ProcessInfos &infosRet, ProcessInfos &infos1, ProcessInfos &infos2) -> bool
 {
-    const bool clockOk = infos1.clock == nullptr || infos2.clock == nullptr || infos1.clock == infos2.clock;
+    bool clockOk = infos1.clock == nullptr || infos2.clock == nullptr || infos1.clock == infos2.clock;
 
-    const bool resetOk = infos1.reset == nullptr || infos2.reset == nullptr || infos1.reset == infos2.reset;
+    bool resetOk = infos1.reset == nullptr || infos2.reset == nullptr || infos1.reset == infos2.reset;
 
     if (!clockOk || !resetOk) {
         return false;

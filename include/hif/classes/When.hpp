@@ -62,7 +62,7 @@ public:
 
     /// @brief Sets logic ternary property.
     /// @param logicTernary The value to set.
-    void setLogicTernary(const bool logicTernary);
+    void setLogicTernary(bool logicTernary);
 
     /// @brief Accepts a visitor to visit the current object.
     /// @param vis The visitor.

@@ -106,7 +106,7 @@ bool objectGetProcessFlavour(Object *obj, ProcessFlavour &flavour);
 /// @param recursive If recoursive in parents.
 ///
 
-void objectSetLanguage(Object *obj, const hif::LanguageID id, const bool recursive = false);
+void objectSetLanguage(Object *obj, const hif::LanguageID id, bool recursive = false);
 
 /// @brief Sets an object <tt>instance</tt> field.
 /// @note If instance can be set and <tt>obj</tt> already has an instance,
@@ -167,7 +167,7 @@ bool objectIsProcess(Object *o);
 /// @return True if given object is into process.
 ///
 
-bool objectIsInProcess(Object *o, const bool matchAssigns = true, const bool matchStarting = true);
+bool objectIsInProcess(Object *o, bool matchAssigns = true, bool matchStarting = true);
 
 /// @brief Returns the wrapping process.
 /// In case of StateTables and Assigns without parent, returns them.
@@ -178,7 +178,7 @@ bool objectIsInProcess(Object *o, const bool matchAssigns = true, const bool mat
 /// @return True if given object is into process.
 ///
 
-Object *objectGetProcess(Object *o, const bool matchAssigns = true, const bool matchStarting = true);
+Object *objectGetProcess(Object *o, bool matchAssigns = true, bool matchStarting = true);
 /// @brief Returns true if given object is standard.
 /// In case of has no standard flag it returns false.
 ///
@@ -195,7 +195,7 @@ bool objectIsStandard(Object *o);
 /// @param isStandard The new value.
 ///
 
-void objectSetStandard(Object *o, const bool isStandard);
+void objectSetStandard(Object *o, bool isStandard);
 
 /// @brief Returns true if given object is external.
 /// In case of has no external flag it returns false.
@@ -213,7 +213,7 @@ bool objectIsExternal(Object *o);
 /// @param isExternal The new value.
 ///
 
-void objectSetExternal(Object *o, const bool isExternal);
+void objectSetExternal(Object *o, bool isExternal);
 /// @brief Checks whether given object is a nullptr pointer.
 ///
 /// @param o The object to be checked.

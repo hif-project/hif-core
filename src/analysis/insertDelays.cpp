@@ -27,7 +27,7 @@ auto _makeName(
     const std::string &prefix,
     const std::size_t clocks,
     const std::size_t deltas,
-    const bool halfClock) -> std::string
+    bool halfClock) -> std::string
 {
     std::stringstream ss;
     ss << prefix << clocks;
@@ -39,7 +39,7 @@ auto _makeName(
     return ss.str();
 }
 
-void _fixOutputReset(Processes &newProcesses, Signal *prev, DataDeclaration *reset, const bool isInput)
+void _fixOutputReset(Processes &newProcesses, Signal *prev, DataDeclaration *reset, bool isInput)
 {
     if (isInput || reset == nullptr) {
         return;
@@ -60,7 +60,7 @@ auto _makeSignal(
     View *view,
     const std::size_t deltas,
     const std::size_t clocks,
-    const bool halfClock,
+    bool halfClock,
     hif::semantics::ILanguageSemantics *sem) -> Signal *
 {
     std::string name(_makeName("_ds_", clocks, deltas, halfClock));
@@ -128,9 +128,9 @@ auto _makeDeltaProcess(
     Value *resetValue,
     const std::size_t deltas,
     const std::size_t clockCycles,
-    const bool halfClock,
+    bool halfClock,
     hif::semantics::ILanguageSemantics *sem,
-    const bool isInput) -> Signal *
+    bool isInput) -> Signal *
 {
     if (prev == nullptr) {
         prev = ref;
@@ -183,9 +183,9 @@ auto _makeClockProcess(
     Value *resetValue,
     const std::size_t deltas,
     const std::size_t clockCycles,
-    const bool halfClock,
+    bool halfClock,
     hif::semantics::ILanguageSemantics *sem,
-    const bool isInput) -> Signal *
+    bool isInput) -> Signal *
 {
     messageAssert(clock != nullptr, "Clock not found.", nullptr, nullptr);
 
@@ -256,7 +256,7 @@ auto _makeHalfClockProcess(
     const std::size_t deltas,
     const std::size_t clockCycles,
     hif::semantics::ILanguageSemantics *sem,
-    const bool isInput) -> Signal *
+    bool isInput) -> Signal *
 {
     messageAssert(clock != nullptr, "Clock not found.", nullptr, nullptr);
 
@@ -320,7 +320,7 @@ void _insertTrueDelay(
     RefSet &refs,
     DelayProperties &delay,
     hif::semantics::ILanguageSemantics *sem,
-    const bool isInput)
+    bool isInput)
 {
     // Creating support reset value.
     Value *rv = nullptr;
@@ -386,7 +386,7 @@ void _insertNoDelay(
     DelayInfos &delayInfos,
     RefSet &refs,
     hif::semantics::ILanguageSemantics *sem,
-    const bool isInput)
+    bool isInput)
 {
     DelayProperties delay;
     delay.port = p;

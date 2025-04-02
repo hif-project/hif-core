@@ -297,7 +297,7 @@ bool SplitConcats::_splitNonArrayType(Assign *o)
     Value *minBound               = hif::rangeGetMinBound(span);
     const hif::RangeDirection dir = span->getDirection();
     Type *sourceType              = hif::semantics::getSemanticType(o->getRightHandSide(), _sem);
-    const bool needCast           = !hif::equals(targetType, sourceType);
+    bool needCast           = !hif::equals(targetType, sourceType);
     Value *target                 = o->getLeftHandSide();
     Value *source                 = o->getRightHandSide();
     Slice *leftSlice              = dynamic_cast<Slice *>(target);
@@ -368,7 +368,7 @@ bool SplitConcats::_splitArrayType(Assign *o)
     Type *sourceBaseType    = hif::semantics::getBaseType(source, false, _sem);
     Type *targetElementType = hif::semantics::getVectorElementType(baseType, _sem);
     Type *sourceElementType = hif::semantics::getVectorElementType(sourceBaseType, _sem);
-    const bool needCast     = !hif::equals(targetElementType, sourceElementType);
+    bool needCast     = !hif::equals(targetElementType, sourceElementType);
 
     BList<Object>::iterator it(o);
     hif::CopyOptions opt;
@@ -610,7 +610,7 @@ SplitConcats::_makeRange(const RangeDirection dir, std::uint64_t minIndex, std::
 
 Value *SplitConcats::_makeBound(std::uint64_t index, Value *v)
 {
-    const bool isZero =
+    bool isZero =
         (v == nullptr) || (dynamic_cast<IntValue *>(v) != nullptr && static_cast<IntValue *>(v)->getValue() == 0);
 
     Value *ret = nullptr;
@@ -628,8 +628,8 @@ Value *SplitConcats::_makeElement(Value *val, Type *sourceType, Type *targetType
 {
     Value *ret                    = nullptr;
     std::int64_t ill                 = static_cast<std::int64_t>(i);
-    const bool isSourceVectorType = hif::semantics::isVectorType(sourceType, _sem);
-    const bool isTargetArray      = (dynamic_cast<Array *>(targetType) != nullptr);
+    bool isSourceVectorType = hif::semantics::isVectorType(sourceType, _sem);
+    bool isTargetArray      = (dynamic_cast<Array *>(targetType) != nullptr);
 
     if (isSourceVectorType && isTargetArray) {
         Type *nested = hif::typeGetNestedType(targetType, _sem, 1);

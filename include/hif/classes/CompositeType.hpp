@@ -43,14 +43,14 @@ public:
     /// @brief Returns the composite base type.
     /// @param considerOpacity <tt>true</tt> if opacity is to be considered, <tt>false</tt> otherwise.
     /// @return The composite base type.
-    Type *getBaseType(const bool considerOpacity) const;
+    Type *getBaseType(bool considerOpacity) const;
 
     /// @brief Sets the composite base type.
     /// @param t The new composite type to be set.
     /// @param considerOpacity <tt>true</tt> if opacity is to be considered, <tt>false</tt> otherwise.
     /// @return The old composite base type if it is different
     /// from the new one, nullptr otherwise.
-    Type *setBaseType(Type *t, const bool considerOpacity);
+    Type *setBaseType(Type *t, bool considerOpacity);
 
 protected:
     /// @brief Fills the internal fields and blists lists.

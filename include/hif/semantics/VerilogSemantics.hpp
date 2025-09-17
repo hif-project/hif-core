@@ -231,6 +231,8 @@ public:
     static VerilogSemantics *getInstance();
     /// @brief This function returns true if the given operator is supported by
     /// the semantics, false otherwise.
+    /// @param operation The operator to check.
+    /// @return true if supported, false otherwise.
     bool isSupported(Operator operation);
     /// @brief Checks whether a name is forbidden in the current semantics.
     virtual bool isForbiddenName(Declaration *decl);
@@ -241,10 +243,29 @@ public:
     /// @name Standard packages
     /// @{
 
+    /// @brief Gets the standard Verilog package.
+    /// @param hifFormat If true, returns the package in HIF format.
+    /// @return Pointer to the standard package LibraryDef.
     LibraryDef *getStandardPackage(const bool hifFormat = false);
+
+    /// @brief Gets the VAMS standard package.
+    /// @param hifFormat If true, returns the package in HIF format.
+    /// @return Pointer to the VAMS standard package LibraryDef.
     LibraryDef *getVAMSStandardPackage(const bool hifFormat = false);
+
+    /// @brief Gets the VAMS constants package.
+    /// @param hifFormat If true, returns the package in HIF format.
+    /// @return Pointer to the VAMS constants package LibraryDef.
     LibraryDef *getVAMSConstantsPackage(const bool hifFormat = false);
+
+    /// @brief Gets the VAMS disciplines package.
+    /// @param hifFormat If true, returns the package in HIF format.
+    /// @return Pointer to the VAMS disciplines package LibraryDef.
     LibraryDef *getVAMSDisciplinesPackage(const bool hifFormat = false);
+
+    /// @brief Gets the VAMS driver access package.
+    /// @param hifFormat If true, returns the package in HIF format.
+    /// @return Pointer to the VAMS driver access package LibraryDef.
     LibraryDef *getVAMSDriverAccessPackage(const bool hifFormat = false);
 
     /// @brief Get the eventual LibraryDef matching the given name.

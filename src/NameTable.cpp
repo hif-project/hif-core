@@ -20,9 +20,6 @@ namespace hif
 namespace
 {
 
-const char *const a_to_Z       = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-const char *const zero_to_nine = "0123456789";
-
 const char *const name_none                  = "(no name)";
 const char *const name_any                   = "(any name)";
 const char *const name_hif_string_names      = "hif_string_names";

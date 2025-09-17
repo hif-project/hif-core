@@ -35,6 +35,8 @@ public:
     virtual ~ISymbol() = 0;
 
     /// @brief Given an object, check whether it matches the DeclarationType.
+    /// @param o The object to check.
+    /// @return True if the object matches the declaration type.
     virtual bool matchDeclarationType(Object *o) = 0;
 
 protected:
@@ -55,6 +57,9 @@ protected:
     /// corresponding symbol declaration.
     virtual void setDeclaration(Object *d) = 0;
 
+    /// @brief Friend function to set declaration.
+    /// @param o The object.
+    /// @param decl The declaration.
     friend void hif::semantics::setDeclaration(Object *o, Object *decl);
 };
 /// @brief Interface for symbols, including their declaration type and other

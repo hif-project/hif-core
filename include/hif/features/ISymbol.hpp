@@ -63,6 +63,7 @@ template <class T>
 class TemplateSymbolIf : public ISymbol
 {
 public:
+    /// @brief Type alias for the declaration type.
     typedef T DeclarationType;
 
     /// @brief Virtual destructor.

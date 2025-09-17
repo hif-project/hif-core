@@ -145,38 +145,70 @@ public:
     /// @name Traits & types.
     /// @{
 
+    /// @brief Type for list of actions.
     typedef ListElement<Action> action_t;
+    /// @brief Type for list of aggregate alternatives.
     typedef ListElement<AggregateAlt> aggregatealt_t;
+    /// @brief Type for list of declarations.
     typedef ListElement<Declaration> declaration_t;
+    /// @brief Type for list of templates.
     typedef ListElement<Declaration> template_t;
+    /// @brief Type for list of enum values.
     typedef ListElement<EnumValue> enumValue_t;
+    /// @brief Type for list of fields.
     typedef ListElement<Field> field_t;
+    /// @brief Type for list of generates.
     typedef ListElement<Generate> generate_t;
+    /// @brief Type for list of if alternatives.
     typedef ListElement<IfAlt> ifAlt_t;
+    /// @brief Type for list of instances.
     typedef ListElement<Instance> instance_t;
+    /// @brief Type for list of libraries.
     typedef ListElement<Library> library_t;
+    /// @brief Type for list of record value alternatives.
     typedef ListElement<RecordValueAlt> recordvaluealt_t;
+    /// @brief Type for list of parameters.
     typedef ListElement<Parameter> parameter_t;
+    /// @brief Type for list of parameter arguments.
     typedef ListElement<ParameterAssign> parameterArgument_t;
+    /// @brief Type for list of port assigns.
     typedef ListElement<PortAssign> portassign_t;
+    /// @brief Type for list of state tables.
     typedef ListElement<StateTable> stateTable_t;
+    /// @brief Type for list of template arguments.
     typedef ListElement<TPAssign> templateArgument_t;
+    /// @brief Type for list of when alternatives.
     typedef ListElement<WhenAlt> whenAlt_t;
+    /// @brief Type for list of view references.
     typedef ListElement<ViewReference> viewReference_t;
 
     /// @}
 
+    /// @brief Default constructor.
     HifFactory();
 
+    /// @brief Constructor with semantics.
+    /// @param sem The language semantics.
     explicit HifFactory(hif::semantics::ILanguageSemantics *sem);
 
+    /// @brief Destructor.
     ~HifFactory();
 
-    HifFactory(const HifFactory &);
+    /// @brief Copy constructor.
+    /// @param other The HifFactory to copy.
+    HifFactory(const HifFactory &other);
 
-    HifFactory &operator=(const HifFactory &);
+    /// @brief Assignment operator.
+    /// @param other The HifFactory to assign.
+    /// @return Reference to this.
+    HifFactory &operator=(const HifFactory &other);
 
+    /// @brief Sets the language semantics.
+    /// @param sem The language semantics to set.
     void setSemantics(hif::semantics::ILanguageSemantics *sem);
+
+    /// @brief Gets the language semantics.
+    /// @return The current language semantics.
     hif::semantics::ILanguageSemantics *getSemantics();
     /// @name Helper methods.
     /// @{
@@ -995,6 +1027,7 @@ public:
     /// @}
 
 protected:
+    /// @brief The language semantics used by this factory.
     hif::semantics::ILanguageSemantics *_sem;
 };
 

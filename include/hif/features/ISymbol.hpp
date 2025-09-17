@@ -31,16 +31,23 @@ namespace features
 class ISymbol : public IFeature
 {
 public:
+    /// @brief Virtual destructor.
     virtual ~ISymbol() = 0;
 
     /// @brief Given an object, check whether it matches the DeclarationType.
     virtual bool matchDeclarationType(Object *o) = 0;
 
 protected:
+    /// @brief Default constructor.
     ISymbol();
 
+    /// @brief Copy constructor.
+    /// @param other The ISymbol to copy.
     ISymbol(const ISymbol &other);
 
+    /// @brief Assignment operator.
+    /// @param other The ISymbol to assign.
+    /// @return Reference to this.
     ISymbol &operator=(const ISymbol &other);
 
     /// @brief Set the declaration of the corresponding symbol.
@@ -58,8 +65,12 @@ class TemplateSymbolIf : public ISymbol
 public:
     typedef T DeclarationType;
 
+    /// @brief Virtual destructor.
     virtual ~TemplateSymbolIf() = 0;
 
+    /// @brief Check if the object matches the declaration type.
+    /// @param o The object to check.
+    /// @return True if the object matches the declaration type.
     virtual bool matchDeclarationType(Object *o);
 
     /// @brief Get the declaration of the corresponding symbol.
@@ -68,12 +79,21 @@ public:
     DeclarationType *GetDeclaration();
 
 protected:
+    /// @brief Default constructor.
     TemplateSymbolIf();
 
+    /// @brief Copy constructor.
+    /// @param other The TemplateSymbolIf to copy.
     TemplateSymbolIf(const TemplateSymbolIf<T> &other);
 
+    /// @brief Assignment operator.
+    /// @param other The TemplateSymbolIf to assign.
+    /// @return Reference to this.
     TemplateSymbolIf<T> &operator=(const TemplateSymbolIf<T> &other);
 
+    /// @brief Set the declaration of the corresponding symbol.
+    /// @param d Pointer to a DeclarationType that contains the
+    /// corresponding symbol declaration.
     virtual void setDeclaration(Object *d);
 
     /// @brief The declaration.

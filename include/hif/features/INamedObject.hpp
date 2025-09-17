@@ -43,9 +43,19 @@ public:
     /// @}
 
 protected:
+    /// @brief Default constructor.
     INamedObject();
+
+    /// @brief Virtual destructor.
     virtual ~INamedObject() = default;
+
+    /// @brief Copy constructor.
+    /// @param other The INamedObject to copy.
     INamedObject(const INamedObject &other);
+
+    /// @brief Assignment operator.
+    /// @param other The INamedObject to assign.
+    /// @return Reference to this.
     INamedObject &operator=(const INamedObject &other);
 
 private:

@@ -227,7 +227,7 @@ public:
     /// Singleton stuff.
     ///
     /// @brief Function thats return an instance to VHDLSemantic class.
-    ///
+    /// @return Pointer to the singleton instance.
     static VerilogSemantics *getInstance();
     /// @brief This function returns true if the given operator is supported by
     /// the semantics, false otherwise.
@@ -235,6 +235,8 @@ public:
     /// @return true if supported, false otherwise.
     bool isSupported(Operator operation);
     /// @brief Checks whether a name is forbidden in the current semantics.
+    /// @param decl The declaration to check.
+    /// @return true if the name is forbidden, false otherwise.
     virtual bool isForbiddenName(Declaration *decl);
     virtual bool isSliceTypeRebased();
 
@@ -274,6 +276,9 @@ public:
     virtual LibraryDef *getStandardLibrary(const std::string & n);
 
     /// @brief Return True if the given library is native for the semantics.
+    /// @param n The library name.
+    /// @param hifFormat If true, check in HIF format.
+    /// @return true if the library is native, false otherwise.
     virtual bool isNativeLibrary(const std::string & n, const bool hifFormat = false);
 
     /// @brief Starting from system adds all required standard packages.
@@ -281,20 +286,35 @@ public:
     virtual void addStandardPackages(System *s);
 
     /// @brief Map an input symbol into the corresponding output one.
+    /// @param decl The declaration.
+    /// @param key The key symbol.
+    /// @param value The value symbol.
+    /// @param srcSem The source semantics.
+    /// @return The mapping case.
     virtual MapCases
     mapStandardSymbol(Declaration *decl, KeySymbol &key, ValueSymbol &value, ILanguageSemantics *srcSem);
 
     /// @brief Returns true if no namespaces is needed for given library name.
+    /// @param n The library name.
+    /// @param isLibInclusion Whether it's a library inclusion.
+    /// @return true if no namespace is needed, false otherwise.
     virtual bool isStandardInclusion(const std::string & n, const bool isLibInclusion);
 
     /// @brief Returns the mapped symbol w.r.t. the current semantics.
+    /// @param key The key symbol.
+    /// @param s The object.
+    /// @return The simplified symbol object.
     virtual Object *getSimplifiedSymbol(KeySymbol &key, Object *s);
 
     /// @brief Returns the event method name w.r.t. current semantics.
+    /// @param hifFormat If true, return in HIF format.
+    /// @return The event method name.
     virtual std::string getEventMethodName(const bool hifFormat = false);
 
     /// @brief Returns <tt>true</tt> if the given call is an event call w.r.t.
     /// the current semantics, <tt>false</tt> otherwise.
+    /// @param call The function call to check.
+    /// @return true if it's an event call, false otherwise.
     virtual bool isEventCall(FunctionCall *call);
 
     /// @}

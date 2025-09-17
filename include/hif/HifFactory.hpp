@@ -214,60 +214,79 @@ public:
     /// @{
 
     /// @brief Used to avoid actions.
+    /// @return An empty list of actions.
     action_t noActions();
 
     /// @brief Used to avoid AggregateAlts.
+    /// @return An empty list of aggregate alternatives.
     aggregatealt_t noAggregateAlts();
 
     /// @brief Used to avoid declarations.
+    /// @return An empty list of declarations.
     declaration_t noDeclarations();
 
     /// @brief Used to avoid generates.
+    /// @return An empty list of generates.
     generate_t noGenerates();
 
     /// @brief Used to avoid alternatives.
+    /// @return An empty list of if alternatives.
     ifAlt_t noIfAlts();
 
     /// @brief Used to avoid instances.
+    /// @return An empty list of instances.
     instance_t noInstances();
 
     /// @brief Used to avoid libraries.
+    /// @return An empty list of libraries.
     library_t noLibraries();
 
     /// @brief Used to avoid parameters.
+    /// @return An empty list of parameters.
     parameter_t noParameters();
 
     /// @brief Used to avoid parameter arguments.
+    /// @return An empty list of parameter arguments.
     parameterArgument_t noParameterArguments();
 
     /// @brief Used to avoid portassign arguments.
+    /// @return An empty list of port assigns.
     portassign_t noPortAssigns();
 
     /// @brief Used to avoid alternatives.
+    /// @return An empty list of record value alternatives.
     recordvaluealt_t noRecordValueAlts();
 
     /// @brief Used to avoid StateTables.
+    /// @return An empty list of state tables.
     stateTable_t noStateTables();
 
     /// @brief Used to avoid template arguments.
+    /// @return An empty list of template arguments.
     templateArgument_t noTemplateArguments();
 
     /// @brief Used to avoid templates.
+    /// @return An empty list of templates.
     template_t noTemplates();
 
     /// @brief Used to avoid the type.
+    /// @return A null type pointer.
     Type *noType();
 
     /// @brief Used to avoid the values.
+    /// @return A null value pointer.
     Value *noValue();
 
     /// @brief Used to avoid alternatives.
+    /// @return An empty list of when alternatives.
     whenAlt_t noWhenAlts();
 
     /// @brief Used to avoid fields.
+    /// @return An empty list of fields.
     field_t noFields();
 
     /// @brief Used to avoid fields.
+    /// @return An empty list of view references.
     static viewReference_t noViewReferences();
 
     Object *codeInfo(Object *o, const std::string &fileName, unsigned int line, unsigned int col = 0);
@@ -407,6 +426,7 @@ public:
 
     /// @brief Creates an unsigned char (i.e. 8-bit byte) type.
     /// In HIF unsigned char is represented as an 8-bit unsigned integer.
+    /// @return An Int pointer representing an unsigned char type.
     Int *unsignedChar();
 
     /// @brief Creates a unsigned.

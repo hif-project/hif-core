@@ -240,7 +240,7 @@ public:
     /// Singleton stuff.
     ///
     /// @brief Function thats return an instance to SystemCSemantics class.
-    ///
+    /// @return The instance.
     static SystemCSemantics *getInstance();
     /// @brief This function returns true if the given operator is supported by
     /// the semantics, false otherwise.

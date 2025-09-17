@@ -27,8 +27,16 @@ public:
     virtual ~IFeature() = 0;
 
 protected:
+    /// @brief Default constructor.
     IFeature();
+
+    /// @brief Copy constructor.
+    /// @param other The IFeature to copy.
     IFeature(const IFeature &other);
+
+    /// @brief Assignment operator.
+    /// @param other The IFeature to assign.
+    /// @return Reference to this.
     IFeature &operator=(const IFeature &other);
 };
 

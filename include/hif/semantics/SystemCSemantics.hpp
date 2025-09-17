@@ -244,8 +244,13 @@ public:
     static SystemCSemantics *getInstance();
     /// @brief This function returns true if the given operator is supported by
     /// the semantics, false otherwise.
+    /// @param operation The operator to check.
+    /// @return True if supported.
     bool isSupported(Operator operation);
+
     /// @brief Checks whether a name is forbidden in the current semantics.
+    /// @param decl The declaration to check.
+    /// @return True if forbidden.
     virtual bool isForbiddenName(Declaration *decl);
 
     virtual bool isSliceTypeRebased();
@@ -256,45 +261,130 @@ public:
     /// @{
 
     /// @brief Set if Semantics have to use hdtlib library types.
+    /// @param v The value to set.
     void setUseHdtlib(const bool v);
 
     /// @brief Get if Semantics have use hdtlib library types.
+    /// @return True if using hdtlib.
     bool usingHdtlib();
 
     /// @brief Set if Semantics have to keep bit deprecated bit type
+    /// @param v The value to set.
     void setKeepBit(const bool v);
 
     /// @brief Get if Semantics have to keep bit deprecated bit type
+    /// @return True if keeping bit.
     bool getKeepBit();
 
     /// @brief Set if Semantics have to preserve resolved types.
+    /// @param v The value to set.
     void setResolvedTypes(const bool v);
 
     /// @brief Get if Semantics have to preserve resolved types.
+    /// @return True if preserving resolved types.
     bool getResolvedTypes();
     /// @}
     /// @name Standard libraries.
     /// @{
 
+    /// @brief Get the standard package.
+    /// @param hifFormat Whether to use HIF format.
+    /// @return The standard package.
     LibraryDef *getStandardPackage(const bool hifFormat = false);
+
+    /// @brief Get the new package.
+    /// @param hifFormat Whether to use HIF format.
+    /// @return The new package.
     LibraryDef *getNewPackage(const bool hifFormat = false);
+
+    /// @brief Get the SystemVue model builder.
+    /// @param hifFormat Whether to use HIF format.
+    /// @return The SystemVue model builder.
     LibraryDef *getSystemVueModelBuilder(const bool hifFormat = false);
+
+    /// @brief Get the C math package.
+    /// @param hifFormat Whether to use HIF format.
+    /// @return The C math package.
     LibraryDef *getCMathPackage(const bool hifFormat = false);
+
+    /// @brief Get the C stdio package.
+    /// @param hifFormat Whether to use HIF format.
+    /// @return The C stdio package.
     LibraryDef *getCStdIOPackage(const bool hifFormat = false);
+
+    /// @brief Get the C stdlib package.
+    /// @param hifFormat Whether to use HIF format.
+    /// @return The C stdlib package.
     LibraryDef *getCStdLibPackage(const bool hifFormat = false);
+
+    /// @brief Get the C time package.
+    /// @param hifFormat Whether to use HIF format.
+    /// @return The C time package.
     LibraryDef *getCTimePackage(const bool hifFormat = false);
+
+    /// @brief Get the ddt clib package.
+    /// @param hifFormat Whether to use HIF format.
+    /// @return The ddt clib package.
     LibraryDef *getDdtClibPackage(const bool hifFormat = false);
+
+    /// @brief Get the hdtlib package.
+    /// @param hifFormat Whether to use HIF format.
+    /// @return The hdtlib package.
     LibraryDef *getHdtlibPackage(const bool hifFormat = false);
+
+    /// @brief Get the iostream package.
+    /// @param hifFormat Whether to use HIF format.
+    /// @return The iostream package.
     LibraryDef *getIOStreamPackage(const bool hifFormat = false);
+
+    /// @brief Get the sc ams eln package.
+    /// @param hifFormat Whether to use HIF format.
+    /// @return The sc ams eln package.
     LibraryDef *getScAmsELNPackage(const bool hifFormat = false);
+
+    /// @brief Get the sc core package.
+    /// @param hifFormat Whether to use HIF format.
+    /// @return The sc core package.
     LibraryDef *getScCorePackage(const bool hifFormat = false);
+
+    /// @brief Get the string package.
+    /// @param hifFormat Whether to use HIF format.
+    /// @return The string package.
     LibraryDef *getStringPackage(const bool hifFormat = false);
+
+    /// @brief Get the cstring package.
+    /// @param hifFormat Whether to use HIF format.
+    /// @return The cstring package.
     LibraryDef *getCStringPackage(const bool hifFormat = false);
+
+    /// @brief Get the c stddef package.
+    /// @param hifFormat Whether to use HIF format.
+    /// @return The c stddef package.
     LibraryDef *getCStdDefPackage(const bool hifFormat = false);
+
+    /// @brief Get the systemc extensions package.
+    /// @param hifFormat Whether to use HIF format.
+    /// @return The systemc extensions package.
     LibraryDef *getSystemcExtensionsPackage(const bool hifFormat = false);
+
+    /// @brief Get the tlm package.
+    /// @param hifFormat Whether to use HIF format.
+    /// @return The tlm package.
     LibraryDef *getTlmPackage(const bool hifFormat = false);
+
+    /// @brief Get the vector package.
+    /// @param hifFormat Whether to use HIF format.
+    /// @return The vector package.
     LibraryDef *getVectorPackage(const bool hifFormat = false);
+
+    /// @brief Get the tlm utils.
+    /// @param hifFormat Whether to use HIF format.
+    /// @return The tlm utils.
     LibraryDef *getTlmUtils(const bool hifFormat = false);
+
+    /// @brief Get the sc dt package.
+    /// @param hifFormat Whether to use HIF format.
+    /// @return The sc dt package.
     LibraryDef *getScDtPackage(const bool hifFormat = false);
 
     /// @brief Get the eventual LibraryDef matching the given name.
@@ -303,27 +393,47 @@ public:
     virtual LibraryDef *getStandardLibrary(const std::string & n);
 
     /// @brief Return True if the given library is native for the semantics.
+    /// @param n The library name.
+    /// @param hifFormat Whether to use HIF format.
+    /// @return True if native.
     virtual bool isNativeLibrary(const std::string & n, const bool hifFormat = false);
 
     /// @brief Map an input symbol into the corresponding output one.
+    /// @param decl The declaration.
+    /// @param key The key symbol.
+    /// @param value The value symbol.
+    /// @param srcSem The source semantics.
+    /// @return The map cases.
     virtual MapCases
     mapStandardSymbol(Declaration *decl, KeySymbol &key, ValueSymbol &value, ILanguageSemantics *srcSem);
 
     /// @brief Returns the mapped symbol w.r.t. the current semantics.
+    /// @param key The key symbol.
+    /// @param s The object.
+    /// @return The mapped object.
     virtual Object *getSimplifiedSymbol(KeySymbol &key, Object *s);
 
     /// @brief Returns true if no namespaces is needed for given library name.
+    /// @param n The library name.
+    /// @param isLibInclusion Whether it's a library inclusion.
+    /// @return True if standard inclusion.
     virtual bool isStandardInclusion(const std::string & n, const bool isLibInclusion);
 
     /// @brief Returns the event method name w.r.t. current semantics.
+    /// @param hifFormat Whether to use HIF format.
+    /// @return The event method name.
     virtual std::string getEventMethodName(const bool hifFormat = false);
 
     /// @brief Returns <tt>true</tt> if the given call is an event call w.r.t.
     /// the current semantics, <tt>false</tt> otherwise.
+    /// @param call The function call.
+    /// @return True if event call.
     virtual bool isEventCall(FunctionCall *call);
 
     /// @brief Returns the namespace used by given library name.
     /// E.g. for "iostream" returns "std"
+    /// @param n The library name.
+    /// @return The namespace.
     std::string getLibraryNamespace(const std::string & n);
 
     /// @}

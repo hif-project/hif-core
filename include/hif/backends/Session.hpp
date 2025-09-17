@@ -91,52 +91,74 @@ public:
     virtual ~CNode();
 
     /// @brief Set a parent node
+    /// @param pnParent The parent node to set.
     void SetParent(CNode *pnParent);
 
     /// @brief Set a path (access to the node)
+    /// @param sPath The path to set.
     void SetPath(std::string &sPath);
     /// @brief Set an instance name
+    /// @param sName The instance name to set.
     void SetInstName(std::string sName);
     /// @brief Set an entity name
+    /// @param sName The entity name to set.
     void SetEntName(const std::string& sName);
     /// @brief Set an instance flag
+    /// @param eTag The instance tag to set.
     void SetInstTag(InstTag_T eTag);
     /// @brief Set a status
+    /// @param eMode The mode to set.
     void SetMode(Mode_T eMode);
 
     /// @brief Set all attributes of a node : status, path, name...
+    /// @param rN The node to copy attributes from.
     void SetAttributes(CNode &rN);
 
     /// @brief Set m_pnFirstInst
+    /// @param pnInst The instance node to set.
     void SetOrgPath(CNode *pnInst);
     /// @brief Set m_pnMovedTo
+    /// @param pnParent The parent node to set.
     void SetMovedPath(CNode *pnParent);
 
     /// @brief Get the node name
+    /// @return The node name.
     auto getName() -> std::string;
     /// @brief Get an abstract name which defining the node path
+    /// @return The path vector.
     std::vector<std::string> GetPath();
     /// @brief Get an instance name
+    /// @return The instance name.
     auto GetInstName() -> std::string { return m_sInstName; }
     /// @brief Get the entity name
+    /// @return The entity name.
     auto GetEntName() -> std::string { return m_sEntName; }
     /// @brief Get the node status
+    /// @return The mode.
     auto GetMode() -> Mode_T { return m_eMode; }
     /// @brief Get the instance flag
+    /// @return The instance tag.
     auto GetInstTag() -> InstTag_T { return m_eInstTag; }
 
     /// @brief Get the first instance of a node
+    /// @return The original node.
     auto GetOrgNode() -> CNode * { return m_pnFirstInst; }
     /// @brief Get the directory where the node must move to
+    /// @return The moved to parent.
     auto MovedToParent() -> CNode * { return m_pnMovedTo; }
 
     /// @brief Compare two nodes
+    /// @param rNr The node to compare with.
+    /// @return True if equal.
     auto operator==(const CNode &rNr) -> bool;
 
     /// @brief Get a parent node of the current node
+    /// @return The parent node.
     auto GetParent() -> CNode * { return m_pnParent; }
 
     /// @brief Define a visitor access on nodes
+    /// @param rVis The visitor.
+    /// @return The result of the visit.
     auto acceptVisitor(CNodeVisitor &rVis) -> int;
 
 #ifdef HIFDIR_DBG
@@ -176,23 +198,43 @@ public:
     ~CSession();
 
     /// @brief Get a related path between the two inputs : vsTgt - vsSrc
+    /// @param vsTgt The target path.
+    /// @param vsSrc The source path.
+    /// @return The relative path.
     static std::vector<std::string> Find(std::vector<std::string> &vsTgt, std::vector<std::string> &vsSrc);
 
     /// @brief Return a node instance corresponding to rnElt
+    /// @param rnElt The element to find instance for.
+    /// @return The instance node.
     auto FindAnInstance(CNode &rnElt) -> CNode *;
     /// @brief Return the original node instance corresponding to rnElt
+    /// @param rnElt The element to find instance for.
+    /// @return The original instance node.
     auto FindTheInstance(CNode &rnElt) -> CNode *;
 
     /// @brief Update the session with the PRECHECK flag
+    /// @return The result of the precheck.
     auto PreCheck() -> int;
     /// @brief Update the session with the UPDATE flag
+    /// @return The result of the update.
     auto Update() -> int;
 
     /// @brief Absolute Find methods
+    /// @param rlTgt The target library.
+    /// @return The path to the library.
     std::vector<std::string> Find(hif::LibraryDef &rlTgt);
+    /// @param rduTgt The target design unit.
+    /// @return The path to the design unit.
     std::vector<std::string> Find(hif::DesignUnit &rduTgt);
+    /// @param rvTgt The target view.
+    /// @return The path to the view.
     std::vector<std::string> Find(hif::View &rvTgt);
+    /// @param riTgt The target instance.
+    /// @return The path to the instance.
     std::vector<std::string> Find(hif::Instance &riTgt);
+    /// @param sBase The base name.
+    /// @param sView The view name.
+    /// @return The path.
     std::vector<std::string> Find(std::string &sBase, std::string &sView);
 
     /// @brief Relative Find methods
@@ -231,13 +273,36 @@ public:
     std::vector<std::string> Find(std::string &sbTgt, std::string &svTgt, std::string &sbSrc, std::string &svSrc);
 
     /// @brief Apply the command line pcLine
+    /// @param pcLine The command line to apply.
+    /// @return The result of the apply.
     auto Apply(const char *pcLine) -> int;
     /// @brief Apply methods on a specific node
+    /// @param rduTgt The target design unit.
+    /// @param pcLine The command line.
+    /// @param pcSuffix The suffix.
+    /// @return The result of the apply.
     auto Apply(hif::DesignUnit &rduTgt, const char *pcLine, const char *pcSuffix) -> int;
+    /// @param rvTgt The target view.
+    /// @param pcLine The command line.
+    /// @param pcSuffix The suffix.
+    /// @return The result of the apply.
     auto Apply(hif::View &rvTgt, const char *pcLine, const char *pcSuffix) -> int;
+    /// @param riTgt The target instance.
+    /// @param pcLine The command line.
+    /// @param pcSuffix The suffix.
+    /// @return The result of the apply.
     auto Apply(hif::Instance &riTgt, const char *pcLine, const char *pcSuffix) -> int;
+    /// @param rlTgt The target library.
+    /// @param pcLine The command line.
+    /// @param pcSuffix The suffix.
+    /// @return The result of the apply.
     auto Apply(hif::LibraryDef &rlTgt, const char *pcLine, const char *pcSuffix) -> int;
     /// \attention Target = base + view
+    /// @param sbTgt The base target.
+    /// @param svTgt The view target.
+    /// @param pcLine The command line.
+    /// @param pcSuffix The suffix.
+    /// @return The result of the apply.
     auto Apply(std::string &sbTgt, std::string &svTgt, const char *pcLine, const char *pcSuffix) -> int;
 };
 

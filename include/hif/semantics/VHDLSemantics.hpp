@@ -232,7 +232,7 @@ public:
     /// Singleton stuff.
     ///
     /// @brief Function thats return an instance to VHDLSemantic class.
-    ///
+    /// @return The instance.
     static VHDLSemantics *getInstance();
     ///
     /// @brief This function returns true if the given operator is supported by
@@ -246,8 +246,12 @@ public:
     /// @return True if forbidden.
     virtual bool isForbiddenName(Declaration *decl);
 
+    /// @brief Check if slice type is rebased.
+    /// @return True if slice type is rebased.
     virtual bool isSliceTypeRebased();
 
+    /// @brief Check if syntactic type is rebased.
+    /// @return True if syntactic type is rebased.
     virtual bool isSyntacticTypeRebased();
 
     /// @name Flags management.

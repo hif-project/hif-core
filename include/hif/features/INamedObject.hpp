@@ -25,7 +25,7 @@ public:
 
     /// @brief Sets the name.
     ///
-    /// @param n the name to be set.
+    /// @param name the name to be set.
     ///
     void setName(const std::string &name);
 

@@ -20,6 +20,7 @@ namespace hif
 class Declaration : public Object, public features::INamedObject
 {
 public:
+    /// @brief A list of keywords.
     typedef std::vector<std::string> KeywordList;
 
     /// @brief Constructor.
@@ -56,7 +57,11 @@ public:
     /// @brief Clears all the keywords from the Declaration
     void clearAdditionalKeywords();
 
+    /// @brief Returns an iterator to the beginning of the additional keywords list.
+    /// @return Iterator to the beginning.
     KeywordList::iterator getAdditionalKeywordsBeginIterator();
+    /// @brief Returns an iterator to the end of the additional keywords list.
+    /// @return Iterator to the end.
     KeywordList::iterator getAdditionalKeywordsEndIterator();
 
     //@}

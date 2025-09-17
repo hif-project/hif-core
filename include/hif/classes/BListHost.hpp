@@ -26,7 +26,9 @@ class TypedObject;
 class BListHost
 {
 public:
+    /// @brief Size type for the list.
     typedef unsigned int size_t;
+    /// @brief Function pointer type for checking suitability.
     typedef bool (*CheckSuitableMethod)(Object *);
 
 private:
@@ -35,14 +37,20 @@ private:
 protected:
     class iterator;
 
+    /// @brief Constructs a BListHost with a check method.
+    /// @param checkSuitableMethod The method to check if an object is suitable.
     BListHost(CheckSuitableMethod checkSuitableMethod);
 
+    /// @brief Copy constructor.
+    /// @param other The BListHost to copy.
     BListHost(const BListHost &other);
 
     BListHost &operator=(const BListHost &) = delete;
 
     virtual ~BListHost();
 
+    /// @brief Swaps the contents with another BListHost.
+    /// @param other The BListHost to swap with.
     void swap(BListHost &other);
 
     /// @brief Get the BList name.

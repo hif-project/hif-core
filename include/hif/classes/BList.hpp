@@ -27,6 +27,7 @@ namespace hif
 template <class T> class BList : private BListHost
 {
 public:
+    /// @brief Size type for the list.
     typedef BListHost::size_t size_t;
 
     class iterator;
@@ -37,10 +38,14 @@ public:
     BList(const BList<T> &other);
 
     /// @brief Deep copy of all objects.
+    /// @param other The list to copy.
+    /// @return Reference to this list.
     BList<T> &operator=(BList<T> other);
 
     virtual ~BList();
 
+    /// @brief Swaps the contents of this list with another.
+    /// @param other The list to swap with.
     void swap(BList<T> &other);
 
     /// @brief Get the BList name.
@@ -174,6 +179,8 @@ public:
     T *findByName(const std::string &n) const;
 
     /// @brief Check whether passed object can be inserted into current BList.
+    /// @param o The object to check.
+    /// @return True if suitable.
     bool checkSuitable(Object *o) const;
 
     /// @brief Converts this list to a list of different objects. No check is performed.
@@ -355,6 +362,8 @@ public:
         /// with the element pointed by @p i, <tt>false</tt> otherwise.
         bool operator!=(const iterator &i) const;
 
+        /// @brief Converts to base class iterator.
+        /// @return Reference to the base class iterator.
         BListHost::iterator &toBaseClass();
     };
 };

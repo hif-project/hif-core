@@ -94,7 +94,7 @@ hif::LanguageID objectGetLanguage(Object *obj);
 /// @brief Returns the specified process flavour in the object if present,
 /// otherwise the process flavour specified in the nearest parent having one.
 /// @param obj The object on which to operate.
-/// @param The output specified process flavour in the object, or in the nearest parent having one.
+/// @param flavour The output specified process flavour in the object, or in the nearest parent having one.
 /// @return true if found.
 ///
 

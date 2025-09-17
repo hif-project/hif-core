@@ -1,5 +1,5 @@
 /// @file portability.hpp
-/// @brief
+/// @brief Platform abstraction utilities for portability across systems.
 /// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
 /// Univeristy of Verona.
 /// This file is distributed under the BSD 2-Clause License.

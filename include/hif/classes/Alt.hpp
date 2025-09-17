@@ -1,5 +1,5 @@
 /// @file Alt.hpp
-/// @brief
+/// @brief Alternative structure for representing conditional branches.
 /// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
 /// Univeristy of Verona.
 /// This file is distributed under the BSD 2-Clause License.

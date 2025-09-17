@@ -37,6 +37,9 @@ namespace apply
 template <typename Function, typename Data> class ApplyVisitor : public GuideVisitor
 {
 public:
+    /// @brief Constructs an ApplyVisitor with a function and data.
+    /// @param function The function to apply to each object.
+    /// @param data User-defined data to pass to the function.
     ApplyVisitor(Function function, Data data)
         : GuideVisitor()
         , _function(function)
@@ -50,6 +53,9 @@ public:
     ApplyVisitor(const ApplyVisitor &)      = delete;
     ApplyVisitor &operator=(ApplyVisitor &) = delete;
 
+    /// @brief Called before visiting an object.
+    /// @param o The object being visited.
+    /// @return True if the function returns false (to stop traversal), false otherwise.
     bool BeforeVisit(Object &o) { return !_function(&o, _data); }
 
 private:

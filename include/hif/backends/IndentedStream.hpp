@@ -1,5 +1,5 @@
 /// @file IndentedStream.hpp
-/// @brief
+/// @brief Output stream wrapper supporting indentation for formatted backend output.
 /// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
 /// Univeristy of Verona.
 /// This file is distributed under the BSD 2-Clause License.

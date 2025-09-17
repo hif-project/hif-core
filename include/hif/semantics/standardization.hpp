@@ -14,6 +14,7 @@ namespace hif
 namespace semantics
 {
 
+/// @brief A map from Cast pointers to Type pointers.
 typedef std::map<Cast *, Type *> CastMap;
 
 /// @brief This function invoke HifStdVistor used to standardize HIF code.

@@ -1,5 +1,5 @@
 /// @file dumpVersion.hpp
-/// @brief
+/// @brief Utilities for printing and retrieving HIF version information.
 /// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
 /// Univeristy of Verona.
 /// This file is distributed under the BSD 2-Clause License.

@@ -1,5 +1,5 @@
 /// @file compare.hpp
-/// @brief
+/// @brief Utilities for comparing HIF objects and structures.
 /// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
 /// Univeristy of Verona.
 /// This file is distributed under the BSD 2-Clause License.

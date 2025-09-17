@@ -663,4 +663,8 @@ private:
 } // namespace semantics
 } // namespace hif
 
+/// @brief Outputs the ILanguageSemantics object to an ostream.
+/// @param o The output stream.
+/// @param s The ILanguageSemantics object to output.
+/// @return The output stream.
 std::ostream &operator<<(std::ostream &o, const hif::semantics::ILanguageSemantics &s);

@@ -38,7 +38,9 @@ struct ViewDependencyOptions {
     bool skipPslDependencies;
 };
 
+/// @brief A set of View pointers representing dependencies.
 typedef std::set<View *> ViewDependenciesSet;
+/// @brief A map from View pointers to their dependency sets.
 typedef std::map<View *, ViewDependenciesSet> ViewDependenciesMap;
 
 /// @brief Visits the object @p obj to determine dependencies between the

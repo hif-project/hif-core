@@ -1,5 +1,5 @@
 /// @file hif.hpp
-/// @brief
+/// @brief Main include for the HIF library core definitions and utilities.
 /// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
 /// Univeristy of Verona.
 /// This file is distributed under the BSD 2-Clause License.

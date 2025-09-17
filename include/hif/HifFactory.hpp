@@ -1,5 +1,5 @@
 /// @file HifFactory.hpp
-/// @brief
+/// @brief Factory utilities for creating and managing HIF objects.
 /// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
 /// Univeristy of Verona.
 /// This file is distributed under the BSD 2-Clause License.

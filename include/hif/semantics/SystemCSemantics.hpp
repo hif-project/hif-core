@@ -1,5 +1,5 @@
 /// @file SystemCSemantics.hpp
-/// @brief
+/// @brief Semantics and rules for SystemC language constructs in HIF.
 /// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
 /// Univeristy of Verona.
 /// This file is distributed under the BSD 2-Clause License.

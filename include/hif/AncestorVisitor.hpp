@@ -1,5 +1,5 @@
 /// @file AncestorVisitor.hpp
-/// @brief
+/// @brief Visitor for traversing ancestor relationships in HIF object trees.
 /// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
 /// Univeristy of Verona.
 /// This file is distributed under the BSD 2-Clause License.

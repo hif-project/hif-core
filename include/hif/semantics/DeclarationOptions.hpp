@@ -1,5 +1,5 @@
 /// @file DeclarationOptions.hpp
-/// @brief
+/// @brief Options and flags for HIF declaration processing.
 /// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
 /// Univeristy of Verona.
 /// This file is distributed under the BSD 2-Clause License.

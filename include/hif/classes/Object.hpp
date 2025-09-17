@@ -199,6 +199,7 @@ public:
     std::string getSourceFileName() const;
 
     /// @brief Gets all current codeinfos.
+    /// @return The current code info.
     const CodeInfo &getCodeInfo() const;
 
     /// @brief Sets all current codeinfos.
@@ -245,9 +246,11 @@ public:
     bool replaceWithList(BList<Object> &list);
 
     /// @brief Gets the list of internal fields.
+    /// @return The list of internal fields.
     const Fields &getFields();
 
     /// @brief Gets the list of internal blists.
+    /// @return The list of internal blists.
     const BLists &getBLists();
 
     /// @brief Sets a field, also updating pointers to parent.
@@ -259,11 +262,18 @@ public:
     T *setChild(T *&field, T *newObj);
 
     /// @brief Gets the field name into which this object is set.
+    /// @return The field name.
     std::string getFieldName() const;
 
     /// @brief Gets the given BList name w.r.t. this.
+    /// @param list The BList.
+    /// @return The BList name.
     std::string getBListName(const BList<Object> &list) const;
 
+    /// @brief Gets the given BList name w.r.t. this.
+    /// @tparam T The type of objects in the BList.
+    /// @param list The BList.
+    /// @return The BList name.
     template <typename T>
     std::string getBListName(const BList<T> &list) const;
 

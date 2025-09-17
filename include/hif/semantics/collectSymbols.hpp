@@ -15,6 +15,7 @@ namespace hif
 namespace semantics
 {
 
+/// @brief A list of Object pointers representing symbols.
 typedef std::list<Object *> SymbolList;
 
 /// @brief Collects all symbols (i.e., all objects having a declaration member)

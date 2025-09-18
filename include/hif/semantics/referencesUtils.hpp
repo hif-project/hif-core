@@ -24,6 +24,7 @@ typedef std::map<Declaration *, ReferencesSet> ReferencesMap;
 
 /// @brief Options of method getAllReferences() / getReferences().
 struct GetReferencesOptions {
+    /// @brief Function pointer type for custom object collection methods.
     typedef bool (*CollectObjectMethod)(Object *, ILanguageSemantics *, const GetReferencesOptions &);
 
     /// @brief If <tt>true</tt> unreferenced declarations
@@ -46,9 +47,18 @@ struct GetReferencesOptions {
     CollectObjectMethod collectObjectMethod;
 
     GetReferencesOptions();
+    /// @brief Constructor with parameters.
+    /// @param iu Include unreferenced flag.
+    /// @param e Error flag.
+    /// @param ssd Skip standard declarations flag.
     GetReferencesOptions(const bool iu, const bool e, const bool ssd);
     ~GetReferencesOptions();
+    /// @brief Copy constructor.
+    /// @param other The object to copy from.
     GetReferencesOptions(const GetReferencesOptions &other);
+    /// @brief Assignment operator.
+    /// @param other The object to assign from.
+    /// @return Reference to this object.
     GetReferencesOptions &operator=(const GetReferencesOptions &other);
 };
 

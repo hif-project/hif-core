@@ -38,14 +38,19 @@ public:
     virtual ~ListElementHost();
 
     /// @brief Copy constructor.
+    /// @param t The ListElementHost to copy.
     /// @warning This may involve move-like behavior; ensure correctness in usage.
     ListElementHost(const ListElementHost &t);
 
     /// @brief Copy assignment operator.
+    /// @param t The ListElementHost to assign from.
+    /// @return Reference to this.
     /// @warning This may involve move-like behavior; ensure correctness in usage.
     ListElementHost &operator=(const ListElementHost &t);
 
     /// @brief Concatenation operator for combining lists.
+    /// @param t2 The second ListElementHost to concatenate.
+    /// @return A new ListElementHost containing the combined elements.
     /// @details Appends the elements of the given `ListElementHost` to the current one.
     /// @warning Semantics resemble move-like behavior; ensure the source remains valid.
     ListElementHost operator,(const ListElementHost &t2);
@@ -355,20 +360,24 @@ public:
     /// @brief Creates a boolean type.
     /// @param isConstexpr True if const_expr.
     /// @param variant The type variant.
+    /// @return The created Bool.
     Bool *boolean(const bool isConstexpr = false, const Type::TypeVariant variant = Type::NATIVE_TYPE);
 
     /// @brief Creates a character type.
     /// @param isConstexpr True if const_expr.
     /// @param variant The type variant.
+    /// @return The created Char.
     Char *character(const bool isConstexpr = false, const Type::TypeVariant variant = Type::NATIVE_TYPE);
 
     /// @brief Creates an enum typedef.
     /// @param n the name of the enum.
     /// @param e the enum values making up the enum.
+    /// @return The created TypeDef.
     TypeDef *enumTypeDef(const std::string &n, enumValue_t e);
 
     /// @brief Creates a file.
     /// @param t the type of the file (see VHDL).
+    /// @return The created File.
     File *file(Type *t = nullptr);
 
     /// @brief Creates an integer type.
@@ -389,6 +398,7 @@ public:
     /// @param fn The name of referenced LibraryDef file.
     /// @param s Tells whether the referenced LibraryDef is standard.
     /// @param sy Tells whether the referenced LibraryDef is system.
+    /// @return The created Library.
     Library *library(
         const std::string &n,
         ReferencedType *i = nullptr,
@@ -398,6 +408,7 @@ public:
 
     /// @brief Creates a pointer type.
     /// @param type the type the pointer points to.
+    /// @return The created Pointer.
     Pointer *pointer(Type *type);
 
     /// @brief Creates a real type.
@@ -415,34 +426,40 @@ public:
 
     /// @brief Creates a reference (like C++ reference types).
     /// @param type the type being referenced.
+    /// @return The created Reference.
     Reference *reference(Type *type);
 
     /// @brief Creates a signed.
     /// @param span the span of the signed.
     /// @param const_expr true if the signed type is const_expr, false otherwise.
+    /// @return The created Signed.
     Signed *signedType(Range *span = nullptr, const bool const_expr = false);
 
     /// @brief Creates a string.
     /// @param span the span of the string.
     /// @param const_expr true if the string type is const_expr, false otherwise.
     /// @param variant The type variant.
+    /// @return The created String.
     String *
     string(const bool const_expr = true, const Type::TypeVariant variant = Type::NATIVE_TYPE, Range *span = nullptr);
 
     /// @brief Creates a Time type.
     /// @param isConstexpr True if const_expr.
     /// @param variant The type variant.
+    /// @return The created Time.
     Time *time(const bool isConstexpr = true, const Type::TypeVariant variant = Type::NATIVE_TYPE);
 
     /// @brief Creates a type reference (without template arguments).
     /// @param n the name of the type to be referenced.
     /// @param rt the instance of the typeref
+    /// @return The created TypeReference.
     TypeReference *typeRef(const std::string &n, ReferencedType *rt = nullptr);
 
     /// @brief Creates a type reference (with template arguments).
     /// @param n the name of the type to be referenced.
     /// @param t the template argument(s) for the type to be referenced.
     /// @param rt the instance of the typeref
+    /// @return The created TypeReference.
     TypeReference *typeRef(const std::string &n, templateArgument_t t, ReferencedType *rt = nullptr);
 
     /// @brief Creates an unsigned char (i.e. 8-bit byte) type.
@@ -453,12 +470,14 @@ public:
     /// @brief Creates a unsigned.
     /// @param span the span of the unsigned.
     /// @param const_expr true if the unsigned type is const_expr, false otherwise.
+    /// @return The created Unsigned.
     Unsigned *unsignedType(Range *span = nullptr, const bool const_expr = false);
 
     /// @brief Creates a reference to a view.
     /// @param du the name of the design unit being referenced.
     /// @param v the name of the view being referenced.
     /// @param i Indicates the view scope (instance).
+    /// @return The created viewReference_t.
     viewReference_t viewRef(const std::string &du, const std::string &v, ReferencedType *i = nullptr);
 
     /// @brief Creates a reference to a view.
@@ -466,6 +485,7 @@ public:
     /// @param v the name of the view being referenced.
     /// @param i Indicates the view scope (instance).
     /// @param t The list of template arguments.
+    /// @return The created viewReference_t.
     viewReference_t viewRef(const std::string &du, const std::string &v, ReferencedType *i, templateArgument_t t);
 
     /// @}
@@ -528,67 +548,79 @@ public:
     /// @brief Creates a Event type.
     /// @param isConstexpr True if const_expr.
     /// @param variant The type variant.
+    /// @return The created Event.
     Event *event(const bool isConstexpr = false, const Type::TypeVariant variant = Type::NATIVE_TYPE);
 
     /// @brief Creates a unary expression.
     /// @param o the operator in the expression.
     /// @param v the operand in the expression.
+    /// @return The created Expression.
     Expression *expression(Operator o, Value *v);
 
     /// @brief Creates a binary expression.
     /// @param v1 the first operand in the expression.
     /// @param o the operator in the expression.
     /// @param v2 the second operand in the expression.
+    /// @return The created Expression.
     Expression *expression(Value *v1, Operator o, Value *v2);
 
     /// @brief Creates a identifier with given id.
     /// @param id The id.
+    /// @return The created Identifier.
     Identifier *identifier(const std::string &id);
 
     /// @brief Creates an integer value. By default, the syntactic type is
     /// 32-bit integer, signed if \p n is < 0, unsigned otherwise.
     /// @param n the integer value.
     /// @param syntactic_type the syntactic type of the integer value.
+    /// @return The created IntValue.
     IntValue *intval(long long n, Type *syntactic_type = nullptr);
 
     /// @brief Creates an integer value. By default, the syntactic type is
     /// 32-bit integer, signed if \p n is < 0, unsigned otherwise.
     /// @param n the integer value.
     /// @param syntactic_type the syntactic type of the integer value.
+    /// @return The created IntValue.
     IntValue *intval(unsigned long long n, Type *syntactic_type = nullptr);
 
     /// @brief Creates an integer value. By default, the syntactic type is
     /// 32-bit integer, signed if \p n is < 0, unsigned otherwise.
     /// @param n the integer value.
     /// @param syntactic_type the syntactic type of the integer value.
+    /// @return The created IntValue.
     IntValue *intval(long n, Type *syntactic_type = nullptr);
 
     /// @brief Creates an integer value. By default, the syntactic type is
     /// 32-bit integer, signed if \p n is < 0, unsigned otherwise.
     /// @param n the integer value.
     /// @param syntactic_type the syntactic type of the integer value.
+    /// @return The created IntValue.
     IntValue *intval(unsigned long n, Type *syntactic_type = nullptr);
 
     /// @brief Creates an integer value. By default, the syntactic type is
     /// 32-bit integer, signed if \p n is < 0, unsigned otherwise.
     /// @param n the integer value.
     /// @param syntactic_type the syntactic type of the integer value.
+    /// @return The created IntValue.
     IntValue *intval(int n, Type *syntactic_type = nullptr);
 
     /// @brief Creates an integer value. By default, the syntactic type is
     /// 32-bit integer, signed if \p n is < 0, unsigned otherwise.
     /// @param n the integer value.
     /// @param syntactic_type the syntactic type of the integer value.
+    /// @return The created IntValue.
     IntValue *intval(unsigned int n, Type *syntactic_type = nullptr);
 
     /// @brief Creates a field reference.
     /// @param prefix the name of the prefix (i.e., the structure containing the field being referenced).
     /// @param field_name the name of the field.
+    /// @return The created FieldReference.
     FieldReference *fieldRef(const std::string &prefix, const std::string &field_name);
 
     /// @brief Creates a field reference.
     /// @param prefix the prefix (i.e., the structure containing the field being referenced).
     /// @param field_name the name of the field.
+    /// @return The created FieldReference.
     FieldReference *fieldRef(Value *prefix, const std::string &field_name);
 
     /// @brief Creates a function call.
@@ -596,6 +628,7 @@ public:
     /// @param inst the eventual instance object.
     /// @param t the template argument(s) for the function call.
     /// @param p the parameter argument(s) for the function call.
+    /// @return The created FunctionCall.
     FunctionCall *functionCall(const std::string &n, Value *inst, templateArgument_t t, parameterArgument_t p);
 
     /// @brief Creates an instance.
@@ -603,6 +636,7 @@ public:
     /// @param name the name of the instance.
     /// @param portassigns THe list of portassigns.
     /// @param initialValue The initial value.
+    /// @return The created Instance.
     Instance *
     instance(ReferencedType *refType, const std::string &name, portassign_t portassigns, Value *initialValue = nullptr);
 
@@ -610,113 +644,135 @@ public:
     /// @param name the name of the instance and library.
     /// @param s If library is standard.
     /// @param sy If library is system.
+    /// @return The created Instance.
     Instance *libraryInstance(const std::string &name, const bool s = false, const bool sy = false);
 
     /// @brief Creates a member.
     /// @param prefix the prefix of the member (i.e., the object containing the member).
     /// @param index the index of the member.
+    /// @return The created Member.
     Member *member(Value *prefix, Value *index);
 
     /// @brief Creates a nullptr value (exploiting cast).
     /// @param t The type to use for cast.
     /// @param autoPtr When true automatically adds pointer to t. Default is true
+    /// @return The created Cast.
     Cast *nullval(Type *t, const bool autoPtr = true);
 
     /// @brief Creates a parameter argument (i.e., an actual parameter).
     /// @param n the name of the formal parameter.
     /// @param v the value provided as parameter argument.
+    /// @return The created parameterArgument_t.
     parameterArgument_t parameterArgument(const std::string &n, Value *v);
 
     /// @brief Creates a simple range.
     /// @param l the left bound of the range.
     /// @param r the right bound of the range.
+    /// @return The created Range.
     Range *range(long long l, long long r);
 
     /// @brief Creates a simple range.
     /// @param l the left bound of the range.
     /// @param r the right bound of the range.
+    /// @return The created Range.
     Range *range(unsigned long long l, unsigned long long r);
 
     /// @brief Creates a simple range.
     /// @param l the left bound of the range.
     /// @param r the right bound of the range.
+    /// @return The created Range.
     Range *range(const int l, const int r);
 
     /// @brief Creates a simple range.
     /// @param l the left bound of the range.
     /// @param r the right bound of the range.
+    /// @return The created Range.
     Range *range(unsigned int l, unsigned int r);
 
     /// @brief Creates a simple range.
     /// @param l the left bound of the range.
     /// @param r the right bound of the range.
+    /// @return The created Range.
     Range *range(long long l, const int r);
 
     /// @brief Creates a simple range.
     /// @param l the left bound of the range.
     /// @param r the right bound of the range.
+    /// @return The created Range.
     Range *range(const int l, long long r);
 
     /// @brief Creates a simple range.
     /// @param l the left bound of the range.
     /// @param dir The direction.
     /// @param r the right bound of the range.
+    /// @return The created Range.
     Range *range(Value *l, RangeDirection dir, Value *r);
 
     /// @brief Creates a real value.
     /// @param d the real value.
     /// @param syntactic_type the syntactic type of the real value.
+    /// @return The created RealValue.
     RealValue *realval(const double d, Real *syntactic_type = nullptr);
 
     /// @brief Creates a record value.
     /// @param rv the record value alts.
+    /// @return The created RecordValue.
     RecordValue *recordval(recordvaluealt_t rv);
 
     /// @brief Creates a record value alt.
     /// @param n the name of the record field.
     /// @param v the value provided.
+    /// @return The created recordvaluealt_t.
     recordvaluealt_t recordvaluealt(const std::string &n, Value *v);
 
     /// @brief Creates a slice.
     /// @param prefix the prefix of the slice (i.e., the object to be sliced).
     /// @param span the span of the slice.
+    /// @return The created Slice.
     Slice *slice(Value *prefix, Range *span);
 
     /// @brief Creates a type template argument.
     /// @param n the name of the type template argument.
     /// @param t the type provided as template argument.
+    /// @return The created templateArgument_t.
     templateArgument_t templateTypeArgument(const std::string &n, Type *t);
 
     /// @brief Creates a value template argument.
     /// @param n the name of the value template parameter.
     /// @param v the value provided as template argument.
+    /// @return The created templateArgument_t.
     templateArgument_t templateValueArgument(const std::string &n, Value *v);
 
     /// @brief Creates a text. By default, it is not plain.
     /// @param s the text.
     /// @param plain true if the text is plain, false otherwise.
     /// @param syntactic_type The syntactic type.
+    /// @return The created StringValue.
     StringValue *stringval(const std::string &s, bool plain = false, Type *syntactic_type = nullptr);
 
     /// @brief Creates a time value.
     /// @param v the value of the time value
     /// @param u the time unit
     /// @param syntactic_type the syntactic type of the time value.
+    /// @return The created TimeValue.
     TimeValue *timeval(double v, TimeValue::TimeUnit u = TimeValue::time_fs, Time *syntactic_type = nullptr);
 
     /// @brief Creates a value statement.
     /// @param value the value of the value statement.
+    /// @return The created ValueStatement.
     ValueStatement *valueStatement(Value *value);
 
     /// @brief Creates a when.
     /// @param alts the list of alternatives.
     /// @param def The default value.
     /// @param logicTernary If is logic ternary.
+    /// @return The created When.
     When *when(whenAlt_t alts, Value *def, const bool logicTernary = false);
 
     /// @brief Creates a when alt.
     /// @param cond The condition.
     /// @param value The value.
+    /// @return The created whenAlt_t.
     whenAlt_t whenalt(Value *cond, Value *value);
 
     /// @brief Creates a while.
@@ -724,6 +780,7 @@ public:
     /// @param actions The actions.
     /// @param label The the while label.
     /// @param doWhile true if is a do-while.
+    /// @return The created While.
     While *whileLoop(Value *cond, action_t actions, const std::string &label = nullptr, const bool doWhile = false);
 
     /// @brief Creates an alias.
@@ -741,6 +798,7 @@ public:
     /// @param n the name of the constant.
     /// @param init the value of the constant.
     /// @param r the eventual range.
+    /// @return The created Const.
     Const *constant(Type *t, const std::string &n, Value *init, Range *r = nullptr);
 
     /// @brief Creates a contents container.
@@ -750,17 +808,20 @@ public:
     /// @param i The list of Instances.
     /// @param s The list of StateTables.
     /// @param l The list of Libraries.
+    /// @return The created Contents.
     Contents *contents(GlobalAction *ga, declaration_t d, generate_t g, instance_t i, stateTable_t s, library_t l);
 
     /// @brief Creates a design unit (with empty View).
     /// @param u the name of the design unit.
     /// @param v the name of the view.
     /// @param lid the language ID of the view.
+    /// @return The created DesignUnit.
     DesignUnit *designUnit(const std::string &u, const std::string &v, hif::LanguageID lid);
 
     /// @brief Creates a design unit specifying its name and the Views to set.
     /// @param u the name of the design unit.
     /// @param v The only View.
+    /// @return The created DesignUnit.
     DesignUnit *designUnit(const std::string &u, View *v);
 
     /// @brief Creates an enum value.
@@ -768,6 +829,7 @@ public:
     /// @param n the name of the enum value.
     /// @param v The optional initial value.
     /// @param r the eventual range.
+    /// @return The created enumValue_t.
     enumValue_t enumValue(TypeReference *tr, const std::string &n, Value *v = nullptr, Range *r = nullptr);
 
     /// @brief Creates a field declaration.
@@ -776,6 +838,7 @@ public:
     /// @param init the initial value of the field.
     /// @param r the eventual range.
     /// @param dir The direction.
+    /// @return The created field_t.
     field_t field(
         Type *t,
         const std::string &n,
@@ -789,6 +852,7 @@ public:
     /// @param v the default value of the formal parameter.
     /// @param r the parameter range.
     /// @param dir the parameter direction.
+    /// @return The created parameter_t.
     parameter_t
     parameter(Type *t, const std::string &n, Value *v = nullptr, Range *r = nullptr, const PortDirection dir = dir_none);
 
@@ -799,6 +863,7 @@ public:
     /// @param init the initial value of the port.
     /// @param r the eventual range.
     /// @param w if the port is a wrapper.
+    /// @return The created Port.
     Port *
     port(Type *t, const std::string &n, PortDirection d, Value *init = nullptr, Range *r = nullptr, const bool w = false);
 
@@ -807,6 +872,7 @@ public:
     /// @param v the bind of the (top) port.
     /// @param d the direction of the port.
     /// @param t the type of the port.
+    /// @return The created portassign_t.
     portassign_t portAssign(const std::string &n, Value *v, PortDirection d = dir_none, Type *t = nullptr);
 
     /// @brief Creates a signal declaration.
@@ -816,6 +882,7 @@ public:
     /// @param r the eventual range.
     /// @param s if the signal is standard.
     /// @param w if the signal is a wrapper.
+    /// @return The created Signal.
     Signal *signal(
         Type *t,
         const std::string &n,
@@ -830,6 +897,7 @@ public:
     /// @param actions The actions.
     /// @param dontInitialize Don't initialize flag.
     /// @param pf The process flavour.
+    /// @return The created stateTable_t.
     stateTable_t stateTable(
         const std::string &n,
         declaration_t decls,
@@ -842,11 +910,13 @@ public:
     /// @param n the name of the subprogram.
     /// @param tp the list of template parameters.
     /// @param p the list of formal parameters.
+    /// @return The created SubProgram.
     SubProgram *subprogram(Type *t, const std::string &n, template_t tp, parameter_t p);
 
     /// @brief Creates a type template parameter.
     /// @param t the default type of the template parameter.
     /// @param n the name of the template parameter.
+    /// @return The created template_t.
     template_t templateTypeParameter(Type *t, const std::string &n);
 
     /// @brief Creates a value template parameter.
@@ -855,6 +925,7 @@ public:
     /// @param v the default value of the template parameter.
     /// @param r the eventual range.
     /// @param compileTimeConstant True if compileTimeConstant.
+    /// @return The created template_t.
     template_t templateValueParameter(
         Type *t,
         const std::string &n,
@@ -868,6 +939,7 @@ public:
     /// @param opaque true if opaque.
     /// @param r The eventual constraint.
     /// @param external The external flag. Default is false.
+    /// @return The created TypeDef.
     TypeDef *typeDef(const std::string &n, Type *t, const bool opaque = true, Range *r = nullptr, const bool external = false);
 
     /// @brief Creates a type def.
@@ -876,6 +948,7 @@ public:
     /// @param opaque true if opaque.
     /// @param tp The template parameters.
     /// @param external The external flag. Default is false.
+    /// @return The created TypeDef.
     TypeDef *typeDef(const std::string &n, Type *t, const bool opaque, template_t tp, const bool external = false);
 
     /// @brief Creates a variable declaration.
@@ -883,6 +956,7 @@ public:
     /// @param n the name of the variable.
     /// @param init the initial value of the variable.
     /// @param r the eventual range.
+    /// @return The created Variable.
     Variable *variable(Type *t, const std::string &n, Value *init = nullptr, Range *r = nullptr);
 
     /// @brief Creates a variable declaration.
@@ -890,6 +964,7 @@ public:
     /// @param n the name of the variable.
     /// @param init the initial value of the variable.
     /// @param r the eventual range.
+    /// @return The created declaration_t.
     declaration_t variableDecl(Type *t, const std::string &n, Value *init = nullptr, Range *r = nullptr);
 
     /// @brief Creates a View.
@@ -902,6 +977,7 @@ public:
     /// @param t The list of template parameters.
     /// @param s Attribute "standard" of the view.
     /// @param fileName The fileName of the view.
+    /// @return The created View.
     View *view(
         const std::string &n,
         Contents *c,
@@ -924,6 +1000,7 @@ public:
     /// @param s Attribute "standard" of the view.
     /// @param parents The list of parent views.
     /// /// @param fileName The fileName of the view.
+    /// @return The created View.
     View *view(
         const std::string &n,
         Contents *c,
@@ -961,6 +1038,7 @@ public:
     /// @param condition the loop condition.
     /// @param stepAct the list of step actions.
     /// @param forAct the list of loop-body actions.
+    /// @return The created For.
     For *forLoop(
         const std::string &label,
         BList<DataDeclaration> &initDecls,
@@ -972,16 +1050,19 @@ public:
     /// @brief Creates an if statement.
     /// @param d the list of actions of the default case.
     /// @param as the list of alternatives.
+    /// @return The created If.
     If *ifStmt(action_t d, ifAlt_t as);
 
     /// @brief Creates an if statement.
     /// @param d the list of actions of the default case.
     /// @param as the list of alternatives.
+    /// @return The created action_t.
     action_t ifAction(action_t d, ifAlt_t as);
 
     /// @brief Creates an if-statement alternative.
     /// @param c the condition.
     /// @param a the list of actions.
+    /// @return The created IfAlt.
     IfAlt *ifAlt(Value *c, action_t a);
 
     /// @brief Creates a procedure call.
@@ -989,6 +1070,7 @@ public:
     /// @param inst the eventual instance object.
     /// @param t the template argument(s) for the procedure call.
     /// @param p the parameter argument(s) for the procedure call.
+    /// @return The created action_t.
     action_t procedureCallAction(const std::string &n, Value *inst, templateArgument_t t, parameterArgument_t p);
 
     /// @brief Creates a procedure call.
@@ -996,6 +1078,7 @@ public:
     /// @param inst the eventual instance object.
     /// @param t the template argument(s) for the procedure call.
     /// @param p the parameter argument(s) for the procedure call.
+    /// @return The created ProcedureCall.
     ProcedureCall *procedureCall(const std::string &n, Value *inst, templateArgument_t t, parameterArgument_t p);
 
     /// @brief Creates a return statement exploiting a specific value or a
@@ -1003,6 +1086,7 @@ public:
     /// specified.
     /// @param v The value of return.
     /// @param t The type to use to build a 'return nullptr' statement.
+    /// @return The created Return.
     Return *retStmt(Value *v = nullptr, Type *t = nullptr);
 
     /// @brief Creates a return statement exploiting a specific value or a
@@ -1010,12 +1094,14 @@ public:
     /// specified.
     /// @param v The value of return.
     /// @param t The type to use to build a 'return nullptr' statement.
+    /// @return The created action_t.
     action_t returnAction(Value *v = nullptr, Type *t = nullptr);
 
     /// @brief Creates a wait statement.
     /// @param timeVal The time.
     /// @param cond The condition.
     /// @param repetitions The repetitions.
+    /// @return The created action_t.
     action_t waitAction(Value *timeVal, Value *cond = nullptr, Value *repetitions = nullptr);
 
     /// @brief Creates a wait statement.
@@ -1023,6 +1109,7 @@ public:
     /// @param cond The condition.
     /// @param repetitions The repetitions.
     /// @param actions Possible wait actions.
+    /// @return The created action_t.
     action_t waitAction(Value *timeVal, Value *cond, Value *repetitions, action_t &actions);
 
     /// @}
@@ -1034,6 +1121,7 @@ public:
     /// @param du the DesignUnit representing the class.
     /// @param pp the list of formal parameters.
     /// @param tp the list of template parameters.
+    /// @return The created Function.
     Function *classConstructor(DesignUnit *du, BList<Parameter> &pp, BList<Declaration> &tp);
 
     /// @brief Creates a class constructor. By default its name is __hif_constructor.
@@ -1041,6 +1129,7 @@ public:
     /// @param du the DesignUnit representing the class.
     /// @param pp the list of formal parameters.
     /// @param tp the list of template parameters.
+    /// @return The created Function.
     Function *classConstructor(DesignUnit *du, parameter_t pp, template_t tp);
 
     /// @brief Creates the call to a class constructor. Normally it is used as
@@ -1049,6 +1138,7 @@ public:
     /// @param instName is the name of the instance variable.
     /// @param parameterAssigns the list of actual parameters.
     /// @param tpassigns the list of template parameters assigns.
+    /// @return The created FunctionCall.
     FunctionCall *classConstructorCall(
         DesignUnit *du,
         const std::string &instName,
@@ -1061,6 +1151,7 @@ public:
     /// @param instName is the name of the instance variable.
     /// @param p the list of actual parameters.
     /// @param t the list of template parameters assigns.
+    /// @return The created FunctionCall.
     FunctionCall *
     classConstructorCall(DesignUnit *du, const std::string &instName, parameterArgument_t p, templateArgument_t t);
 
@@ -1071,10 +1162,12 @@ public:
     /// @param iT is the referenced type of instance.
     /// @param p the list of actual parameters.
     /// @param t the list of template parameters assigns.
+    /// @return The created FunctionCall.
     FunctionCall *classConstructorCall(const std::string &n, ReferencedType *iT, parameterArgument_t p, templateArgument_t t);
 
     /// @brief Creates a class destructor. By default its name is __hif_destructor.
     /// @param du the DesignUnit representing the class.
+    /// @return The created Procedure.
     Procedure *classDestructor(DesignUnit *du);
 
     /// @}

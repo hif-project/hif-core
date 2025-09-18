@@ -18,8 +18,15 @@ namespace semantics
 struct DeclarationOptions {
     DeclarationOptions();
     virtual ~DeclarationOptions();
+    /// @brief Copy constructor.
+    /// @param other The object to copy from.
     DeclarationOptions(const DeclarationOptions &other);
+    /// @brief Assignment operator.
+    /// @param other The object to assign from.
+    /// @return Reference to this object.
     DeclarationOptions &operator=(DeclarationOptions other);
+    /// @brief Swap function.
+    /// @param other The object to swap with.
     void swap(DeclarationOptions &other);
 
     /// @brief The object from which to start the search. If it is

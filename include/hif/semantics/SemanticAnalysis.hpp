@@ -30,6 +30,8 @@ public:
 
     /// @brief Main function used to analyze the type of the operands involved
     /// in current operation.
+    /// @param op1Type The type of the first operand.
+    /// @param op2Type The type of the second operand.
     virtual void analyzeOperands(Type *op1Type, Type *op2Type);
 
     /// @brief Function used to get the result of the analysis.
@@ -68,6 +70,7 @@ protected:
     /// @{
     /// @brief Maps a type reference for unary operations.
     /// @param op The operand's type reference.
+    /// @return void
     void _map(TypeReference *op);
     /// @}
 
@@ -76,6 +79,7 @@ protected:
     /// @brief Maps a type reference and a type for binary operations.
     /// @param op1 The first operand's type reference.
     /// @param op2 The second operand's type.
+    /// @return void
     void _map(TypeReference *op1, Type *op2);
 
     /// @brief Maps a type and a type reference for binary operations.

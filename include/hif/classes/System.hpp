@@ -50,12 +50,20 @@ public:
 
     /// @brief Struct containing information about the current version of HIF.
     struct VersionInfo {
+        /// @brief Type for version numbers.
         typedef unsigned long long VersionNumber;
 
         VersionInfo();
         ~VersionInfo();
+        /// @brief Copy constructor.
+        /// @param other The object to copy from.
         VersionInfo(const VersionInfo &other);
+        /// @brief Assignment operator.
+        /// @param other The object to assign from.
+        /// @return Reference to this object.
         VersionInfo &operator=(VersionInfo other);
+        /// @brief Swap function.
+        /// @param other The object to swap with.
         void swap(VersionInfo &other);
 
         /// @brief The HIF release version.
@@ -110,6 +118,8 @@ protected:
     virtual void _calculateFields();
 
     /// @brief Returns the name of given BList w.r.t. this.
+    /// @param list The BList to get the name for.
+    /// @return The name of the BList.
     virtual std::string _getBListName(const BList<Object> &list) const;
 
 private:

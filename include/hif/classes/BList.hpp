@@ -32,6 +32,7 @@ public:
 
     class iterator;
 
+    /// @brief Default constructor.
     BList();
 
     /// @brief Deep copy of all objects.
@@ -259,12 +260,15 @@ public:
     {
     public:
         /// @brief Constructor.
+        /// @param o The object to initialize the iterator with.
         explicit iterator(T *o = nullptr);
 
         /// @brief Copy constructor.
+        /// @param i The iterator to copy from.
         iterator(const iterator &i);
 
         /// @brief BListHost::iterator constructor.
+        /// @param i The BListHost iterator to initialize from.
         iterator(const BListHost::iterator &i);
 
         /// @brief Destructor.

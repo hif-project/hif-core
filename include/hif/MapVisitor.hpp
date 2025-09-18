@@ -110,6 +110,7 @@ class MapVisitor1 : protected HifVisitor
 {
 public:
     /// @brief Constructor that initializes the visitor with an object.
+    /// @param o1 The object to initialize with.
     MapVisitor1(Object *o1);
 
     /// @brief Destructor.
@@ -306,6 +307,9 @@ template <class FinalRebind, class Parent2>
 class MapVisitor2 : protected HifVisitor
 {
 public:
+    /// @brief Constructor that initializes the visitor with two objects.
+    /// @param oo1 The first object.
+    /// @param oo2 The second object.
     MapVisitor2(Object *oo1, Object *oo2);
 
     virtual ~MapVisitor2();
@@ -313,9 +317,12 @@ public:
     /// @brief This struct is used to map to compile-time polimorphism.
     template <class T2>
     struct rebind_t {
+        /// @brief Type alias for the final rebind type.
         typedef FinalRebind FR_t;
         /// @brief This method calls the FinalRebind::map() method,
         /// passing tree objects, and using their actual type.
+        /// @tparam T1 The type of the first object.
+        /// @param o1 The first object to map.
         template <typename T1>
         static void map(T1 *o1);
     };
@@ -498,6 +505,7 @@ protected:
     virtual int visitWith(With &o);
     // Internal fields.
 
+    /// @brief The first object to map.
     Object *o1;
     /// This field must be static, to allow rebind_t struct to access it,
     /// w/o any reference to this object. This is required to allow compile-time

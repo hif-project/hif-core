@@ -434,6 +434,9 @@ public:
     /// @name General support methods.
     /// @{
 
+    /// @brief Gets the context precision for the given object.
+    /// @param o The object to get precision for.
+    /// @return The range representing the precision.
     Range *getContextPrecision(Object *o);
 
     /// @brief Returns true when semantics type of slice must be rebased.
@@ -464,6 +467,8 @@ public:
     mapStandardSymbol(Declaration *decl, KeySymbol &key, ValueSymbol &value, ILanguageSemantics *srcSem) = 0;
 
     /// @brief Map a library name in the correspondent header file name.
+    /// @param n The library name.
+    /// @return The corresponding header file name.
     std::string mapStandardFilename(const std::string &n);
 
     /// @brief Returns the mapped symbol w.r.t. the current semantics.
@@ -474,10 +479,16 @@ public:
 
     /// @brief Creates a copy of the declaration renaming it adding
     /// the given suffix, and return the fresh new declaration.
+    /// @tparam T The type of the declaration.
+    /// @param decl The declaration to copy.
+    /// @param suffix The suffix to add.
+    /// @return The new suffixed declaration.
     template <typename T> T *getSuffixedCopy(T *decl, const std::string &suffix);
 
     /// @brief Returns the actual library filename (which could be different
     /// from the library name set).
+    /// @param n The library name.
+    /// @return The actual library filename.
     virtual std::string getStandardFilename(const std::string &n);
 
     /// @brief Returns the event method name w.r.t. current semantics.
@@ -489,9 +500,17 @@ public:
 
     /// @}
 
+    /// @brief Returns whether native semantics are being used.
+    /// @return true if native semantics are used, false otherwise.
     bool useNativeSemantics() const;
+
+    /// @brief Sets whether to use native semantics.
+    /// @param b true to use native semantics, false otherwise.
     void setUseNativeSemantics(const bool b);
 
+    /// @brief Creates a HIF-compatible name from the given name.
+    /// @param reqName The requested name.
+    /// @return The HIF-compatible name.
     std::string makeHifName(const std::string &reqName) const;
 
 protected:
@@ -519,9 +538,17 @@ protected:
     /// @{
 
     /// @brief Wrapper for a string with possibility to add a prefix "hif_"
+    /// @param reqName The requested name.
+    /// @param hifFormat If true, add "hif_" prefix.
+    /// @return The name with optional prefix.
     std::string _makeHifName(const std::string &reqName, const bool hifFormat) const;
 
     /// @brief Wrapper for Enum creation with possibility to add a prefix "hif_".
+    /// @param enumName The enum name.
+    /// @param values The enum values.
+    /// @param size The number of values.
+    /// @param hifFormat If true, add "hif_" prefix.
+    /// @return The created TypeDef.
     TypeDef *_makeEnum(const char *enumName, const char *values[], size_t size, const bool hifFormat);
 
     /// @brief Create a SubProgram with at most one parameter.
@@ -586,6 +613,15 @@ protected:
     /// @name Methods used by canRemoveCastOnOperands.
     /// @{
 
+    /// @brief Checks concatenation casts for removal.
+    /// @param e The expression.
+    /// @param castT1 Cast type 1.
+    /// @param castT2 Cast type 2.
+    /// @param subT1 Sub type 1.
+    /// @param subT2 Sub type 2.
+    /// @param exprInfo Expression info.
+    /// @param info Info.
+    /// @return true if casts can be removed.
     virtual bool _checkConcatCasts(
         Expression *e,
         Type *castT1,
@@ -595,6 +631,16 @@ protected:
         ExpressionTypeInfo &exprInfo,
         ExpressionTypeInfo &info);
 
+    /// @brief Checks shift casts for removal.
+    /// @param e The expression.
+    /// @param castT1 Cast type 1.
+    /// @param castT2 Cast type 2.
+    /// @param subT1 Sub type 1.
+    /// @param subT2 Sub type 2.
+    /// @param exprInfo Expression info.
+    /// @param info Info.
+    /// @param canRemoveOnShift Whether shift cast can be removed.
+    /// @return true if casts can be removed.
     virtual bool _checkShiftCasts(
         Expression *e,
         Type *castT1,
@@ -605,6 +651,15 @@ protected:
         ExpressionTypeInfo &info,
         bool &canRemoveOnShift);
 
+    /// @brief Checks arithmetic casts for removal.
+    /// @param e The expression.
+    /// @param castT1 Cast type 1.
+    /// @param castT2 Cast type 2.
+    /// @param subT1 Sub type 1.
+    /// @param subT2 Sub type 2.
+    /// @param origInfo Original info.
+    /// @param simplifiedInfo Simplified info.
+    /// @return true if casts can be removed.
     virtual bool _checkArithmeticCasts(
         Expression *e,
         Type *castT1,
@@ -614,6 +669,15 @@ protected:
         ExpressionTypeInfo &origInfo,
         ExpressionTypeInfo &simplifiedInfo);
 
+    /// @brief Checks relational casts for removal.
+    /// @param e The expression.
+    /// @param castT1 Cast type 1.
+    /// @param castT2 Cast type 2.
+    /// @param subT1 Sub type 1.
+    /// @param subT2 Sub type 2.
+    /// @param origInfo Original info.
+    /// @param simplifiedInfo Simplified info.
+    /// @return true if casts can be removed.
     virtual bool _checkRelationalCasts(
         Expression *e,
         Type *castT1,
@@ -623,6 +687,15 @@ protected:
         ExpressionTypeInfo &origInfo,
         ExpressionTypeInfo &simplifiedInfo);
 
+    /// @brief Checks bitwise casts for removal.
+    /// @param e The expression.
+    /// @param castT1 Cast type 1.
+    /// @param castT2 Cast type 2.
+    /// @param subT1 Sub type 1.
+    /// @param subT2 Sub type 2.
+    /// @param origInfo Original info.
+    /// @param simplifiedInfo Simplified info.
+    /// @return true if casts can be removed.
     virtual bool _checkBitwiseCasts(
         Expression *e,
         Type *castT1,
@@ -632,6 +705,17 @@ protected:
         ExpressionTypeInfo &origInfo,
         ExpressionTypeInfo &simplifiedInfo);
 
+    /// @brief Checks generic casts for removal.
+    /// @param e The expression.
+    /// @param castT1 Cast type 1.
+    /// @param castT2 Cast type 2.
+    /// @param subT1 Sub type 1.
+    /// @param subT2 Sub type 2.
+    /// @param origInfo Original info.
+    /// @param simplifiedInfo Simplified info.
+    /// @param precOpt Precision options.
+    /// @param retOpt Return options.
+    /// @return true if casts can be removed.
     virtual bool _checkGenericCasts(
         Expression *e,
         Type *castT1,

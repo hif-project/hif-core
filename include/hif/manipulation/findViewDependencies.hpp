@@ -18,8 +18,15 @@ namespace manipulation
 struct ViewDependencyOptions {
     ViewDependencyOptions();
     ~ViewDependencyOptions();
+    /// @brief Copy constructor.
+    /// @param other The object to copy from.
     ViewDependencyOptions(const ViewDependencyOptions &other);
+    /// @brief Assignment operator.
+    /// @param other The object to assign from.
+    /// @return Reference to this object.
     ViewDependencyOptions &operator=(ViewDependencyOptions other);
+    /// @brief Swaps the contents of this object with another.
+    /// @param other The object to swap with.
     void swap(ViewDependencyOptions &other);
 
     /// @brief If true skip standard views. Default false.

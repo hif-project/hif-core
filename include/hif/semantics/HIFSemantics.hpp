@@ -254,9 +254,17 @@ public:
     virtual LibraryDef *getStandardLibrary(const std::string & name);
 
     /// @brief Return True if the given library is native for the semantics.
+    /// @param name The library name.
+    /// @param hifFormat Whether to use HIF format.
+    /// @return True if the library is native, false otherwise.
     virtual bool isNativeLibrary(const std::string & name, const bool hifFormat = false);
 
     /// @brief Map an input symbol into the corresponding output one.
+    /// @param decl The declaration.
+    /// @param key The key symbol.
+    /// @param value The value symbol.
+    /// @param srcSem The source semantics.
+    /// @return The mapping case.
     virtual MapCases
     mapStandardSymbol(Declaration *decl, KeySymbol &key, ValueSymbol &value, ILanguageSemantics *srcSem);
 

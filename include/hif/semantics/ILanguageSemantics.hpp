@@ -552,6 +552,13 @@ protected:
     TypeDef *_makeEnum(const char *enumName, const char *values[], size_t size, const bool hifFormat);
 
     /// @brief Create a SubProgram with at most one parameter.
+    /// @param n The name.
+    /// @param retType The return type.
+    /// @param paramType The parameter type.
+    /// @param paramValue The parameter value.
+    /// @param unsupported Whether unsupported.
+    /// @param hifFormat Whether to use HIF format.
+    /// @return The created SubProgram.
     SubProgram *_makeAttribute(
         const std::string &n,
         Type *retType,
@@ -561,6 +568,15 @@ protected:
         const bool hifFormat);
 
     /// @brief Create a SubProgram with two parameters.
+    /// @param n The name.
+    /// @param retType The return type.
+    /// @param param1Type The first parameter type.
+    /// @param param1Value The first parameter value.
+    /// @param param2Type The second parameter type.
+    /// @param param2Value The second parameter value.
+    /// @param unsupported Whether unsupported.
+    /// @param hifFormat Whether to use HIF format.
+    /// @return The created SubProgram.
     SubProgram *_makeBinaryAttribute(
         const std::string &n,
         Type *retType,
@@ -571,7 +587,18 @@ protected:
         const bool unsupported,
         const bool hifFormat);
 
-    /// @brief Create a SubProgram with two parameters.
+    /// @brief Create a SubProgram with three parameters.
+    /// @param n The name.
+    /// @param retType The return type.
+    /// @param param1Type The first parameter type.
+    /// @param param1Value The first parameter value.
+    /// @param param2Type The second parameter type.
+    /// @param param2Value The second parameter value.
+    /// @param param3Type The third parameter type.
+    /// @param param3Value The third parameter value.
+    /// @param unsupported Whether unsupported.
+    /// @param hifFormat Whether to use HIF format.
+    /// @return The created SubProgram.
     SubProgram *_makeTernaryAttribute(
         const std::string &n,
         Type *retType,
@@ -585,12 +612,23 @@ protected:
         const bool hifFormat);
 
     /// @brief Create a SubProgram parameter.
+    /// @param scope The scope.
+    /// @param paramType The parameter type.
+    /// @param paramValue The parameter value.
+    /// @param paramIndex The parameter index.
+    /// @param hifFormat Whether to use HIF format.
     void _makeAttributeParameter(
         SubProgram *scope,
         Type *paramType,
         Value *paramValue,
         const std::string &paramIndex,
         const bool hifFormat);
+    /// @brief Adds a multiparameter function.
+    /// @param ld The library definition.
+    /// @param name The function name.
+    /// @param factory The factory.
+    /// @param hifFormat Whether to use HIF format.
+    /// @param ret The return type.
     void
     _addMultiparamFunction(LibraryDef *ld, const char *name, hif::HifFactory &factory, const bool hifFormat, Type *ret);
 
@@ -601,12 +639,23 @@ protected:
     Array *_makeTemplateArray(const std::string &index, Type *t);
 
     /// @brief Check whether the given name is 'hif_' prefixed.
+    /// @param n The name to check.
+    /// @param unprefixed The unprefixed name output.
+    /// @return true if prefixed.
     bool _isHifPrefixed(const std::string &n, std::string &unprefixed);
 
     /// @brief Create a StandardSymbols key.
+    /// @param library The library name.
+    /// @param symbol The symbol name.
+    /// @return The key symbol.
     ILanguageSemantics::KeySymbol _makeKey(const char *library, const char *symbol);
 
     /// @brief Create a StandardSymbols value.
+    /// @param library The library array.
+    /// @param size The size of the library array.
+    /// @param symbol The symbol name.
+    /// @param action The map action.
+    /// @return The value symbol.
     ILanguageSemantics::ValueSymbol
     _makeValue(const char *library[], unsigned int size, const char *symbol, ILanguageSemantics::MapCases action);
 

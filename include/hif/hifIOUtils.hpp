@@ -14,19 +14,32 @@ namespace hif
 
 /// @brief Options for printing
 struct PrintHifOptions {
+    /// @brief Whether to print comments.
     bool printComments;
+    /// @brief Whether to print summary.
     bool printSummary;
+    /// @brief Whether to print code infos.
     bool printCodeInfos;
+    /// @brief Whether to print properties.
     bool printProperties;
+    /// @brief Whether to print additional keywords.
     bool printAdditionalKeywords;
+    /// @brief Whether to print HIF standard libraries.
     bool printHifStandardLibraries;
+    /// @brief Whether to use append mode.
     bool appendMode;
+    /// @brief The language semantics.
     hif::semantics::ILanguageSemantics *sem;
 
     PrintHifOptions();
     ~PrintHifOptions();
 
+    /// @brief Copy constructor.
+    /// @param other The PrintHifOptions to copy from.
     PrintHifOptions(const PrintHifOptions &other);
+    /// @brief Copy assignment operator.
+    /// @param other The PrintHifOptions to assign from.
+    /// @return Reference to this PrintHifOptions.
     PrintHifOptions &operator=(const PrintHifOptions &other);
 };
 
@@ -88,13 +101,22 @@ void writeUniqueFile(
 void printOperator(Operator oper, std::ostream &o);
 /// @brief struct of options passed to readFile.
 struct ReadHifOptions {
+    /// @brief Default constructor.
     ReadHifOptions();
+    /// @brief Default destructor.
     ~ReadHifOptions();
 
+    /// @brief Whether to load HIF standard library.
     bool loadHifStandardLibrary;
+    /// @brief The language semantics.
     hif::semantics::ILanguageSemantics *sem;
 
+    /// @brief Copy constructor.
+    /// @param other The ReadHifOptions to copy from.
     ReadHifOptions(const ReadHifOptions &other);
+    /// @brief Copy assignment operator.
+    /// @param other The ReadHifOptions to assign from.
+    /// @return Reference to this ReadHifOptions.
     ReadHifOptions &operator=(const ReadHifOptions &other);
 };
 ///	@brief Reads an hif.xml file.

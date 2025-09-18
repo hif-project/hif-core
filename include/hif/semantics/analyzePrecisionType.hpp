@@ -17,10 +17,16 @@ namespace semantics
 /// @brief Struct representing input for analyzePrecisionType() function.
 ///
 struct AnalyzeParams {
+    /// @brief Type definition for a list of Type pointers.
     typedef std::list<Type *> TypeList;
     AnalyzeParams();
     ~AnalyzeParams();
+    /// @brief Copy constructor.
+    /// @param t The object to copy from.
     AnalyzeParams(const AnalyzeParams &t);
+    /// @brief Assignment operator.
+    /// @param t The object to assign from.
+    /// @return Reference to this object.
     AnalyzeParams &operator=(const AnalyzeParams &t);
 
     /// @brief Operation to perform on operands.

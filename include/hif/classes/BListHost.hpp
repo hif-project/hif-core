@@ -185,6 +185,8 @@ protected:
     Object *findByName(const std::string &n) const;
 
     /// @brief Check whether passed object can be inserted into current BList.
+    /// @param o The object to check.
+    /// @return true if the object can be inserted, false otherwise.
     bool checkSuitable(Object *o) const;
 
     /// @name Properties management methods.
@@ -260,9 +262,11 @@ protected:
     {
     public:
         /// @brief Constructor.
+        /// @param o The object to initialize the iterator with.
         explicit iterator(Object *o = nullptr);
 
         /// @brief Copy constructor.
+        /// @param i The iterator to copy from.
         iterator(const iterator &i);
 
         /// @brief Destructor.

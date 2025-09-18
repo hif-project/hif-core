@@ -20,8 +20,11 @@ namespace semantics
 class DeclarationsStack
 {
 public:
+    /// @brief Type definition for symbols in the declarations stack.
     typedef Object Symbol;
+    /// @brief Type definition for a map of symbols to declarations.
     typedef std::map<Symbol *, Declaration *> DeclarationsMap;
+    /// @brief Type definition for a stack of declaration maps.
     typedef std::list<DeclarationsMap> Stack;
 
     /// @brief Constructor.

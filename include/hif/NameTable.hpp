@@ -28,11 +28,14 @@ namespace hif
 class NameTable
 {
 public:
+    /// @brief Type alias for a set of strings representing names.
     using NameMap        = std::set<std::string>;
+    /// @brief Type alias for a set of strings representing forbidden names.
     using ForbiddenNames = std::set<std::string>;
 
     /// Singleton stuff.
     /// @brief Function thats return an instance to NameTable class.
+    /// @return The instance of NameTable.
     static NameTable *getInstance();
 
     /// @brief Sets the List of reserved names, that should not be converted in uppercase or lowercase
@@ -47,6 +50,7 @@ public:
 
     /// @brief Return the name associated to a given string.
     /// @param name the string whose name is sought.
+    /// @return True if the name exists, false otherwise.
     bool nameExists(const std::string &name);
 
     /// @brief Return a fresh name.
@@ -62,21 +66,21 @@ public:
 
     /// @brief Return a fresh name.
     /// A name is fresh if it does not occur in the file.
-    /// @param n The old name.
+    /// @param name The old name.
     /// @param suffix [optional] the string prefix to be used to generate a fresh name
     /// @return The fresh name.
     std::string getFreshName(const std::string &name, const std::string &suffix);
 
     /// @brief Return a fresh name.
     /// A name is fresh if it does not occur in the file.
-    /// @param n The old name.
+    /// @param name The old name.
     /// @param suffix the string suffix to be used to generate a fresh name
     /// @return The fresh name.
     std::string getFreshName(const std::string &name, unsigned long long suffix);
 
     /// @brief Return the name associated to a given string.
     /// This one creates the name if it is not in the table yet.
-    /// @param s the string whose name is sought.
+    /// @param name the string whose name is sought.
     /// @return The name.
     std::string registerName(const std::string &name);
 
@@ -115,6 +119,9 @@ public:
     /// @return The string.
     static std::string hifDestructor();
 
+    /// @brief Checks if the given name is a default value.
+    /// @param name The name to check.
+    /// @return True if the name is a default value, false otherwise.
     static bool isDefaultValue(const std::string &name) { return name == none(); }
 
 private:

@@ -44,8 +44,9 @@ public:
     /// @return The string representing the class name.
     ClassId getClassId() const;
 
-    /// @brief Returns the calling object for the procedure call.
-    /// @return The calling object.
+    /// @brief Sets the calling object for the procedure call.
+    /// @param v The calling object to set.
+    /// @return The previous calling object.
     Value *setInstance(Value *v);
 
     /// @brief Returns the calling object for the procedure call.
@@ -66,9 +67,13 @@ protected:
     virtual void _calculateFields();
 
     /// @brief Returns the name of given child w.r.t. this.
+    /// @param child The child object.
+    /// @return The name of the child.
     virtual std::string _getFieldName(const Object *child) const;
 
     /// @brief Returns the name of given BList w.r.t. this.
+    /// @param list The BList to get the name for.
+    /// @return The name of the BList.
     virtual std::string _getBListName(const BList<Object> &list) const;
 
 private:

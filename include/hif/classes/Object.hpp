@@ -58,12 +58,28 @@ public:
     typedef std::list<std::string> StringList;
     /// @brief Struct storing code info.
     struct CodeInfo {
+        /// @brief Default constructor.
         CodeInfo();
+        /// @brief Constructor with filename, line, and column.
+        /// @param f The filename.
+        /// @param l The line number.
+        /// @param c The column number.
         CodeInfo(const std::string & f, unsigned int l, unsigned int c);
+        /// @brief Destructor.
         ~CodeInfo();
+        /// @brief Copy constructor.
+        /// @param other The other CodeInfo to copy from.
         CodeInfo(const CodeInfo &other);
+        /// @brief Assignment operator.
+        /// @param other The other CodeInfo to assign from.
+        /// @return Reference to this CodeInfo.
         CodeInfo &operator=(const CodeInfo &other);
+        /// @brief Swap with another CodeInfo.
+        /// @param other The other CodeInfo to swap with.
         void swap(CodeInfo &other);
+        /// @brief Less than operator.
+        /// @param o The other CodeInfo to compare with.
+        /// @return true if this is less than o.
         bool operator<(const CodeInfo &o) const;
 
         /// @brief Returns the source file name concatenated with ':' and
@@ -80,7 +96,9 @@ public:
         unsigned int columnNumber;
     };
 
+    /// @brief Map type for storing object properties.
     typedef std::map<std::string, TypedObject *> PropertyMap;
+    /// @brief Iterator type for the property map.
     typedef PropertyMap::iterator PropertyMapIterator;
 
     /// @brief Destructor.
@@ -203,6 +221,7 @@ public:
     const CodeInfo &getCodeInfo() const;
 
     /// @brief Sets all current codeinfos.
+    /// @param ci The code info to set.
     void setCodeInfo(const CodeInfo &ci);
 
     /// @brief Returns the source file name concatenated with ':' and
@@ -326,9 +345,13 @@ protected:
     virtual void _calculateFields() = 0;
 
     /// @brief Returns the name of given child w.r.t. this.
+    /// @param child The child object to get the name for.
+    /// @return The name of the child field.
     virtual std::string _getFieldName(const Object *child) const;
 
     /// @brief Returns the name of given BList w.r.t. this.
+    /// @param list The BList to get the name for.
+    /// @return The name of the BList.
     virtual std::string _getBListName(const BList<Object> &list) const;
 
     /// @brief The parent BList link of the object (if the object is stored in a BList).
@@ -337,6 +360,7 @@ protected:
     /// @brief The parent of the object in the HIF tree.
     Object *_parent;
 
+    /// @brief Code information for the object.
     CodeInfo *_codeInfo;
 
     /// @brief Map of properties related to the object.

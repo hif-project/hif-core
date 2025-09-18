@@ -21,8 +21,15 @@ namespace hif
 struct EqualsOptions {
     EqualsOptions();
     ~EqualsOptions();
+    /// @brief Copy constructor.
+    /// @param o The object to copy from.
     EqualsOptions(const EqualsOptions &o);
+    /// @brief Assignment operator.
+    /// @param o The object to assign from.
+    /// @return Reference to this object.
     EqualsOptions &operator=(EqualsOptions o);
+    /// @brief Swap function.
+    /// @param o The object to swap with.
     void swap(EqualsOptions &o);
 
     /// @name General options.
@@ -121,6 +128,7 @@ struct EqualsOptions {
 
     /// @}
 
+    /// @brief Language semantics to use for comparison.
     hif::semantics::ILanguageSemantics *sem;
 };
 

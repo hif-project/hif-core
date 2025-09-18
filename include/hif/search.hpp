@@ -23,7 +23,9 @@ namespace hif
 class HifQueryBase
 {
 public:
+    /// @brief Type for representing search depth.
     using Depth               = unsigned int;
+    /// @brief Function pointer type for custom object collection methods.
     using CollectObjectMethod = bool (*)(Object *, const HifQueryBase *);
 
     /// @brief Maximum search depth. Default is no limit.
@@ -77,6 +79,7 @@ template <class T>
 class HifTypedQuery : public HifQueryBase
 {
 public:
+    /// @brief Type for storing query results.
     using Results = std::list<T *>;
 
     HifTypedQuery()
@@ -130,6 +133,7 @@ private:
 class HifUntypedQuery : public HifQueryBase
 {
 public:
+    /// @brief Type for storing query results.
     using Results = std::list<Object *>;
 
     HifUntypedQuery();

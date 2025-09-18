@@ -126,12 +126,17 @@ Object *objectGetInstance(Object *obj);
 struct ObjectSensitivityOptions {
     ObjectSensitivityOptions();
     ~ObjectSensitivityOptions();
+    /// @brief Copy constructor.
+    /// @param other The object to copy from.
     ObjectSensitivityOptions(const ObjectSensitivityOptions &other);
+    /// @brief Assignment operator.
+    /// @param other The object to assign from.
+    /// @return Reference to this object.
     ObjectSensitivityOptions &operator=(const ObjectSensitivityOptions &other);
 
     /// @brief Check all objects with sensitivity (e.g. Wait). Default is false.
     bool checkAll;
-    // Check only in case of direct parent. Default is false.
+    /// @brief Check only in case of direct parent. Default is false.
     bool directParent;
     /// Considers function calls as valid if appears into sensitivity lists. Default is true.
     bool considerFunctionCalls;
@@ -217,6 +222,7 @@ void objectSetExternal(Object *o, const bool isExternal);
 /// @brief Checks whether given object is a nullptr pointer.
 ///
 /// @param o The object to be checked.
+/// @param sem The language semantics.
 /// @return True when it is a nullptr pointer representation.
 ///
 

@@ -18,8 +18,15 @@ namespace manipulation
 struct SplitAssignTargetOptions {
     SplitAssignTargetOptions();
     ~SplitAssignTargetOptions();
+    /// @brief Copy constructor.
+    /// @param other The object to copy from.
     SplitAssignTargetOptions(const SplitAssignTargetOptions &other);
+    /// @brief Assignment operator.
+    /// @param other The object to assign from.
+    /// @return Reference to this object.
     SplitAssignTargetOptions &operator=(SplitAssignTargetOptions other);
+    /// @brief Swaps the contents of this object with another.
+    /// @param other The object to swap with.
     void swap(SplitAssignTargetOptions &other);
 
     /// @name General configuration.

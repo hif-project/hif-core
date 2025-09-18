@@ -131,6 +131,7 @@ public:
     virtual ~ILanguageSemantics() = 0;
 
     /// @brief Returns the name of the semantics.
+    /// @return The name of the semantics.
     virtual std::string getName() const = 0;
 
     /// @name Type management methods.
@@ -429,6 +430,8 @@ public:
     ///@}
 
     /// @brief Checks whether a name is forbidden in the current semantics.
+    /// @param decl The declaration to check.
+    /// @return true if the name is forbidden, false otherwise.
     virtual bool isForbiddenName(Declaration *decl) = 0;
 
     /// @name General support methods.
@@ -472,6 +475,9 @@ public:
     std::string mapStandardFilename(const std::string &n);
 
     /// @brief Returns the mapped symbol w.r.t. the current semantics.
+    /// @param key The key symbol.
+    /// @param s The object.
+    /// @return The simplified symbol object.
     virtual Object *getSimplifiedSymbol(KeySymbol &key, Object *s) = 0;
 
     /// @brief Returns true if no namespaces is needed for given library name.
@@ -492,10 +498,14 @@ public:
     virtual std::string getStandardFilename(const std::string &n);
 
     /// @brief Returns the event method name w.r.t. current semantics.
+    /// @param hifFormat If true, return in HIF format.
+    /// @return The event method name.
     virtual std::string getEventMethodName(const bool hifFormat = false) = 0;
 
     /// @brief Returns <tt>true</tt> if the given call is an event call w.r.t.
     /// the current semantics, <tt>false</tt> otherwise.
+    /// @param call The function call to check.
+    /// @return true if it's an event call, false otherwise.
     virtual bool isEventCall(FunctionCall *call) = 0;
 
     /// @}

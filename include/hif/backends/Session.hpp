@@ -238,38 +238,147 @@ public:
     std::vector<std::string> Find(std::string &sBase, std::string &sView);
 
     /// @brief Relative Find methods
+    /// @param rduTgt The target design unit.
+    /// @param rduSrc The source design unit.
+    /// @return The found paths.
     std::vector<std::string> Find(hif::DesignUnit &rduTgt, hif::DesignUnit &rduSrc);
+    /// @brief Find paths from a design unit to a view.
+    /// @param rduTgt The target design unit.
+    /// @param rvSrc The source view.
+    /// @return The found paths.
     std::vector<std::string> Find(hif::DesignUnit &rduTgt, hif::View &rvSrc);
+    /// @brief Find paths from a design unit to an instance.
+    /// @param rduTgt The target design unit.
+    /// @param riSrc The source instance.
+    /// @return The found paths.
     std::vector<std::string> Find(hif::DesignUnit &rduTgt, hif::Instance &riSrc);
+    /// @brief Find paths from a design unit to a library definition.
+    /// @param rduTgt The target design unit.
+    /// @param rlSrc The source library definition.
+    /// @return The found paths.
     std::vector<std::string> Find(hif::DesignUnit &rduTgt, hif::LibraryDef &rlSrc);
+    /// @brief Find paths from a design unit to a base and view string.
+    /// @param rduTgt The target design unit.
+    /// @param sbSrc The source base string.
+    /// @param svSrc The source view string.
+    /// @return The found paths.
     std::vector<std::string> Find(hif::DesignUnit &rduTgt, std::string &sbSrc, std::string &svSrc);
 
     /// @brief Relative Find methods
+    /// @brief Find paths from a view to a design unit.
+    /// @param rvTgt The target view.
+    /// @param rduSrc The source design unit.
+    /// @return The found paths.
     std::vector<std::string> Find(hif::View &rvTgt, hif::DesignUnit &rduSrc);
+    /// @brief Find paths from a view to a view.
+    /// @param rvTgt The target view.
+    /// @param rvSrc The source view.
+    /// @return The found paths.
     std::vector<std::string> Find(hif::View &rvTgt, hif::View &rvSrc);
+    /// @brief Find paths from a view to an instance.
+    /// @param rvTgt The target view.
+    /// @param riSrc The source instance.
+    /// @return The found paths.
     std::vector<std::string> Find(hif::View &rvTgt, hif::Instance &riSrc);
+    /// @brief Find paths from a view to a library definition.
+    /// @param rvTgt The target view.
+    /// @param rlSrc The source library definition.
+    /// @return The found paths.
     std::vector<std::string> Find(hif::View &rvTgt, hif::LibraryDef &rlSrc);
+    /// @brief Find paths from a view to a base and view string.
+    /// @param rvTgt The target view.
+    /// @param sbSrc The source base string.
+    /// @param svSrc The source view string.
+    /// @return The found paths.
     std::vector<std::string> Find(hif::View &rvTgt, std::string &sbSrc, std::string &svSrc);
 
     /// @brief Relative Find methods
+    /// @brief Find paths from an instance to a design unit.
+    /// @param riTgt The target instance.
+    /// @param rduSrc The source design unit.
+    /// @return The found paths.
     std::vector<std::string> Find(hif::Instance &riTgt, hif::DesignUnit &rduSrc);
+    /// @brief Find paths from an instance to a view.
+    /// @param riTgt The target instance.
+    /// @param rvSrc The source view.
+    /// @return The found paths.
     std::vector<std::string> Find(hif::Instance &riTgt, hif::View &rvSrc);
+    /// @brief Find paths from an instance to an instance.
+    /// @param riTgt The target instance.
+    /// @param riSrc The source instance.
+    /// @return The found paths.
     std::vector<std::string> Find(hif::Instance &riTgt, hif::Instance &riSrc);
+    /// @brief Find paths from an instance to a library definition.
+    /// @param riTgt The target instance.
+    /// @param rlSrc The source library definition.
+    /// @return The found paths.
     std::vector<std::string> Find(hif::Instance &riTgt, hif::LibraryDef &rlSrc);
+    /// @brief Find paths from an instance to a base and view string.
+    /// @param riTgt The target instance.
+    /// @param sbSrc The source base string.
+    /// @param svSrc The source view string.
+    /// @return The found paths.
     std::vector<std::string> Find(hif::Instance &riTgt, std::string &sbSrc, std::string &svSrc);
 
     /// @brief Relative Find methods
+    /// @brief Find paths from a library definition to a design unit.
+    /// @param rlTgt The target library definition.
+    /// @param rduSrc The source design unit.
+    /// @return The found paths.
     std::vector<std::string> Find(hif::LibraryDef &rlTgt, hif::DesignUnit &rduSrc);
+    /// @brief Find paths from a library definition to a view.
+    /// @param rlTgt The target library definition.
+    /// @param rvSrc The source view.
+    /// @return The found paths.
     std::vector<std::string> Find(hif::LibraryDef &rlTgt, hif::View &rvSrc);
+    /// @brief Find paths from a library definition to an instance.
+    /// @param rlTgt The target library definition.
+    /// @param riSrc The source instance.
+    /// @return The found paths.
     std::vector<std::string> Find(hif::LibraryDef &rlTgt, hif::Instance &riSrc);
+    /// @brief Find paths from a library definition to a library definition.
+    /// @param rlTgt The target library definition.
+    /// @param rlSrc The source library definition.
+    /// @return The found paths.
     std::vector<std::string> Find(hif::LibraryDef &rlTgt, hif::LibraryDef &rlSrc);
+    /// @brief Find paths from a library definition to a base and view string.
+    /// @param rlTgt The target library definition.
+    /// @param sbSrc The source base string.
+    /// @param svSrc The source view string.
+    /// @return The found paths.
     std::vector<std::string> Find(hif::LibraryDef &rlTgt, std::string &sbSrc, std::string &svSrc);
 
     /// @brief Relative Find methods : target node = du base + view
+    /// @brief Find paths from a base and view string to a design unit.
+    /// @param sbTgt The target base string.
+    /// @param svTgt The target view string.
+    /// @param rduSrc The source design unit.
+    /// @return The found paths.
     std::vector<std::string> Find(std::string &sbTgt, std::string &svTgt, hif::DesignUnit &rduSrc);
+    /// @brief Find paths from a base and view string to a view.
+    /// @param sbTgt The target base string.
+    /// @param svTgt The target view string.
+    /// @param rvSrc The source view.
+    /// @return The found paths.
     std::vector<std::string> Find(std::string &sbTgt, std::string &svTgt, hif::View &rvSrc);
+    /// @brief Find paths from a base and view string to an instance.
+    /// @param sbTgt The target base string.
+    /// @param svTgt The target view string.
+    /// @param riSrc The source instance.
+    /// @return The found paths.
     std::vector<std::string> Find(std::string &sbTgt, std::string &svTgt, hif::Instance &riSrc);
+    /// @brief Find paths from a base and view string to a library definition.
+    /// @param sbTgt The target base string.
+    /// @param svTgt The target view string.
+    /// @param rlSrc The source library definition.
+    /// @return The found paths.
     std::vector<std::string> Find(std::string &sbTgt, std::string &svTgt, hif::LibraryDef &rlSrc);
+    /// @brief Find paths from a base and view string to a base and view string.
+    /// @param sbTgt The target base string.
+    /// @param svTgt The target view string.
+    /// @param sbSrc The source base string.
+    /// @param svSrc The source view string.
+    /// @return The found paths.
     std::vector<std::string> Find(std::string &sbTgt, std::string &svTgt, std::string &sbSrc, std::string &svSrc);
 
     /// @brief Apply the command line pcLine

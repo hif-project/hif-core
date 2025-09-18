@@ -19,8 +19,15 @@ namespace manipulation
 struct FixUnsupportedBitsOptions {
     FixUnsupportedBitsOptions();
     ~FixUnsupportedBitsOptions();
+    /// @brief Copy constructor.
+    /// @param other The object to copy from.
     FixUnsupportedBitsOptions(const FixUnsupportedBitsOptions &other);
+    /// @brief Assignment operator.
+    /// @param other The object to assign from.
+    /// @return Reference to this object.
     FixUnsupportedBitsOptions &operator=(FixUnsupportedBitsOptions other);
+    /// @brief Swaps the contents of this object with another.
+    /// @param other The object to swap with.
     void swap(FixUnsupportedBitsOptions &other);
 
     /// @brief Transform all logic values to two-logic values.

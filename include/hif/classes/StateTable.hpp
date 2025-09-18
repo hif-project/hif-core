@@ -148,15 +148,19 @@ public:
     State *findState(const std::string &name);
 
     /// @brief Set the process flavour.
+    /// @param f The process flavour to set.
     void setFlavour(ProcessFlavour f);
 
     /// @brief Returns the flavour.
+    /// @return The current process flavour.
     ProcessFlavour getFlavour() const;
 
     /// @brief Set whether perform initialization at time 0.
+    /// @param dontInitialize True to avoid initialization at time 0, false otherwise.
     void setDontInitialize(const bool dontInitialize);
 
     /// @brief Get whether perform initialization at time 0.
+    /// @return True if initialization at time 0 is avoided, false otherwise.
     bool getDontInitialize() const;
 
     /// @brief Function to know if this is a standard declaration.
@@ -175,6 +179,8 @@ protected:
     virtual void _calculateFields();
 
     /// @brief Returns the name of given BList w.r.t. this.
+    /// @param list The BList to get the name for.
+    /// @return The name of the BList.
     virtual std::string _getBListName(const BList<Object> &list) const;
 
 private:

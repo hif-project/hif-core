@@ -386,6 +386,7 @@ public:
     /// @param is_signed the signed flag for the integer type.
     /// @param isConstexpr the const_expr flag for the integer type.
     /// @param variant The type variant.
+    /// @return The created Int.
     Int *integer(
         Range *span                     = nullptr,
         const bool is_signed            = true,
@@ -416,12 +417,14 @@ public:
     /// @param span the span for the real type.
     /// @param isConstexpr the const_expr flag for the real type.
     /// @param variant The type variant.
+    /// @return The created Real.
     Real *real(Range *span = nullptr, bool isConstexpr = true, const Type::TypeVariant variant = Type::NATIVE_TYPE);
 
     /// @brief Creates a record typedef (i.e., a struct in C/C++).
     /// @param n the name of the record typedef.
     /// @param f the field(s) making up the record.
     /// @param external The external flag. Default is false.
+    /// @return The created TypeDef.
     TypeDef *recordTypeDef(const std::string &n, field_t f, const bool external = false);
 
     /// @brief Creates a reference (like C++ reference types).

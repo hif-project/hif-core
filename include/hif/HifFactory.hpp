@@ -289,10 +289,28 @@ public:
     /// @return An empty list of view references.
     static viewReference_t noViewReferences();
 
+    /// @brief Sets code information for an object.
+    /// @param o The object.
+    /// @param fileName The file name.
+    /// @param line The line number.
+    /// @param col The column number.
+    /// @return The object with code info set.
     Object *codeInfo(Object *o, const std::string &fileName, unsigned int line, unsigned int col = 0);
 
+    /// @brief Sets code information for an object.
+    /// @tparam T The object type.
+    /// @param o The object.
+    /// @param fileName The file name.
+    /// @param line The line number.
+    /// @param col The column number.
+    /// @return The object with code info set.
     template <typename T> T *codeInfo(T *o, const std::string &fileName, unsigned int line, unsigned int col = 0);
 
+    /// @brief Sets code information for an object.
+    /// @tparam T The object type.
+    /// @param o The object.
+    /// @param info The code info.
+    /// @return The object with code info set.
     template <typename T> T *codeInfo(T *o, const Object::CodeInfo &info);
 
     /// @}
@@ -303,6 +321,7 @@ public:
     /// @param span the span of the array.
     /// @param type the type of the array.
     /// @param signed_ true if the array is signed, false otherwise.
+    /// @return The created Array.
     Array *array(Range *span = nullptr, Type *type = nullptr, const bool signed_ = false);
 
     /// @brief Creates a bit.
@@ -310,6 +329,7 @@ public:
     /// @param resolved true if the bit type is resolved, false otherwise.
     /// @param const_expr true if the bit type is const_expr, false otherwise.
     /// @param variant The type variant.
+    /// @return The created Bit.
     Bit *
     bit(const bool logic                = false,
         const bool resolved             = false,
@@ -323,6 +343,7 @@ public:
     /// @param const_expr true if the bitvector type is const_expr, false otherwise.
     /// @param isSigned true if the bitvector type is signed, false otherwise.
     /// @param variant The type variant.
+    /// @return The created Bitvector.
     Bitvector *bitvector(
         Range *span                     = nullptr,
         const bool logic                = false,
@@ -454,45 +475,54 @@ public:
     /// @brief Creates an Aggregate object.
     /// @param o the value provided to others.
     /// @param alts The list of AggregateAlts.
+    /// @return The created Aggregate.
     Aggregate *aggregate(Value *o, aggregatealt_t alts);
 
     /// @brief Creates an AggregateAlt object.
     /// @param i the index provided.
     /// @param v the value provided.
+    /// @return The created AggregateAlt.
     aggregatealt_t aggregatealt(Value *i, Value *v);
 
     /// @brief Creates an initial value for an array through an aggregate object.
     /// @param v the value provided to initialize array items.
+    /// @return The created Aggregate.
     Aggregate *arrayInitVal(Value *v);
 
     /// @brief Creates a bit value.
     /// @param b the bit value.
     /// @param syntactic_type The syntactic type.
+    /// @return The created BitValue.
     BitValue *bitval(const hif::BitConstant b, Bit *syntactic_type = nullptr);
 
     /// @brief Creates a bit value.
     /// @param b the bit value.
     /// @param syntactic_type The syntactic type.
+    /// @return The created BitValue.
     BitValue *bitval(const char b, Bit *syntactic_type = nullptr);
 
     /// @brief Creates a bitvector value.
     /// @param b the bit value.
     /// @param syntactic_type The syntactic type.
+    /// @return The created BitvectorValue.
     BitvectorValue *bitvectorval(const std::string &b, Bitvector *syntactic_type = nullptr);
 
     /// @brief Creates a boolean value.
     /// @param b the boolean value.
     /// @param syntactic_type The syntactic type.
+    /// @return The created BoolValue.
     BoolValue *boolval(const bool b, Bool *syntactic_type = nullptr);
 
     /// @brief Creates an explicit cast.
     /// @param t the target type of the cast.
     /// @param v the object being cast.
+    /// @return The created Cast.
     Cast *cast(Type *t, Value *v);
 
     /// @brief Creates a character value. By default, the syntactic type is char.
     /// @param c the character value.
     /// @param syntactic_type the syntactic type of the integer value.
+    /// @return The created CharValue.
     CharValue *charval(char c, Char *syntactic_type = nullptr);
 
     /// @brief Creates a Event type.
@@ -700,6 +730,7 @@ public:
     /// @param name The name of the alias.
     /// @param t Type of the alias.
     /// @param v Value of the alias.
+    /// @return The created Alias.
     Alias *alias(const std::string &name, Type *t, Value *v);
     /// @}
     /// @name Declarations.
@@ -913,12 +944,14 @@ public:
     /// @param left the left-hand side (i.e., the target) of the assignment.
     /// @param right the right-hand side (i.e., the source) of the assignment.
     /// @param delay the optional assignment delay.
+    /// @return The created action.
     action_t assignAction(Value *left, Value *right, TimeValue *delay = nullptr);
 
     /// @brief Creates an assignment.
     /// @param left the left-hand side (i.e., the target) of the assignment.
     /// @param right the right-hand side (i.e., the source) of the assignment.
     /// @param delay the optional assignment delay.
+    /// @return The created Assign.
     Assign *assignment(Value *left, Value *right, TimeValue *delay = nullptr);
 
     /// @brief Creates a for loop.

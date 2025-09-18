@@ -20,8 +20,15 @@ struct AddUniqueObjectOptions {
     AddUniqueObjectOptions();
     ~AddUniqueObjectOptions();
 
+    /// @brief Copy constructor.
+    /// @param other The object to copy from.
     AddUniqueObjectOptions(const AddUniqueObjectOptions &other);
+    /// @brief Assignment operator.
+    /// @param other The object to assign from.
+    /// @return Reference to this object.
     AddUniqueObjectOptions &operator=(AddUniqueObjectOptions other);
+    /// @brief Swaps the contents of this object with another.
+    /// @param other The object to swap with.
     void swap(AddUniqueObjectOptions &other);
 
     /// @brief If set, the object is inserted in the desired position.

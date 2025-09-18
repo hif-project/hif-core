@@ -238,8 +238,13 @@ public:
     /// @param decl The declaration to check.
     /// @return true if the name is forbidden, false otherwise.
     virtual bool isForbiddenName(Declaration *decl);
+
+    /// @brief Returns true when semantics type of slice must be rebased.
+    /// @return true if slice type must be rebased.
     virtual bool isSliceTypeRebased();
 
+    /// @brief Returns true when syntactic type must be rebased.
+    /// @return true if syntactic type must be rebased.
     virtual bool isSyntacticTypeRebased();
 
     /// @name Standard packages

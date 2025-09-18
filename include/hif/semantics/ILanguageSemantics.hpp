@@ -56,12 +56,15 @@ public:
         ExpressionTypeInfo();
 
         /// @brief Copy constructor.
+        /// @param t The ExpressionTypeInfo to copy from.
         ExpressionTypeInfo(const ExpressionTypeInfo &t);
 
         /// @brief Destructor.
         virtual ~ExpressionTypeInfo();
 
         /// @brief Assignment operator.
+        /// @param t The ExpressionTypeInfo to assign from.
+        /// @return Reference to this.
         ExpressionTypeInfo &operator=(const ExpressionTypeInfo &t);
     };
 
@@ -83,9 +86,12 @@ public:
         ~ValueSymbol();
 
         /// @brief Copy constructor.
+        /// @param other The ValueSymbol to copy from.
         ValueSymbol(const ValueSymbol &other);
 
         /// @brief Assignment operator.
+        /// @param other The ValueSymbol to assign from.
+        /// @return Reference to this.
         ValueSymbol &operator=(const ValueSymbol &other);
     };
 
@@ -95,7 +101,8 @@ public:
 
     /// @brief Struct representing the semantic options.
     struct SemanticOptions {
-        enum ForConditionType { RANGE, EXPRESSION, RANGE_AND_EXPRESSION }; ///< Allowed types for `for` conditions.
+        /// @brief Allowed types for `for` conditions.
+        enum ForConditionType { RANGE, EXPRESSION, RANGE_AND_EXPRESSION };
 
         bool port_inNoInitialValue;         ///< Ensure input ports have no initial values.
         bool port_outInitialValue;          ///< Ensure output ports have initial values.
@@ -119,8 +126,10 @@ public:
 
         SemanticOptions();                                    ///< Default constructor.
         ~SemanticOptions();                                   ///< Destructor.
-        SemanticOptions(const SemanticOptions &t);            ///< Copy constructor.
-        SemanticOptions &operator=(const SemanticOptions &t); ///< Assignment operator.
+        /// @brief Assignment operator.
+        /// @param t The SemanticOptions to assign from.
+        /// @return Reference to this.
+        SemanticOptions &operator=(const SemanticOptions &t);
     };
 
     /// @brief Returns the current semantic options.
@@ -443,9 +452,11 @@ public:
     Range *getContextPrecision(Object *o);
 
     /// @brief Returns true when semantics type of slice must be rebased.
+    /// @return true if slice type must be rebased.
     virtual bool isSliceTypeRebased() = 0;
 
     /// @brief Returns true when syntactic type must be rebased.
+    /// @return true if syntactic type must be rebased.
     virtual bool isSyntacticTypeRebased() = 0;
 
     /// @}
@@ -462,9 +473,16 @@ public:
     virtual void addStandardPackages(System *s);
 
     /// @brief Return True if the given library is native for the semantics.
+    /// @param n The library name.
+    /// @param hifFormat If true, return in HIF format.
+    /// @return True if the library is native.
     virtual bool isNativeLibrary(const std::string &n, const bool hifFormat = false) = 0;
 
     /// @brief Map an input symbol into the corresponding output one.
+    /// @param decl The declaration.
+    /// @param key The key symbol.
+    /// @param value The value symbol.
+    /// @param srcSem The source semantics.
     /// @return True if map succeed.
     virtual MapCases
     mapStandardSymbol(Declaration *decl, KeySymbol &key, ValueSymbol &value, ILanguageSemantics *srcSem) = 0;
@@ -481,6 +499,9 @@ public:
     virtual Object *getSimplifiedSymbol(KeySymbol &key, Object *s) = 0;
 
     /// @brief Returns true if no namespaces is needed for given library name.
+    /// @param n The library name.
+    /// @param isLibInclusion Whether it's a library inclusion.
+    /// @return true if no namespaces needed.
     virtual bool isStandardInclusion(const std::string &n, const bool isLibInclusion);
 
     /// @brief Creates a copy of the declaration renaming it adding

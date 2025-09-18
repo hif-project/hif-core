@@ -27,18 +27,23 @@ struct DeclarationIsPartOfStandardOptions {
     ~DeclarationIsPartOfStandardOptions();
 
     /// @brief Copy constructor.
+    /// @param other The object to copy from.
     DeclarationIsPartOfStandardOptions(const DeclarationIsPartOfStandardOptions &other);
 
     /// @brief Assignment operator.
+    /// @param other The object to assign from.
+    /// @return Reference to this object.
     DeclarationIsPartOfStandardOptions &operator=(DeclarationIsPartOfStandardOptions other);
 
     /// @brief Swaps the contents with another options object.
+    /// @param other The object to swap with.
     void swap(DeclarationIsPartOfStandardOptions &other);
 
     /// @brief Resets all flags to defaults (all disabled).
     void reset();
 
     /// @brief Checks if all allow flags are enabled.
+    /// @return True if all allow flags are set, false otherwise.
     bool areAllAllowFlagsSet() const;
 
     /// @brief Enables or disables C/C++ language checks.

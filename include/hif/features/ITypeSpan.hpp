@@ -41,8 +41,13 @@ public:
 protected:
     ITypeSpan();
 
+    /// @brief Copy constructor.
+    /// @param other The ITypeSpan to copy from.
     ITypeSpan(const ITypeSpan &other);
 
+    /// @brief Copy assignment operator.
+    /// @param other The ITypeSpan to assign from.
+    /// @return Reference to this ITypeSpan.
     ITypeSpan &operator=(const ITypeSpan &other);
 
     /// The span of the type.

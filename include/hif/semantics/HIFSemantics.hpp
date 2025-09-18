@@ -224,7 +224,7 @@ public:
     /// Singleton stuff.
     ///
     /// @brief Function thats return an instance to VHDLSemantic class.
-    ///
+    /// @return The instance of HIFSemantics.
     static HIFSemantics *getInstance();
     /// @brief Checks whether a name is forbidden in the current semantics.
     /// @param decl The declaration to check.
@@ -244,10 +244,12 @@ public:
     /// @name Standard packages
     /// @{
 
+    /// @brief Gets the standard package.
+    /// @return The standard package LibraryDef.
     LibraryDef *getStandardPackage();
 
     /// @brief Get the eventual LibraryDef matching the given name.
-    /// @param n The name.
+    /// @param name The name.
     /// @return The LibraryDef or nullptr.
     virtual LibraryDef *getStandardLibrary(const std::string & name);
 
@@ -259,13 +261,20 @@ public:
     mapStandardSymbol(Declaration *decl, KeySymbol &key, ValueSymbol &value, ILanguageSemantics *srcSem);
 
     /// @brief Returns the mapped symbol w.r.t. the current semantics.
+    /// @param key The key symbol.
+    /// @param s The object.
+    /// @return The simplified symbol.
     virtual Object *getSimplifiedSymbol(KeySymbol &key, Object *s);
 
     /// @brief Returns the event method name w.r.t. current semantics.
+    /// @param hifFormat True if HIF format.
+    /// @return The event method name.
     virtual std::string getEventMethodName(const bool hifFormat = false);
 
     /// @brief Returns <tt>true</tt> if the given call is an event call w.r.t.
     /// the current semantics, <tt>false</tt> otherwise.
+    /// @param call The function call to check.
+    /// @return True if event call, false otherwise.
     virtual bool isEventCall(FunctionCall *call);
 
     /// @}

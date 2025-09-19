@@ -51,6 +51,7 @@ public:
     Value *getPartialBind() const;
 
     /// @brief Sets the partial binding of the bound port.
+    /// @param pB The new partial binding.
     /// @return The old partial binding of the bound port if it is different
     /// from the new one, nullptr otherwise.
     Value *setPartialBind(Value *pB);
@@ -84,6 +85,8 @@ protected:
     virtual void _calculateFields();
 
     /// @brief Returns the name of given child w.r.t. this.
+    /// @param child The child object.
+    /// @return The name of the child.
     virtual std::string _getFieldName(const Object *child) const;
 
 private:

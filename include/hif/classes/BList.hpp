@@ -371,6 +371,10 @@ public:
         /// @return the iterator to the previous element.
         iterator prev() const { return static_cast<iterator>(BListHost::iterator::prev()); }
 
+        /**
+         * @brief Returns a reference to the base class iterator.
+         * @return Reference to the base class iterator.
+         */
         BListHost::iterator &toBaseClass();
     };
 };

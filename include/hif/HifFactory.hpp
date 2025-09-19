@@ -573,7 +573,7 @@ public:
 
     /// @brief Creates an integer value. By default, the syntactic type is
     /// 32-bit integer, signed if \p n is < 0, unsigned otherwise.
-    /// @param n the integer value.
+    /// @param int_value the integer value.
     /// @param syntactic_type the syntactic type of the integer value.
     /// @return The created IntValue.
     template <
@@ -586,7 +586,7 @@ public:
 
     /// @brief Creates an integer value. By default, the syntactic type is
     /// 32-bit integer, signed if \p n is < 0, unsigned otherwise.
-    /// @param n the integer value.
+    /// @param int_value the integer value.
     /// @param syntactic_type the syntactic type of the integer value.
     /// @return The created IntValue.
     IntValue *intval(std::int64_t int_value, Type *syntactic_type = nullptr);

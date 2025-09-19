@@ -23,9 +23,7 @@ namespace hif
 /// info, and semantic types should be copied. It also allows specifying a
 /// user-defined function to process objects during the copy.
 struct CopyOptions {
-    /**
-     * @brief Function pointer type for user-defined copy processing.
-     */
+    /// @brief Function pointer type for user-defined copy processing.
     typedef Object *(*UserFunction)(Object *, Object *, void *);
 
     /// @brief If true, copies the semantic type of `TypedObject`s. Default is `false`.

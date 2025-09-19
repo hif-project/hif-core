@@ -123,10 +123,10 @@ auto SpanAnalyzer::_categorizeSpans(Type *spanType, const IndexMap &indexMap, Va
             ValueIndex ind(AnalyzeSpansResult::INDEX_EXPRESSION, vind, 0);
             _result.resultMap[ind] = hif::copy(value);
         } else if (info.range != nullptr) {
-            Value *minRangeBound    = hif::rangeGetMinBound(info.range);
-            Value *maxRangeBound    = hif::rangeGetMaxBound(info.range);
-            std::uint64_t vmin = 0;
-            std::uint64_t vmax = 0;
+            Value *minRangeBound = hif::rangeGetMinBound(info.range);
+            Value *maxRangeBound = hif::rangeGetMaxBound(info.range);
+            std::uint64_t vmin   = 0;
+            std::uint64_t vmax   = 0;
             if (!_getIndexConstvalue(hif::copy(minRangeBound), min, vmin) ||
                 !_getIndexConstvalue(hif::copy(maxRangeBound), min, vmax)) {
                 return false;
@@ -135,10 +135,10 @@ auto SpanAnalyzer::_categorizeSpans(Type *spanType, const IndexMap &indexMap, Va
             ValueIndex ind(AnalyzeSpansResult::INDEX_RANGE, vmin, vmax);
             _result.resultMap[ind] = hif::copy(value);
         } else if (info.slice != nullptr) {
-            Value *minRangeBound    = hif::rangeGetMinBound(info.slice);
-            Value *maxRangeBound    = hif::rangeGetMaxBound(info.slice);
-            std::uint64_t vmin = 0;
-            std::uint64_t vmax = 0;
+            Value *minRangeBound = hif::rangeGetMinBound(info.slice);
+            Value *maxRangeBound = hif::rangeGetMaxBound(info.slice);
+            std::uint64_t vmin   = 0;
+            std::uint64_t vmax   = 0;
             if (!_getIndexConstvalue(hif::copy(minRangeBound), min, vmin) ||
                 !_getIndexConstvalue(hif::copy(maxRangeBound), min, vmax)) {
                 return false;
@@ -651,10 +651,6 @@ void ValueIndex::swap(ValueIndex &other) noexcept
     std::swap(_minSliceIndex, other._minSliceIndex);
     std::swap(_maxSliceIndex, other._maxSliceIndex);
 }
-/// @brief Constructor with kind and range.
-/// @param kind The kind of the index.
-/// @param min The minimum bound of the range.
-/// @param max The maximum bound of the range.
 ValueIndex::ValueIndex(const IndexKind kind, std::uint64_t min, std::uint64_t max)
     : _kind(kind)
     , _index(min)

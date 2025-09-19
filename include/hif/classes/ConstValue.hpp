@@ -21,11 +21,9 @@ public:
     /// Destructor.
     virtual ~ConstValue() = 0;
 
-    /**
-     * @brief Sets the syntactic type of the constant value.
-     * @param t The syntactic type of the constant value.
-     * @return The previous syntactic type.
-     */
+    /// @brief Sets the syntactic type of the constant value.
+    /// @param t The syntactic type of the constant value.
+    /// @return The previous syntactic type.
     Type *setType(Type *t);
 
     /// @brief Returns the syntactic type of the constant value.

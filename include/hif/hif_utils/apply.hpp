@@ -34,11 +34,9 @@ namespace hif
 namespace apply
 {
 
-/**
- * @brief A visitor that applies a function to objects in the hierarchy.
- * @tparam Function The type of the function to apply.
- * @tparam Data The type of the data to pass to the function.
- */
+/// @brief A visitor that applies a function to objects in the hierarchy.
+/// @tparam Function The type of the function to apply.
+/// @tparam Data The type of the data to pass to the function.
 template <typename Function, typename Data> class ApplyVisitor : public GuideVisitor
 {
 public:

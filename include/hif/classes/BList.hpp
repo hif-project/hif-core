@@ -32,7 +32,7 @@ public:
     /// @brief Default constructor.
     BList();
 
-    /** @brief Deep copy of all objects. @param other The list to copy. */
+    /// @brief Deep copy of all objects. @param other The list to copy.
     BList(const BList<T> &other);
 
     /// @brief Deep copy of all objects.
@@ -371,10 +371,8 @@ public:
         /// @return the iterator to the previous element.
         iterator prev() const { return static_cast<iterator>(BListHost::iterator::prev()); }
 
-        /**
-         * @brief Returns a reference to the base class iterator.
-         * @return Reference to the base class iterator.
-         */
+        /// @brief Returns a reference to the base class iterator.
+        /// @return Reference to the base class iterator.
         BListHost::iterator &toBaseClass();
     };
 };

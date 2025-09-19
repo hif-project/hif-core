@@ -25,7 +25,10 @@ public:
     /// @brief Default constructor.
     Range();
 
-    /// @brief Default constructor.
+    /// @brief Constructor.
+    /// @param lbound The left bound of the range.
+    /// @param rbound The right bound of the range.
+    /// @param dir The direction of the range.
     Range(Value *lbound, Value *rbound, const RangeDirection dir);
 
     /// @brief Constructor.
@@ -111,6 +114,8 @@ protected:
     virtual void _calculateFields();
 
     /// @brief Returns the name of given child w.r.t. this.
+    /// @param child The child object.
+    /// @return The name of the child.
     virtual std::string _getFieldName(const Object *child) const;
 
 private:

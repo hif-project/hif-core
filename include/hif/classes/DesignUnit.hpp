@@ -49,7 +49,11 @@ protected:
     /// @brief Fills the internal fields and blists lists.
     virtual void _calculateFields();
 
-    /// @brief Returns the name of given BList w.r.t. this.
+    /**
+     * @brief Returns the name of given BList w.r.t. this.
+     * @param list The BList to get the name for.
+     * @return The name of the BList.
+     */
     virtual std::string _getBListName(const BList<Object> &list) const;
 };
 

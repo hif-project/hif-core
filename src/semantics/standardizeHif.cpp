@@ -672,7 +672,7 @@ template <typename T> bool HifStdVisitor::_dstCopyObject(T *v)
     Object *o = _mapGet(v);
 
     // Setting expand mode for declarations.
-    hif::manipulation::MatchedInsertType::type type;
+    hif::manipulation::MatchedInsertType type;
     if (dynamic_cast<Declaration *>(v) != nullptr) {
         type = hif::manipulation::MatchedInsertType::TYPE_EXPAND;
     } else {
@@ -688,8 +688,8 @@ template <typename T> bool HifStdVisitor::_dstCopyObject(T *v)
             return false;
         if (isSemanticsType(dynamic_cast<Type *>(v)))
             return false;
-        Object *oParent   = _mapGet(v->getParent());
-        bool result = hif::manipulation::matchedInsert(o, oParent, v, v->getParent(), type);
+        Object *oParent = _mapGet(v->getParent());
+        bool result     = hif::manipulation::matchedInsert(o, oParent, v, v->getParent(), type);
 
         messageDebugIfFails(result, "o = ", o, _dstSem);
         messageDebugIfFails(result, "oParent = ", oParent, _dstSem);
@@ -840,7 +840,7 @@ void HifStdVisitor::_dstGetDeclaration(Object *obj)
     Object *dstObj = _mapGet(obj);
     messageAssert(dstObj != nullptr, "Object not found in map", obj, _dstSem);
 
-    Declaration *decl        = getDeclaration(obj, _srcSem);
+    Declaration *decl  = getDeclaration(obj, _srcSem);
     bool declIsInCache = hif::manipulation::isInCache(decl);
 
     if (dynamic_cast<Instance *>(obj) != nullptr) {
@@ -891,8 +891,8 @@ Type *HifStdVisitor::_dstGetType(Type *o, bool /*fresh*/)
 {
     Type *t = nullptr;
 
-    bool restore = _canRebaseTypes;
-    _canRebaseTypes    = false;
+    bool restore    = _canRebaseTypes;
+    _canRebaseTypes = false;
 
     t = _mapTypedGet(o);
     if (t != nullptr)
@@ -2556,9 +2556,9 @@ int HifStdVisitor::visitFunctionCall(FunctionCall &o)
 
     FunctionCall::DeclarationType *treeDecl = hif::semantics::getDeclaration(&o, _srcSem);
 
-    const hif::manipulation::SortMissingKind::type kind = hif::declarationIsPartOfStandard(treeDecl)
-                                                              ? hif::manipulation::SortMissingKind::NOTHING
-                                                              : _dstSem->getSemanticsOptions().lang_sortKind;
+    hif::manipulation::SortMissingKind kind = hif::declarationIsPartOfStandard(treeDecl)
+                                                  ? hif::manipulation::SortMissingKind::NOTHING
+                                                  : _dstSem->getSemanticsOptions().lang_sortKind;
 
     hif::manipulation::sortParameters(o.parameterAssigns, decl->parameters, true, kind, _srcSem);
     hif::manipulation::sortParameters(o.templateParameterAssigns, decl->templateParameters, true, kind, _srcSem);
@@ -2897,9 +2897,9 @@ int HifStdVisitor::visitProcedureCall(ProcedureCall &o)
 
     ProcedureCall::DeclarationType *treeDecl = hif::semantics::getDeclaration(&o, _srcSem);
 
-    const hif::manipulation::SortMissingKind::type kind = hif::declarationIsPartOfStandard(treeDecl)
-                                                              ? hif::manipulation::SortMissingKind::NOTHING
-                                                              : _dstSem->getSemanticsOptions().lang_sortKind;
+    hif::manipulation::SortMissingKind kind = hif::declarationIsPartOfStandard(treeDecl)
+                                                  ? hif::manipulation::SortMissingKind::NOTHING
+                                                  : _dstSem->getSemanticsOptions().lang_sortKind;
 
     hif::manipulation::sortParameters(o.parameterAssigns, decl->parameters, true, kind, _srcSem);
     hif::manipulation::sortParameters(o.templateParameterAssigns, decl->templateParameters, true, kind, _srcSem);
@@ -3182,9 +3182,9 @@ int HifStdVisitor::visitTypeReference(TypeReference &o)
 
         TypeReference::DeclarationType *treeDecl = hif::semantics::getDeclaration(&o, _srcSem);
 
-        const hif::manipulation::SortMissingKind::type kind = hif::declarationIsPartOfStandard(treeDecl)
-                                                                  ? hif::manipulation::SortMissingKind::NOTHING
-                                                                  : _dstSem->getSemanticsOptions().lang_sortKind;
+        hif::manipulation::SortMissingKind kind = hif::declarationIsPartOfStandard(treeDecl)
+                                                      ? hif::manipulation::SortMissingKind::NOTHING
+                                                      : _dstSem->getSemanticsOptions().lang_sortKind;
 
         hif::manipulation::sortParameters(o.templateParameterAssigns, td->templateParameters, true, kind, _srcSem);
     }
@@ -3302,9 +3302,9 @@ int HifStdVisitor::visitViewReference(ViewReference &o)
     if (decl != nullptr) {
         ViewReference::DeclarationType *treeDecl = hif::semantics::getDeclaration(&o, _srcSem);
 
-        const hif::manipulation::SortMissingKind::type kind = hif::declarationIsPartOfStandard(treeDecl)
-                                                                  ? hif::manipulation::SortMissingKind::NOTHING
-                                                                  : _dstSem->getSemanticsOptions().lang_sortKind;
+        hif::manipulation::SortMissingKind kind = hif::declarationIsPartOfStandard(treeDecl)
+                                                      ? hif::manipulation::SortMissingKind::NOTHING
+                                                      : _dstSem->getSemanticsOptions().lang_sortKind;
 
         hif::manipulation::sortParameters(o.templateParameterAssigns, decl->templateParameters, true, kind, _srcSem);
     }

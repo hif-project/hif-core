@@ -36,7 +36,7 @@ bool matchedInsert(
     Object *newParent,
     Object *oldObj,
     Object *oldParent,
-    const MatchedInsertType::type type);
+    MatchedInsertType type);
 
 Object *matchedGet(Object *newParent, Object *oldObj, Object *oldParent);
 
@@ -400,7 +400,7 @@ private:
         Object *newParent,
         Object *oldObj,
         Object *oldParent,
-        const hif::manipulation::MatchedInsertType::type type);
+        const hif::manipulation::MatchedInsertType type);
 
     friend Object *hif::manipulation::matchedGet(Object *newParent, Object *oldObj, Object *oldParent);
 };

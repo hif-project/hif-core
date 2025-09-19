@@ -122,7 +122,7 @@ public:
         bool lang_hasDontCare              = false;                ///< Indicate language supports "don't care" values.
         bool lang_has9logic                = false; ///< Indicate language has 9 logic values (false means 4 values).
         bool waitWithActions               = false; ///< Allow waits to embrace actions.
-        hif::manipulation::SortMissingKind::type lang_sortKind =
+        hif::manipulation::SortMissingKind lang_sortKind =
             hif::manipulation::SortMissingKind::NOTHING; ///< Sorting strategy for missing parameters.
     };
 

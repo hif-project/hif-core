@@ -452,7 +452,7 @@ bool _sortParameters(
     BList<Actual> &actualParams,
     BList<Formal> &formalParams,
     bool set_names,
-    const SortMissingKind::type missingType,
+    SortMissingKind missingType,
     hif::semantics::ILanguageSemantics *refSem,
     bool hasCandidate = false)
 {
@@ -579,7 +579,7 @@ bool sortParameters(
     BList<ParameterAssign> &actualParams,
     BList<Parameter> &formalParams,
     bool set_formal_names,
-    const SortMissingKind::type missingType,
+    SortMissingKind missingType,
     hif::semantics::ILanguageSemantics *refSem,
     bool hasCandidate)
 {
@@ -593,7 +593,7 @@ bool sortParameters(
     BList<TPAssign> &actualParams,
     BList<Declaration> &formalParams,
     bool set_formal_names,
-    const SortMissingKind::type missingType,
+    SortMissingKind missingType,
     hif::semantics::ILanguageSemantics *refSem,
     bool hasCandidate)
 {
@@ -607,7 +607,7 @@ bool sortParameters(
     BList<PortAssign> &actualParams,
     BList<Port> &formalParams,
     bool set_formal_names,
-    const SortMissingKind::type missingType,
+    SortMissingKind missingType,
     hif::semantics::ILanguageSemantics *refSem)
 {
     hif::application_utils::initializeLogHeader("HIF", "sortParameters");

@@ -25,7 +25,7 @@ void explicitCallsParameters(
     std::list<SubProgram *> &subprograms,
     hif::semantics::ReferencesMap &refMap,
     hif::semantics::ILanguageSemantics *sem,
-    const SortMissingKind::type kind = SortMissingKind::ALL);
+    SortMissingKind kind = SortMissingKind::ALL);
 
 /// @brief Explicts all parameters of given subprograms refs.
 /// @param subprograms The set of subprograms to be fixed.
@@ -36,7 +36,7 @@ void explicitCallsParameters(
     std::set<SubProgram *> &subprograms,
     hif::semantics::ReferencesMap &refMap,
     hif::semantics::ILanguageSemantics *sem,
-    const SortMissingKind::type kind = SortMissingKind::ALL);
+    SortMissingKind kind = SortMissingKind::ALL);
 
 } // namespace manipulation
 } // namespace hif

@@ -31,7 +31,7 @@ bool matchedInsert(
     Object *newParent,
     Object *oldObj,
     Object *oldParent                  = nullptr,
-    const MatchedInsertType::type type = MatchedInsertType::TYPE_ERROR);
+    MatchedInsertType type = MatchedInsertType::TYPE_ERROR);
 
 } // namespace manipulation
 } // namespace hif

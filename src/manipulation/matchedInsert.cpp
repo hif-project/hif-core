@@ -21,7 +21,7 @@ namespace manipulation
 namespace /* anon */
 {
 
-bool _checkExisting(Object *_existing, Object *_newParent, Object *_oldObj, const MatchedInsertType::type _type)
+bool _checkExisting(Object *_existing, Object *_newParent, Object *_oldObj, MatchedInsertType _type)
 {
     if (_existing == nullptr)
         return true;
@@ -57,7 +57,7 @@ bool _matchBList(
     BList<T> &newList,
     Object *_newObj,
     Object *_oldObj,
-    const MatchedInsertType::type _type)
+    MatchedInsertType _type)
 {
     auto position = oldList.getPosition(static_cast<T *>(_oldObj));
     if (position == oldList.size())
@@ -94,7 +94,7 @@ bool matchedInsert(
     Object *newParent,
     Object *oldObj,
     Object *oldParent,
-    const MatchedInsertType::type type)
+    MatchedInsertType type)
 {
     if (oldParent == nullptr)
         oldParent = oldObj->getParent();

@@ -28,7 +28,7 @@ void explicitCallsParameters(
     std::list<SubProgram *> &subprograms,
     hif::semantics::ReferencesMap &refMap,
     hif::semantics::ILanguageSemantics *sem,
-    const SortMissingKind::type kind)
+    SortMissingKind kind)
 {
     std::set<SubProgram *> set;
     set.insert(subprograms.begin(), subprograms.end());
@@ -39,7 +39,7 @@ void explicitCallsParameters(
     std::set<SubProgram *> &subprograms,
     hif::semantics::ReferencesMap &refMap,
     hif::semantics::ILanguageSemantics *sem,
-    const SortMissingKind::type kind)
+    SortMissingKind kind)
 {
     for (std::set<SubProgram *>::iterator i = subprograms.begin(); i != subprograms.end(); ++i) {
         SubProgram *sub = *i;

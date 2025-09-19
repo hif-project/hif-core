@@ -41,13 +41,10 @@ Object *getImplicitTemplate(
     bool hasCandidate);
 
 /// @brief Specifies how to handle missing parameters during sorting.
-struct SortMissingKind {
-    /// @brief Enumeration of strategies for handling missing parameters.
-    enum type : unsigned char {
-        NOTHING, ///< Do not add missing parameters.
-        ALL,     ///< Add all missing parameters.
-        LIMITED  ///< Add missing parameters until the last assigned parameter; others use default values.
-    };
+enum class SortMissingKind : unsigned char {
+    NOTHING, ///< Do not add missing parameters.
+    ALL,     ///< Add all missing parameters.
+    LIMITED  ///< Add missing parameters until the last assigned parameter; others use default values.
 };
 
 /// @brief Sorts actual parameters to align with formal parameters.
@@ -64,7 +61,7 @@ bool sortParameters(
     BList<ParameterAssign> &actualParams,
     BList<Parameter> &formalParams,
     bool set_formal_names,
-    const SortMissingKind::type missingType,
+    SortMissingKind missingType,
     hif::semantics::ILanguageSemantics *refSem,
     bool hasCandidate = false);
 
@@ -82,7 +79,7 @@ bool sortParameters(
     BList<TPAssign> &actualParams,
     BList<Declaration> &formalParams,
     bool set_formal_names,
-    const SortMissingKind::type missingType,
+    SortMissingKind missingType,
     hif::semantics::ILanguageSemantics *refSem,
     bool hasCandidates = false);
 
@@ -99,7 +96,7 @@ bool sortParameters(
     BList<PortAssign> &actualParams,
     BList<Port> &formalParams,
     bool set_formal_names,
-    const SortMissingKind::type missingType,
+    SortMissingKind missingType,
     hif::semantics::ILanguageSemantics *refSem);
 
 /// @}

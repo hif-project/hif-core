@@ -15,6 +15,8 @@ namespace hif
 /// @brief Compares two objects according to their type and their children nodes.
 /// It provides a total ordering on Hif objects, which is useful for sorting methods
 /// employed by the <tt>simplify</tt> function.
+/// @param obj1 The first object to compare.
+/// @param obj2 The second object to compare.
 /// @return -1 if @p obj1 < @p obj2, 0 if @p obj1 == @p obj2, 1 if @p obj1 > @p obj2.
 ///
 

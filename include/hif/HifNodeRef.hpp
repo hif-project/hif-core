@@ -30,6 +30,8 @@ public:
     ~HifNodeRef();
 
     /// @brief Method to replace the reference with another object.
+    /// @param o The new object to replace with.
+    /// @return True if the replacement was successful.
     bool replace(Object *o);
 
 private:

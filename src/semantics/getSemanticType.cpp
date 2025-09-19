@@ -1616,6 +1616,7 @@ getPrefixedType(Type *t, ILanguageSemantics *sem, const hif::manipulation::Prefi
     return copy;
 }
 
+/// @brief Macro for template method instantiation.
 #define HIF_TEMPLATE_METHOD(T) void typeTree<T>(BList<T> & root, ILanguageSemantics *, bool)
 
 HIF_INSTANTIATE_METHOD()

@@ -38,7 +38,7 @@ Value *typeGetSpanSize(Type *t, ILanguageSemantics *refLang);
 Value *spanGetSize(
     Range *r,
     ILanguageSemantics *sem,
-    const bool simplify                            = true,
+    bool simplify                            = true,
     const hif::manipulation::SimplifyOptions &opts = hif::manipulation::SimplifyOptions());
 /// @brief Extracts the span of a type @p t.
 /// If it's an array extracts the sum of every element's span

@@ -103,7 +103,7 @@ public:
 
     /// @brief Goes to a new line.
     /// @param n The number of new lines.
-    void newLine(const int n = 1);
+    void newLine(int n = 1);
 
     /// @brief Indents by one.
     void indent();
@@ -181,7 +181,7 @@ public:
 
     /// @brief Sets whether wrap text with double quotes.
     /// @param isString True if text must be wrapped.
-    void setStringMode(const bool isString);
+    void setStringMode(bool isString);
 
     /// @brief Tells whether text is wrapped with double quotes.
     /// @return True if text is wrapped.

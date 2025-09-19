@@ -21,13 +21,13 @@ namespace /*anon*/
 
 } // namespace
 
-Range *rangeGetIncremented(Range *range, hif::semantics::ILanguageSemantics *refLang, long long increment)
+Range *rangeGetIncremented(Range *range, hif::semantics::ILanguageSemantics *refLang, std::int64_t increment)
 {
     Range *resultRange  = nullptr;
-    long long rangeSize = static_cast<long long>(hif::semantics::spanGetBitwidth(range, refLang));
+    std::int64_t rangeSize = static_cast<std::int64_t>(hif::semantics::spanGetBitwidth(range, refLang));
 
     if (rangeSize > 0) {
-        long long newSize = rangeSize - 1LL + increment;
+        std::int64_t newSize = rangeSize - 1LL + increment;
         if (range->getDirection() == dir_downto)
             // the range is [ range_length - 1 + 1 ; 0 ]
             // simplified in [ range_length ; 0 ]

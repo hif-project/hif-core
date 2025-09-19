@@ -104,32 +104,26 @@ public:
         /// @brief Allowed types for `for` conditions.
         enum ForConditionType { RANGE, EXPRESSION, RANGE_AND_EXPRESSION };
 
-        bool port_inNoInitialValue;         ///< Ensure input ports have no initial values.
-        bool port_outInitialValue;          ///< Ensure output ports have initial values.
-        bool dataDeclaration_initialValue;  ///< Ensure declarations have initial values.
-        bool scopedType_insideTypedef;      ///< Ensure scoped types are inside typedefs.
-        bool int_bitfields;                 ///< Treat native ints as bitfields.
-        bool designUnit_uniqueView;         ///< Ensure a design unit has only one view.
-        bool for_implictIndex;              ///< Ensure `for` loops have a single implicit index declaration.
-        ForConditionType for_conditionType; ///< Allowed type for `for` conditions.
-        bool generates_isNoAllowed;         ///< Disallow `generate` constructs.
-        bool after_isNoAllowed;             ///< Disallow `after` constructs.
-        bool with_isNoAllowed;              ///< Disallow `with` constructs.
-        bool globact_isNoAllowed;           ///< Disallow global actions.
-        bool valueStatement_isNoAllowed;    ///< Disallow value statements.
-        bool case_isOnlyLiteral;            ///< Restrict case constructs to literals only.
-        bool lang_signPortNoBitAccess;      ///< Disallow bit access on signals and ports.
-        bool lang_hasDontCare;              ///< Indicate language supports "don't care" values.
-        bool lang_has9logic;                ///< Indicate language has 9 logic values (false means 4 values).
-        bool waitWithActions;               ///< Allow waits to embrace actions.
-        hif::manipulation::SortMissingKind::type lang_sortKind; ///< Sorting strategy for missing parameters.
-
-        SemanticOptions();                                    ///< Default constructor.
-        ~SemanticOptions();                                   ///< Destructor.
-        /// @brief Assignment operator.
-        /// @param t The SemanticOptions to assign from.
-        /// @return Reference to this.
-        SemanticOptions &operator=(const SemanticOptions &t);
+        bool port_inNoInitialValue         = false; ///< Ensure input ports have no initial values.
+        bool port_outInitialValue          = false; ///< Ensure output ports have initial values.
+        bool dataDeclaration_initialValue  = false; ///< Ensure declarations have initial values.
+        bool scopedType_insideTypedef      = false; ///< Ensure scoped types are inside typedefs.
+        bool int_bitfields                 = false; ///< Treat native ints as bitfields.
+        bool designUnit_uniqueView         = false; ///< Ensure a design unit has only one view.
+        bool for_implictIndex              = false; ///< Ensure `for` loops have a single implicit index declaration.
+        ForConditionType for_conditionType = RANGE_AND_EXPRESSION; ///< Allowed type for `for` conditions.
+        bool generates_isNoAllowed         = false;                ///< Disallow `generate` constructs.
+        bool after_isNoAllowed             = false;                ///< Disallow `after` constructs.
+        bool with_isNoAllowed              = false;                ///< Disallow `with` constructs.
+        bool globact_isNoAllowed           = false;                ///< Disallow global actions.
+        bool valueStatement_isNoAllowed    = false;                ///< Disallow value statements.
+        bool case_isOnlyLiteral            = false;                ///< Restrict case constructs to literals only.
+        bool lang_signPortNoBitAccess      = false;                ///< Disallow bit access on signals and ports.
+        bool lang_hasDontCare              = false;                ///< Indicate language supports "don't care" values.
+        bool lang_has9logic                = false; ///< Indicate language has 9 logic values (false means 4 values).
+        bool waitWithActions               = false; ///< Allow waits to embrace actions.
+        hif::manipulation::SortMissingKind::type lang_sortKind =
+            hif::manipulation::SortMissingKind::NOTHING; ///< Sorting strategy for missing parameters.
     };
 
     /// @brief Returns the current semantic options.
@@ -168,7 +162,7 @@ public:
     ///
     /// @param v The mode.
     ///
-    void setStrictTypeChecks(const bool v);
+    void setStrictTypeChecks(bool v);
 
     /// @brief Function to get the semantic checks mode.
     ///
@@ -225,7 +219,7 @@ public:
     /// a valid operation in current semantics  (if possible).
     ///
     virtual Type *
-    getSuggestedTypeForOp(Type *t, Operator operation, Type *opType, Object *startingObject, const bool isOp1) = 0;
+    getSuggestedTypeForOp(Type *t, Operator operation, Type *opType, Object *startingObject, bool isOp1) = 0;
     /// @brief Function that given a ConstValue returns a Type
     /// pointer representing the type to associate to the constant according
     /// with target language requirements (opportunely setting flags of the type).
@@ -235,7 +229,7 @@ public:
     ///
     /// @return Type pointer to the constant type.
     ///
-    virtual Type *getTypeForConstant(ConstValue *c)                                                            = 0;
+    virtual Type *getTypeForConstant(ConstValue *c)                                                      = 0;
     /// @brief Checks if given type is compatible with language requirements
     /// as condition.
     ///
@@ -245,7 +239,7 @@ public:
     /// @return true if the type of the condition is compatible with target
     /// language requirements, false otherwise.
     ///
-    virtual bool checkCondition(Type *t, Object *o)                                                            = 0;
+    virtual bool checkCondition(Type *t, Object *o)                                                      = 0;
     /// @brief Function that given a Value representing a valid guard
     /// condition in the target language returns an expression representing
     /// the explanation of the guard as boolean condition (with == operator).
@@ -255,7 +249,7 @@ public:
     ///
     /// @return Value pointer to the created expression.
     ///
-    virtual Value *explicitBoolConversion(Value *c)                                                            = 0;
+    virtual Value *explicitBoolConversion(Value *c)                                                      = 0;
     /// @brief Function that given a Value and a type which the given
     /// object have to be cast into, returns a Value representing the
     /// explicit cast (it may be a nested cast, a function call, a procedure
@@ -268,13 +262,13 @@ public:
     ///
     /// @return Value pointer to the explicit cast.
     ///
-    virtual Value *explicitCast(Value *valueToCast, Type *castType, Type *srcType)                             = 0;
+    virtual Value *explicitCast(Value *valueToCast, Type *castType, Type *srcType)                       = 0;
     /// @brief Function that given a real value returns the correspondent
     /// int value according to semantics rules (e.g., VHDL rounds while
     /// SystemC truncates).
     /// @param v The value to convert.
     /// @return The converted value.
-    virtual long long transformRealToInt(const double v)                                                       = 0;
+    virtual std::int64_t transformRealToInt(const double v)                                              = 0;
 
     /// @brief Function that given a member returns its semantic type
     /// according to semantics rules (e.g., SystemC with Bitvector prefix type
@@ -403,7 +397,7 @@ public:
     /// @param isLogic If the type is logic.
     /// @return True if operators are bitwise, false if they are logical.
     ///
-    virtual bool hasBitwiseOperationsOnBits(const bool isLogic) const;
+    virtual bool hasBitwiseOperationsOnBits(bool isLogic) const;
 
     ///@}
     /// @name Template related stuff
@@ -476,7 +470,7 @@ public:
     /// @param n The library name.
     /// @param hifFormat If true, return in HIF format.
     /// @return True if the library is native.
-    virtual bool isNativeLibrary(const std::string &n, const bool hifFormat = false) = 0;
+    virtual bool isNativeLibrary(const std::string &n, bool hifFormat = false) = 0;
 
     /// @brief Map an input symbol into the corresponding output one.
     /// @param decl The declaration.
@@ -502,7 +496,7 @@ public:
     /// @param n The library name.
     /// @param isLibInclusion Whether it's a library inclusion.
     /// @return true if no namespaces needed.
-    virtual bool isStandardInclusion(const std::string &n, const bool isLibInclusion);
+    virtual bool isStandardInclusion(const std::string &n, bool isLibInclusion);
 
     /// @brief Creates a copy of the declaration renaming it adding
     /// the given suffix, and return the fresh new declaration.
@@ -521,7 +515,7 @@ public:
     /// @brief Returns the event method name w.r.t. current semantics.
     /// @param hifFormat If true, return in HIF format.
     /// @return The event method name.
-    virtual std::string getEventMethodName(const bool hifFormat = false) = 0;
+    virtual std::string getEventMethodName(bool hifFormat = false) = 0;
 
     /// @brief Returns <tt>true</tt> if the given call is an event call w.r.t.
     /// the current semantics, <tt>false</tt> otherwise.
@@ -537,7 +531,7 @@ public:
 
     /// @brief Sets whether to use native semantics.
     /// @param b true to use native semantics, false otherwise.
-    void setUseNativeSemantics(const bool b);
+    void setUseNativeSemantics(bool b);
 
     /// @brief Creates a HIF-compatible name from the given name.
     /// @param reqName The requested name.
@@ -572,7 +566,7 @@ protected:
     /// @param reqName The requested name.
     /// @param hifFormat If true, add "hif_" prefix.
     /// @return The name with optional prefix.
-    std::string _makeHifName(const std::string &reqName, const bool hifFormat) const;
+    std::string _makeHifName(const std::string &reqName, bool hifFormat) const;
 
     /// @brief Wrapper for Enum creation with possibility to add a prefix "hif_".
     /// @param enumName The enum name.
@@ -580,7 +574,7 @@ protected:
     /// @param size The number of values.
     /// @param hifFormat If true, add "hif_" prefix.
     /// @return The created TypeDef.
-    TypeDef *_makeEnum(const char *enumName, const char *values[], size_t size, const bool hifFormat);
+    TypeDef *_makeEnum(const char *enumName, const char *values[], size_t size, bool hifFormat);
 
     /// @brief Create a SubProgram with at most one parameter.
     /// @param n The name.
@@ -595,8 +589,8 @@ protected:
         Type *retType,
         Type *paramType,
         Value *paramValue,
-        const bool unsupported,
-        const bool hifFormat);
+        bool unsupported,
+        bool hifFormat);
 
     /// @brief Create a SubProgram with two parameters.
     /// @param n The name.
@@ -615,8 +609,8 @@ protected:
         Value *param1Value,
         Type *param2Type,
         Value *param2Value,
-        const bool unsupported,
-        const bool hifFormat);
+        bool unsupported,
+        bool hifFormat);
 
     /// @brief Create a SubProgram with three parameters.
     /// @param n The name.
@@ -639,8 +633,8 @@ protected:
         Value *param2Value,
         Type *param3Type,
         Value *param3Value,
-        const bool unsupported,
-        const bool hifFormat);
+        bool unsupported,
+        bool hifFormat);
 
     /// @brief Create a SubProgram parameter.
     /// @param scope The scope.
@@ -653,15 +647,14 @@ protected:
         Type *paramType,
         Value *paramValue,
         const std::string &paramIndex,
-        const bool hifFormat);
+        bool hifFormat);
     /// @brief Adds a multiparameter function.
     /// @param ld The library definition.
     /// @param name The function name.
     /// @param factory The factory.
     /// @param hifFormat Whether to use HIF format.
     /// @param ret The return type.
-    void
-    _addMultiparamFunction(LibraryDef *ld, const char *name, hif::HifFactory &factory, const bool hifFormat, Type *ret);
+    void _addMultiparamFunction(LibraryDef *ld, const char *name, hif::HifFactory &factory, bool hifFormat, Type *ret);
 
     /// @brief Make an array of type @p t with span <tt>left downto right</tt>.
     /// @param index The suffix for left and right.

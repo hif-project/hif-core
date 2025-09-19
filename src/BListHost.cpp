@@ -239,16 +239,18 @@ void BListHost::clear()
     _head = nullptr;
     _tail = nullptr;
 }
+
 bool BListHost::empty() const { return _head == nullptr; }
-BListHost::size_t BListHost::size() const
+
+auto BListHost::size() const -> std::size_t
 {
-    BListHost::size_t ret = 0;
+    std::size_t ret = 0;
     for (BLink *l = _head; l != nullptr; l = l->next) {
         ++ret;
     }
-
     return ret;
 }
+
 void BListHost::merge(BListHost &x)
 {
     if (_tail == nullptr) {
@@ -282,7 +284,7 @@ void BListHost::swap(iterator a, iterator b)
 {
     _toBLink((*a)->_getParentLink())->swap(_toBLink((*b)->_getParentLink()));
 }
-void BListHost::remove_dopplegangers(const bool strict)
+void BListHost::remove_dopplegangers(bool strict)
 {
     for (BLink *i = _head; i != nullptr; i = i->next) {
         for (BLink *j = i->next; j != nullptr;) {
@@ -305,7 +307,7 @@ void BListHost::remove_dopplegangers(const bool strict)
 }
 Object *BListHost::getParent() { return _parent; }
 void BListHost::setParent(Object *p) { _parent = p; }
-BListHost::size_t BListHost::getPosition(Object *o) const
+std::size_t BListHost::getPosition(Object *o) const
 {
     size_t count = 0;
     for (BListHost::iterator i = this->begin(); i != this->end(); ++i) {
@@ -316,7 +318,7 @@ BListHost::size_t BListHost::getPosition(Object *o) const
 
     return count;
 }
-Object *BListHost::insert(Object *o, const size_t pos, const bool expand)
+Object *BListHost::insert(Object *o, std::size_t pos, bool expand)
 {
     BListHost::iterator i = this->begin();
     i                     = i + pos;
@@ -333,7 +335,7 @@ Object *BListHost::insert(Object *o, const size_t pos, const bool expand)
         return ret;
     }
 }
-Object *BListHost::at(const size_t pos) const
+Object *BListHost::at(std::size_t pos) const
 {
     BListHost::iterator i = this->begin();
     i                     = i + pos;
@@ -348,7 +350,7 @@ bool BListHost::contains(Object *o) const
 
     return reinterpret_cast<const void *>(this) == reinterpret_cast<const void *>(o->getBList());
 }
-Object *BListHost::findByName(const std::string & n) const
+Object *BListHost::findByName(const std::string &n) const
 {
     for (BListHost::iterator i = this->begin(); i != this->end(); ++i) {
         if (hif::objectGetName(*i) == n)
@@ -393,12 +395,12 @@ void BListHost::removeProperty(const PropertyId n)
     }
 }
 
-bool BListHost::checkProperty(const std::string &n, const bool hasAll) const
+bool BListHost::checkProperty(const std::string &n, bool hasAll) const
 {
     if (this->empty())
         return false;
     for (BListHost::iterator i = this->begin(); i != this->end(); ++i) {
-        const bool has = (*i)->checkProperty(n);
+        bool has = (*i)->checkProperty(n);
         if (hasAll && !has)
             return false;
         else if (!hasAll && has)
@@ -408,12 +410,12 @@ bool BListHost::checkProperty(const std::string &n, const bool hasAll) const
     return hasAll;
 }
 
-bool BListHost::checkProperty(const PropertyId n, const bool hasAll) const
+bool BListHost::checkProperty(const PropertyId n, bool hasAll) const
 {
     if (this->empty())
         return false;
     for (BListHost::iterator i = this->begin(); i != this->end(); ++i) {
-        const bool has = (*i)->checkProperty(n);
+        bool has = (*i)->checkProperty(n);
         if (hasAll && !has)
             return false;
         else if (!hasAll && has)
@@ -430,12 +432,12 @@ void BListHost::clearProperties()
     }
 }
 
-bool BListHost::hasProperties(const bool hasAll) const
+bool BListHost::hasProperties(bool hasAll) const
 {
     if (this->empty())
         return false;
     for (BListHost::iterator i = this->begin(); i != this->end(); ++i) {
-        const bool has = (*i)->hasProperties();
+        bool has = (*i)->hasProperties();
         if (hasAll && !has)
             return false;
         else if (!hasAll && has)
@@ -666,7 +668,7 @@ BListHost::iterator &BListHost::iterator::operator--()
     return *this;
 }
 
-BListHost::iterator BListHost::iterator::operator+(const size_t s) const
+BListHost::iterator BListHost::iterator::operator+(std::size_t s) const
 {
     iterator ret(*this);
     for (size_t i = 0; i < s; ++i) {
@@ -679,7 +681,7 @@ BListHost::iterator BListHost::iterator::operator+(const size_t s) const
     return ret;
 }
 
-BListHost::iterator BListHost::iterator::operator-(const size_t s) const
+BListHost::iterator BListHost::iterator::operator-(std::size_t s) const
 {
     iterator ret(*this);
     for (size_t i = 0; i < s; ++i) {
@@ -693,5 +695,9 @@ BListHost::iterator BListHost::iterator::operator-(const size_t s) const
 }
 bool BListHost::iterator::operator==(const iterator &i) const { return (_link == i._link); }
 bool BListHost::iterator::operator!=(const iterator &i) const { return (_link != i._link); }
+
+BListHost::iterator BListHost::iterator::next() const { return ++(iterator(*this)); }
+
+BListHost::iterator BListHost::iterator::prev() const { return --(iterator(*this)); }
 
 } // namespace hif

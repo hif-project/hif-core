@@ -136,11 +136,11 @@ public:
 private:
     std::stringstream _result;
 
-    inline void _flag2String(const bool v) { _result << '[' << (v ? '1' : '0') << ']'; }
+    inline void _flag2String(bool v) { _result << '[' << (v ? '1' : '0') << ']'; }
 
-    inline void _enum2String(const int v) { _result << '[' << v << ']'; }
+    inline void _enum2String(int v) { _result << '[' << v << ']'; }
 
-    inline void _int2String(long long v) { _result << v; }
+    inline void _int2String(std::int64_t v) { _result << v; }
 
     inline void _double2String(const double v) { _result << v; }
 
@@ -640,7 +640,7 @@ int ObjectKeyVisitor::visitTransition(Transition &o)
     _result << "(Transition";
     _result << o.getName();
     _result << o.getPrevName().c_str();
-    _int2String(static_cast<long long>(o.getPriority()));
+    _int2String(static_cast<std::int64_t>(o.getPriority()));
     GuideVisitor::visitTransition(o);
     _result << ")";
     return 0;
@@ -825,7 +825,7 @@ int ObjectKeyVisitor::visitState(State &o)
     _result << "(State";
     _result << o.getName();
     _flag2String(o.isAtomic());
-    _int2String(static_cast<long long>(o.getPriority()));
+    _int2String(static_cast<std::int64_t>(o.getPriority()));
     GuideVisitor::visitState(o);
     _result << ")";
     return 0;

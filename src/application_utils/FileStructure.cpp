@@ -398,53 +398,11 @@ auto FileStructure::isAbsolute() const -> bool
     return (true);
 }
 
-auto FileStructure::isDirectory() const -> bool
-{
-    struct stat f_st {
-    };
+auto FileStructure::isDirectory() const -> bool { return std::filesystem::is_directory(toString()); }
 
-    if (stat(toString().c_str(), &f_st) == 0) {
-        if (hif_isdir(f_st.st_mode) != 0) {
-            return (true);
-        }
-    } else {
-        // error
-    }
-    return (false);
-}
+auto FileStructure::isFile() const -> bool { return std::filesystem::is_regular_file(toString()); }
 
-auto FileStructure::isFile() const -> bool
-{
-    struct stat f_st {
-    };
-
-    if (stat(toString().c_str(), &f_st) == 0) {
-        if ((f_st.st_mode & S_IFMT) == 0X8000) {
-            return (true);
-        }
-    }
-    return (false);
-}
-
-auto FileStructure::isLink() const -> bool
-{
-    struct stat f_st {
-    };
-    if (stat(toString().c_str(), &f_st) == 0) {
-#if (defined _MSC_VER)
-#    pragma warning(push)
-#    pragma warning(disable : 4127)
-#endif
-        if (hif_islink(f_st.st_mode) != 0) {
-#if (defined _MSC_VER)
-#    pragma warning(pop)
-#endif
-            return (true);
-        }
-    }
-
-    return (false);
-}
+auto FileStructure::isLink() const -> bool { return std::filesystem::is_symlink(toString()); }
 
 auto FileStructure::isHidden() const -> bool
 {
@@ -499,13 +457,13 @@ auto FileStructure::length() const -> long
 
 auto FileStructure::size() const -> long
 {
-    struct stat f_st {
-    };
-
-    if (stat(toString().c_str(), &f_st) == 0) {
-        return static_cast<long>(hif_getfilesize(f_st));
+    const std::filesystem::path path = toString();
+    std::error_code ec;
+    auto sz = std::filesystem::file_size(path, ec);
+    if (ec) {
+        return 0;
     }
-    return (0);
+    return static_cast<long>(sz);
 }
 
 auto FileStructure::depth() const -> int { return static_cast<int>(abstractName.size()); }
@@ -691,7 +649,7 @@ auto FileStructure::openfile(char *mode) const -> FILE *
     fp = fopen(string_e.c_str(), mode);
     if (fp == nullptr) {
         char *c        = strerror(errno);
-        const size_t s = strlen(c) + 1;
+        std::size_t s = strlen(c) + 1;
         tmp_error      = static_cast<char *>(malloc(sizeof(char) * s));
         strcpy(tmp_error, c);
         std::ostringstream os;

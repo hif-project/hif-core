@@ -169,7 +169,7 @@ void ManageCast_t::_fixCondition(Value *cond)
 
     EqualsOptions opt;
     opt.checkOnlyTypes = true;
-    const bool isEq    = hif::equals(co->getType(), mappedBool, opt);
+    bool isEq    = hif::equals(co->getType(), mappedBool, opt);
     delete mappedBool;
     if (isEq) {
         // ok, no need for explicit bool conversion

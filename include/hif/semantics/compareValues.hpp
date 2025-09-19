@@ -35,7 +35,7 @@ enum class CompareResult : unsigned char {
 /// performing comparison.
 /// @return The comparison result between the two values.
 
-CompareResult compareValues(Value *v1, Value *v2, hif::semantics::ILanguageSemantics *refSem, const bool simplify);
+CompareResult compareValues(Value *v1, Value *v2, hif::semantics::ILanguageSemantics *refSem, bool simplify);
 
 /// @}
 

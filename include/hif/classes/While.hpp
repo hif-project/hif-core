@@ -50,7 +50,7 @@ public:
 
     /// @brief Sets the <tt>doWhile</tt> attribute.
     /// @param doWhile The <tt>doWhile</tt> attribute.
-    void setDoWhile(const bool doWhile);
+    void setDoWhile(bool doWhile);
 
     /// @brief Accepts a visitor to visit the current object.
     /// @param vis The visitor.

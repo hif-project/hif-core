@@ -99,7 +99,7 @@ public:
 
     /// @brief Sets the flag atomic.
     /// @param v The atomic flag value to set.
-    void setAtomic(const bool v);
+    void setAtomic(bool v);
 
     /// @brief Gets the flag atomic.
     /// @return True if the state is atomic, false otherwise.

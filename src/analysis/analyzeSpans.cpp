@@ -54,8 +54,8 @@ private:
     void _mergeSliceRange(const ValueIndex &prec, const ValueIndex &curr);
     void _mergeSliceSlice(const ValueIndex &prec, const ValueIndex &curr);
 
-    auto _compareBoundIndexes(Value *ind1, Value *ind2, long long &res) -> bool;
-    auto _getIndexConstvalue(Value *ind, Value *min, unsigned long long &vind) -> bool;
+    auto _compareBoundIndexes(Value *ind1, Value *ind2, std::int64_t &res) -> bool;
+    auto _getIndexConstvalue(Value *ind, Value *min, std::uint64_t &vind) -> bool;
     auto _getSpanMinIndex(Range *r) -> Value *;
     auto _getSpanMaxIndex(Range *r) -> Value *;
     auto _setSpanMinIndex(Range *r, Value *v) -> Value *;
@@ -115,7 +115,7 @@ auto SpanAnalyzer::_categorizeSpans(Type *spanType, const IndexMap &indexMap, Va
         const IndexInfo &info = i.first;
         Value *value          = i.second;
         if (info.expression != nullptr) {
-            unsigned long long vind = 0;
+            std::uint64_t vind = 0;
             if (!_getIndexConstvalue(hif::copy(info.expression), min, vind)) {
                 return false;
             }
@@ -125,8 +125,8 @@ auto SpanAnalyzer::_categorizeSpans(Type *spanType, const IndexMap &indexMap, Va
         } else if (info.range != nullptr) {
             Value *minRangeBound    = hif::rangeGetMinBound(info.range);
             Value *maxRangeBound    = hif::rangeGetMaxBound(info.range);
-            unsigned long long vmin = 0;
-            unsigned long long vmax = 0;
+            std::uint64_t vmin = 0;
+            std::uint64_t vmax = 0;
             if (!_getIndexConstvalue(hif::copy(minRangeBound), min, vmin) ||
                 !_getIndexConstvalue(hif::copy(maxRangeBound), min, vmax)) {
                 return false;
@@ -137,8 +137,8 @@ auto SpanAnalyzer::_categorizeSpans(Type *spanType, const IndexMap &indexMap, Va
         } else if (info.slice != nullptr) {
             Value *minRangeBound    = hif::rangeGetMinBound(info.slice);
             Value *maxRangeBound    = hif::rangeGetMaxBound(info.slice);
-            unsigned long long vmin = 0;
-            unsigned long long vmax = 0;
+            std::uint64_t vmin = 0;
+            std::uint64_t vmax = 0;
             if (!_getIndexConstvalue(hif::copy(minRangeBound), min, vmin) ||
                 !_getIndexConstvalue(hif::copy(maxRangeBound), min, vmax)) {
                 return false;
@@ -151,7 +151,7 @@ auto SpanAnalyzer::_categorizeSpans(Type *spanType, const IndexMap &indexMap, Va
             messageError("Expected type", nullptr, _sem);
         }
     }
-    unsigned long long spanBitwidth = hif::semantics::spanGetBitwidth(span, _sem);
+    std::uint64_t spanBitwidth = hif::semantics::spanGetBitwidth(span, _sem);
     if (spanBitwidth != 0) {
         if (_result.maxBound >= spanBitwidth) {
             messageError("Wrong input indexes.", nullptr, nullptr);
@@ -167,7 +167,7 @@ auto SpanAnalyzer::_categorizeSpans(Type *spanType, const IndexMap &indexMap, Va
 
 auto SpanAnalyzer::_fillHoles(Value *others) -> bool
 {
-    for (unsigned long long i = 0; i < _result.maxBound; ++i) {
+    for (std::uint64_t i = 0; i < _result.maxBound; ++i) {
         ValueIndex ind(AnalyzeSpansResult::INDEX_EXPRESSION, i, 0);
         if (_result.resultMap.find(ind) != _result.resultMap.end()) {
             continue;
@@ -247,7 +247,7 @@ void SpanAnalyzer::_refinePrefixedReferences()
             if (memPrefixType == nullptr) {
                 continue;
             }
-            unsigned long long bw = hif::semantics::typeGetSpanBitwidth(memPrefixType, _sem);
+            std::uint64_t bw = hif::semantics::typeGetSpanBitwidth(memPrefixType, _sem);
             if (bw != 1ULL) {
                 continue;
             }
@@ -265,8 +265,8 @@ void SpanAnalyzer::_refinePrefixedReferences()
             if (slicePrefixType == nullptr) {
                 continue;
             }
-            unsigned long long bw = hif::semantics::typeGetSpanBitwidth(slicePrefixType, _sem);
-            if (bw == 0ULL) {
+            std::uint64_t bw = hif::semantics::typeGetSpanBitwidth(slicePrefixType, _sem);
+            if (bw == 0) {
                 continue;
             }
             if (bw != index.getSize()) {
@@ -325,7 +325,7 @@ void SpanAnalyzer::_mergeExpressionExpression(const ValueIndex &prec, const Valu
     if (!hif::equals(memPrec->getPrefix(), memCurr->getPrefix())) {
         return;
     }
-    long long compare = 0;
+    std::int64_t compare = 0;
     if (!_compareBoundIndexes(hif::copy(memPrec->getIndex()), hif::copy(memCurr->getIndex()), compare)) {
         return;
     }
@@ -377,7 +377,7 @@ void SpanAnalyzer::_mergeExpressionSlice(const ValueIndex &prec, const ValueInde
     if (!hif::equals(memPrec->getPrefix(), sliceCurr->getPrefix())) {
         return;
     }
-    long long compare = 0;
+    std::int64_t compare = 0;
     if (!_compareBoundIndexes(
             hif::copy(memPrec->getIndex()), hif::copy(_getSpanMinIndex(sliceCurr->getSpan())), compare)) {
         return;
@@ -441,7 +441,7 @@ void SpanAnalyzer::_mergeSliceExpression(const ValueIndex &prec, const ValueInde
     if (!hif::equals(slicePrec->getPrefix(), memCurr->getPrefix())) {
         return;
     }
-    long long compare = 0;
+    std::int64_t compare = 0;
     if (!_compareBoundIndexes(
             hif::copy(_getSpanMaxIndex(slicePrec->getSpan())), hif::copy(memCurr->getIndex()), compare)) {
         return;
@@ -475,7 +475,7 @@ void SpanAnalyzer::_mergeSliceSlice(const ValueIndex &prec, const ValueIndex &cu
     if (!hif::equals(slicePrec->getPrefix(), sliceCurr->getPrefix())) {
         return;
     }
-    long long compare = 0;
+    std::int64_t compare = 0;
     if (!_compareBoundIndexes(
             hif::copy(_getSpanMaxIndex(slicePrec->getSpan())), hif::copy(_getSpanMinIndex(sliceCurr->getSpan())),
             compare)) {
@@ -492,7 +492,7 @@ void SpanAnalyzer::_mergeSliceSlice(const ValueIndex &prec, const ValueIndex &cu
     delete slicePrec;
 }
 
-auto SpanAnalyzer::_compareBoundIndexes(Value *ind1, Value *ind2, long long &res) -> bool
+auto SpanAnalyzer::_compareBoundIndexes(Value *ind1, Value *ind2, std::int64_t &res) -> bool
 {
     ind1     = hif::manipulation::assureSyntacticType(ind1, _sem);
     ind2     = hif::manipulation::assureSyntacticType(ind2, _sem);
@@ -515,7 +515,7 @@ auto SpanAnalyzer::_compareBoundIndexes(Value *ind1, Value *ind2, long long &res
     return true;
 }
 
-auto SpanAnalyzer::_getIndexConstvalue(Value *ind, Value *min, unsigned long long &vind) -> bool
+auto SpanAnalyzer::_getIndexConstvalue(Value *ind, Value *min, std::uint64_t &vind) -> bool
 {
     ind      = hif::manipulation::assureSyntacticType(ind, _sem);
     Value *v = _factory.expression(ind, op_minus, hif::copy(min));
@@ -532,7 +532,7 @@ auto SpanAnalyzer::_getIndexConstvalue(Value *ind, Value *min, unsigned long lon
         delete cv;
         return false;
     }
-    vind = static_cast<unsigned long long>(ival->getValue());
+    vind = static_cast<std::uint64_t>(ival->getValue());
     delete ival;
     delete cv;
     return true;
@@ -651,7 +651,7 @@ void ValueIndex::swap(ValueIndex &other) noexcept
     std::swap(_minSliceIndex, other._minSliceIndex);
     std::swap(_maxSliceIndex, other._maxSliceIndex);
 }
-ValueIndex::ValueIndex(const IndexKind kind, unsigned long long min, unsigned long long max)
+ValueIndex::ValueIndex(const IndexKind kind, std::uint64_t min, std::uint64_t max)
     : _kind(kind)
     , _index(min)
     , _minRangeIndex(min)
@@ -667,10 +667,10 @@ ValueIndex::ValueIndex(const IndexKind kind, unsigned long long min, unsigned lo
 
 auto ValueIndex::operator<(const ValueIndex &other) const -> bool
 {
-    unsigned long long thisMin  = getMin();
-    unsigned long long thisMax  = getMax();
-    unsigned long long otherMin = other.getMin();
-    unsigned long long otherMax = other.getMax();
+    std::uint64_t thisMin  = getMin();
+    std::uint64_t thisMax  = getMax();
+    std::uint64_t otherMin = other.getMin();
+    std::uint64_t otherMax = other.getMax();
 
     if (thisMax < otherMin) {
         return true;
@@ -685,7 +685,7 @@ auto ValueIndex::operator<(const ValueIndex &other) const -> bool
 
 auto ValueIndex::getKind() const -> IndexKind { return _kind; }
 
-auto ValueIndex::getMax() const -> unsigned long long
+auto ValueIndex::getMax() const -> std::uint64_t
 {
     if (_kind == AnalyzeSpansResult::INDEX_EXPRESSION) {
         return _index;
@@ -696,7 +696,7 @@ auto ValueIndex::getMax() const -> unsigned long long
     return _maxSliceIndex;
 }
 
-auto ValueIndex::getMin() const -> unsigned long long
+auto ValueIndex::getMin() const -> std::uint64_t
 {
     if (_kind == AnalyzeSpansResult::INDEX_EXPRESSION) {
         return _index;
@@ -707,7 +707,7 @@ auto ValueIndex::getMin() const -> unsigned long long
     return _minSliceIndex;
 }
 
-auto ValueIndex::getSize() const -> unsigned long long { return (getMax() - getMin() + 1); }
+auto ValueIndex::getSize() const -> std::uint64_t { return (getMax() - getMin() + 1); }
 // ///////////////////////////////////////////////////////////////////
 // AnalyzeSpansResult
 // ///////////////////////////////////////////////////////////////////
@@ -765,7 +765,7 @@ auto analyzeSpans(
 {
     hif::application_utils::initializeLogHeader("HIF", "SpanAnalyzer");
     SpanAnalyzer analyzer(sem);
-    const bool ret = analyzer.analyzeSpans(spanType, indexMap, others);
+    bool ret = analyzer.analyzeSpans(spanType, indexMap, others);
     hif::application_utils::restoreLogHeader();
 
     if (!ret) {

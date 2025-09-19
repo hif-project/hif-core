@@ -198,12 +198,12 @@ bool _isShiftOrRotate(Operator operation);
 
 // Wrapper used to suppress useless warnings:
 #ifdef __GNUC__
-#pragma GCC diagnostic ignored "-Wswitch-default"
-#pragma GCC diagnostic ignored "-Wswitch-enum"
+#    pragma GCC diagnostic ignored "-Wswitch-default"
+#    pragma GCC diagnostic ignored "-Wswitch-enum"
 #else
-#pragma warning(disable : 4127)
-#pragma warning(disable : 4244)
-#pragma warning(disable : 4505)
+#    pragma warning(disable : 4127)
+#    pragma warning(disable : 4244)
+#    pragma warning(disable : 4505)
 #endif
 HIFSemantics::HIFSemantics()
     : ILanguageSemantics()
@@ -316,7 +316,7 @@ Type *HIFSemantics::getMemberSemanticType(Member *m)
 
 LibraryDef *HIFSemantics::getStandardPackage()
 {
-    const bool hifFormat = true;
+    bool hifFormat = true;
     LibraryDef *ld       = new LibraryDef();
     ld->setName(_makeHifName("hif_standard", hifFormat));
     ld->setStandard(true);
@@ -354,7 +354,7 @@ Value *HIFSemantics::getTypeDefaultValue(Type *t, Declaration *d)
         // it is a bit vector or a logic vector. Its default value is "UU...U"
         Range *range = tt->getSpan();
         messageAssert(range != nullptr, "Unexpected bitvector", tt, nullptr);
-        unsigned long long size = spanGetBitwidth(range, this);
+        std::uint64_t size = spanGetBitwidth(range, this);
         if (size == 0) {
             // Failed to determine range: create an Aggregate with others = 'U'
             Aggregate *ret     = new Aggregate();
@@ -375,7 +375,7 @@ Value *HIFSemantics::getTypeDefaultValue(Type *t, Declaration *d)
             if (tt->isLogic() && !_useNativeSemantics)
                 c = 'u';
 
-            for (unsigned long long i = 0; i < size; ++i)
+            for (std::uint64_t i = 0; i < size; ++i)
                 s.push_back(c);
             BitvectorValue *ret = new BitvectorValue(s);
             tt                  = hif::copy(tt);
@@ -459,7 +459,7 @@ Value *HIFSemantics::getTypeDefaultValue(Type *t, Declaration *d)
         return ret;
     } else if (dynamic_cast<Unsigned *>(type) || dynamic_cast<Signed *>(type)) {
         Range *span             = hif::typeGetSpan(type, this);
-        unsigned long long size = spanGetBitwidth(span, this);
+        std::uint64_t size = spanGetBitwidth(span, this);
         if (size == 0) {
             // Failed to determine range: create an Aggregate with others = 'U'
             Bit *b = new Bit();
@@ -482,7 +482,7 @@ Value *HIFSemantics::getTypeDefaultValue(Type *t, Declaration *d)
             char c = 'u';
             if (_useNativeSemantics)
                 c = '0';
-            for (unsigned long long i = 0; i < size; ++i)
+            for (std::uint64_t i = 0; i < size; ++i)
                 s.push_back(c);
             BitvectorValue *ret = new BitvectorValue(s);
             type                = hif::copy(type);
@@ -586,7 +586,7 @@ Operator HIFSemantics::getMapForOperator(
 {
     return srcOperation;
 }
-Type *HIFSemantics::getSuggestedTypeForOp(Type *t, Operator operation, Type *opType, Object *, const bool isOp1)
+Type *HIFSemantics::getSuggestedTypeForOp(Type *t, Operator operation, Type *opType, Object *, bool isOp1)
 {
     if (operation == op_sll || operation == op_sla || operation == op_srl || operation == op_sra) {
         if (!isOp1) {
@@ -616,9 +616,9 @@ Type *HIFSemantics::getTypeForConstant(ConstValue *c)
     // Otherwise try to figure out the type
     if (dynamic_cast<IntValue *>(c) != nullptr) {
         IntValue *iv      = dynamic_cast<IntValue *>(c);
-        const int32_t i32 = int32_t(iv->getValue());
-        const int64_t i64 = int64_t(iv->getValue());
-        long long left    = int64_t(i32) == i64 ? 31 : 63;
+        int32_t i32 = int32_t(iv->getValue());
+        int64_t i64 = int64_t(iv->getValue());
+        std::int64_t left    = int64_t(i32) == i64 ? 31 : 63;
         Int *iType        = new Int();
         iType->setConstexpr(true);
         // if the value is less than zero we are sure that the given intval is
@@ -788,7 +788,7 @@ Value *HIFSemantics::explicitCast(Value *valueToCast, Type *castType, Type * /*s
     ret->setType(hif::copy(castType));
     return ret;
 }
-long long HIFSemantics::transformRealToInt(const double v) { return static_cast<long long>(v); }
+std::int64_t HIFSemantics::transformRealToInt(const double v) { return static_cast<std::int64_t>(v); }
 Type *HIFSemantics::isTypeAllowedAsBound(Type *t)
 {
     messageDebugAssert(t != nullptr, "Unexpected nullptr type", nullptr, this);
@@ -822,8 +822,8 @@ Type *HIFSemantics::isTypeAllowedAsBound(Type *t)
     Int *i = _factory.integer(hif::copy(hif::typeGetSpan(t, this)), hif::typeIsSigned(t, this), false);
 
     if (iSpanSize != nullptr) {
-        long long val     = iSpanSize->getValue();
-        long long retSize = 0;
+        std::int64_t val     = iSpanSize->getValue();
+        std::int64_t retSize = 0;
         if (val <= 8)
             retSize = 7;
         else if (val <= 16)
@@ -910,7 +910,7 @@ bool HIFSemantics::isTypeAllowedForConstValue(ConstValue *cv, Type *synType)
     opt.checkOnlyTypes    = true;
     opt.handleVectorTypes = true;
 
-    const bool res = hif::equals(dt, baseSynType, opt);
+    bool res = hif::equals(dt, baseSynType, opt);
     delete dt;
 
     return res;
@@ -1134,8 +1134,8 @@ void HIFAnalysis::map(Array *op1, Array *op2)
 
         Type *arr1BaseType = getBaseType(op1->getType(), false, _sem);
         Type *arr2BaseType = getBaseType(op2->getType(), false, _sem);
-        const bool isBit1  = dynamic_cast<Bit *>(arr1BaseType) != nullptr;
-        const bool isBit2  = dynamic_cast<Bit *>(arr2BaseType) != nullptr;
+        bool isBit1  = dynamic_cast<Bit *>(arr1BaseType) != nullptr;
+        bool isBit2  = dynamic_cast<Bit *>(arr2BaseType) != nullptr;
         if (bv != nullptr) {
             if (isBit1 && isBit2) {
                 Bit *ret = new Bit();
@@ -1396,7 +1396,7 @@ void HIFAnalysis::map(Array *op1, Bit *op2)
         return;
 
     Range *resultRange  = nullptr;
-    long long rangeSize = static_cast<long long>(spanGetBitwidth(range1, _sem));
+    std::int64_t rangeSize = static_cast<std::int64_t>(spanGetBitwidth(range1, _sem));
     if (rangeSize > 0) {
         if (range1->getDirection() == dir_downto) {
             // the range is [ range1_length + bit_length - 1 ; 0 ]
@@ -1545,7 +1545,7 @@ void HIFAnalysis::map(Pointer *op1, Pointer *op2)
     _result.returnedType       = nullptr;
     _result.operationPrecision = nullptr;
 
-    const bool isAssign = hif::operatorIsAssignment(_currOperator);
+    bool isAssign = hif::operatorIsAssignment(_currOperator);
     if (!isAssign && (_currOperator != op_eq) && (_currOperator != op_neq) && (_currOperator != op_case_eq) &&
         (_currOperator != op_case_neq)) {
         // only assignment and check for equality/inequality are allowed at the moment
@@ -1944,8 +1944,7 @@ void HIFAnalysis::map(ViewReference *op1, ViewReference *op2)
         LibraryDef *ld1 = hif::getNearestParent<LibraryDef>(d1);
         if (ld1 == nullptr)
             return;
-        if (ld1->getName() != "hif_verilog_vams_disciplines" &&
-            ld1->getName() != "vams_disciplines")
+        if (ld1->getName() != "hif_verilog_vams_disciplines" && ld1->getName() != "vams_disciplines")
             return;
 
         Array *res_array = new Array();
@@ -2135,7 +2134,7 @@ void HIFAnalysis::_baseMap(Type *t1, Type *t2)
         refType = hif::copy(t1);
         typeSetSpan(refType, resSpan, _sem, true);
 
-        const bool setSigned = typeIsSigned(t1, _sem, true) || typeIsSigned(t2, _sem, true);
+        bool setSigned = typeIsSigned(t1, _sem, true) || typeIsSigned(t2, _sem, true);
         typeSetSigned(refType, setSigned, _sem);
     } else if (!isConstexpr1 && isConstexpr2) {
         refType = hif::copy(t1);
@@ -2155,7 +2154,7 @@ void HIFAnalysis::_baseMap(Type *t1, Type *t2)
     }
     // otherwise the operation is permitted
     if (_isRelationalOrAssignment(_currOperator)) {
-        const bool alwaysBool =
+        bool alwaysBool =
             (dynamic_cast<Signed *>(t1) != nullptr || dynamic_cast<Unsigned *>(t1) != nullptr ||
              dynamic_cast<Signed *>(t2) != nullptr || dynamic_cast<Unsigned *>(t2) != nullptr);
         if (!alwaysBool && (typeIsLogic(t1, _sem) || typeIsLogic(t2, _sem))) {
@@ -2194,9 +2193,9 @@ void HIFAnalysis::_baseShiftAndRotate(Type *t1, Int * /*i*/)
 
 // Wrapper used to suppress useless warnings:
 #ifdef _MSC_VER
-#pragma warning(disable : 4127)
-#pragma warning(disable : 4244)
-#pragma warning(disable : 4505)
+#    pragma warning(disable : 4127)
+#    pragma warning(disable : 4244)
+#    pragma warning(disable : 4505)
 #endif
 
 bool _isRelationalOrAssignment(Operator operation)

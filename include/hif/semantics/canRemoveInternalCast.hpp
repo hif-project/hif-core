@@ -39,7 +39,7 @@ bool canRemoveInternalCast(
     Type *t3,
     ILanguageSemantics *sem,
     Object *o,
-    const bool conservativeBehavior = false);
+    bool conservativeBehavior = false);
 
 } // namespace semantics
 } // namespace hif

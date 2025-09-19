@@ -12,23 +12,11 @@
 namespace hif
 {
 
-template <class T>
-template <typename T1>
-BList<T>::operator BList<T1> &()
-{
-    return this->toOtherBList<T1>();
-}
+template <class T> template <typename T1> BList<T>::operator BList<T1> &() { return this->toOtherBList<T1>(); }
 
-template <class T>
-template <typename Comparator>
-bool BList<T>::sort(Comparator &c)
-{
-    return BListHost::sort(c);
-}
+template <class T> template <typename Comparator> bool BList<T>::sort(Comparator &c) { return BListHost::sort(c); }
 
-template <class T>
-template <typename T1>
-BList<T1> &BList<T>::toOtherBList()
+template <class T> template <typename T1> BList<T1> &BList<T>::toOtherBList()
 {
     // Sanity checks:
     T *t   = nullptr;
@@ -45,9 +33,7 @@ BList<T1> &BList<T>::toOtherBList()
     return *(u.l2);
 }
 
-template <class T>
-template <typename T1>
-const BList<T1> &BList<T>::toOtherBList() const
+template <class T> template <typename T1> const BList<T1> &BList<T>::toOtherBList() const
 {
     // Sanity checks:
     T *t   = nullptr;

@@ -21,26 +21,19 @@ class IntValue : public ConstValue
 {
 public:
     /// @brief Constructor.
-    IntValue();
+    IntValue() = default;
 
     /// @brief Constructor.
-    /// @param v The integer value to be assigned. Default is 0.
-    IntValue(long long v);
-
-    /// @brief Constructor.
-    /// @param v The integer value to be assigned. Default is 0.
-    IntValue(unsigned long long v);
-
-    /// @brief Constructor.
-    /// @param v The integer value to be assigned. Default is 0.
-    IntValue(int v);
-
-    /// @brief Constructor.
-    /// @param v The integer value to be assigned. Default is 0.
-    IntValue(unsigned v);
+    /// @param value The integer value to be assigned. Default is 0.
+    template <typename T, typename std::enable_if<std::is_integral<T>::value, int>::type = 0>
+    IntValue(T value)
+        : _value(static_cast<std::int64_t>(value))
+    {
+        // Nothing to do here.
+    }
 
     /// @brief Destructor.
-    virtual ~IntValue();
+    virtual ~IntValue() = default;
 
     /// @brief Returns a string representing the class name.
     /// @return The string representing the class name.
@@ -48,11 +41,18 @@ public:
 
     /// @brief Returns the integer value.
     /// @return The integer value.
-    long long getValue() const;
+    template <typename T = std::int64_t, typename std::enable_if<std::is_integral<T>::value, int>::type = 0>
+    auto getValue() const -> T
+    {
+        return static_cast<T>(_value);
+    }
 
     /// @brief Sets the integer value.
-    /// @param a The integer value to be set.
-    void setValue(long long a);
+    /// @param value The integer value to be set.
+    template <typename T, typename std::enable_if<std::is_integral<T>::value, int>::type = 0> void setValue(T value)
+    {
+        _value = static_cast<std::int64_t>(value);
+    }
 
     /// @brief Accepts a visitor to visit the current object.
     /// @param vis The visitor.
@@ -65,7 +65,7 @@ protected:
 
 private:
     /// @brief The actual integer value.
-    long long _value;
+    std::int64_t _value;
 };
 
 } // namespace hif

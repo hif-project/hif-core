@@ -75,8 +75,7 @@ public:
     /// @return Type pointer to the suggested type to obtain
     /// a valid operation in current semantics  (if possible).
     ///
-    virtual Type *
-    getSuggestedTypeForOp(Type *t, Operator operation, Type *opType, Object *startingObject, const bool isOp1);
+    virtual Type *getSuggestedTypeForOp(Type *t, Operator operation, Type *opType, Object *startingObject, bool isOp1);
     ///
     /// @brief Function that given a ConstValue returns a Type
     /// pointer representing the type to associate to the constant according
@@ -127,7 +126,7 @@ public:
     /// SystemC truncates).
     /// @param v The value to convert.
     /// @return The converted value.
-    virtual long long transformRealToInt(const double v);
+    virtual std::int64_t transformRealToInt(const double v);
     /// @name Semantic checks methods
     ///@{
 
@@ -251,13 +250,13 @@ public:
     /// @brief Get the eventual LibraryDef matching the given name.
     /// @param name The name.
     /// @return The LibraryDef or nullptr.
-    virtual LibraryDef *getStandardLibrary(const std::string & name);
+    virtual LibraryDef *getStandardLibrary(const std::string &name);
 
     /// @brief Return True if the given library is native for the semantics.
     /// @param name The library name.
     /// @param hifFormat Whether to use HIF format.
     /// @return True if the library is native, false otherwise.
-    virtual bool isNativeLibrary(const std::string & name, const bool hifFormat = false);
+    virtual bool isNativeLibrary(const std::string &name, bool hifFormat = false);
 
     /// @brief Map an input symbol into the corresponding output one.
     /// @param decl The declaration.
@@ -277,7 +276,7 @@ public:
     /// @brief Returns the event method name w.r.t. current semantics.
     /// @param hifFormat True if HIF format.
     /// @return The event method name.
-    virtual std::string getEventMethodName(const bool hifFormat = false);
+    virtual std::string getEventMethodName(bool hifFormat = false);
 
     /// @brief Returns <tt>true</tt> if the given call is an event call w.r.t.
     /// the current semantics, <tt>false</tt> otherwise.
@@ -329,10 +328,10 @@ private:
     _getSimplifiedSymbol_withVerilogIntegers(Object *s, bool intReturnedType, const std::vector<int> &intParamIndexes);
 
     /// Splitting cases.
-    LibraryDef *_getVHDLStandardLibrary(const std::string & name);
-    LibraryDef *_getVerilogStandardLibrary(const std::string & name);
-    LibraryDef *_getSystemCStandardLibrary(const std::string & name);
-    LibraryDef *_getHIFStandardLibrary(const std::string & name);
+    LibraryDef *_getVHDLStandardLibrary(const std::string &name);
+    LibraryDef *_getVerilogStandardLibrary(const std::string &name);
+    LibraryDef *_getSystemCStandardLibrary(const std::string &name);
+    LibraryDef *_getHIFStandardLibrary(const std::string &name);
 
     typedef std::list<hif::SubProgram *> SubList;
     typedef std::map<std::string, SubList> DeclarationMap;

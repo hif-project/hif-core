@@ -44,7 +44,7 @@ namespace manipulation
 ///
 /// @{
 
-bool rebaseTypeSpan(Object *root, hif::semantics::ILanguageSemantics *refLang, const bool currentOnly);
+bool rebaseTypeSpan(Object *root, hif::semantics::ILanguageSemantics *refLang, bool currentOnly);
 
 /// @}
 

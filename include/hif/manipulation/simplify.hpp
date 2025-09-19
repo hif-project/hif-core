@@ -16,86 +16,72 @@ namespace manipulation
 {
 
 /// @brief Maps types to their simplified counterparts.
-template <class T>
-struct SimplifiedType {
+template <class T> struct SimplifiedType {
     typedef Object type; ///< Default simplification type is `Object`.
 };
 
 /// @brief Specialization for `Value`. Simplifies to `Value`.
-template <>
-struct SimplifiedType<Value> {
+template <> struct SimplifiedType<Value> {
     typedef Value type; ///< The simplified type is `Value`.
 };
 
 /// @brief Specialization for `Cast`. Simplifies to `Value`.
-template <>
-struct SimplifiedType<Cast> {
+template <> struct SimplifiedType<Cast> {
     typedef Value type; ///< The simplified type is `Value`.
 };
 
 /// @brief Specialization for `Expression`. Simplifies to `Value`.
-template <>
-struct SimplifiedType<Expression> {
+template <> struct SimplifiedType<Expression> {
     typedef Value type; ///< The simplified type is `Value`.
 };
 
 /// @brief Specialization for `When`. Simplifies to `Value`.
-template <>
-struct SimplifiedType<When> {
+template <> struct SimplifiedType<When> {
     typedef Value type; ///< The simplified type is `Value`.
 };
 
 /// @brief Specialization for `With`. Simplifies to `Value`.
-template <>
-struct SimplifiedType<With> {
+template <> struct SimplifiedType<With> {
     typedef Value type; ///< The simplified type is `Value`.
 };
 
 /// @brief Specialization for `Range`. Simplifies to `Range`.
-template <>
-struct SimplifiedType<Range> {
+template <> struct SimplifiedType<Range> {
     typedef Range type; ///< The simplified type is `Range`.
 };
 
 /// @brief Specialization for `If`. Simplifies to `Action`.
-template <>
-struct SimplifiedType<If> {
+template <> struct SimplifiedType<If> {
     typedef Action type; ///< The simplified type is `Action`.
 };
 
 /// @brief Specialization for `Switch`. Simplifies to `Action`.
-template <>
-struct SimplifiedType<Switch> {
+template <> struct SimplifiedType<Switch> {
     typedef Action type; ///< The simplified type is `Action`.
 };
 
 /// @brief Specialization for `For`. Simplifies to `Action`.
-template <>
-struct SimplifiedType<For> {
+template <> struct SimplifiedType<For> {
     typedef Action type; ///< The simplified type is `Action`.
 };
 
 /// @brief Specialization for `IfGenerate`. Simplifies to `Action`.
-template <>
-struct SimplifiedType<IfGenerate> {
+template <> struct SimplifiedType<IfGenerate> {
     typedef Action type; ///< The simplified type is `Action`.
 };
 
 /// @brief Specialization for `ForGenerate`. Simplifies to `Declaration`.
-template <>
-struct SimplifiedType<ForGenerate> {
+template <> struct SimplifiedType<ForGenerate> {
     typedef Declaration type; ///< The simplified type is `Declaration`.
 };
 
 /// @brief Specialization for `FieldReference`. Simplifies to `Value`.
-template <>
-struct SimplifiedType<FieldReference> {
+template <> struct SimplifiedType<FieldReference> {
     typedef Value type; ///< The simplified type is `Value`.
 };
 
 /// @brief Specialization for `Type`. Simplifies to `Type`.
-template <>
-struct SimplifiedType<Type> {
+template <> struct SimplifiedType<Type> {
     typedef Type type; ///< The simplified type is `Type`.
 };
 

@@ -15,21 +15,23 @@
 static_assert(sizeof(void *) == 8, "HIF requires to be compiled with 64-bit compiler");
 
 #if defined(_WIN32)
-#include <direct.h>
-#include <io.h>
+#    include <direct.h>
+#    include <fcntl.h>
+#    include <io.h>
+#    include <windows.h>
 #else
-#include <sys/time.h>
-#include <unistd.h>
+#    include <sys/time.h>
+#    include <unistd.h>
 #endif
 
 #if (defined _MSC_VER)
-#include <windows.h>
-#pragma warning(push)
+#    include <windows.h>
+#    pragma warning(push)
 // disabling unreferenced params under Windows
-#pragma warning(disable : 4100)
+#    pragma warning(disable : 4100)
 #elif (defined __MINGW32__)
-#pragma GCC diagnostic ignored "-Wunused-parameter"
-#pragma GCC diagnostic ignored "-Wold-style-cast"
+#    pragma GCC diagnostic ignored "-Wunused-parameter"
+#    pragma GCC diagnostic ignored "-Wold-style-cast"
 #endif
 
 #include "hif/application_utils/Log.hpp"
@@ -39,53 +41,6 @@ namespace hif
 {
 namespace application_utils
 {
-
-namespace /* anon */
-{
-
-// VC++ & MinGW
-#if (defined _WIN32) // && ! (defined __GNUC__)
-// This function is unix only. Re-implemented as a tmpfile for Windows.
-FILE *_fmemopen(const char *buffer, int size, const char * /*mode*/, const char *path)
-{
-    // Seems to not work, since it creates the file into the root dir, which required administrative priviledges,
-    // thus let's create manually a tmp file:
-    //FILE * tmp = tmpfile();
-    std::string dir(path);
-    char *tmpname = _tempnam(dir.c_str(), "macro");
-    if (tmpname == nullptr) {
-        messageError("Unable to create a valid tmp file name.", nullptr, nullptr);
-    }
-#ifndef NDEBUG
-    messageWarning((std::string("Creating tmp file: ") + tmpname).c_str(), nullptr, nullptr);
-#endif
-    FILE *tmp = fopen(tmpname, "w+");
-    if (tmp == nullptr) {
-        messageError("Unable to open tmp file to expand a macro (1).", nullptr, nullptr);
-    }
-
-    if (fprintf(tmp, "%s", buffer) != size) {
-        messageError("Unable to initialize tmp file to expand a macro.", nullptr, nullptr);
-    }
-
-    // Closing and re-opening to reset internal flags and move seek to begin of file:
-    fclose(tmp);
-    tmp = fopen(tmpname, "rD");
-    if (tmp == nullptr) {
-        messageError("Unable to open tmp file to expand a macro (2).", nullptr, nullptr);
-    }
-
-    free(tmpname);
-    return tmp;
-}
-#else
-auto _fmemopen(const char *buffer, int size, const char *mode, const char * /*path*/) -> FILE *
-{
-    return fmemopen(const_cast<char *>(buffer), static_cast<size_t>(size), mode);
-}
-#endif
-
-} // namespace
 
 auto hif_mkdir(const char *path, int mode) -> int
 {
@@ -99,119 +54,59 @@ auto hif_mkdir(const char *path, int mode) -> int
 
 auto hif_strdup(const char *s) -> char *
 {
-#if (defined _WIN32)
+#if defined(__APPLE__) || defined(__linux__)
+    return strdup(s);
+#elif defined(_WIN32)
     return _strdup(s);
 #else
-    return strdup(s);
+#    error "strdup not supported on this platform"
 #endif
 }
 
-auto hif_fileno(FILE *f) -> int
+auto hif_fmemopen(const char *buffer, int size, const char *mode) -> FILE *
 {
-#if (defined _WIN32)
-    return _fileno(f);
+#if defined(__APPLE__) || defined(__linux__)
+    // POSIX systems have fmemopen
+    return fmemopen(const_cast<char *>(buffer), static_cast<size_t>(size), mode);
+#elif defined(_WIN32)
+    // Windows: simulate fmemopen using a temporary file
+    char tmp_path[L_tmpnam];
+    if (tmpnam_s(tmp_path, L_tmpnam) != 0) {
+        return nullptr;
+    }
+    FILE *fp = std::fopen(tmp_path, "w+b");
+    if (!fp) {
+        return nullptr;
+    }
+    // Write buffer into the file.
+    if (std::fwrite(buffer, 1, size, fp) != static_cast<size_t>(size)) {
+        std::fclose(fp);
+        std::remove(tmp_path);
+        return nullptr;
+    }
+    // Rewind for reading.
+    std::rewind(fp);
+    // Caller is responsible for closing the file.
+    // Temporary file will be deleted when closed if using _unlink/_close trick.
+    return fp;
 #else
-    return fileno(f);
-#endif
-}
-
-auto hif_isatty(int fd) -> int
-{
-#if (defined _WIN32)
-    return _isatty(fd);
-#else
-    return isatty(fd);
-#endif
-}
-
-auto hif_isdir(unsigned int mode) -> int
-{
-#if (defined _WIN32)
-    return (mode & S_IFDIR);
-#else
-    return S_ISDIR(mode);
-#endif
-}
-
-auto hif_islink(unsigned int mode) -> int
-{
-// Also for MinGW
-#if defined(_WIN32)
-    // Windows does not have links.
-    return 0;
-#else
-    return S_ISLNK(mode);
-#endif
-}
-
-auto hif_getfilesize(struct stat &s) -> int
-{
-// Also for MinGW
-#if defined(_WIN32)
-    return s.st_size;
-#else
-    return static_cast<int>(s.st_blocks);
-#endif
-}
-
-auto hif_symlink(const char *s1, const char *s2) -> int
-{
-// Also for MinGW
-#if defined(_WIN32)
-    // Windows does not have links.
-    return 0;
-#else
-    return symlink(s1, s2);
-#endif
-}
-
-auto hif_round(const double d) -> double
-{
-// Also for MinGW
-#if defined(_WIN32)
-    return floor(d + 0.5);
-#else
-    return round(d);
-#endif
-}
-
-auto hif_log2(const double d) -> double
-{
-// Also for MinGW
-#if defined(_WIN32)
-    return log(d) / log(2.0);
-#else
-    return log2(d);
-#endif
-}
-
-auto hif_fmemopen(const char *buffer, int size, const char *mode, const char *path) -> FILE *
-{
-    return _fmemopen(buffer, size, mode, path);
-}
-
-auto hif_fdopen(const int fd, const char *const mode) -> FILE *
-{
-#if (defined _WIN32)
-    return _fdopen(fd, mode);
-#else
-    return fdopen(fd, mode);
+#    error "_fmemopen not supported on this platform"
 #endif
 }
 
 auto hif_getCurrentTimeAsString() -> std::string
 {
 #if (defined _MSC_VER)
-    const int MAX_LEN = 200;
+    int MAX_LEN = 200;
     char buffer[MAX_LEN];
     if (GetTimeFormatA(LOCALE_USER_DEFAULT, 0, 0, "HH':'mm':'ss", buffer, MAX_LEN) == 0)
         return "Error in NowTime()";
-#if 0
+#    if 0
     char result[100] = {0};
     //static DWORD first = GetTickCount();
     snprintf(result, 100, "%s"/*.%06ld*/, buffer/*, (long)(GetTickCount() - first)*/);
 
-#endif
+#    endif
 
     std::string result;
     result = buffer;
@@ -221,13 +116,13 @@ auto hif_getCurrentTimeAsString() -> std::string
     };
     gettimeofday(&tv, nullptr);
     char buffer[100];
-#ifdef __MINGW32__
+#    ifdef __MINGW32__
     time_t tt = tv.tv_sec;
     strftime(buffer, sizeof(buffer), "%X", localtime(&tt));
-#else
+#    else
     tm r{};
     strftime(buffer, sizeof(buffer), "%X", localtime_r(&tv.tv_sec, &r));
-#endif
+#    endif
     char result[100];
     snprintf(result, 100, "%s" /*.%06ld"*/, buffer /*, (long)tv.tv_usec*/);
     return result;
@@ -280,37 +175,37 @@ auto hif_getCurrentDateAndTimeAsFMIStringFormat() -> std::string
 }
 
 #if (defined _MSC_VER)
-#pragma warning(pop)
+#    pragma warning(pop)
 #endif
 
 // Constants.
 // Also for MinGW
 #if (defined _WIN32)
-const int PERMISSION_RWX_USR = _S_IWRITE | _S_IREAD;
-const int PERMISSION_R_USR   = _S_IREAD;
-const int PERMISSION_W_USR   = _S_IWRITE;
-const int PERMISSION_X_USR   = 0;
-const int PERMISSION_RWX_GRP = _S_IWRITE | _S_IREAD;
-const int PERMISSION_R_GRP   = _S_IREAD;
-const int PERMISSION_W_GRP   = _S_IWRITE;
-const int PERMISSION_X_GRP   = 0;
-const int PERMISSION_RWX_OTH = _S_IWRITE | _S_IREAD;
-const int PERMISSION_R_OTH   = _S_IREAD;
-const int PERMISSION_W_OTH   = _S_IWRITE;
-const int PERMISSION_X_OTH   = 0;
+int PERMISSION_RWX_USR = _S_IWRITE | _S_IREAD;
+int PERMISSION_R_USR   = _S_IREAD;
+int PERMISSION_W_USR   = _S_IWRITE;
+int PERMISSION_X_USR   = 0;
+int PERMISSION_RWX_GRP = _S_IWRITE | _S_IREAD;
+int PERMISSION_R_GRP   = _S_IREAD;
+int PERMISSION_W_GRP   = _S_IWRITE;
+int PERMISSION_X_GRP   = 0;
+int PERMISSION_RWX_OTH = _S_IWRITE | _S_IREAD;
+int PERMISSION_R_OTH   = _S_IREAD;
+int PERMISSION_W_OTH   = _S_IWRITE;
+int PERMISSION_X_OTH   = 0;
 #else
-const int PERMISSION_RWX_USR = S_IRWXU;
-const int PERMISSION_R_USR   = S_IRUSR;
-const int PERMISSION_W_USR   = S_IWUSR;
-const int PERMISSION_X_USR   = S_IXUSR;
-const int PERMISSION_RWX_GRP = S_IRWXG;
-const int PERMISSION_R_GRP   = S_IRGRP;
-const int PERMISSION_W_GRP   = S_IWGRP;
-const int PERMISSION_X_GRP   = S_IXGRP;
-const int PERMISSION_RWX_OTH = S_IRWXO;
-const int PERMISSION_R_OTH   = S_IROTH;
-const int PERMISSION_W_OTH   = S_IWOTH;
-const int PERMISSION_X_OTH   = S_IXOTH;
+int PERMISSION_RWX_USR = S_IRWXU;
+int PERMISSION_R_USR   = S_IRUSR;
+int PERMISSION_W_USR   = S_IWUSR;
+int PERMISSION_X_USR   = S_IXUSR;
+int PERMISSION_RWX_GRP = S_IRWXG;
+int PERMISSION_R_GRP   = S_IRGRP;
+int PERMISSION_W_GRP   = S_IWGRP;
+int PERMISSION_X_GRP   = S_IXGRP;
+int PERMISSION_RWX_OTH = S_IRWXO;
+int PERMISSION_R_OTH   = S_IROTH;
+int PERMISSION_W_OTH   = S_IWOTH;
+int PERMISSION_X_OTH   = S_IXOTH;
 
 #endif
 } // namespace application_utils

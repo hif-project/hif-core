@@ -38,7 +38,7 @@ Object *getImplicitTemplate(
     Object *formalParameterType,
     Object *actualParameterType,
     hif::semantics::ILanguageSemantics *sem,
-    const bool hasCandidate);
+    bool hasCandidate);
 
 /// @brief Specifies how to handle missing parameters during sorting.
 struct SortMissingKind {
@@ -62,10 +62,10 @@ struct SortMissingKind {
 bool sortParameters(
     BList<ParameterAssign> &actualParams,
     BList<Parameter> &formalParams,
-    const bool set_formal_names,
+    bool set_formal_names,
     const SortMissingKind::type missingType,
     hif::semantics::ILanguageSemantics *refSem,
-    const bool hasCandidate = false);
+    bool hasCandidate = false);
 
 /// @brief Sorts actual template parameters to align with formal template parameters.
 /// @details Resolves positional or named binding of template arguments.
@@ -80,10 +80,10 @@ bool sortParameters(
 bool sortParameters(
     BList<TPAssign> &actualParams,
     BList<Declaration> &formalParams,
-    const bool set_formal_names,
+    bool set_formal_names,
     const SortMissingKind::type missingType,
     hif::semantics::ILanguageSemantics *refSem,
-    const bool hasCandidates = false);
+    bool hasCandidates = false);
 
 /// @brief Sorts port bindings to align with formal port definitions.
 /// @details Resolves positional or named binding of port connections.
@@ -97,7 +97,7 @@ bool sortParameters(
 bool sortParameters(
     BList<PortAssign> &actualParams,
     BList<Port> &formalParams,
-    const bool set_formal_names,
+    bool set_formal_names,
     const SortMissingKind::type missingType,
     hif::semantics::ILanguageSemantics *refSem);
 

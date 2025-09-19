@@ -14,6 +14,8 @@
 #include "hif/classes/classes.hpp"
 #include "hif/hif.hpp"
 
+#include <functional>
+
 namespace hif
 {
 
@@ -23,41 +25,26 @@ namespace hif
 class HifQueryBase
 {
 public:
-    /// @brief Type for representing search depth.
-    using Depth               = unsigned int;
-    /// @brief Function pointer type for custom object collection methods.
-    using CollectObjectMethod = bool (*)(Object *, const HifQueryBase *);
-
     /// @brief Maximum search depth. Default is no limit.
-    Depth depth;
-
+    std::size_t depth;
     /// @brief The name of the object to search for.
     std::string name;
-
     /// @brief Set of object types to avoid during the search.
     std::set<ClassId> classToAvoid;
-
     /// @brief Custom method to filter objects. Default is nullptr.
-    CollectObjectMethod collectObjectMethod;
-
+    std::function<bool(Object *, const HifQueryBase *)> check_object_method;
     /// @brief Enables search within method call declarations.
     bool checkInsideCallsDeclarations;
-
     /// @brief If true, stops searching after the first match.
     bool onlyFirstMatch;
-
     /// @brief Skips standard scopes during the search. Default is false.
     bool skipStandardScopes;
-
     /// @brief Enables matching based on type variant.
     bool matchTypeVariant;
-
     /// @brief Desired type variant to match. Default is `Type::NATIVE_TYPE`.
     Type::TypeVariant typeVariant;
-
     /// @brief Language semantics for the query.
     hif::semantics::ILanguageSemantics *sem;
-
     /// @brief Checks if the given object matches the query type.
     /// @param o The object to check.
     /// @return True if the object matches, false otherwise.
@@ -75,8 +62,7 @@ private:
 /// @brief Typed query for objects in HIF trees.
 /// @details
 /// Extends the base query to support specific object types.
-template <class T>
-class HifTypedQuery : public HifQueryBase
+template <class T> class HifTypedQuery : public HifQueryBase
 {
 public:
     /// @brief Type for storing query results.
@@ -114,11 +100,7 @@ public:
     /// @brief Sets the next query type in a chain of queries.
     /// @tparam P The type of the next query.
     /// @param value Pointer to the next query type.
-    template <typename P>
-    void setNextQueryType(HifTypedQuery<P> *value)
-    {
-        nextQueryType = value;
-    }
+    template <typename P> void setNextQueryType(HifTypedQuery<P> *value) { nextQueryType = value; }
 
 private:
     HifQueryBase *nextQueryType;
@@ -165,8 +147,7 @@ void search(std::list<Object *> &result, Object *root, const HifQueryBase &query
 /// @param result List to store the matching objects.
 /// @param root Starting point for the search.
 /// @param query Query object specifying search criteria.
-template <typename T>
-void search(std::list<T *> &result, Object *root, const HifQueryBase &query)
+template <typename T> void search(std::list<T *> &result, Object *root, const HifQueryBase &query)
 {
     auto *tmp = reinterpret_cast<std::list<Object *> *>(&result);
     search(*tmp, root, query);
@@ -180,8 +161,7 @@ void search(std::list<T *> &result, Object *root, const HifQueryBase &query)
 /// @param result List to store the matching objects.
 /// @param root List of root objects to traverse.
 /// @param query Query object specifying search criteria.
-template <typename T1, typename T2>
-void search(std::list<T1 *> &result, BList<T2> &root, const HifQueryBase &query)
+template <typename T1, typename T2> void search(std::list<T1 *> &result, BList<T2> &root, const HifQueryBase &query)
 {
     for (auto iter = root.begin(); iter != root.end(); ++iter) {
         search(result, *iter, query);

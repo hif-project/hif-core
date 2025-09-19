@@ -19,21 +19,21 @@
 #include "hif/semantics/semantics.hpp"
 
 #ifdef __clang__
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wunused-member-function"
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+#    pragma clang diagnostic push
+#    pragma clang diagnostic ignored "-Wunused-member-function"
+#    pragma clang diagnostic ignored "-Wdeprecated-declarations"
 #elif defined __GNUC__
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-function"
+#    pragma GCC diagnostic push
+#    pragma GCC diagnostic ignored "-Wunused-function"
 #endif
 
 #ifdef __GNUC__
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#    pragma GCC diagnostic push
+#    pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 #endif
 
 #ifdef _MSC_VER
-#pragma warning(disable : 4996)
+#    pragma warning(disable : 4996)
 #endif
 namespace hif
 {
@@ -449,7 +449,7 @@ int CollectAssignmentVisitor::visitAssign(Assign &o)
 int CollectAssignmentVisitor::visitStateTable(StateTable &o)
 {
     // Skip Function/Procedure StateTables.
-    const bool hasCurrentProcess = (_currentProcess != nullptr);
+    bool hasCurrentProcess = (_currentProcess != nullptr);
     if (dynamic_cast<hif::BaseContents *>(o.getParent()) == nullptr && !hasCurrentProcess)
         return 0;
 
@@ -645,7 +645,7 @@ bool _mspwCreateSupportSignals(
     DataDeclaration *decl,
     Signals &supportSignals,
     hif::semantics::ILanguageSemantics *sem,
-    const bool isSrc)
+    bool isSrc)
 {
     Type *baseType = hif::semantics::getBaseType(decl->getType(), false, sem);
     Record *rec    = dynamic_cast<Record *>(baseType);
@@ -696,8 +696,7 @@ bool _mspwCreateSupportSignals(
     Signal *supportSig              = new Signal();
     supportSignals[decl->getName()] = supportSig;
     supportSig->setType(_getUnpackedType(decl->getType(), sem));
-    supportSig->setName(
-        hif::NameTable::getInstance()->getFreshName((decl->getName() + std::string("_mspw")).c_str()));
+    supportSig->setName(hif::NameTable::getInstance()->getFreshName((decl->getName() + std::string("_mspw")).c_str()));
     if (decl->getValue() == nullptr) {
         Value *v = sem->getTypeDefaultValue(supportSig->getType(), decl);
         supportSig->setValue(v);
@@ -718,7 +717,7 @@ void _mspwCreateUpdatingProcess(
     DataDeclaration *decl,
     Signals &supportSignals,
     hif::BaseContents *scope,
-    const bool isRecord,
+    bool isRecord,
     hif::semantics::ILanguageSemantics *sem)
 {
     UpdatingProcesses::iterator it = _updatingProcesses1.find(decl);
@@ -730,8 +729,8 @@ void _mspwCreateUpdatingProcess(
     _updatingProcesses1.insert(decl);
 
     StateTable *supportST = new StateTable();
-    supportST->setName(hif::NameTable::getInstance()->getFreshName(
-        (decl->getName() + std::string("_mspw_proc_tgt")).c_str()));
+    supportST->setName(
+        hif::NameTable::getInstance()->getFreshName((decl->getName() + std::string("_mspw_proc_tgt")).c_str()));
 
     for (Signals::iterator i = supportSignals.begin(); i != supportSignals.end(); ++i) {
         Signal *supportSig = i->second;
@@ -751,7 +750,7 @@ void _mspwCreateUpdatingProcess(
         RecordValue *rv = new RecordValue();
         for (BList<Field>::iterator i = rec->fields.begin(); i != rec->fields.end(); ++i) {
             Field *f           = *i;
-            std::string n             = f->getName();
+            std::string n      = f->getName();
             Signal *supportSig = supportSignals[n];
             messageAssert(supportSig != nullptr, "Expected related signal", f, sem);
             RecordValueAlt *rva = new RecordValueAlt();
@@ -773,7 +772,7 @@ void _mspwCreateUpdatingProcess(
     Signals &supportSignals,
     DataDeclaration *decl,
     hif::BaseContents *scope,
-    const bool isRecord,
+    bool isRecord,
     hif::semantics::ILanguageSemantics *sem)
 {
     UpdatingProcesses::iterator it = _updatingProcesses2.find(decl);
@@ -785,8 +784,8 @@ void _mspwCreateUpdatingProcess(
     _updatingProcesses2.insert(decl);
 
     StateTable *supportST = new StateTable();
-    supportST->setName(hif::NameTable::getInstance()->getFreshName(
-        (decl->getName() + std::string("_mspw_proc_src")).c_str()));
+    supportST->setName(
+        hif::NameTable::getInstance()->getFreshName((decl->getName() + std::string("_mspw_proc_src")).c_str()));
 
     supportST->sensitivity.push_back(new Identifier(decl->getName()));
     State *state = new State();
@@ -799,7 +798,7 @@ void _mspwCreateUpdatingProcess(
         messageAssert(rec != nullptr, "Expected record", baseType, sem);
         for (BList<Field>::iterator i = rec->fields.begin(); i != rec->fields.end(); ++i) {
             Field *f           = *i;
-            std::string n             = f->getName();
+            std::string n      = f->getName();
             Signal *supportSig = supportSignals[n];
             messageAssert(supportSig != nullptr, "Expected related signal", f, sem);
             Assign *supportAssign = new Assign();
@@ -862,7 +861,7 @@ bool _fixSensitivityProcesses(
             if (!findBadLocation)
                 continue;
 
-            std::string varName         = NameTable::getInstance()->getFreshName(deco->getName(), "_expr_var");
+            std::string varName  = NameTable::getInstance()->getFreshName(deco->getName(), "_expr_var");
             Variable *supportVar = new Variable();
             supportVar->setName(varName);
             supportVar->setType(hif::copy(deco->getType()));
@@ -948,7 +947,7 @@ bool _fixSensitivityProcesses(
                 // If the occurence is the prefix of an event call it must be fixed.
                 // Reference design: vhdl/unott/dig_proc.
                 FunctionCall *parentFCall = hif::getNearestParent<FunctionCall>(iidd);
-                const bool isPrefixOfEventCall =
+                bool isPrefixOfEventCall =
                     (parentFCall != nullptr && sem->isEventCall(parentFCall) &&
                      hif::isSubNode(iidd, parentFCall->getInstance()));
 
@@ -1027,7 +1026,7 @@ bool _fixBetweenProcesses(CollectAssignmentVisitor::Targets &targets, hif::seman
 
         // 1
         Signals supportSignals;
-        const bool isRecord = _mspwCreateSupportSignals(decl, supportSignals, sem, false);
+        bool isRecord = _mspwCreateSupportSignals(decl, supportSignals, sem, false);
 
         for (Signals::iterator supportIter = supportSignals.begin(); supportIter != supportSignals.end();
              ++supportIter) {
@@ -1257,12 +1256,12 @@ void _addInitialAssign(StateTable *currentSt, Assign *firstAssign, hif::semantic
     q2.setNextQueryType(&q3);
 
     q1.sem                 = sem;
-    q1.collectObjectMethod = &collectMethod;
+    q1.check_object_method = &collectMethod;
 
     std::list<hif::Object *> list;
     hif::search(list, currentSt, q1);
 
-    const bool isProcess = (dynamic_cast<BaseContents *>(currentSt->getParent()) != nullptr);
+    bool isProcess = (dynamic_cast<BaseContents *>(currentSt->getParent()) != nullptr);
     if (list.empty() && isProcess) {
         currentSt->states.front()->actions.push_front(firstAssign);
     }
@@ -1292,12 +1291,12 @@ void _addSignalAssign(StateTable *currentSt, Assign *lastAssign, hif::semantics:
     q3.setNextQueryType(&q4);
 
     q1.sem                 = sem;
-    q1.collectObjectMethod = &collectMethod;
+    q1.check_object_method = &collectMethod;
 
     std::list<hif::Object *> list;
     hif::search(list, currentSt, q1);
 
-    const bool isProcess = (dynamic_cast<BaseContents *>(currentSt->getParent()) != nullptr);
+    bool isProcess = (dynamic_cast<BaseContents *>(currentSt->getParent()) != nullptr);
     if (list.empty() && isProcess) {
         currentSt->states.front()->actions.push_back(lastAssign);
     }
@@ -1341,8 +1340,8 @@ bool _fixPartialWritings(System *o, hif::semantics::ILanguageSemantics *sem)
     hif::semantics::ReferencesMap refMap;
 
     hif::semantics::GetReferencesOptions opt;
-    opt.skipStandardDeclarations = true;
-    opt.collectObjectMethod      = refCollectMethod;
+    opt.skip_standard_declarations = true;
+    opt.check_object_method      = refCollectMethod;
     hif::semantics::getAllReferences(refMap, sem, o, opt);
 
     PartialWritesMap partialWritesMap;

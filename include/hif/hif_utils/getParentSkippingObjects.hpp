@@ -23,7 +23,6 @@ Object *getParentSkippingCasts(Value *o);
 /// @param o The starting object.
 /// @return The first parent object different from @p T.
 ///
-template <typename T>
-Object *getParentSkippingClass(Object *o);
+template <typename T> Object *getParentSkippingClass(Object *o);
 
 } // namespace hif

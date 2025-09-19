@@ -128,24 +128,26 @@ public:
     /// @param isDirective True if the identifier is a directive, false otherwise.
     /// @return The last value associated with the identifier.
     /// @throw std::out_of_range If the section or identifier does not exist.
-    auto getValue(const std::string &section, const std::string &id, bool isDirective = false) const -> const std::string &;
-
-    /// @brief Retrieves all values associated with an identifier in a section.
-    /// @param section The section name.
-    /// @param id The identifier.
-    /// @param isDirective True if the identifier is a directive, false otherwise.
-    /// @return A list of values associated with the identifier.
-    /// @throw std::out_of_range If the section or identifier does not exist.
-    auto getValues(const std::string &section, const std::string &id, bool isDirective = false) -> std::vector<std::string> &;
-
-    /// @brief Retrieves all values associated with an identifier in a section.
-    /// @param section The section name.
-    /// @param id The identifier.
-    /// @param isDirective True if the identifier is a directive, false otherwise.
-    /// @return A list of values associated with the identifier.
-    /// @throw std::out_of_range If the section or identifier does not exist.
     auto
-    getValues(const std::string &section, const std::string &id, bool isDirective = false) const -> const std::vector<std::string> &;
+    getValue(const std::string &section, const std::string &id, bool isDirective = false) const -> const std::string &;
+
+    /// @brief Retrieves all values associated with an identifier in a section.
+    /// @param section The section name.
+    /// @param id The identifier.
+    /// @param isDirective True if the identifier is a directive, false otherwise.
+    /// @return A list of values associated with the identifier.
+    /// @throw std::out_of_range If the section or identifier does not exist.
+    auto getValues(const std::string &section, const std::string &id, bool isDirective = false)
+        -> std::vector<std::string> &;
+
+    /// @brief Retrieves all values associated with an identifier in a section.
+    /// @param section The section name.
+    /// @param id The identifier.
+    /// @param isDirective True if the identifier is a directive, false otherwise.
+    /// @return A list of values associated with the identifier.
+    /// @throw std::out_of_range If the section or identifier does not exist.
+    auto getValues(const std::string &section, const std::string &id, bool isDirective = false) const
+        -> const std::vector<std::string> &;
 
     /// @brief Checks if a section exists.
     /// @param section The section name.
@@ -250,7 +252,7 @@ protected:
     /// @param s The string containing the values.
     /// @param isDirective True if the key is a directive, false otherwise.
     void _parseValues(const std::string &key, const std::string &s, bool isDirective);
-    
+
     /// @}
 
     Sections _sections;               ///< Map of sections in the configuration.

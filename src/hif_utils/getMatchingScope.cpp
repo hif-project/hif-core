@@ -14,7 +14,7 @@ namespace hif
 namespace /*anon*/
 {
 
-Object *_getMatchingScope(Object *o, const std::string &name, const bool checkSwitch)
+Object *_getMatchingScope(Object *o, const std::string &name, bool checkSwitch)
 {
     if (o == nullptr)
         return nullptr;

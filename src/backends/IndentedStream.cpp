@@ -131,7 +131,7 @@ public:
 
     /// @}
 
-    void setCommentMode(const bool b);
+    void setCommentMode(bool b);
     bool getCommentMode() const;
     void openCommonTopBlock();
     void closeCommonTopBlock();
@@ -353,7 +353,7 @@ const IndentedBuffer::String &IndentedBuffer::getBaseName() const { return _file
 
 const IndentedBuffer::String &IndentedBuffer::getExtension() const { return _extension; }
 
-void IndentedBuffer::setCommentMode(const bool b) { _commentMode = b; }
+void IndentedBuffer::setCommentMode(bool b) { _commentMode = b; }
 
 bool IndentedBuffer::getCommentMode() const { return _commentMode; }
 
@@ -488,7 +488,7 @@ int IndentedBuffer::overflow(int c)
         _buffer->sputn(macroNewLine.c_str(), static_cast<std::streamsize>(macroNewLine.size()));
     }
 
-    const int ret = _buffer->sputc(std::streambuf::char_type(c));
+    int ret = _buffer->sputc(std::streambuf::char_type(c));
     _isNewLine    = (c == '\n');
 
     return ret;
@@ -552,8 +552,8 @@ void IndentedBuffer::_printComment(String &str)
 {
     const Size len   = str.size();
     // _column += len;
-    const bool r1    = _commentIsActive;
-    const bool r2    = _commentMode;
+    bool r1    = _commentIsActive;
+    bool r2    = _commentMode;
     _commentIsActive = false;
     _commentMode     = false;
     sputn(str.c_str(), static_cast<std::streamsize>(len));
@@ -604,7 +604,7 @@ void IndentedStream::setIndentation(const Size s) { buffer_cast(rdbuf())->indent
 
 IndentedStream::Size IndentedStream::getIndentation() const { return buffer_cast(rdbuf())->indentation; }
 
-void IndentedStream::newLine(const int n)
+void IndentedStream::newLine(int n)
 {
     for (int i = 0; i < n; ++i) {
         rdbuf()->sputc('\n');
@@ -650,7 +650,7 @@ void IndentedStream::setWrappingChars(const String &s) { buffer_cast(rdbuf())->w
 
 const IndentedStream::String &IndentedStream::getWrappingChars() const { return buffer_cast(rdbuf())->wrappingChars; }
 
-void IndentedStream::setStringMode(const bool isString) { buffer_cast(rdbuf())->stringMode = isString; }
+void IndentedStream::setStringMode(bool isString) { buffer_cast(rdbuf())->stringMode = isString; }
 
 bool IndentedStream::isStringMode() const { return buffer_cast(rdbuf())->stringMode; }
 // //////////////////////////////////////////////////////////////////////////

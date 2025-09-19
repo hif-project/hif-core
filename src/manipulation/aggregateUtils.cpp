@@ -24,7 +24,7 @@ bool _getIndexOfAggregate(
     Value *ind,
     Value *min,
     Int *itype,
-    unsigned long long &vind,
+    std::uint64_t &vind,
     hif::semantics::ILanguageSemantics *sem)
 {
     HifFactory _factory(sem);
@@ -45,18 +45,18 @@ bool _getIndexOfAggregate(
         return false;
     }
 
-    vind = static_cast<unsigned long long>(ival->getValue());
+    vind = static_cast<std::uint64_t>(ival->getValue());
     delete ival;
     delete cv;
     return true;
 }
 
 } // namespace
-bool transformAggregateRollingAlts(Aggregate *obj, const bool atLeastOne, hif::semantics::ILanguageSemantics * /*sem*/)
+bool transformAggregateRollingAlts(Aggregate *obj, bool atLeastOne, hif::semantics::ILanguageSemantics * /*sem*/)
 {
     if (obj->alts.empty())
         return false;
-    const bool hasOthers = (obj->getOthers() != nullptr);
+    bool hasOthers = (obj->getOthers() != nullptr);
 
     Value *refAltValue = obj->alts.front()->getValue();
     bool allAltsEquals = !hasOthers; // Note: works only without others.
@@ -87,7 +87,7 @@ bool transformAggregateRollingAlts(Aggregate *obj, const bool atLeastOne, hif::s
     // at the moment simplify only if all alts can be removed.
     bool removesAltsAsOthers = hasOthers;
     if (atLeastOne)
-        removesAltsAsOthers &= (altsAsOthers.size() > 0ULL);
+        removesAltsAsOthers &= (altsAsOthers.size() > 0);
     else
         removesAltsAsOthers &= (altsAsOthers.size() == obj->alts.size());
 
@@ -110,9 +110,9 @@ bool transformAggregateRollingAlts(Aggregate *obj, const bool atLeastOne, hif::s
 
 bool transformAggregateUnrollingAlts(
     Aggregate *obj,
-    unsigned long long threshold,
+    std::uint64_t threshold,
     hif::semantics::ILanguageSemantics *sem,
-    const bool force)
+    bool force)
 {
     if (obj->getOthers() == nullptr)
         return false;
@@ -122,7 +122,7 @@ bool transformAggregateUnrollingAlts(
     if (arr == nullptr)
         return false;
 
-    unsigned long long ss = 0ULL;
+    std::uint64_t ss = 0;
     if (force) {
         Range *arrSpan = arr->getSpan();
         Range *r       = hif::copy(arrSpan);
@@ -137,14 +137,14 @@ bool transformAggregateUnrollingAlts(
         ss = hif::semantics::spanGetBitwidth(arr->getSpan(), sem);
     }
 
-    if (ss == 0ULL)
+    if (ss == 0)
         return false;
 
     HifFactory _factory(sem);
     Value *min = hif::rangeGetMinBound(arr->getSpan());
     min        = hif::manipulation::assureSyntacticType(hif::copy(min), sem);
 
-    typedef std::map<unsigned long long, Value *> IndexMap;
+    typedef std::map<std::uint64_t, Value *> IndexMap;
     IndexMap indexMap;
     Int *itype = _factory.integer();
 
@@ -154,7 +154,7 @@ bool transformAggregateUnrollingAlts(
             Value *ind = *j;
             if (dynamic_cast<Range *>(ind) != nullptr) {
                 Range *r              = static_cast<Range *>(ind);
-                unsigned long long rr = hif::semantics::spanGetBitwidth(r, sem);
+                std::uint64_t rr = hif::semantics::spanGetBitwidth(r, sem);
                 if (rr == 0) {
                     delete min;
                     delete itype;
@@ -162,8 +162,8 @@ bool transformAggregateUnrollingAlts(
                 }
                 Value *minRangeBound    = hif::rangeGetMinBound(r);
                 Value *maxRangeBound    = hif::rangeGetMaxBound(r);
-                unsigned long long vmin = 0;
-                unsigned long long vmax = 0;
+                std::uint64_t vmin = 0;
+                std::uint64_t vmax = 0;
                 if (!_getIndexOfAggregate(hif::copy(minRangeBound), min, itype, vmin, sem) ||
                     !_getIndexOfAggregate(hif::copy(maxRangeBound), min, itype, vmax, sem)) {
                     delete min;
@@ -171,11 +171,11 @@ bool transformAggregateUnrollingAlts(
                     return false;
                 }
 
-                for (unsigned long long k = vmin; k <= vmax; ++k) {
+                for (std::uint64_t k = vmin; k <= vmax; ++k) {
                     indexMap[k] = a->getValue();
                 }
             } else {
-                unsigned long long vind = 0;
+                std::uint64_t vind = 0;
                 if (!_getIndexOfAggregate(hif::copy(ind), min, itype, vind, sem)) {
                     delete min;
                     delete itype;
@@ -194,8 +194,8 @@ bool transformAggregateUnrollingAlts(
     }
 
     BList<AggregateAlt> unrolled;
-    for (unsigned long long i = 0; i < ss; ++i) {
-        Expression *ind = _factory.expression(hif::copy(min), op_plus, _factory.intval(static_cast<long long>(i)));
+    for (std::uint64_t i = 0; i < ss; ++i) {
+        Expression *ind = _factory.expression(hif::copy(min), op_plus, _factory.intval(static_cast<std::int64_t>(i)));
 
         Value *v = nullptr;
         if (indexMap.find(i) == indexMap.end()) {

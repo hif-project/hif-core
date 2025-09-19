@@ -19,20 +19,17 @@ namespace hif
 // ///////////////////////////////////////////////////////////////////
 // MonoVisitor
 // ///////////////////////////////////////////////////////////////////
-template <class Child>
-MonoVisitor<Child>::MonoVisitor()
+template <class Child> MonoVisitor<Child>::MonoVisitor()
 {
     // ntd
 }
 
-template <class Child>
-MonoVisitor<Child>::~MonoVisitor()
+template <class Child> MonoVisitor<Child>::~MonoVisitor()
 {
     // ntd
 }
 
-template <class Child>
-void MonoVisitor<Child>::callMap(Object *o1)
+template <class Child> void MonoVisitor<Child>::callMap(Object *o1)
 {
     switch (o1->getClassId()) {
     case CLASSID_AGGREGATEALT:
@@ -315,14 +312,12 @@ BiVisitor<Child>::BiVisitor()
     // ntd
 }
 
-template <class Child>
-BiVisitor<Child>::~BiVisitor()
+template <class Child> BiVisitor<Child>::~BiVisitor()
 {
     // ntd
 }
 
-template <class Child>
-void BiVisitor<Child>::callMap(Object *o1, Object *o2)
+template <class Child> void BiVisitor<Child>::callMap(Object *o1, Object *o2)
 {
     switch (o1->getClassId()) {
     case CLASSID_AGGREGATEALT:
@@ -595,9 +590,7 @@ void BiVisitor<Child>::callMap(Object *o1, Object *o2)
     }
 }
 
-template <class Child>
-template <typename T>
-void BiVisitor<Child>::_rebind(T *o1, Object *o2)
+template <class Child> template <typename T> void BiVisitor<Child>::_rebind(T *o1, Object *o2)
 {
     switch (o2->getClassId()) {
     case CLASSID_AGGREGATEALT:

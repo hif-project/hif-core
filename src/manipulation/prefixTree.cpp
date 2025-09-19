@@ -24,7 +24,7 @@ namespace /*anon*/
 // ///////////////////////////////////////////////////////////////////
 // Utility methods
 // ///////////////////////////////////////////////////////////////////
-Object *_getParent(Object *o, unsigned int times, const bool checkError)
+Object *_getParent(Object *o, unsigned int times, bool checkError)
 {
     Object *parent = o;
     unsigned int t = 0;
@@ -141,7 +141,7 @@ void PrefixVisitor::_prefixSymbol(Object *symbol)
         isSpecialCase = true;
     }
 
-    const bool sameScope = (symScope == declScope && _opt.skipPrefixingIfSameScope);
+    bool sameScope = (symScope == declScope && _opt.skipPrefixingIfSameScope);
     if (sameScope && !isSpecialCase)
         return;
 

@@ -23,6 +23,6 @@ namespace hif
 /// @return The wanted Hif object or nullptr if it has not been found.
 ///
 
-Scope *getNearestScope(Object *o, const bool needDeclarationList, const bool needLibraryList, const bool needTemplates);
+Scope *getNearestScope(Object *o, bool needDeclarationList, bool needLibraryList, bool needTemplates);
 
 } // namespace hif

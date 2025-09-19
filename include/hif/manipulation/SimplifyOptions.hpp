@@ -96,55 +96,55 @@ struct SimplifyOptions {
     /// @brief Sets whether to simplify constants.
     /// @param yes True to enable constant simplification.
     /// @return Reference to this SimplifyOptions.
-    SimplifyOptions &setSimplifyConstants(const bool yes);
+    SimplifyOptions &setSimplifyConstants(bool yes);
     /// @brief Sets whether to simplify define constants.
     /// @param yes True to enable define constant simplification.
     /// @return Reference to this SimplifyOptions.
-    SimplifyOptions &setSimplifyDefines(const bool yes);
+    SimplifyOptions &setSimplifyDefines(bool yes);
     /// @brief Sets whether to simplify parameters.
     /// @param yes True to enable parameter simplification.
     /// @return Reference to this SimplifyOptions.
-    SimplifyOptions &setSimplifyParameters(const bool yes);
+    SimplifyOptions &setSimplifyParameters(bool yes);
     /// @brief Sets whether to simplify template parameters.
     /// @param yes True to enable template parameter simplification.
     /// @return Reference to this SimplifyOptions.
-    SimplifyOptions &setSimplifyTemplateParameters(const bool yes);
+    SimplifyOptions &setSimplifyTemplateParameters(bool yes);
     /// @brief Sets whether to simplify CTC template parameters.
     /// @param yes True to enable CTC template parameter simplification.
     /// @return Reference to this SimplifyOptions.
-    SimplifyOptions &setSimplifyCtcTemplateParameters(const bool yes);
+    SimplifyOptions &setSimplifyCtcTemplateParameters(bool yes);
     /// @brief Sets whether to simplify non-CTC template parameters.
     /// @param yes True to enable non-CTC template parameter simplification.
     /// @return Reference to this SimplifyOptions.
-    SimplifyOptions &setSimplifyNonCtcTemplateParameters(const bool yes);
+    SimplifyOptions &setSimplifyNonCtcTemplateParameters(bool yes);
     /// @brief Sets whether to simplify statements.
     /// @param yes True to enable statement simplification.
     /// @return Reference to this SimplifyOptions.
-    SimplifyOptions &setSimplifyStatements(const bool yes);
+    SimplifyOptions &setSimplifyStatements(bool yes);
     /// @brief Sets whether to simplify generate constructs.
     /// @param yes True to enable generate construct simplification.
     /// @return Reference to this SimplifyOptions.
-    SimplifyOptions &setSimplifyGenerates(const bool yes);
+    SimplifyOptions &setSimplifyGenerates(bool yes);
     /// @brief Sets whether to simplify declarations.
     /// @param yes True to enable declaration simplification.
     /// @return Reference to this SimplifyOptions.
-    SimplifyOptions &setSimplifyDeclarations(const bool yes);
+    SimplifyOptions &setSimplifyDeclarations(bool yes);
     /// @brief Sets whether to simplify semantic types.
     /// @param yes True to enable semantic type simplification.
     /// @return Reference to this SimplifyOptions.
-    SimplifyOptions &setSimplifySemanticsTypes(const bool yes);
+    SimplifyOptions &setSimplifySemanticsTypes(bool yes);
     /// @brief Sets whether to simplify typereferences.
     /// @param yes True to enable typereference simplification.
     /// @return Reference to this SimplifyOptions.
-    SimplifyOptions &setSimplifyTypereferences(const bool yes);
+    SimplifyOptions &setSimplifyTypereferences(bool yes);
     /// @brief Sets whether to simplify function calls.
     /// @param yes True to enable function call simplification.
     /// @return Reference to this SimplifyOptions.
-    SimplifyOptions &setSimplifyFunctioncalls(const bool yes);
+    SimplifyOptions &setSimplifyFunctioncalls(bool yes);
     /// @brief Sets whether to replace the result in place.
     /// @param yes True to enable in-place replacement.
     /// @return Reference to this SimplifyOptions.
-    SimplifyOptions &setReplaceResult(const bool yes);
+    SimplifyOptions &setReplaceResult(bool yes);
     /// @brief Sets the simplification behavior.
     /// @param b The behavior level.
     /// @return Reference to this SimplifyOptions.

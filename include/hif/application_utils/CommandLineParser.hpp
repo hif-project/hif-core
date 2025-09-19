@@ -83,7 +83,7 @@ public:
 
     CommandLineParser *operator=(const CommandLineParser &) = delete;
 
-    virtual ~CommandLineParser() =default;
+    virtual ~CommandLineParser() = default;
 
     /// @name Main methods.
     /// @{
@@ -99,8 +99,8 @@ public:
     void addOption(
         const char shortName,
         const std::string &longName,
-        const bool hasArgument,
-        const bool isActive,
+        bool hasArgument,
+        bool isActive,
         const std::string &description,
         const std::string &defaultValue = "");
 
@@ -203,7 +203,7 @@ public:
 
     /// @brief Adds the configuration file option to the command-line parser.
     /// @param generateStub add option to generate a stub config file with given file name.
-    void addConfigFile(const bool generateStub);
+    void addConfigFile(bool generateStub);
 
     /// @brief Adds the optimization option to the command-line parser.
     void addOptimization();
@@ -322,14 +322,14 @@ protected:
     /// @param s The string to be split.
     /// @param maxSize THe maximum size.
     /// @param margin Additional margin when wrapping. Default is 0.
-    static void _makeChunks(Chunks &chunks, std::string s, const std::size_t maxSize, const std::size_t margin = 0) ;
+    static void _makeChunks(Chunks &chunks, std::string s, const std::size_t maxSize, const std::size_t margin = 0);
 
     /// @brief Pads given string to fix exactely maxLineSize.
     ///
     /// @param s The string.
     /// @param maxLineSize The line size.
     /// @return The padded string.
-    static std::string _padString(const std::string &s, const std::size_t maxLineSize) ;
+    static std::string _padString(const std::string &s, const std::size_t maxLineSize);
 
     /// @}
 

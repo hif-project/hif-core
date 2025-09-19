@@ -100,6 +100,6 @@ hif::LanguageID View::setLanguageID(const hif::LanguageID languageID)
 
 bool View::isStandard() const { return _isStandard; }
 
-void View::setStandard(const bool standard) { _isStandard = standard; }
+void View::setStandard(bool standard) { _isStandard = standard; }
 
 } // namespace hif

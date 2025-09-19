@@ -44,8 +44,7 @@ ISymbol &ISymbol::operator=(const ISymbol &other)
 // Template class
 // /////////////////////////////////////////////////////////////////////////////
 
-template <class T>
-bool TemplateSymbolIf<T>::matchDeclarationType(Object *o)
+template <class T> bool TemplateSymbolIf<T>::matchDeclarationType(Object *o)
 {
     return (dynamic_cast<DeclarationType *>(o) != nullptr);
 }
@@ -58,8 +57,7 @@ TemplateSymbolIf<T>::TemplateSymbolIf()
     // ntd
 }
 
-template <class T>
-TemplateSymbolIf<T>::~TemplateSymbolIf()
+template <class T> TemplateSymbolIf<T>::~TemplateSymbolIf()
 {
     // ntd
 }
@@ -72,22 +70,19 @@ TemplateSymbolIf<T>::TemplateSymbolIf(const TemplateSymbolIf<T> &other)
     // ntd
 }
 
-template <class T>
-TemplateSymbolIf<T> &TemplateSymbolIf<T>::operator=(const TemplateSymbolIf<T> & /*other*/)
+template <class T> TemplateSymbolIf<T> &TemplateSymbolIf<T>::operator=(const TemplateSymbolIf<T> & /*other*/)
 {
     return *this;
 }
 
-template <class T>
-void TemplateSymbolIf<T>::setDeclaration(Object *d)
+template <class T> void TemplateSymbolIf<T>::setDeclaration(Object *d)
 {
     DeclarationType *decl = dynamic_cast<DeclarationType *>(d);
     messageAssert(d == nullptr || decl != nullptr, "Wrong declaration type", d, nullptr);
     _declaration = decl;
 }
 
-template <class T>
-typename TemplateSymbolIf<T>::DeclarationType *TemplateSymbolIf<T>::GetDeclaration()
+template <class T> typename TemplateSymbolIf<T>::DeclarationType *TemplateSymbolIf<T>::GetDeclaration()
 {
     return _declaration;
 }

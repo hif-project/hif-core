@@ -35,7 +35,7 @@ public:
 
     Application(const Application &other)                      = delete;
     Application(Application &&other)                           = delete;
-    auto operator=(const Application &other) -> Application &  = delete;
+    auto operator=(const Application &other) -> Application  & = delete;
     auto operator=(const Application &&other) -> Application & = delete;
 
 private:

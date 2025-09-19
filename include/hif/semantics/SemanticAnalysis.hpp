@@ -91,7 +91,7 @@ protected:
     /// @param op1 The first operand's type reference.
     /// @param op2 The second operand's type reference.
     /// @param checkOpacity Whether to check for opacity.
-    void _map(TypeReference *op1, TypeReference *op2, const bool checkOpacity);
+    void _map(TypeReference *op1, TypeReference *op2, bool checkOpacity);
     /// @}
 };
 

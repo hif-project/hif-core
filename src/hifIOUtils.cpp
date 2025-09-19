@@ -13,9 +13,9 @@
 #include <time.h>
 
 #if (defined __GNUC__)
-#include <sys/time.h>
+#    include <sys/time.h>
 #else
-#include <windows.h>
+#    include <windows.h>
 #endif
 
 #include "hif/application_utils/Log.hpp"
@@ -39,7 +39,7 @@ struct timezone {
 };
 
 /// @brief Difference between Windows epoch and Unix epoch in microseconds.
-#define DELTA_EPOCH_IN_MICROSECS 11644473600000000ULL
+#    define DELTA_EPOCH_IN_MICROSECS 11644473600000000ULL
 
 /// @brief Replacement for `gettimeofday` on non-GNU platforms (e.g., Windows).
 /// @details Retrieves the current time and timezone information.
@@ -97,8 +97,7 @@ namespace
 { // anon namespace
 
 /// Hack to quickly convert an object of type \p T to a string.
-template <typename T>
-std::string toStr(T const &t)
+template <typename T> std::string toStr(T const &t)
 {
     std::ostringstream i;
     i << t;

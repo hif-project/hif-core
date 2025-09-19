@@ -34,7 +34,7 @@ public:
 
     /// @brief Constructor.
     /// @param name The name to be assigned.
-    Identifier(const std::string & name);
+    Identifier(const std::string &name);
 
     /// @brief Returns a string representing the class name.
     /// @return The string representing the class name.

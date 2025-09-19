@@ -24,15 +24,15 @@ typedef std::list<Object *> SymbolList;
 /// @param list The result list where to store all symbols.
 /// @param root The starting root object.
 /// @param sem The reference semantics.
-/// @param skipStandardDeclarations If <tt>true</tt> skip standard declarations
+/// @param skip_standard_declarations If <tt>true</tt> skip standard declarations
 /// and declarations inside standard LibraryDefs. default = false
 ///
 
 void collectSymbols(
     SymbolList &list,
     Object *root,
-    ILanguageSemantics *sem             = hif::semantics::HIFSemantics::getInstance(),
-    const bool skipStandardDeclarations = false);
+    ILanguageSemantics *sem               = hif::semantics::HIFSemantics::getInstance(),
+    bool skip_standard_declarations = false);
 
 } // namespace semantics
 } // namespace hif

@@ -20,7 +20,7 @@ namespace manipulation
 /// @param before If <tt>true</tt> add declaration before, after otherwise.
 /// @return <tt>true</tt> if added, <tt>false</tt> otherwise.
 
-bool addDeclarationInContext(Declaration *newDecl, Declaration *context, const bool before = false);
+bool addDeclarationInContext(Declaration *newDecl, Declaration *context, bool before = false);
 
 } // namespace manipulation
 } // namespace hif

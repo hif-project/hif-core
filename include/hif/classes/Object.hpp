@@ -24,7 +24,7 @@ namespace semantics
 {
 class ILanguageSemantics;
 
-Type *getBaseType(Type *type, const bool consider_opacity, ILanguageSemantics *, const bool compositeRecurse);
+Type *getBaseType(Type *type, bool consider_opacity, ILanguageSemantics *, bool compositeRecurse);
 
 } // namespace semantics
 
@@ -126,8 +126,7 @@ public:
     Object *getParent() const;
     /// @brief Returns the parent of the object in the HIF tree, dynamically casted to given type.
     /// @return The parent of the object in the HIF tree.
-    template <typename T>
-    T *getParent() const;
+    template <typename T> T *getParent() const;
 
     /// @brief Adds a property to the object.
     /// @param n The name of the property to be added to the object.
@@ -277,8 +276,7 @@ public:
     /// @param newObj The new object to be set into the field.
     /// @return The old field object.
 
-    template <typename T>
-    T *setChild(T *&field, T *newObj);
+    template <typename T> T *setChild(T *&field, T *newObj);
 
     /// @brief Gets the field name into which this object is set.
     /// @return The field name.
@@ -310,8 +308,7 @@ protected:
 
     /// @brief Sets the BList containing the object.
     /// @param p The BList containing the object to be set.
-    template <typename T>
-    void _setBListParent(BList<T> &p);
+    template <typename T> void _setBListParent(BList<T> &p);
 
     /// @brief Sets the parent BList link of the object.
     /// @param p The parent BList link of the object to be set.
@@ -330,16 +327,14 @@ protected:
     /// @tparam T The field type. Implicit.
     /// @param f The field.
     ///
-    template <typename T>
-    void _addField(T *&f);
+    template <typename T> void _addField(T *&f);
 
     /// @brief Adds a BList.
     ///
     /// @tparam T The BList type. Implicit.
     /// @param l The BList.
     ///
-    template <typename T>
-    void _addBList(BList<T> &l);
+    template <typename T> void _addBList(BList<T> &l);
 
     /// @brief Fills the internal fields and blists lists.
     virtual void _calculateFields() = 0;
@@ -385,16 +380,15 @@ private:
     /// @brief Private assignment operator to prevent assignment.
     Object &operator=(const Object &o);
 
-    template <class T>
-    friend class BList;
+    template <class T> friend class BList;
 
     friend class BListHost;
 
     friend Type *hif::semantics::getBaseType(
         Type *type,
-        const bool consider_opacity,
+        bool consider_opacity,
         hif::semantics::ILanguageSemantics *,
-        const bool compositeRecurse);
+        bool compositeRecurse);
 
     friend bool hif::manipulation::matchedInsert(
         Object *newObj,

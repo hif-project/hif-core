@@ -52,7 +52,7 @@ public:
     /// calling view reference. It does not modify the name in the design unit
     /// itself or in any other view reference.
     /// @param n The name of the design unit.
-    void setDesignUnit(const std::string& n);
+    void setDesignUnit(const std::string &n);
 
     /// @brief Accepts a visitor to visit the current object.
     /// @param vis The visitor.

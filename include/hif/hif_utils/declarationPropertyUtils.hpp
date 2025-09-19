@@ -48,23 +48,23 @@ struct DeclarationIsPartOfStandardOptions {
 
     /// @brief Enables or disables C/C++ language checks.
     /// @param enable Flag to enable or disable.
-    void enableCppFamily(const bool enable);
+    void enableCppFamily(bool enable);
 
     /// @brief Enables or disables SystemC RTL/TLM checks.
     /// @param enable Flag to enable or disable.
-    void enableSystemCFamily(const bool enable);
+    void enableSystemCFamily(bool enable);
 
     /// @brief Enables or disables SystemC RTL/TLM/AMS checks.
     /// @param enable Flag to enable or disable.
-    void enableSystemCAMSFamily(const bool enable);
+    void enableSystemCAMSFamily(bool enable);
 
     /// @brief Enables or disables VHDL language checks.
     /// @param enable Flag to enable or disable.
-    void enableVhdlFamily(const bool enable);
+    void enableVhdlFamily(bool enable);
 
     /// @brief Enables or disables Verilog language checks.
     /// @param enable Flag to enable or disable.
-    void enableVerilogFamily(const bool enable);
+    void enableVerilogFamily(bool enable);
 
     /// Flags for language and library checks.
     bool dontCheckStandardViews; ///< Do not check standard views. Default: false.

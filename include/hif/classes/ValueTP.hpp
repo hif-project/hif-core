@@ -39,7 +39,7 @@ public:
     /// @brief Sets whether this is a value TP that must be resolved
     /// at compile time.
     /// @param compileTimeConstant The value to set.
-    void setCompileTimeConstant(const bool compileTimeConstant);
+    void setCompileTimeConstant(bool compileTimeConstant);
 
     /// @brief Accepts a visitor to visit the current object.
     /// @param vis The visitor.

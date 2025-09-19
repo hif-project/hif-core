@@ -22,7 +22,7 @@ namespace manipulation
 namespace
 {
 
-Value *_getBound(Range *r, const bool left, const RangeDirection dir)
+Value *_getBound(Range *r, bool left, const RangeDirection dir)
 {
     if (dir != r->getDirection()) {
         if (left) {

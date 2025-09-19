@@ -30,7 +30,7 @@ Value *narrowToCardinality(
     Value *v,
     unsigned int c,
     hif::semantics::ILanguageSemantics *sem,
-    const bool considerOnlyBits = true);
+    bool considerOnlyBits = true);
 
 } // namespace manipulation
 } // namespace hif

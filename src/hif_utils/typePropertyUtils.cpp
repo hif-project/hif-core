@@ -45,7 +45,7 @@ bool typeIsConstexpr(Type *t, hif::semantics::ILanguageSemantics *refLang)
     return false;
 }
 
-bool typeIsSigned(Type *to, hif::semantics::ILanguageSemantics *refLang, const bool skip)
+bool typeIsSigned(Type *to, hif::semantics::ILanguageSemantics *refLang, bool skip)
 {
     if (to == nullptr)
         return false;
@@ -142,7 +142,7 @@ bool typeIsResolved(Type *to, hif::semantics::ILanguageSemantics *refLang)
     return false;
 }
 
-Range *typeGetSpan(Type *to, hif::semantics::ILanguageSemantics *sem, const bool manageStrings)
+Range *typeGetSpan(Type *to, hif::semantics::ILanguageSemantics *sem, bool manageStrings)
 {
     if (to == nullptr)
         return nullptr;
@@ -155,20 +155,20 @@ Range *typeGetSpan(Type *to, hif::semantics::ILanguageSemantics *sem, const bool
         return str->getSpanInformation();
     } else if (dynamic_cast<Bit *>(to) || dynamic_cast<Bool *>(to)) {
         // For bit and bool create a dummy range of length 1
-        static Range ret(0ll, 0ll);
+        static Range ret(0, 0);
         return &ret;
     } else if (dynamic_cast<Char *>(to)) {
         // For char create a dummy range of length 8
-        static Range ret(7ll, 0ll);
+        static Range ret(7ll, 0);
         return &ret;
     } else if (dynamic_cast<Enum *>(to)) {
         // For enum create a dummy range of length 32
-        static Range ret(31ll, 0ll);
+        static Range ret(31ll, 0);
         return &ret;
     } else if (dynamic_cast<Reference *>(to)) {
         return typeGetSpan(static_cast<Reference *>(to)->getType(), sem);
     } else if (dynamic_cast<Pointer *>(to)) {
-        static Range ret(sizeof(void *) * 8ll - 1ll, 0ll);
+        static Range ret(sizeof(void *) * 8ll - 1ll, 0);
         return &ret;
     } else if (dynamic_cast<TypeReference *>(to)) {
         TypeReference *tr = static_cast<TypeReference *>(to);
@@ -192,7 +192,7 @@ Range *typeGetSpan(Type *to, hif::semantics::ILanguageSemantics *sem, const bool
     return nullptr;
 }
 
-bool typeSetConstexpr(Type *t, const bool v)
+bool typeSetConstexpr(Type *t, bool v)
 {
     if (t == nullptr)
         return false;
@@ -212,7 +212,7 @@ bool typeSetConstexpr(Type *t, const bool v)
 
     return false;
 }
-bool typeSetSigned(Type *to, const bool sign, hif::semantics::ILanguageSemantics *refLang)
+bool typeSetSigned(Type *to, bool sign, hif::semantics::ILanguageSemantics *refLang)
 {
     if (to == nullptr)
         return false;
@@ -240,7 +240,7 @@ bool typeSetSigned(Type *to, const bool sign, hif::semantics::ILanguageSemantics
 
     return false;
 }
-bool typeSetLogic(Type *to, const bool logic, hif::semantics::ILanguageSemantics *refLang)
+bool typeSetLogic(Type *to, bool logic, hif::semantics::ILanguageSemantics *refLang)
 {
     if (to == nullptr)
         return false;
@@ -267,7 +267,7 @@ bool typeSetLogic(Type *to, const bool logic, hif::semantics::ILanguageSemantics
 
     return false;
 }
-bool typeSetResolved(Type *to, const bool resolved, hif::semantics::ILanguageSemantics *refLang)
+bool typeSetResolved(Type *to, bool resolved, hif::semantics::ILanguageSemantics *refLang)
 {
     if (to == nullptr)
         return false;
@@ -293,8 +293,8 @@ bool typeSetSpan(
     Type *to,
     Range *ro,
     hif::semantics::ILanguageSemantics *refLang,
-    const bool deleteIfNotSet,
-    const bool manageStrings)
+    bool deleteIfNotSet,
+    bool manageStrings)
 {
     if (to == nullptr) {
         messageDebugAssert(to != nullptr, "Passed nullptr type", to, refLang);
@@ -335,7 +335,7 @@ bool typeSetSpan(
     return false;
 }
 
-unsigned int typeGetCardinality(Type *type, hif::semantics::ILanguageSemantics *refLang, const bool considerOnlyBits)
+unsigned int typeGetCardinality(Type *type, hif::semantics::ILanguageSemantics *refLang, bool considerOnlyBits)
 {
     Type *t = hif::semantics::getBaseType(type, false, refLang);
     if (t == nullptr) {
@@ -361,7 +361,7 @@ unsigned int typeGetCardinality(Type *type, hif::semantics::ILanguageSemantics *
     return 0u;
 }
 
-Type *typeGetNestedType(Type *t, hif::semantics::ILanguageSemantics *refLang, long long depth)
+Type *typeGetNestedType(Type *t, hif::semantics::ILanguageSemantics *refLang, std::int64_t depth)
 {
     if (depth == 0)
         return t;

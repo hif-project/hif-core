@@ -99,7 +99,7 @@ bool isLogicVectorType(Type *type, ILanguageSemantics *refLang)
 
     return false;
 }
-bool isSubType(Type *t1, Type *t2, ILanguageSemantics *refLang, const bool compareSpan, const bool considerOpacity)
+bool isSubType(Type *t1, Type *t2, ILanguageSemantics *refLang, bool compareSpan, bool considerOpacity)
 {
     if (t1 == nullptr && t2 == nullptr)
         return true;

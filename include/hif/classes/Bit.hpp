@@ -42,7 +42,7 @@ public:
 
     /// @brief Sets the <tt>logic</tt> attribute.
     /// @param logic The <tt>logic</tt> attribute to be set.
-    void setLogic(const bool logic);
+    void setLogic(bool logic);
 
     /// @brief Sets the <tt>resolved</tt> attribute.
     /// @return The <tt>resolved</tt> attribute.
@@ -50,7 +50,7 @@ public:
 
     /// @brief Set the <tt>resolved</tt> attribute.
     /// @param resolved The <tt>resolved</tt> attribute to be set.
-    void setResolved(const bool resolved);
+    void setResolved(bool resolved);
 
     /// @brief Accepts a visitor to visit the current object.
     /// @param vis The visitor.

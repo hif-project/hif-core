@@ -14,7 +14,7 @@
 #include "hif/semantics/semantics.hpp"
 
 #ifdef __clang__
-#pragma clang diagnostic ignored "-Wmissing-noreturn"
+#    pragma clang diagnostic ignored "-Wmissing-noreturn"
 #endif
 
 namespace hif
@@ -271,8 +271,7 @@ int getObjectValue(Object *o)
 }
 
 /// @brief Used to compare enumerations.
-template <typename T>
-int _compareActualValue(T enum1, T enum2)
+template <typename T> int _compareActualValue(T enum1, T enum2)
 {
     if (enum1 < enum2)
         return -1;
@@ -281,8 +280,7 @@ int _compareActualValue(T enum1, T enum2)
     return 0;
 }
 /// @brief Used to compare lists.
-template <typename T>
-int _compareList(BList<T> &list1, BList<T> &list2)
+template <typename T> int _compareList(BList<T> &list1, BList<T> &list2)
 {
     int ret = _compareActualValue(list1.size(), list2.size());
     if (ret != 0)
@@ -299,8 +297,7 @@ int _compareList(BList<T> &list1, BList<T> &list2)
     return 0;
 }
 /// @brief Used to compare ConstValues.
-template <typename T>
-int _compareConstValue(T *obj1, T *obj2)
+template <typename T> int _compareConstValue(T *obj1, T *obj2)
 {
     int ret = _compareActualValue(obj1->getValue(), obj2->getValue());
     if (ret != 0)
@@ -622,8 +619,7 @@ void CompareVisitor::map(Enum *obj1, Enum *obj2)
 
 void CompareVisitor::map(EnumValue *obj1, EnumValue *obj2)
 {
-    _result = _compareActualValue(
-        static_cast<std::string>(obj1->getName()), static_cast<std::string>(obj2->getName()));
+    _result = _compareActualValue(static_cast<std::string>(obj1->getName()), static_cast<std::string>(obj2->getName()));
     if (_result != 0)
         return;
 
@@ -654,8 +650,7 @@ void CompareVisitor::map(Expression *obj1, Expression *obj2)
 
 void CompareVisitor::map(FunctionCall *obj1, FunctionCall *obj2)
 {
-    _result = _compareActualValue(
-        static_cast<std::string>(obj1->getName()), static_cast<std::string>(obj2->getName()));
+    _result = _compareActualValue(static_cast<std::string>(obj1->getName()), static_cast<std::string>(obj2->getName()));
     if (_result != 0)
         return;
 
@@ -682,8 +677,7 @@ void CompareVisitor::map(FieldReference *obj1, FieldReference *obj2)
     if (_result != 0)
         return;
 
-    _result = _compareActualValue(
-        static_cast<std::string>(obj1->getName()), static_cast<std::string>(obj2->getName()));
+    _result = _compareActualValue(static_cast<std::string>(obj1->getName()), static_cast<std::string>(obj2->getName()));
 }
 
 void CompareVisitor::map(File *obj1, File *obj2)
@@ -731,8 +725,7 @@ void CompareVisitor::map(Entity *obj1, Entity * /*obj2*/)
 
 void CompareVisitor::map(Identifier *obj1, Identifier *obj2)
 {
-    _result = _compareActualValue(
-        static_cast<std::string>(obj1->getName()), static_cast<std::string>(obj2->getName()));
+    _result = _compareActualValue(static_cast<std::string>(obj1->getName()), static_cast<std::string>(obj2->getName()));
 }
 
 void CompareVisitor::map(If *obj1, If * /*obj2*/)
@@ -755,8 +748,7 @@ void CompareVisitor::map(IfGenerate *obj1, IfGenerate * /*obj2*/)
 
 void CompareVisitor::map(Instance *obj1, Instance *obj2)
 {
-    _result = _compareActualValue(
-        static_cast<std::string>(obj1->getName()), static_cast<std::string>(obj2->getName()));
+    _result = _compareActualValue(static_cast<std::string>(obj1->getName()), static_cast<std::string>(obj2->getName()));
     if (_result != 0)
         return;
 
@@ -798,8 +790,7 @@ void CompareVisitor::map(LibraryDef *obj1, LibraryDef * /*obj2*/)
 
 void CompareVisitor::map(Library *obj1, Library *obj2)
 {
-    _result = _compareActualValue(
-        static_cast<std::string>(obj1->getName()), static_cast<std::string>(obj2->getName()));
+    _result = _compareActualValue(static_cast<std::string>(obj1->getName()), static_cast<std::string>(obj2->getName()));
     if (_result != 0)
         return;
 
@@ -954,8 +945,7 @@ void CompareVisitor::map(RecordValue *obj1, RecordValue *obj2) { _result = _comp
 
 void CompareVisitor::map(RecordValueAlt *obj1, RecordValueAlt *obj2)
 {
-    _result = _compareActualValue(
-        static_cast<std::string>(obj1->getName()), static_cast<std::string>(obj2->getName()));
+    _result = _compareActualValue(static_cast<std::string>(obj1->getName()), static_cast<std::string>(obj2->getName()));
     if (_result != 0)
         return;
 
@@ -973,8 +963,7 @@ void CompareVisitor::map(Reference *obj1, Reference *obj2)
 
 void CompareVisitor::map(ReferencedAssign *obj1, ReferencedAssign *obj2)
 {
-    _result = _compareActualValue(
-        static_cast<std::string>(obj1->getName()), static_cast<std::string>(obj2->getName()));
+    _result = _compareActualValue(static_cast<std::string>(obj1->getName()), static_cast<std::string>(obj2->getName()));
 }
 
 void CompareVisitor::map(Return *obj1, Return * /*obj2*/)
@@ -1104,8 +1093,7 @@ void CompareVisitor::map(TypeDef *obj1, TypeDef * /*obj2*/)
 
 void CompareVisitor::map(TypeReference *obj1, TypeReference *obj2)
 {
-    _result = _compareActualValue(
-        static_cast<std::string>(obj1->getName()), static_cast<std::string>(obj2->getName()));
+    _result = _compareActualValue(static_cast<std::string>(obj1->getName()), static_cast<std::string>(obj2->getName()));
     if (_result != 0)
         return;
 
@@ -1187,8 +1175,7 @@ void CompareVisitor::map(View *obj1, View * /*obj2*/)
 
 void CompareVisitor::map(ViewReference *obj1, ViewReference *obj2)
 {
-    _result = _compareActualValue(
-        static_cast<std::string>(obj1->getName()), static_cast<std::string>(obj2->getName()));
+    _result = _compareActualValue(static_cast<std::string>(obj1->getName()), static_cast<std::string>(obj2->getName()));
     if (_result != 0)
         return;
 

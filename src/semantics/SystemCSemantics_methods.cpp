@@ -23,7 +23,7 @@ DesignUnit *SystemCSemantics::_makeHifAggregateDU(
     const char *duName,
     Type *aggregateType,
     Type *parameterType,
-    const bool hifFormat)
+    bool hifFormat)
 {
     View *v             = nullptr;
     ViewReference *vref = nullptr;
@@ -77,7 +77,7 @@ DesignUnit *SystemCSemantics::_makeHifAggregateDU(
     return du;
 }
 
-LibraryDef *SystemCSemantics::getScAmsELNPackage(const bool hifFormat)
+LibraryDef *SystemCSemantics::getScAmsELNPackage(bool hifFormat)
 {
     LibraryDef *lib = new LibraryDef();
     lib->setName(_makeHifName("sca_eln", hifFormat));
@@ -502,7 +502,7 @@ LibraryDef *SystemCSemantics::getScAmsELNPackage(const bool hifFormat)
     }
     return lib;
 }
-LibraryDef *SystemCSemantics::getTlmUtils(const bool hifFormat)
+LibraryDef *SystemCSemantics::getTlmUtils(bool hifFormat)
 {
     LibraryDef *lib = new LibraryDef();
     lib->setName(_makeHifName("tlm_utils", hifFormat));
@@ -577,7 +577,7 @@ LibraryDef *SystemCSemantics::getTlmUtils(const bool hifFormat)
     return lib;
 }
 
-LibraryDef *SystemCSemantics::getScDtPackage(const bool hifFormat)
+LibraryDef *SystemCSemantics::getScDtPackage(bool hifFormat)
 {
     LibraryDef *lib = new LibraryDef();
     lib->setName(_makeHifName("sc_dt", hifFormat));
@@ -594,7 +594,7 @@ LibraryDef *SystemCSemantics::getScDtPackage(const bool hifFormat)
     return lib;
 }
 
-LibraryDef *SystemCSemantics::getScCorePackage(const bool hifFormat)
+LibraryDef *SystemCSemantics::getScCorePackage(bool hifFormat)
 {
     LibraryDef *lib = new LibraryDef();
     lib->setName(_makeHifName("sc_core", hifFormat));
@@ -926,7 +926,7 @@ LibraryDef *SystemCSemantics::getScCorePackage(const bool hifFormat)
 
     return lib;
 }
-LibraryDef *SystemCSemantics::getTlmPackage(const bool hifFormat)
+LibraryDef *SystemCSemantics::getTlmPackage(bool hifFormat)
 {
     LibraryDef *ld = new LibraryDef();
     ld->setName(_makeHifName("tlm", hifFormat));
@@ -1166,7 +1166,7 @@ LibraryDef *SystemCSemantics::getTlmPackage(const bool hifFormat)
 
     return ld;
 }
-LibraryDef *SystemCSemantics::getCMathPackage(const bool hifFormat)
+LibraryDef *SystemCSemantics::getCMathPackage(bool hifFormat)
 {
     LibraryDef *ld = new LibraryDef();
     ld->setName(_makeHifName("cmath", hifFormat));
@@ -1305,7 +1305,7 @@ LibraryDef *SystemCSemantics::getCMathPackage(const bool hifFormat)
         _makeAttribute("trunc", factory.real(), factory.real(), factory.noValue(), false, hifFormat));
     return ld;
 }
-LibraryDef *SystemCSemantics::getCTimePackage(const bool hifFormat)
+LibraryDef *SystemCSemantics::getCTimePackage(bool hifFormat)
 {
     LibraryDef *ld = new LibraryDef();
     ld->setName(_makeHifName("ctime", hifFormat));
@@ -1449,7 +1449,7 @@ LibraryDef *SystemCSemantics::getCTimePackage(const bool hifFormat)
     delete emptyStruct;
     return ld;
 }
-LibraryDef *SystemCSemantics::getCStdLibPackage(const bool hifFormat)
+LibraryDef *SystemCSemantics::getCStdLibPackage(bool hifFormat)
 {
     LibraryDef *ld = new LibraryDef();
     ld->setName(_makeHifName("cstdlib", hifFormat));
@@ -1523,7 +1523,7 @@ LibraryDef *SystemCSemantics::getCStdLibPackage(const bool hifFormat)
 
     return ld;
 }
-LibraryDef *SystemCSemantics::getVectorPackage(const bool hifFormat)
+LibraryDef *SystemCSemantics::getVectorPackage(bool hifFormat)
 {
     LibraryDef *ld = new LibraryDef();
     ld->setName(_makeHifName("vector", hifFormat));
@@ -1577,7 +1577,7 @@ LibraryDef *SystemCSemantics::getVectorPackage(const bool hifFormat)
     // ///////////////////////////////////////////////////////////////////
     return ld;
 }
-LibraryDef *SystemCSemantics::getStringPackage(const bool hifFormat)
+LibraryDef *SystemCSemantics::getStringPackage(bool hifFormat)
 {
     LibraryDef *ld = new LibraryDef();
     ld->setName(_makeHifName("string", hifFormat));
@@ -1633,7 +1633,7 @@ LibraryDef *SystemCSemantics::getStringPackage(const bool hifFormat)
     return ld;
 }
 
-LibraryDef *SystemCSemantics::getCStringPackage(const bool hifFormat)
+LibraryDef *SystemCSemantics::getCStringPackage(bool hifFormat)
 {
     LibraryDef *ld = new LibraryDef();
     ld->setName(_makeHifName("cstring", hifFormat));
@@ -1668,7 +1668,7 @@ LibraryDef *SystemCSemantics::getCStringPackage(const bool hifFormat)
     return ld;
 }
 
-LibraryDef *SystemCSemantics::getCStdDefPackage(const bool hifFormat)
+LibraryDef *SystemCSemantics::getCStdDefPackage(bool hifFormat)
 {
     LibraryDef *ld = new LibraryDef();
     ld->setName(_makeHifName("cstddef", hifFormat));
@@ -1680,7 +1680,7 @@ LibraryDef *SystemCSemantics::getCStdDefPackage(const bool hifFormat)
         factory.setSemantics(HIFSemantics::getInstance());
     return ld;
 }
-LibraryDef *SystemCSemantics::getCStdIOPackage(const bool hifFormat)
+LibraryDef *SystemCSemantics::getCStdIOPackage(bool hifFormat)
 {
     LibraryDef *ld = new LibraryDef();
     ld->setName(_makeHifName("cstdio", hifFormat));
@@ -1768,7 +1768,7 @@ LibraryDef *SystemCSemantics::getCStdIOPackage(const bool hifFormat)
     return ld;
 }
 
-LibraryDef *SystemCSemantics::getSystemcExtensionsPackage(const bool hifFormat)
+LibraryDef *SystemCSemantics::getSystemcExtensionsPackage(bool hifFormat)
 {
     LibraryDef *lib = new LibraryDef();
     lib->setName(_makeHifName("hif_systemc_extensions", hifFormat));
@@ -2115,7 +2115,7 @@ LibraryDef *SystemCSemantics::getSystemcExtensionsPackage(const bool hifFormat)
 
     return lib;
 }
-LibraryDef *SystemCSemantics::getHdtlibPackage(const bool hifFormat)
+LibraryDef *SystemCSemantics::getHdtlibPackage(bool hifFormat)
 {
     LibraryDef *ld = new LibraryDef();
     ld->setName(_makeHifName("hdtlib", hifFormat));
@@ -2267,7 +2267,7 @@ LibraryDef *SystemCSemantics::getIOStreamPackage(bool hifFormat)
     return ld;
 }
 
-LibraryDef *SystemCSemantics::getDdtClibPackage(const bool hifFormat)
+LibraryDef *SystemCSemantics::getDdtClibPackage(bool hifFormat)
 {
     LibraryDef *ld = new LibraryDef();
     ld->setName(_makeHifName("ddtclib", hifFormat));
@@ -2380,7 +2380,7 @@ LibraryDef *SystemCSemantics::getDdtClibPackage(const bool hifFormat)
     return ld;
 }
 
-LibraryDef *SystemCSemantics::getStandardPackage(const bool hifFormat)
+LibraryDef *SystemCSemantics::getStandardPackage(bool hifFormat)
 {
     LibraryDef *ld = new LibraryDef();
     ld->setName(_makeHifName("standard", hifFormat));
@@ -2429,7 +2429,7 @@ LibraryDef *SystemCSemantics::getStandardPackage(const bool hifFormat)
     return ld;
 }
 
-LibraryDef *SystemCSemantics::getNewPackage(const bool hifFormat)
+LibraryDef *SystemCSemantics::getNewPackage(bool hifFormat)
 {
     LibraryDef *ld = new LibraryDef();
     ld->setName(_makeHifName("new", hifFormat));
@@ -2455,7 +2455,7 @@ LibraryDef *SystemCSemantics::getNewPackage(const bool hifFormat)
     return ld;
 }
 
-LibraryDef *SystemCSemantics::getSystemVueModelBuilder(const bool hifFormat)
+LibraryDef *SystemCSemantics::getSystemVueModelBuilder(bool hifFormat)
 {
     LibraryDef *ld = new LibraryDef();
     ld->setName(_makeHifName("SystemVueModelBuilder", hifFormat));
@@ -2618,7 +2618,7 @@ LibraryDef *SystemCSemantics::getStandardLibrary(const std::string &n)
     return nullptr;
 }
 
-bool SystemCSemantics::isNativeLibrary(const std::string &n, const bool hifFormat)
+bool SystemCSemantics::isNativeLibrary(const std::string &n, bool hifFormat)
 {
     if (n == _makeHifName("sc_core", hifFormat) || n == _makeHifName("sc_dt", hifFormat) ||
         n == _makeHifName("sca_eln", hifFormat) || n == _makeHifName("tlm", hifFormat) ||
@@ -2641,18 +2641,18 @@ SystemCSemantics::MapCases SystemCSemantics::mapStandardSymbol(
     ILanguageSemantics * /*srcSem*/)
 {
     std::string libName;
-    const bool isMine = _isHifPrefixed(key.first, libName);
+    bool isMine = _isHifPrefixed(key.first, libName);
     // messageAssert(isMine, "Asked name not prefixed with 'hif_': " + unprefixed, nullptr, nullptr);
     if (isMine) {
         std::string symName;
-        const bool ok = _isHifPrefixed(key.second, symName);
+        bool ok = _isHifPrefixed(key.second, symName);
         messageAssert(ok, "Found not prefixed symbol in prefixed library", decl, this);
 
         value.libraries.clear();
         value.libraries.push_back(libName);
         value.mappedSymbol   = symName;
         // Libraries are always replaced, therefore internal symbols must be kept
-        const bool isLibrary = (libName == symName);
+        bool isLibrary = (libName == symName);
         value.mapAction      = isLibrary ? MAP_DELETE : MAP_KEEP;
         return value.mapAction;
     }
@@ -2696,7 +2696,7 @@ Object *SystemCSemantics::getSimplifiedSymbol(KeySymbol &key, Object *s)
     messageError("Found unsupported symbol", s, this);
 }
 
-bool SystemCSemantics::isStandardInclusion(const std::string &n, const bool isLibInclusion)
+bool SystemCSemantics::isStandardInclusion(const std::string &n, bool isLibInclusion)
 {
     // Libs w/ standard flags
     if (isLibInclusion) {
@@ -2720,7 +2720,7 @@ bool SystemCSemantics::isStandardInclusion(const std::string &n, const bool isLi
     return false;
 }
 
-std::string SystemCSemantics::getEventMethodName(const bool hifFormat) { return _makeHifName("event", hifFormat); }
+std::string SystemCSemantics::getEventMethodName(bool hifFormat) { return _makeHifName("event", hifFormat); }
 
 bool SystemCSemantics::isEventCall(FunctionCall *call)
 {

@@ -25,9 +25,9 @@ namespace backends
 void makeParametersAssignable(
     ProcedureCall *call,
     hif::semantics::ILanguageSemantics *sem,
-    const bool shiftToZero,
+    bool shiftToZero,
     unsigned int skip              = 0,
-    const bool removeCastOnOutputs = false);
+    bool removeCastOnOutputs = false);
 
 /// @brief Given a method call, assures that all its actual parameters are
 /// assignable to the declaration formal parameters.
@@ -40,9 +40,9 @@ void makeParametersAssignable(
 void makeParametersAssignable(
     FunctionCall *call,
     hif::semantics::ILanguageSemantics *sem,
-    const bool shiftToZero,
+    bool shiftToZero,
     unsigned int skip              = 0,
-    const bool removeCastOnOutputs = false);
+    bool removeCastOnOutputs = false);
 
 /// @brief Given a value, assures that its original type is preserved
 /// for fully substitutability.
@@ -68,7 +68,7 @@ bool addHifLibrary(
     Object *scope,
     System *system,
     hif::semantics::ILanguageSemantics *sem,
-    const bool standard = false);
+    bool standard = false);
 
 /// @brief Calculate the include path from given <tt>where</tt> scope to
 /// <tt>toInclude</tt> scope.

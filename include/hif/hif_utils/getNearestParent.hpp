@@ -28,7 +28,6 @@ namespace hif
 /// Default is <tt>false</tt>.
 /// @return The wanted Hif object or nullptr if it has not been found.
 ///
-template <typename T>
-T *getNearestParent(Object *object, const bool matchStarting = false);
+template <typename T> T *getNearestParent(Object *object, bool matchStarting = false);
 
 } // namespace hif

@@ -17,7 +17,7 @@ namespace /*anon*/
 
 } // namespace
 
-AncestorVisitor::AncestorVisitor(const bool visitFeatures)
+AncestorVisitor::AncestorVisitor(bool visitFeatures)
     : HifVisitor()
     , _visitFeatures(visitFeatures)
 {

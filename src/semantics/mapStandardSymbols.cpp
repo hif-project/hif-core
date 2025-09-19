@@ -513,7 +513,7 @@ void mapStandardSymbols(Object *o, ILanguageSemantics *srcSem, ILanguageSemantic
 
     // step 1
     hif::semantics::GetReferencesOptions opt;
-    opt.includeUnreferenced = true;
+    opt.include_unreferenced = true;
     opt.error               = true;
     getAllReferences(referenceMap, destSem, root, opt);
 

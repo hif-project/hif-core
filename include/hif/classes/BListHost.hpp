@@ -26,9 +26,6 @@ class TypedObject;
 class BListHost
 {
 public:
-    /// @brief Size type for the list.
-    typedef unsigned int size_t;
-    /// @brief Function pointer type for checking suitability.
     typedef bool (*CheckSuitableMethod)(Object *);
 
 private:
@@ -129,7 +126,7 @@ protected:
     /// @brief Function to remove duplicated elements from the current list.
     /// @param strict If <tt>true</tt>, remove duplicated elements if pointers
     /// to objects are the same.
-    void remove_dopplegangers(const bool strict = false);
+    void remove_dopplegangers(bool strict = false);
 
     /// @brief Function to get the parent object of the list in the Hif tree.
     /// @return The parent object of the list in the Hif tree.
@@ -167,12 +164,12 @@ protected:
     /// @param pos The position.
     /// @param expand If <tt>false</tt>, replace the element ati the given position.
     /// @return The previous element at the given position (if any).
-    Object *insert(Object *o, const size_t pos, const bool expand);
+    Object *insert(Object *o, std::size_t pos, bool expand);
 
     /// @brief Returns the element at the given position, or <tt>nullptr</tt> in case of error.
     /// @param pos The position.
     /// @return The element at the given position, or <tt>nullptr</tt> in case of error.
-    Object *at(const size_t pos) const;
+    Object *at(std::size_t pos) const;
 
     /// @brief Checks whether a given element is contained in this list.
     /// @param o The element to be checked.
@@ -219,7 +216,7 @@ protected:
     /// @param hasAll If <tt>true</tt> checks that all objects has the property.
     /// @return <tt>true</tt> if the objects contains at least one property
     /// named @p n, <tt>false</tt> otherwise.
-    bool checkProperty(const std::string &n, const bool hasAll) const;
+    bool checkProperty(const std::string &n, bool hasAll) const;
 
     /// @brief Checks whether the objects contains at least one property
     /// having @p n as its name.
@@ -227,7 +224,7 @@ protected:
     /// @param hasAll If <tt>true</tt> checks that all objects has the property.
     /// @return <tt>true</tt> if the objects contains at least one property
     /// named @p n, <tt>false</tt> otherwise.
-    bool checkProperty(const PropertyId n, const bool hasAll) const;
+    bool checkProperty(const PropertyId n, bool hasAll) const;
 
     /// @brief Clears all the properties from the objects.
     void clearProperties();
@@ -235,7 +232,7 @@ protected:
     /// @brief Check if has properties.
     /// @param hasAll If <tt>true</tt> checks that all objects has properties.
     /// @return true if has properties.
-    bool hasProperties(const bool hasAll) const;
+    bool hasProperties(bool hasAll) const;
 
     /// @}
 
@@ -345,12 +342,12 @@ protected:
         /// @brief Moves the iterator forward by @p s positions.
         /// @param s The number of positions to move forward.
         /// @return The resulting iterator.
-        iterator operator+(const size_t s) const;
+        iterator operator+(std::size_t s) const;
 
         /// @brief Moves iterator backward of @p s positions.
         /// @param s The number of positions to move backward.
         /// @return The resulting iterator.
-        iterator operator-(const size_t s) const;
+        iterator operator-(std::size_t s) const;
 
         /// @brief Equality operator.
         /// @param i Iterator to compare with the current iterator.
@@ -363,6 +360,14 @@ protected:
         /// @return <tt>true</tt> if the current element does not coincide
         /// with the element pointed by @p i, <tt>false</tt> otherwise.
         bool operator!=(const iterator &i) const;
+
+        /// @brief Returns the iterator to the next element.
+        /// @return the iterator to the next element.
+        iterator next() const;
+
+        /// @brief Returns the iterator to the previous element.
+        /// @return the iterator to the previous element.
+        iterator prev() const;
 
     private:
         /// @brief The current element of the list.

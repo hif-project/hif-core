@@ -20,10 +20,10 @@ struct PropagationOptions {
     /// @name Traits
     /// @{
 
-    typedef std::list<Object *> DeclarationTargets; ///< List of objects to propagate.
-    typedef std::set<Object *> ObjectSet;           ///< Set of unique objects.
-    typedef std::set<hif::View *> ViewSet;          ///< Set of unique views.
-    typedef std::map<hif::View *, ViewSet> ViewMap; ///< Map tracking view dependencies.
+    using DeclarationTargets = std::list<Object *>;            ///< List of objects to propagate.
+    using ObjectSet          = std::set<Object *>;             ///< Set of unique objects.
+    using ViewSet            = std::set<hif::View *>;          ///< Set of unique views.
+    using ViewMap            = std::map<hif::View *, ViewSet>; ///< Map tracking view dependencies.
 
     /// @}
     /// @name Configuration options

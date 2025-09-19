@@ -19,7 +19,7 @@ namespace hif
 namespace semantics
 {
 
-LibraryDef *VHDLSemantics::getStandardPackage(const bool hifFormat)
+LibraryDef *VHDLSemantics::getStandardPackage(bool hifFormat)
 {
     LibraryDef *ld = new LibraryDef();
     ld->setName(_makeHifName("standard", hifFormat));
@@ -249,7 +249,7 @@ LibraryDef *VHDLSemantics::getStandardPackage(const bool hifFormat)
 
     return ld;
 }
-LibraryDef *VHDLSemantics::getIeeeStdLogic1164Package(const bool hifFormat)
+LibraryDef *VHDLSemantics::getIeeeStdLogic1164Package(bool hifFormat)
 {
     LibraryDef *ld = new LibraryDef();
     ld->setName(_makeHifName("ieee_std_logic_1164", hifFormat));
@@ -266,7 +266,7 @@ LibraryDef *VHDLSemantics::getIeeeStdLogic1164Package(const bool hifFormat)
     Bitvector *std_ulogic_vector = factory.bitvector(nullptr, true, false);
     Bitvector *std_logic_vector  = factory.bitvector(nullptr, true, true);
 
-    Range *retSpan = factory.range(new Identifier("left1"), dir_downto, new Identifier("right1"));
+    Range *retSpan                   = factory.range(new Identifier("left1"), dir_downto, new Identifier("right1"));
     Bitvector *ret_bitvector         = factory.bitvector(retSpan);
     Bitvector *ret_std_ulogic_vector = factory.bitvector(hif::copy(retSpan), true, false);
     Bitvector *ret_std_logic_vector  = factory.bitvector(hif::copy(retSpan), true, true);
@@ -437,7 +437,7 @@ LibraryDef *VHDLSemantics::getIeeeStdLogic1164Package(const bool hifFormat)
 
     return ld;
 }
-LibraryDef *VHDLSemantics::getIeeeStdLogicArithPackage(const bool hifFormat)
+LibraryDef *VHDLSemantics::getIeeeStdLogicArithPackage(bool hifFormat)
 {
     LibraryDef *ld = new LibraryDef();
     ld->setName(_makeHifName("ieee_std_logic_arith", hifFormat));
@@ -448,17 +448,16 @@ LibraryDef *VHDLSemantics::getIeeeStdLogicArithPackage(const bool hifFormat)
         factory.setSemantics(HIFSemantics::getInstance());
 
     Range *retTypeSpan = factory.range(
-        factory.expression(new Identifier("param2"), op_minus, factory.intval(1)), dir_downto,
-        new IntValue(0));
-    Range *retTPSpan = factory.range(new Identifier("left1"), dir_downto, new Identifier("right1"));
-    Bit *std_ulogic  = factory.bit(true, false);
+        factory.expression(new Identifier("param2"), op_minus, factory.intval(1)), dir_downto, new IntValue(0));
+    Range *retTPSpan            = factory.range(new Identifier("left1"), dir_downto, new Identifier("right1"));
+    Bit *std_ulogic             = factory.bit(true, false);
     Bitvector *std_logic_vector = factory.bitvector(hif::copy(retTypeSpan), true, true);
     Range *retSpanInc           = factory.range(
         factory.expression(
             factory.expression(
                 factory.expression(
-                    factory.expression(new Identifier("left1"), op_plus, new Identifier("left2")),
-                    op_minus, new Identifier("right1")),
+                    factory.expression(new Identifier("left1"), op_plus, new Identifier("left2")), op_minus,
+                    new Identifier("right1")),
                 op_minus, new Identifier("right2")),
             op_plus, factory.intval(1)),
         dir_downto, new IntValue(0));
@@ -682,7 +681,7 @@ LibraryDef *VHDLSemantics::getIeeeStdLogicArithPackage(const bool hifFormat)
 
     return ld;
 }
-LibraryDef *VHDLSemantics::getIeeeStdLogicArithExPackage(const bool hifFormat)
+LibraryDef *VHDLSemantics::getIeeeStdLogicArithExPackage(bool hifFormat)
 {
     LibraryDef *ld = new LibraryDef();
     ld->setName(_makeHifName("ieee_std_logic_arith_ex", hifFormat));
@@ -692,12 +691,12 @@ LibraryDef *VHDLSemantics::getIeeeStdLogicArithExPackage(const bool hifFormat)
     if (hifFormat)
         factory.setSemantics(HIFSemantics::getInstance());
 
-    Range *tpRange = new Range(new Identifier("left"), new Identifier("right"), dir_downto);
+    Range *tpRange                   = new Range(new Identifier("left"), new Identifier("right"), dir_downto);
     Bitvector *ret_std_logic_vector  = factory.bitvector(hif::copy(tpRange), true, true);
     Bitvector *ret_std_ulogic_vector = factory.bitvector(hif::copy(tpRange), true, false);
 
-    Range *sizeRange = new Range(
-        factory.expression(new Identifier("size"), op_minus, factory.intval(1)), new IntValue(0), dir_downto);
+    Range *sizeRange =
+        new Range(factory.expression(new Identifier("size"), op_minus, factory.intval(1)), new IntValue(0), dir_downto);
     Bitvector *size_std_logic_vector  = factory.bitvector(hif::copy(sizeRange), true, true);
     Bitvector *size_std_ulogic_vector = factory.bitvector(hif::copy(sizeRange), true, false);
 
@@ -869,7 +868,7 @@ LibraryDef *VHDLSemantics::getIeeeStdLogicArithExPackage(const bool hifFormat)
 
     return ld;
 }
-LibraryDef *VHDLSemantics::getIeeeNumericStdPackage(const bool hifFormat)
+LibraryDef *VHDLSemantics::getIeeeNumericStdPackage(bool hifFormat)
 {
     LibraryDef *ld = new LibraryDef();
     ld->setName(_makeHifName("ieee_numeric_std", hifFormat));
@@ -881,26 +880,25 @@ LibraryDef *VHDLSemantics::getIeeeNumericStdPackage(const bool hifFormat)
 
     // span build watching param 2 value
     Range *retTypeSpan = factory.range(
-        factory.expression(new Identifier("param2"), op_minus, factory.intval(1)), dir_downto,
-        new IntValue(0));
+        factory.expression(new Identifier("param2"), op_minus, factory.intval(1)), dir_downto, new IntValue(0));
 
     // types
     Bit *std_ulogic             = factory.bit(true, false);
     Bitvector *std_logic_vector = factory.bitvector(nullptr, true, true);
 
     // return types
-    Range *retSpan = factory.range(new Identifier("left1"), dir_downto, new Identifier("right1"));
+    Range *retSpan                  = factory.range(new Identifier("left1"), dir_downto, new Identifier("right1"));
     Bitvector *ret_std_logic_vector = factory.bitvector(hif::copy(retSpan), true, true);
     Signed *ret_signed              = factory.signedType(hif::copy(retSpan));
     Unsigned *ret_unsigned          = factory.unsignedType(hif::copy(retSpan));
 
-    Range *retTPSpan = factory.range(new Identifier("left1"), dir_downto, new Identifier("right1"));
+    Range *retTPSpan  = factory.range(new Identifier("left1"), dir_downto, new Identifier("right1"));
     Range *retSpanInc = factory.range(
         factory.expression(
             factory.expression(
                 factory.expression(
-                    factory.expression(new Identifier("left1"), op_plus, new Identifier("left2")),
-                    op_minus, new Identifier("right1")),
+                    factory.expression(new Identifier("left1"), op_plus, new Identifier("left2")), op_minus,
+                    new Identifier("right1")),
                 op_minus, new Identifier("right2")),
             op_plus, factory.intval(1)),
         dir_downto, new IntValue(0));
@@ -1061,7 +1059,7 @@ LibraryDef *VHDLSemantics::getIeeeNumericStdPackage(const bool hifFormat)
 
     return ld;
 }
-LibraryDef *VHDLSemantics::getIeeeNumericBitPackage(const bool hifFormat)
+LibraryDef *VHDLSemantics::getIeeeNumericBitPackage(bool hifFormat)
 {
     LibraryDef *ld = new LibraryDef();
     ld->setName(_makeHifName("ieee_numeric_bit", hifFormat));
@@ -1073,8 +1071,7 @@ LibraryDef *VHDLSemantics::getIeeeNumericBitPackage(const bool hifFormat)
 
     // span build watching param 2 value
     Range *retTypeSpan = factory.range(
-        factory.expression(new Identifier("param2"), op_minus, factory.intval(1)), dir_downto,
-        new IntValue(0));
+        factory.expression(new Identifier("param2"), op_minus, factory.intval(1)), dir_downto, new IntValue(0));
 
     // ///////////////////////////////////////////////////////////////////
     // attributes
@@ -1123,7 +1120,7 @@ LibraryDef *VHDLSemantics::getIeeeNumericBitPackage(const bool hifFormat)
 
     return ld;
 }
-LibraryDef *VHDLSemantics::getIeeeStdLogicMiscPackage(const bool hifFormat)
+LibraryDef *VHDLSemantics::getIeeeStdLogicMiscPackage(bool hifFormat)
 {
     LibraryDef *ld = new LibraryDef();
     ld->setName(_makeHifName("ieee_std_logic_misc", hifFormat));
@@ -1332,7 +1329,7 @@ LibraryDef *VHDLSemantics::getIeeeStdLogicMiscPackage(const bool hifFormat)
     delete ux01;
     return ld;
 }
-LibraryDef *VHDLSemantics::getIeeeStdLogicSignedPackage(const bool hifFormat)
+LibraryDef *VHDLSemantics::getIeeeStdLogicSignedPackage(bool hifFormat)
 {
     LibraryDef *ld = new LibraryDef();
     ld->setName(_makeHifName("ieee_std_logic_signed", hifFormat));
@@ -1346,14 +1343,14 @@ LibraryDef *VHDLSemantics::getIeeeStdLogicSignedPackage(const bool hifFormat)
     Bitvector *std_logic_vector = factory.bitvector(nullptr, true, true);
 
     // return types
-    Range *retSpan = factory.range(new Identifier("left1"), dir_downto, new Identifier("right1"));
+    Range *retSpan                  = factory.range(new Identifier("left1"), dir_downto, new Identifier("right1"));
     Bitvector *ret_std_logic_vector = factory.bitvector(hif::copy(retSpan), true, true);
     Range *retSpanInc               = factory.range(
         factory.expression(
             factory.expression(
                 factory.expression(
-                    factory.expression(new Identifier("left1"), op_plus, new Identifier("left2")),
-                    op_minus, new Identifier("right1")),
+                    factory.expression(new Identifier("left1"), op_plus, new Identifier("left2")), op_minus,
+                    new Identifier("right1")),
                 op_minus, new Identifier("right2")),
             op_plus, factory.intval(1)),
         dir_downto, new IntValue(0));
@@ -1406,7 +1403,7 @@ LibraryDef *VHDLSemantics::getIeeeStdLogicSignedPackage(const bool hifFormat)
     return ld;
 }
 
-LibraryDef *VHDLSemantics::getIeeeStdLogicTextIOPackage(const bool hifFormat)
+LibraryDef *VHDLSemantics::getIeeeStdLogicTextIOPackage(bool hifFormat)
 {
     LibraryDef *ld = new LibraryDef();
     ld->setName(_makeHifName("ieee_std_logic_textio", hifFormat));
@@ -1418,8 +1415,8 @@ LibraryDef *VHDLSemantics::getIeeeStdLogicTextIOPackage(const bool hifFormat)
 
     ld->libraries.push_back(
         factory.library(_makeHifName("std_textio", hifFormat).c_str(), nullptr, nullptr, false, true));
-    Range *tpRange         = new Range(new Identifier("left"), new Identifier("right"), dir_downto);
-    Bitvector *logicVector = factory.bitvector(hif::copy(tpRange), true, true);
+    Range *tpRange          = new Range(new Identifier("left"), new Identifier("right"), dir_downto);
+    Bitvector *logicVector  = factory.bitvector(hif::copy(tpRange), true, true);
     Bitvector *uLogicVector = factory.bitvector(hif::copy(tpRange), true, false);
     Int *intType            = factory.integer(hif::copy(tpRange), false, false);
 
@@ -1704,7 +1701,7 @@ LibraryDef *VHDLSemantics::getIeeeStdLogicTextIOPackage(const bool hifFormat)
     return ld;
 }
 
-LibraryDef *VHDLSemantics::getIeeeStdLogicUnsignedPackage(const bool hifFormat)
+LibraryDef *VHDLSemantics::getIeeeStdLogicUnsignedPackage(bool hifFormat)
 {
     LibraryDef *ld = new LibraryDef();
     ld->setName(_makeHifName("ieee_std_logic_unsigned", hifFormat));
@@ -1718,14 +1715,14 @@ LibraryDef *VHDLSemantics::getIeeeStdLogicUnsignedPackage(const bool hifFormat)
     Bitvector *std_logic_vector = factory.bitvector(nullptr, true, true);
 
     // return types
-    Range *retSpan = factory.range(new Identifier("left1"), dir_downto, new Identifier("right1"));
+    Range *retSpan                  = factory.range(new Identifier("left1"), dir_downto, new Identifier("right1"));
     Bitvector *ret_std_logic_vector = factory.bitvector(hif::copy(retSpan), true, true);
     Range *retSpanInc               = factory.range(
         factory.expression(
             factory.expression(
                 factory.expression(
-                    factory.expression(new Identifier("left1"), op_plus, new Identifier("left2")),
-                    op_minus, new Identifier("right1")),
+                    factory.expression(new Identifier("left1"), op_plus, new Identifier("left2")), op_minus,
+                    new Identifier("right1")),
                 op_minus, new Identifier("right2")),
             op_plus, factory.intval(1)),
         dir_downto, new IntValue(0));
@@ -1776,7 +1773,7 @@ LibraryDef *VHDLSemantics::getIeeeStdLogicUnsignedPackage(const bool hifFormat)
 
     return ld;
 }
-LibraryDef *VHDLSemantics::getIeeeMathComplexPackage(const bool hifFormat)
+LibraryDef *VHDLSemantics::getIeeeMathComplexPackage(bool hifFormat)
 {
     LibraryDef *ld = new LibraryDef();
     ld->setName(_makeHifName("ieee_math_complex", hifFormat));
@@ -1889,7 +1886,7 @@ LibraryDef *VHDLSemantics::getIeeeMathComplexPackage(const bool hifFormat)
     return ld;
 }
 
-LibraryDef *VHDLSemantics::getTextIOPackage(const bool hifFormat)
+LibraryDef *VHDLSemantics::getTextIOPackage(bool hifFormat)
 {
     LibraryDef *ld = new LibraryDef();
     ld->setName(_makeHifName("std_textio", hifFormat));
@@ -2212,7 +2209,7 @@ LibraryDef *VHDLSemantics::getTextIOPackage(const bool hifFormat)
     return ld;
 }
 
-LibraryDef *VHDLSemantics::getIeeeMathRealPackage(const bool hifFormat)
+LibraryDef *VHDLSemantics::getIeeeMathRealPackage(bool hifFormat)
 {
     LibraryDef *ld = new LibraryDef();
     ld->setName(_makeHifName("ieee_math_real", hifFormat));
@@ -2393,7 +2390,7 @@ LibraryDef *VHDLSemantics::getIeeeMathRealPackage(const bool hifFormat)
     return ld;
 }
 
-LibraryDef *VHDLSemantics::getPSLStandardPackage(const bool hifFormat)
+LibraryDef *VHDLSemantics::getPSLStandardPackage(bool hifFormat)
 {
     LibraryDef *ld = new LibraryDef();
     ld->setName(_makeHifName("psl_standard", hifFormat));
@@ -2503,7 +2500,7 @@ LibraryDef *VHDLSemantics::getPSLStandardPackage(const bool hifFormat)
 
     return ld;
 }
-LibraryDef *VHDLSemantics::getStandardLibrary(const std::string& n)
+LibraryDef *VHDLSemantics::getStandardLibrary(const std::string &n)
 {
     if (n == "ieee_math_complex") {
         static LibraryDef *lStandard = nullptr;
@@ -2580,20 +2577,16 @@ LibraryDef *VHDLSemantics::getStandardLibrary(const std::string& n)
     return nullptr;
 }
 
-bool VHDLSemantics::isNativeLibrary(const std::string& n, const bool hifFormat)
+bool VHDLSemantics::isNativeLibrary(const std::string &n, bool hifFormat)
 {
-    if (n == _makeHifName("ieee_math_complex", hifFormat) ||
-        n == _makeHifName("ieee_math_real", hifFormat) ||
-        n == _makeHifName("ieee_numeric_std", hifFormat) ||
-        n == _makeHifName("ieee_numeric_bit", hifFormat) ||
-        n == _makeHifName("ieee_std_logic_1164", hifFormat) ||
-        n == _makeHifName("ieee_std_logic_arith", hifFormat) ||
+    if (n == _makeHifName("ieee_math_complex", hifFormat) || n == _makeHifName("ieee_math_real", hifFormat) ||
+        n == _makeHifName("ieee_numeric_std", hifFormat) || n == _makeHifName("ieee_numeric_bit", hifFormat) ||
+        n == _makeHifName("ieee_std_logic_1164", hifFormat) || n == _makeHifName("ieee_std_logic_arith", hifFormat) ||
         n == _makeHifName("ieee_std_logic_arith_ex", hifFormat) ||
-        n == _makeHifName("ieee_std_logic_misc", hifFormat) ||
-        n == _makeHifName("ieee_std_logic_signed", hifFormat) ||
+        n == _makeHifName("ieee_std_logic_misc", hifFormat) || n == _makeHifName("ieee_std_logic_signed", hifFormat) ||
         n == _makeHifName("ieee_std_logic_textio", hifFormat) ||
-        n == _makeHifName("ieee_std_logic_unsigned", hifFormat) ||
-        n == _makeHifName("standard", hifFormat) || n == _makeHifName("std_textio", hifFormat))
+        n == _makeHifName("ieee_std_logic_unsigned", hifFormat) || n == _makeHifName("standard", hifFormat) ||
+        n == _makeHifName("std_textio", hifFormat))
         return true;
 
     return false;
@@ -2617,7 +2610,7 @@ VHDLSemantics::MapCases
 VHDLSemantics::mapStandardSymbol(Declaration *decl, KeySymbol &key, ValueSymbol &value, ILanguageSemantics * /*srcSem*/)
 {
     std::string libName;
-    const bool isMine = _isHifPrefixed(key.first, libName);
+    bool isMine = _isHifPrefixed(key.first, libName);
     // messageAssert(isMine, "Asked name not prefixed with 'hif_': " + unprefixed, nullptr, nullptr);
     if (isMine) {
         std::string symName;
@@ -2627,7 +2620,7 @@ VHDLSemantics::mapStandardSymbol(Declaration *decl, KeySymbol &key, ValueSymbol 
         value.libraries.push_back(libName);
         value.mappedSymbol   = symName;
         // Libraries are always replaced, therefore internal symbols must be kept
-        const bool isLibrary = (libName == symName);
+        bool isLibrary = (libName == symName);
         value.mapAction      = isLibrary ? MAP_DELETE : MAP_KEEP;
         return value.mapAction;
     }
@@ -2648,7 +2641,7 @@ VHDLSemantics::mapStandardSymbol(Declaration *decl, KeySymbol &key, ValueSymbol 
 
 Object *VHDLSemantics::getSimplifiedSymbol(KeySymbol & /*key*/, Object *s) { messageError("TODO", s, this); }
 
-bool VHDLSemantics::isStandardInclusion(const std::string& n, const bool /*isLibInclusion*/)
+bool VHDLSemantics::isStandardInclusion(const std::string &n, bool /*isLibInclusion*/)
 {
     if (n == "standard")
         return true;
@@ -2658,7 +2651,7 @@ bool VHDLSemantics::isStandardInclusion(const std::string& n, const bool /*isLib
     return false;
 }
 
-std::string VHDLSemantics::getEventMethodName(const bool hifFormat) { return _makeHifName("event", hifFormat); }
+std::string VHDLSemantics::getEventMethodName(bool hifFormat) { return _makeHifName("event", hifFormat); }
 
 bool VHDLSemantics::isEventCall(FunctionCall *call)
 {

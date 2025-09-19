@@ -157,7 +157,7 @@ public:
 
     /// @brief Set whether perform initialization at time 0.
     /// @param dontInitialize True to avoid initialization at time 0, false otherwise.
-    void setDontInitialize(const bool dontInitialize);
+    void setDontInitialize(bool dontInitialize);
 
     /// @brief Get whether perform initialization at time 0.
     /// @return True if initialization at time 0 is avoided, false otherwise.
@@ -172,7 +172,7 @@ public:
     /// @param standard The boolean that identifies if this is a standard
     /// declaration.
     ///
-    void setStandard(const bool standard);
+    void setStandard(bool standard);
 
 protected:
     /// @brief Fills the internal fields and blists lists.

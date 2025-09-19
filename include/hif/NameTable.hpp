@@ -43,7 +43,7 @@ public:
     ///		one name for lines (whitout spaces)
     /// @param append boolean that indicates if append.
     /// @returns a boolean indicating if the file was correctly loaded into nametable.
-    bool setForbiddenListFromFile(std::string file_name, bool append = false);
+    bool setForbiddenListFromFile(const std::string &file_name, bool append = false);
 
     /// @brief Print the NameTable content
     void printNameTable();
@@ -76,7 +76,7 @@ public:
     /// @param name The old name.
     /// @param suffix the string suffix to be used to generate a fresh name
     /// @return The fresh name.
-    std::string getFreshName(const std::string &name, unsigned long long suffix);
+    std::string getFreshName(const std::string &name, std::uint64_t suffix);
 
     /// @brief Return the name associated to a given string.
     /// This one creates the name if it is not in the table yet.
@@ -89,7 +89,7 @@ public:
     /// @param s the string whose name is sought.
     /// @param index The index to concat at the end of @p s.
     /// @return The name.
-    std::string registerName(const std::string &name, const int index);
+    std::string registerName(const std::string &name, int index);
 
     /// @brief Return the special "none" name.
     /// @return return m_none value.

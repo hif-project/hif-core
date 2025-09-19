@@ -29,12 +29,12 @@ Type *CompositeType::getType() const { return _type; }
 
 Type *CompositeType::setType(Type *x) { return setChild(_type, x); }
 
-Type *CompositeType::getBaseType(const bool considerOpacity) const
+Type *CompositeType::getBaseType(bool considerOpacity) const
 {
     return considerOpacity ? _baseOpaqueType : _baseType;
 }
 
-Type *CompositeType::setBaseType(Type *x, const bool considerOpacity)
+Type *CompositeType::setBaseType(Type *x, bool considerOpacity)
 {
     if (considerOpacity) {
         return setChild(_baseOpaqueType, x);

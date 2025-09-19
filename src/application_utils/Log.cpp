@@ -54,7 +54,7 @@ struct UniqueInfos {
 
     std::string file;
     unsigned int line;
-    unsigned long long counter;
+    std::uint64_t counter;
 };
 
 UniqueInfos::UniqueInfos()
@@ -239,10 +239,10 @@ private:
     ObjectDetailVisitor(const ObjectDetailVisitor &);
     ObjectDetailVisitor &operator=(const ObjectDetailVisitor &);
 
-    void _printObject(Object *o, const bool forceSummary = false);
+    void _printObject(Object *o, bool forceSummary = false);
     void _printObjectDeclaration(Object *o, const std::string &refObject = std::string("Object"));
     void _printObjectType(TypedObject *o, const std::string &refObject = std::string("Object"));
-    void _printType(Type *t, const std::string &refObject, const bool printBase = true);
+    void _printType(Type *t, const std::string &refObject, bool printBase = true);
     template <typename T> void _printObjectBaseTypes(T *o, const std::string &refObject = std::string("Object"));
     void _printObjectParent(Object *o, const std::string &refObject = std::string("Object"));
     void _printObjectDataDeclaration(DataDeclaration *decl);
@@ -967,7 +967,7 @@ int ObjectDetailVisitor::visitWithAlt(WithAlt &o)
     return 0;
 }
 
-void ObjectDetailVisitor::_printObject(Object *o, const bool forceSummary)
+void ObjectDetailVisitor::_printObject(Object *o, bool forceSummary)
 {
     _outStream << "\nObject: " << hif::classIDToString(o->getClassId()) << std::endl;
 
@@ -1034,7 +1034,7 @@ void ObjectDetailVisitor::_printObjectType(TypedObject *o, const std::string &re
     _printType(t, refObject);
 }
 
-void ObjectDetailVisitor::_printType(Type *t, const std::string &refObject, const bool printBase)
+void ObjectDetailVisitor::_printType(Type *t, const std::string &refObject, bool printBase)
 {
     _outStream << "\n\n------------------------------------------------------------\n"
                << refObject << " type:" << std::endl;
@@ -1104,8 +1104,8 @@ void ObjectDetailVisitor::_printObjectParent(Object *o, const std::string & /*re
 
     CompositeType *ct     = dynamic_cast<CompositeType *>(p);
     Record *rec           = dynamic_cast<Record *>(p);
-    const bool isBaseComp = (ct != nullptr && (ct->getBaseType(true) == o || ct->getBaseType(false) == o));
-    const bool isBaseRec  = (rec != nullptr && (rec->getBaseType(true) == o || rec->getBaseType(false) == o));
+    bool isBaseComp = (ct != nullptr && (ct->getBaseType(true) == o || ct->getBaseType(false) == o));
+    bool isBaseRec  = (rec != nullptr && (rec->getBaseType(true) == o || rec->getBaseType(false) == o));
     if (isBaseComp || isBaseRec) {
         _outStream << "Object is a base type" << std::endl;
         return;
@@ -1119,7 +1119,7 @@ void ObjectDetailVisitor::_printObjectParent(Object *o, const std::string & /*re
 
 void ObjectDetailVisitor::_printObjectDataDeclaration(DataDeclaration *decl)
 {
-    const bool printBase = (dynamic_cast<EnumValue *>(decl) == nullptr);
+    bool printBase = (dynamic_cast<EnumValue *>(decl) == nullptr);
     _printType(decl->getType(), "DataDeclaration", printBase);
     _printObjectType(decl->getValue(), "Initial value");
 }
@@ -1203,8 +1203,8 @@ void _printRaisePoint(
     std::ostream &outStream,
     const std::string &file,
     unsigned int line,
-    const bool callFromPrintUniqueWarnings = false,
-    unsigned long long counter             = 0)
+    bool callFromPrintUniqueWarnings = false,
+    std::uint64_t counter             = 0)
 {
     // We are interested to the collected raise points, not the current one.
     if (callFromPrintUniqueWarnings)
@@ -1222,7 +1222,7 @@ void _printDetails(
     hif::semantics::ILanguageSemantics *sem,
     const std::string &file,
     unsigned int line,
-    const bool callFromPrintUniqueWarnings = false)
+    bool callFromPrintUniqueWarnings = false)
 {
     _printRaisePoint(outStream, file, line, callFromPrintUniqueWarnings);
 
@@ -1238,12 +1238,12 @@ void _printDetails(
         outStream << "- No source file info available - " << std::endl;
     }
 
-    const bool isInTree = hif::isInTree(involvedObject);
+    bool isInTree = hif::isInTree(involvedObject);
     outStream << "- Object in tree: " << (isInTree ? "true" : "false") << std::endl;
 
     auto ttmp = dynamic_cast<const Type *>(involvedObject);
     if (ttmp != nullptr) {
-        const bool isSemType = hif::semantics::isSemanticsType(ttmp);
+        bool isSemType = hif::semantics::isSemanticsType(ttmp);
         outStream << "- Object is semantic type: " << (isSemType ? "true" : "false") << std::endl;
     }
 
@@ -1441,7 +1441,7 @@ void _hif_internal_messageDebug(
     const std::string &message,
     hif::Object *involvedObject,
     hif::semantics::ILanguageSemantics *sem,
-    const bool dontPrintCondition)
+    bool dontPrintCondition)
 {
     if (dontPrintCondition)
         return;
@@ -1462,7 +1462,7 @@ void _hif_internal_messageAssert(
 void _hif_internal_messageWarningList(
     const std::string &file,
     unsigned int line,
-    const bool condition,
+    bool condition,
     const std::string &message,
     WarningList &objList)
 {
@@ -1500,7 +1500,7 @@ void _hif_internal_messageWarningList(
 void _hif_internal_messageWarningList(
     const std::string &file,
     unsigned int line,
-    const bool condition,
+    bool condition,
     const std::string &message,
     WarningSet &objSet)
 {
@@ -1518,7 +1518,7 @@ void _hif_internal_messageWarningList(
 void _hif_internal_messageWarningList(
     const std::string &file,
     unsigned int line,
-    const bool condition,
+    bool condition,
     const std::string &message,
     WarningStringSet &objList)
 {
@@ -1542,7 +1542,7 @@ void _hif_internal_messageWarningList(
 void _hif_internal_messageWarningList(
     const std::string &file,
     unsigned int line,
-    const bool condition,
+    bool condition,
     const std::string &message,
     WarningInfoList &objList)
 {
@@ -1578,7 +1578,7 @@ void _hif_internal_messageWarningList(
 void _hif_internal_messageWarningList(
     const std::string &file,
     unsigned int line,
-    const bool condition,
+    bool condition,
     const std::string &message,
     WarningInfoSet &objSet)
 {
@@ -1593,7 +1593,7 @@ void _hif_internal_messageWarningList(
     _hif_internal_messageWarningList(file, line, condition, message, l);
 }
 
-void setVerboseLog(const bool isVerbose) { ObjectDetailVisitor::isVerbose = isVerbose; }
+void setVerboseLog(bool isVerbose) { ObjectDetailVisitor::isVerbose = isVerbose; }
 
 bool isVerboseLog() { return ObjectDetailVisitor::isVerbose; }
 

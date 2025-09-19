@@ -14,12 +14,12 @@
 #include "hif/semantics/semantics.hpp"
 
 #ifdef __clang__
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wunused-member-function"
-#pragma clang diagnostic ignored "-Wmissing-noreturn"
+#    pragma clang diagnostic push
+#    pragma clang diagnostic ignored "-Wunused-member-function"
+#    pragma clang diagnostic ignored "-Wmissing-noreturn"
 #elif defined __GNUC__
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-function"
+#    pragma GCC diagnostic push
+#    pragma GCC diagnostic ignored "-Wunused-function"
 #endif
 
 namespace hif
@@ -31,8 +31,7 @@ namespace /*anon*/
 {
 
 // Removing from old list (without deleting) and push back in new list.
-template <typename T>
-void _actualMove(T *obj, BList<T> &destList)
+template <typename T> void _actualMove(T *obj, BList<T> &destList)
 {
     messageAssert(obj->isInBList(), "Unexpected object not in BList", obj, nullptr);
     typename BList<T>::iterator it(obj);
@@ -89,7 +88,7 @@ void _moveToScope(
         newName = n + suffixToAppend;
     }
 
-    const bool isConflicting = checkConflictingName(newName, newScope);
+    bool isConflicting = checkConflictingName(newName, newScope);
     // If it does not conflict, this is a simple move.
     if (!isConflicting && suffixToAppend == "") {
         _actualMove(obj, destList);

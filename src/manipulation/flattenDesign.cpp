@@ -13,8 +13,8 @@
 #include "hif/search.hpp"
 #include "hif/semantics/semantics.hpp"
 #ifdef __clang__
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wunused-member-function"
+#    pragma clang diagnostic push
+#    pragma clang diagnostic ignored "-Wunused-member-function"
 #endif
 
 // Uncomment to obtain debug output prints
@@ -80,18 +80,18 @@ private:
     void _flattenSubtreeFromView(hif::View *view);
     void _flattenInstance(hif::Instance *instance);
     void _insertNewView(hif::View *originalDecl, hif::View *newView, hif::ViewReference *vr);
-    hif::Value *_extractBoundValue(const std::string& n, hif::BList<hif::PortAssign> &bindings);
+    hif::Value *_extractBoundValue(const std::string &n, hif::BList<hif::PortAssign> &bindings);
     void _renameDeclarations(hif::View *view, const std::string &prefix, hif::Instance *instance);
     void _propagateBoundInitialValue(Port *port, Value *v);
     void _propagateConcatInitialValue(Expression *expr, Value *source);
     void _propagateConcatInitialValueToPrefixedReference(
         PrefixedReference *pr,
         const std::string &str,
-        unsigned long long &index);
+        std::uint64_t &index);
     bool _decomposeConcat(Value *v, std::list<Value *> &members);
     void _propagateMemberInitialValue(Member *m, DataDeclaration *destination, Value *source);
     void _propagateSliceInitialValue(Slice *s, DataDeclaration *destination, Value *source);
-    void _renameReferences(const std::string& newName, ObjectsSet &refs);
+    void _renameReferences(const std::string &newName, ObjectsSet &refs);
     void _propagateLibraries(hif::Scope *target, hif::Scope *source);
     void _expandDeclarationsList(
         hif::BList<hif::Declaration> &target,
@@ -379,8 +379,8 @@ void Flattener::_flattenInstance(Instance *instance)
     Contents *c    = dynamic_cast<Contents *>(instance->getBList()->getParent());
     DesignUnit *du = dynamic_cast<DesignUnit *>(c->getParent()->getParent());
     if (du != nullptr) {
-        std::cout << "\tRemoving instance " << instance->getName() << " from design unit "
-                  << du->getName() << std::endl;
+        std::cout << "\tRemoving instance " << instance->getName() << " from design unit " << du->getName()
+                  << std::endl;
     }
 #endif
 
@@ -412,7 +412,7 @@ void Flattener::_insertNewView(View *originalDecl, View *newView, ViewReference 
         context = hif::getNearestParent<System>(originalDecl);
     }
     messageAssert(context != nullptr, "Contents not found", nullptr, _sem);
-    std::string newUnitName                 = _nameTable->getFreshName(vr->getDesignUnit().c_str());
+    std::string newUnitName          = _nameTable->getFreshName(vr->getDesignUnit().c_str());
     BList<Declaration> *declarations = hif::objectGetDeclarationList(context);
     DesignUnit *newUnit              = new DesignUnit();
     newUnit->setName(newUnitName);
@@ -422,7 +422,7 @@ void Flattener::_insertNewView(View *originalDecl, View *newView, ViewReference 
     declarations->push_back(newUnit);
 }
 
-Value *Flattener::_extractBoundValue(const std::string& n, BList<PortAssign> &bindings)
+Value *Flattener::_extractBoundValue(const std::string &n, BList<PortAssign> &bindings)
 {
     for (BList<PortAssign>::iterator iter = bindings.begin(); iter != bindings.end(); ++iter) {
         PortAssign *bind = *iter;
@@ -437,7 +437,7 @@ void Flattener::_renameDeclarations(View *view, const std::string &prefix, Insta
 {
     ReferenceMap refMap;
     hif::semantics::GetReferencesOptions opt;
-    opt.includeUnreferenced = true;
+    opt.include_unreferenced = true;
     hif::semantics::getAllReferences(refMap, _sem, view, opt);
     for (ReferenceMap::iterator iter = refMap.begin(); iter != refMap.end(); ++iter) {
         Declaration *decl = iter->first;
@@ -483,7 +483,7 @@ void Flattener::_renameDeclarations(View *view, const std::string &prefix, Insta
                 c->setType(hif::copy(port->getType()));
                 v = c;
             }
-            const bool isBoundToCast = dynamic_cast<Cast *>(v) != nullptr;
+            bool isBoundToCast = dynamic_cast<Cast *>(v) != nullptr;
             for (ObjectsSet::iterator jter = set.begin(); jter != set.end(); ++jter) {
                 Object *obj = *jter;
                 // Skip replacement of PortAssign objects
@@ -587,8 +587,8 @@ void Flattener::_renameDeclarations(View *view, const std::string &prefix, Insta
     Contents *contents = view->getContents();
     for (BList<StateTable>::iterator iter = contents->stateTables.begin(); iter != contents->stateTables.end();
          ++iter) {
-        StateTable *st = *iter;
-        std::string newName   = _nameTable->getFreshName((prefix + "_" + st->getName()).c_str());
+        StateTable *st      = *iter;
+        std::string newName = _nameTable->getFreshName((prefix + "_" + st->getName()).c_str());
         st->setName(newName);
     }
 }
@@ -655,7 +655,7 @@ void Flattener::_propagateConcatInitialValue(Expression *expr, Value *source)
         return;
     }
     std::string str(bvs->getValue());
-    unsigned long long index = 0ULL;
+    std::uint64_t index = 0;
     for (std::list<Value *>::iterator iter = members.begin(); iter != members.end(); ++iter) {
         Value *v              = *iter;
         PrefixedReference *pr = dynamic_cast<PrefixedReference *>(v);
@@ -687,7 +687,7 @@ void Flattener::_propagateConcatInitialValue(Expression *expr, Value *source)
             _initialValueWarnings2.insert(info);
             continue;
         }
-        unsigned long long w = hif::semantics::spanGetBitwidth(t2->getSpan(), _sem);
+        std::uint64_t w = hif::semantics::spanGetBitwidth(t2->getSpan(), _sem);
         bvd->setValue(str.substr(static_cast<std::string::size_type>(index), static_cast<std::string::size_type>(w)));
         index += w;
     }
@@ -696,7 +696,7 @@ void Flattener::_propagateConcatInitialValue(Expression *expr, Value *source)
 void Flattener::_propagateConcatInitialValueToPrefixedReference(
     PrefixedReference *pr,
     const std::string &str,
-    unsigned long long &index)
+    std::uint64_t &index)
 {
     hif::HifFactory factory(_sem);
     Member *m                   = dynamic_cast<Member *>(pr);
@@ -720,7 +720,7 @@ void Flattener::_propagateConcatInitialValueToPrefixedReference(
         ++index;
         return;
     } else if (s != nullptr) {
-        unsigned long long w = hif::semantics::spanGetBitwidth(s->getSpan(), _sem);
+        std::uint64_t w = hif::semantics::spanGetBitwidth(s->getSpan(), _sem);
         BitvectorValue *bv   = factory.bitvectorval(
             str.substr(static_cast<std::string::size_type>(index), static_cast<std::string::size_type>(w)),
             factory.bitvector(
@@ -766,7 +766,7 @@ void Flattener::_propagateMemberInitialValue(Member *m, DataDeclaration *destina
     BitValue *bi       = dynamic_cast<BitValue *>(source);
     if ((bi != nullptr) && (bv != nullptr)) {
         std::string str(bv->getValue());
-        unsigned long long j = str.length() - static_cast<unsigned long long>(index->getValue()) - 1ULL;
+        std::uint64_t j = str.length() - static_cast<std::uint64_t>(index->getValue()) - 1ULL;
         str[static_cast<std::string::size_type>(j)] = hif::bitConstantToString(bi->getValue())[0];
         bv->setValue(str);
         return;
@@ -785,8 +785,8 @@ void Flattener::_propagateSliceInitialValue(Slice *s, DataDeclaration *destinati
         _initialValueWarnings5.insert(info);
         return;
     }
-    long long hi = upper->getValue();
-    long long lo = lower->getValue();
+    std::int64_t hi = upper->getValue();
+    std::int64_t lo = lower->getValue();
     if (destination->getValue() == nullptr) {
         destination->setValue(_sem->getTypeDefaultValue(destination->getType(), destination));
     }
@@ -795,8 +795,8 @@ void Flattener::_propagateSliceInitialValue(Slice *s, DataDeclaration *destinati
     if ((bvs != nullptr) && (bvd != nullptr)) {
         std::string strd(bvd->getValue());
         std::string strs(bvs->getValue());
-        hi   = static_cast<long long>(strd.length()) - hi - 1LL;
-        lo   = static_cast<long long>(strd.length()) - lo - 1LL;
+        hi   = static_cast<std::int64_t>(strd.length()) - hi - 1LL;
+        lo   = static_cast<std::int64_t>(strd.length()) - lo - 1LL;
         strd = strd.substr(0, static_cast<std::string::size_type>(hi)) + strs +
                strd.substr(static_cast<std::string::size_type>(lo));
         bvd->setValue(strd);
@@ -807,7 +807,7 @@ void Flattener::_propagateSliceInitialValue(Slice *s, DataDeclaration *destinati
     _initialValueWarnings5.insert(info);
 }
 
-void Flattener::_renameReferences(const std::string& newName, ObjectsSet &refs)
+void Flattener::_renameReferences(const std::string &newName, ObjectsSet &refs)
 {
     for (std::set<Object *>::iterator iter = refs.begin(); iter != refs.end(); ++iter) {
         Object *obj = *iter;
@@ -870,7 +870,7 @@ void Flattener::_expandContents(Contents *target, Contents *source, const std::s
 #endif
     for (BList<Instance>::iterator i = source->instances.begin(); i != source->instances.end(); ++i) {
         Instance *inst = *i;
-        std::string n         = _nameTable->getFreshName((prefix + "_" + inst->getName()).c_str());
+        std::string n  = _nameTable->getFreshName((prefix + "_" + inst->getName()).c_str());
         inst->setName(n);
     }
     target->instances.merge(source->instances);

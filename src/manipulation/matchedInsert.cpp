@@ -43,8 +43,7 @@ bool _checkExisting(Object *_existing, Object *_newParent, Object *_oldObj, cons
 
     return true;
 }
-template <typename T>
-bool _checked_cast(Object *o, T *&no)
+template <typename T> bool _checked_cast(Object *o, T *&no)
 {
     no = dynamic_cast<T *>(o);
     return (o == nullptr || no != nullptr);
@@ -60,11 +59,11 @@ bool _matchBList(
     Object *_oldObj,
     const MatchedInsertType::type _type)
 {
-    typename BList<T>::size_t position = oldList.getPosition(static_cast<T *>(_oldObj));
+    auto position = oldList.getPosition(static_cast<T *>(_oldObj));
     if (position == oldList.size())
         return false;
 
-    typename BList<T>::size_t listSize = newList.size();
+    auto listSize = newList.size();
     if (position <= listSize && _type != MatchedInsertType::TYPE_EXPAND) {
         _existing = newList.at(position);
         // Position is already correct

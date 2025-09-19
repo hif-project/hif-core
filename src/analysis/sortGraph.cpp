@@ -8,11 +8,11 @@
 #include "hif/hif.hpp"
 
 #ifdef __clang__
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wunused-member-function"
+#    pragma clang diagnostic push
+#    pragma clang diagnostic ignored "-Wunused-member-function"
 #elif defined __GNUC__
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-function"
+#    pragma GCC diagnostic push
+#    pragma GCC diagnostic ignored "-Wunused-function"
 #endif
 
 namespace hif
@@ -54,7 +54,7 @@ struct Comp {
     bool _reverse;
 };
 
-Comp::Comp(List *list, const bool reverse)
+Comp::Comp(List *list, bool reverse)
     : _list(list)
     , _reverse(reverse)
 {
@@ -106,7 +106,7 @@ auto Comp::operator()(Object *o1, Object *o2) const -> bool
 void sortGraph(
     Types<Object, Object>::Graph &graph,
     Types<Object, Object>::List &list,
-    const bool fromLeaves,
+    bool fromLeaves,
     Types<Object, Object>::List *stableList)
 {
     using ObjectsMap  = Types<Object, Object>::Map;

@@ -45,7 +45,7 @@ public:
 
     /// @brief Sets the <tt>signed</tt> attribute.
     /// @param sign The <tt>signed</tt> attribute.
-    void setSigned(const bool sign);
+    void setSigned(bool sign);
 
     /// @brief Accepts a visitor to visit the current object.
     /// @param vis The visitor.

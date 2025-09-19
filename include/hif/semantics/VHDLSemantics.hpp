@@ -74,8 +74,7 @@ public:
     /// @return Type pointer to the suggested type to obtain
     /// a valid operation in current semantics  (if possible).
     ///
-    virtual Type *
-    getSuggestedTypeForOp(Type *t, Operator operation, Type *opType, Object *startingObject, const bool isOp1);
+    virtual Type *getSuggestedTypeForOp(Type *t, Operator operation, Type *opType, Object *startingObject, bool isOp1);
     ///
     /// @brief Function that given a ConstValue returns a Type
     /// pointer representing the type to associate to the constant according
@@ -126,7 +125,7 @@ public:
     /// SystemC truncates).
     /// @param v The value to convert.
     /// @return The converted value.
-    virtual long long transformRealToInt(const double v);
+    virtual std::int64_t transformRealToInt(const double v);
     /// @name Semantic checks methods
     ///@{
 
@@ -208,7 +207,7 @@ public:
     /// @param isLogic If the type is logic.
     /// @return True if operators are bitwise, false if they are logical.
     ///
-    virtual bool hasBitwiseOperationsOnBits(const bool isLogic) const;
+    virtual bool hasBitwiseOperationsOnBits(bool isLogic) const;
 
     ///@}
     /// @name Template related stuff
@@ -259,7 +258,7 @@ public:
 
     /// @brief Set if Semantics have to use PSL relaxed checks.
     /// @param v The value to set.
-    void setUsePsl(const bool v);
+    void setUsePsl(bool v);
 
     /// @brief Get if Semantics have use PSL relaxed checks.
     /// @return True if using PSL.
@@ -273,83 +272,83 @@ public:
     /// @brief Get the IEEE math complex package.
     /// @param hifFormat Whether to use HIF format.
     /// @return The package.
-    LibraryDef *getIeeeMathComplexPackage(const bool hifFormat = false);
+    LibraryDef *getIeeeMathComplexPackage(bool hifFormat = false);
 
     /// @brief Get the IEEE math real package.
     /// @param hifFormat Whether to use HIF format.
     /// @return The package.
-    LibraryDef *getIeeeMathRealPackage(const bool hifFormat = false);
+    LibraryDef *getIeeeMathRealPackage(bool hifFormat = false);
 
     /// @brief Get the IEEE numeric bit package.
     /// @param hifFormat Whether to use HIF format.
     /// @return The package.
-    LibraryDef *getIeeeNumericBitPackage(const bool hifFormat = false);
+    LibraryDef *getIeeeNumericBitPackage(bool hifFormat = false);
 
     /// @brief Get the IEEE numeric std package.
     /// @param hifFormat Whether to use HIF format.
     /// @return The package.
-    LibraryDef *getIeeeNumericStdPackage(const bool hifFormat = false);
+    LibraryDef *getIeeeNumericStdPackage(bool hifFormat = false);
 
     /// @brief Get the IEEE std logic 1164 package.
     /// @param hifFormat Whether to use HIF format.
     /// @return The package.
-    LibraryDef *getIeeeStdLogic1164Package(const bool hifFormat = false);
+    LibraryDef *getIeeeStdLogic1164Package(bool hifFormat = false);
 
     /// @brief Get the IEEE std logic arith package.
     /// @param hifFormat Whether to use HIF format.
     /// @return The package.
-    LibraryDef *getIeeeStdLogicArithPackage(const bool hifFormat = false);
+    LibraryDef *getIeeeStdLogicArithPackage(bool hifFormat = false);
 
     /// @brief Get the IEEE std logic arith ex package.
     /// @param hifFormat Whether to use HIF format.
     /// @return The package.
-    LibraryDef *getIeeeStdLogicArithExPackage(const bool hifFormat = false);
+    LibraryDef *getIeeeStdLogicArithExPackage(bool hifFormat = false);
 
     /// @brief Get the IEEE std logic misc package.
     /// @param hifFormat Whether to use HIF format.
     /// @return The package.
-    LibraryDef *getIeeeStdLogicMiscPackage(const bool hifFormat = false);
+    LibraryDef *getIeeeStdLogicMiscPackage(bool hifFormat = false);
 
     /// @brief Get the IEEE std logic signed package.
     /// @param hifFormat Whether to use HIF format.
     /// @return The package.
-    LibraryDef *getIeeeStdLogicSignedPackage(const bool hifFormat = false);
+    LibraryDef *getIeeeStdLogicSignedPackage(bool hifFormat = false);
 
     /// @brief Get the IEEE std logic text IO package.
     /// @param hifFormat Whether to use HIF format.
     /// @return The package.
-    LibraryDef *getIeeeStdLogicTextIOPackage(const bool hifFormat = false);
+    LibraryDef *getIeeeStdLogicTextIOPackage(bool hifFormat = false);
 
     /// @brief Get the IEEE std logic unsigned package.
     /// @param hifFormat Whether to use HIF format.
     /// @return The package.
-    LibraryDef *getIeeeStdLogicUnsignedPackage(const bool hifFormat = false);
+    LibraryDef *getIeeeStdLogicUnsignedPackage(bool hifFormat = false);
 
     /// @brief Get the standard package.
     /// @param hifFormat Whether to use HIF format.
     /// @return The package.
-    LibraryDef *getStandardPackage(const bool hifFormat = false);
+    LibraryDef *getStandardPackage(bool hifFormat = false);
 
     /// @brief Get the text IO package.
     /// @param hifFormat Whether to use HIF format.
     /// @return The package.
-    LibraryDef *getTextIOPackage(const bool hifFormat = false);
+    LibraryDef *getTextIOPackage(bool hifFormat = false);
 
     /// @brief Get the PSL standard package.
     /// @param hifFormat Whether to use HIF format.
     /// @return The package.
-    LibraryDef *getPSLStandardPackage(const bool hifFormat = false);
+    LibraryDef *getPSLStandardPackage(bool hifFormat = false);
 
     /// @brief Get the eventual library def matching the given name.
     /// @param n The name.
     /// @return The library def or nullptr.
-    virtual LibraryDef *getStandardLibrary(const std::string & n);
+    virtual LibraryDef *getStandardLibrary(const std::string &n);
 
     /// @brief Return True if the given library is native for the semantics.
     /// @param n The library name.
     /// @param hifFormat Whether to use HIF format.
     /// @return True if native.
-    virtual bool isNativeLibrary(const std::string & n, const bool hifFormat = false);
+    virtual bool isNativeLibrary(const std::string &n, bool hifFormat = false);
 
     /// @brief Starting from system adds all required standard packeges.
     /// @param s The system.
@@ -374,12 +373,12 @@ public:
     /// @param n The library name.
     /// @param isLibInclusion Whether it's a library inclusion.
     /// @return True if standard inclusion.
-    virtual bool isStandardInclusion(const std::string & n, const bool isLibInclusion);
+    virtual bool isStandardInclusion(const std::string &n, bool isLibInclusion);
 
     /// @brief Returns the event method name w.r.t. current semantics.
     /// @param hifFormat Whether to use HIF format.
     /// @return The event method name.
-    virtual std::string getEventMethodName(const bool hifFormat = false);
+    virtual std::string getEventMethodName(bool hifFormat = false);
 
     /// @brief Returns <tt>true</tt> if the given call is an event call w.r.t.
     /// the current semantics, <tt>false</tt> otherwise.

@@ -38,7 +38,7 @@ public:
 
     /// @brief Sets whether this is a standard declaration.
     /// @param standard <tt>true</tt> if this is a standard declaration, <tt>false</tt> otherwise.
-    void setStandard(const bool standard);
+    void setStandard(bool standard);
 
     /// @brief Accepts a visitor to visit the current object.
     /// @param vis The visitor.

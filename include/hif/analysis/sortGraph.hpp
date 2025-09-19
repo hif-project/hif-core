@@ -48,7 +48,7 @@ template <class KEY, class VALUE>
 void sortGraph(
     typename Types<KEY, VALUE>::Graph &graph,
     typename Types<KEY, VALUE>::List &list,
-    const bool fromLeaves,
+    bool fromLeaves,
     typename Types<KEY, VALUE>::List *stableList = nullptr)
 {
     auto *g = reinterpret_cast<typename Types<Object, Object>::Graph *>(&graph);

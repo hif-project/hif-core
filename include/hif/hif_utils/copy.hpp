@@ -84,8 +84,7 @@ Object *copy(const Object *obj, const CopyOptions &opt = CopyOptions());
 /// @param obj The object to copy.
 /// @param opt The copy options.
 /// @return A pointer to the copied object of type `T`.
-template <typename T>
-T *copy(const T *obj, const CopyOptions &opt = CopyOptions())
+template <typename T> T *copy(const T *obj, const CopyOptions &opt = CopyOptions())
 {
     return static_cast<T *>(copy(static_cast<const Object *>(obj), opt));
 }
@@ -110,8 +109,7 @@ void copy(const BList<Object> &src, BList<Object> &dest, const CopyOptions &opt 
 /// @param src The source list of objects to copy.
 /// @param dest The destination list to populate with copies.
 /// @param opt The copy options.
-template <class T>
-void copy(const BList<T> &src, BList<T> &dest, const CopyOptions &opt = CopyOptions())
+template <class T> void copy(const BList<T> &src, BList<T> &dest, const CopyOptions &opt = CopyOptions())
 {
     const BList<Object> *s = reinterpret_cast<const BList<Object> *>(&src);
     BList<Object> *d       = reinterpret_cast<BList<Object> *>(&dest);

@@ -26,7 +26,7 @@ namespace
 class GetSensitivityVisitor : public GuideVisitor
 {
 public:
-    GetSensitivityVisitor(semantics::ILanguageSemantics *sem, const bool addVariablesInSensitivity);
+    GetSensitivityVisitor(semantics::ILanguageSemantics *sem, bool addVariablesInSensitivity);
 
     virtual ~GetSensitivityVisitor();
 
@@ -39,13 +39,13 @@ public:
 protected:
     BList<Value> *sensList;
     semantics::ILanguageSemantics *_sem;
-    const bool _addVariablesInSensitivity;
+    bool _addVariablesInSensitivity;
 
     GetSensitivityVisitor(const GetSensitivityVisitor &);
     GetSensitivityVisitor &operator=(const GetSensitivityVisitor &);
 };
 
-GetSensitivityVisitor::GetSensitivityVisitor(semantics::ILanguageSemantics *sem, const bool addVariablesInSensitivity)
+GetSensitivityVisitor::GetSensitivityVisitor(semantics::ILanguageSemantics *sem, bool addVariablesInSensitivity)
     : sensList(new BList<Value>())
     , _sem(sem)
     , _addVariablesInSensitivity(addVariablesInSensitivity)
@@ -100,7 +100,7 @@ public:
     GlobactVisitor(
         semantics::ILanguageSemantics *sem,
         std::set<StateTable *> &list,
-        const bool addVariablesInSensitivity);
+        bool addVariablesInSensitivity);
 
     virtual ~GlobactVisitor();
 
@@ -117,7 +117,7 @@ protected:
 
     semantics::ILanguageSemantics *_sem;
     std::set<StateTable *> &_list;
-    const bool _addVariablesInSensitivity;
+    bool _addVariablesInSensitivity;
 
     GlobactVisitor(const GlobactVisitor &);
     GlobactVisitor &operator=(const GlobactVisitor &);
@@ -126,7 +126,7 @@ protected:
 GlobactVisitor::GlobactVisitor(
     semantics::ILanguageSemantics *sem,
     std::set<StateTable *> &list,
-    const bool addVariablesInSensitivity)
+    bool addVariablesInSensitivity)
     : GuideVisitor()
     , _sem(sem)
     , _list(list)
@@ -211,7 +211,7 @@ void transformGlobalActions(
     Object *o,
     std::set<StateTable *> &list,
     semantics::ILanguageSemantics *sem,
-    const bool addVariablesInSensitivity)
+    bool addVariablesInSensitivity)
 {
     if (o == nullptr)
         return;

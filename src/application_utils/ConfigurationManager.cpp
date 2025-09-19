@@ -74,7 +74,7 @@ auto rtrim(std::string &s) -> std::string &
 {
     if (s.empty()) {
         return s;
-}
+    }
     s.erase(s.find_last_not_of(" \n\r\t\f\a") + 1);
     return s;
 }
@@ -83,7 +83,7 @@ auto trim(std::string s) -> std::string { return ltrim(rtrim(s)); }
 
 void _printComments(std::ofstream &out, const std::vector<std::string> &comments)
 {
-    for (const auto & comment : comments) {
+    for (const auto &comment : comments) {
         out << "# " << comment << '\n';
     }
 }
@@ -92,13 +92,13 @@ void _printDirective(std::ofstream &out, const std::string &dir, const Configura
 {
     if (keyValues.values.empty()) {
         return;
-}
+    }
 
     _printComments(out, keyValues.comments);
 
     out << ";" << dir << " =";
 
-    for (const auto & value : keyValues.values) {
+    for (const auto &value : keyValues.values) {
         out << " " << value;
     }
 
@@ -109,13 +109,13 @@ void _printVariable(std::ofstream &out, const std::string &var, const Configurat
 {
     if (keyValues.values.empty()) {
         return;
-}
+    }
 
     _printComments(out, keyValues.comments);
 
     out << var << " =";
 
-    for (const auto & value : keyValues.values) {
+    for (const auto &value : keyValues.values) {
         out << " " << value;
     }
 
@@ -130,13 +130,13 @@ void _printSection(std::ofstream &out, const std::string &section, const Configu
         out << "[" << section << "]\n\n";
     }
 
-    for (const auto & directive : data.directives) {
+    for (const auto &directive : data.directives) {
         _printDirective(out, directive.first, directive.second);
     }
 
     out << "\n";
 
-    for (const auto & variable : data.variables) {
+    for (const auto &variable : data.variables) {
         _printVariable(out, variable.first, variable.second);
     }
 
@@ -154,7 +154,7 @@ auto ConfigurationManager::parse(const std::string &file) -> bool
         std::getline(in, line);
         if (!_parseLine(line)) {
             return false;
-}
+        }
     }
 
 #ifdef DEBUG_CONFIG_MANAGER
@@ -168,12 +168,12 @@ void ConfigurationManager::addSection(const std::string &section)
 {
     if (_sections.find(section) != _sections.end()) {
         return;
-}
+    }
     if (section.empty()) {
         _orderedSections.push_front(section);
     } else {
         _orderedSections.push_back(section);
-}
+    }
     _sections[section];
 }
 
@@ -188,7 +188,7 @@ void ConfigurationManager::addValue(
         _sections[section].directives[id].values.push_back(value);
     } else {
         _sections[section].variables[id].values.push_back(value);
-}
+    }
 }
 
 void ConfigurationManager::addValues(
@@ -239,7 +239,8 @@ void ConfigurationManager::setValues(
     }
 }
 
-auto ConfigurationManager::getValue(const std::string &section, const std::string &id, bool isDirective) -> std::string &
+auto ConfigurationManager::getValue(const std::string &section, const std::string &id, bool isDirective)
+    -> std::string &
 {
     auto it = _sections.find(section);
     messageAssert(it != _sections.end(), "No section found", nullptr, nullptr);
@@ -256,8 +257,8 @@ auto ConfigurationManager::getValue(const std::string &section, const std::strin
     return jt->second.values.back();
 }
 
-auto
-ConfigurationManager::getValues(const std::string &section, const std::string &id, bool isDirective) -> std::vector<std::string> &
+auto ConfigurationManager::getValues(const std::string &section, const std::string &id, bool isDirective)
+    -> std::vector<std::string> &
 {
     auto it = _sections.find(section);
     messageAssert(it != _sections.end(), "No section found", nullptr, nullptr);
@@ -271,8 +272,8 @@ ConfigurationManager::getValues(const std::string &section, const std::string &i
     return jt->second.values;
 }
 
-auto
-ConfigurationManager::getValue(const std::string &section, const std::string &id, bool isDirective) const -> const std::string &
+auto ConfigurationManager::getValue(const std::string &section, const std::string &id, bool isDirective) const
+    -> const std::string &
 {
     auto it = _sections.find(section);
     messageAssert(it != _sections.end(), "No section found", nullptr, nullptr);
@@ -289,8 +290,8 @@ ConfigurationManager::getValue(const std::string &section, const std::string &id
     return jt->second.values.back();
 }
 
-auto
-ConfigurationManager::getValues(const std::string &section, const std::string &id, bool isDirective) const -> const std::vector<std::string> &
+auto ConfigurationManager::getValues(const std::string &section, const std::string &id, bool isDirective) const
+    -> const std::vector<std::string> &
 {
     auto it = _sections.find(section);
     messageAssert(it != _sections.end(), "No section found", nullptr, nullptr);
@@ -315,9 +316,9 @@ auto ConfigurationManager::hasDirective(const std::string &section, const std::s
     auto it = _sections.find(section);
     if (it == _sections.end()) {
         return false;
-}
-    const Directives &dirs        = it->second.directives;
-    auto jt = dirs.find(dir);
+    }
+    const Directives &dirs = it->second.directives;
+    auto jt                = dirs.find(dir);
     return jt != dirs.end();
 }
 
@@ -326,9 +327,9 @@ auto ConfigurationManager::hasVariable(const std::string &section, const std::st
     auto it = _sections.find(section);
     if (it == _sections.end()) {
         return false;
-}
-    const Variables &vars        = it->second.variables;
-    auto jt = vars.find(var);
+    }
+    const Variables &vars = it->second.variables;
+    auto jt               = vars.find(var);
     return jt != vars.end();
 }
 
@@ -343,7 +344,7 @@ void ConfigurationManager::eraseDirective(const std::string &section, const std:
     auto it = _sections.find(section);
     if (it == _sections.end()) {
         return;
-}
+    }
     it->second.directives.erase(dir);
 }
 
@@ -352,7 +353,7 @@ void ConfigurationManager::eraseVariable(const std::string &section, const std::
     auto it = _sections.find(section);
     if (it == _sections.end()) {
         return;
-}
+    }
     it->second.variables.erase(var);
 }
 
@@ -360,10 +361,10 @@ auto ConfigurationManager::writeFile(const std::string &file) const -> bool
 {
     if (!_validateOutput()) {
         return false;
-}
+    }
     std::ofstream out(file.c_str());
 
-    for (const auto & _orderedSection : _orderedSections) {
+    for (const auto &_orderedSection : _orderedSections) {
         auto j = _sections.find(_orderedSection);
         _printSection(out, j->first, j->second);
     }
@@ -379,11 +380,11 @@ void ConfigurationManager::addComment(const std::string &section, const std::str
 {
     if (section.empty()) {
         addSection(section);
-}
+    }
     auto it = _sections.find(section);
     if (it == _sections.end()) {
         return;
-}
+    }
     it->second.comments.push_back(comment);
 }
 
@@ -396,21 +397,21 @@ void ConfigurationManager::addComment(
     auto it = _sections.find(section);
     if (it == _sections.end()) {
         return;
-}
+    }
 
     if (isDirective) {
         Directives &directives = it->second.variables;
-        auto jt = directives.find(identifier);
+        auto jt                = directives.find(identifier);
         if (jt == directives.end()) {
             return;
-}
+        }
         jt->second.comments.push_back(comment);
     } else {
-        Variables &variables   = it->second.variables;
-        auto jt = variables.find(identifier);
+        Variables &variables = it->second.variables;
+        auto jt              = variables.find(identifier);
         if (jt == variables.end()) {
             return;
-}
+        }
         jt->second.comments.push_back(comment);
     }
 }
@@ -432,7 +433,7 @@ auto ConfigurationManager::_parseLine(const std::string &line) -> bool
     std::string l = trim(line);
     if (l.empty()) {
         return true;
-}
+    }
 
     switch (l[0]) {
     case '#':
@@ -457,11 +458,11 @@ auto ConfigurationManager::_parseSection(const std::string &s) -> bool
 {
     if (s[s.size() - 1] != ']') {
         return false;
-}
+    }
     std::string res = trim(s.substr(1, s.size() - 2));
     if (res.empty()) {
         return false;
-}
+    }
     _currentSection = res;
     addSection(res);
     return true;
@@ -481,7 +482,7 @@ auto ConfigurationManager::_parseDirective(const std::string &s) -> bool
     }
     if (key.empty()) {
         return false;
-}
+    }
     _parseValues(key, val, true);
     return true;
 }
@@ -500,7 +501,7 @@ auto ConfigurationManager::_parseVariable(const std::string &s) -> bool
     }
     if (key.empty()) {
         return false;
-}
+    }
     _parseValues(key, val, false);
     return true;
 }
@@ -515,7 +516,7 @@ void ConfigurationManager::_parseValues(const std::string &key, const std::strin
         ss >> val;
         if (!val.empty()) {
             values.push_back(val);
-}
+        }
     }
     addValues(_currentSection, key, values, isDirective);
 }

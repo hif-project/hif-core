@@ -21,8 +21,7 @@ namespace /*anon*/
 
 Object *getParentSkippingCasts(Value *o) { return getParentSkippingClass<Cast>(o); }
 
-template <class T>
-Object *getParentSkippingClass(Object *o)
+template <class T> Object *getParentSkippingClass(Object *o)
 {
     if (o->getParent() == nullptr)
         return nullptr;

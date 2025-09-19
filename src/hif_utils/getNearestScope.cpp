@@ -19,7 +19,7 @@ namespace /*anon*/
 
 } // namespace
 
-Scope *getNearestScope(Object *o, const bool needDeclarationList, const bool needLibraryList, const bool needTemplates)
+Scope *getNearestScope(Object *o, bool needDeclarationList, bool needLibraryList, bool needTemplates)
 {
     if (o == nullptr)
         return nullptr;

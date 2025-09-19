@@ -96,7 +96,7 @@ int StandardPackagesVisitor::visitContents(Contents &o)
 }
 
 } // namespace
-std::string ILanguageSemantics::_makeHifName(const std::string &reqName, const bool hifFormat) const
+std::string ILanguageSemantics::_makeHifName(const std::string &reqName, bool hifFormat) const
 {
     if (!hifFormat)
         return reqName;
@@ -107,7 +107,7 @@ std::string ILanguageSemantics::_makeHifName(const std::string &reqName, const b
 }
 
 TypeDef *
-ILanguageSemantics::_makeEnum(const char *enumName, const char *values[], const size_t size, const bool hifFormat)
+ILanguageSemantics::_makeEnum(const char *enumName, const char *values[], std::size_t size, bool hifFormat)
 {
     std::string en(_makeHifName(enumName, hifFormat));
 
@@ -134,7 +134,7 @@ void ILanguageSemantics::_makeAttributeParameter(
     Type *paramType,
     Value *paramValue,
     const std::string &paramIndex,
-    const bool hifFormat)
+    bool hifFormat)
 {
     if (paramType != nullptr) {
         Parameter *p = new Parameter();
@@ -179,7 +179,7 @@ void ILanguageSemantics::_addMultiparamFunction(
     LibraryDef *ld,
     const char *name,
     HifFactory &factory,
-    const bool hifFormat,
+    bool hifFormat,
     Type *ret)
 {
     ld->declarations.push_back(
@@ -229,8 +229,8 @@ SubProgram *ILanguageSemantics::_makeBinaryAttribute(
     Value *param1Value,
     Type *param2Type,
     Value *param2Value,
-    const bool unsupported,
-    const bool hifFormat)
+    bool unsupported,
+    bool hifFormat)
 {
     SubProgram *sp = _makeAttribute(n, retType, param1Type, param1Value, unsupported, hifFormat);
 
@@ -248,8 +248,8 @@ SubProgram *ILanguageSemantics::_makeTernaryAttribute(
     Value *param2Value,
     Type *param3Type,
     Value *param3Value,
-    const bool unsupported,
-    const bool hifFormat)
+    bool unsupported,
+    bool hifFormat)
 {
     SubProgram *sp =
         _makeBinaryAttribute(n, retType, param1Type, param1Value, param2Type, param2Value, unsupported, hifFormat);
@@ -264,8 +264,8 @@ SubProgram *ILanguageSemantics::_makeAttribute(
     Type *retType,
     Type *paramType,
     Value *paramValue,
-    const bool unsupported,
-    const bool hifFormat)
+    bool unsupported,
+    bool hifFormat)
 {
     messageDebugAssert(
         (paramValue == nullptr || paramType != nullptr), "Unexpected param value without paramType", nullptr, nullptr);
@@ -377,7 +377,7 @@ ILanguageSemantics::ValueSymbol &ILanguageSemantics::ValueSymbol::operator=(cons
     return *this;
 }
 
-bool ILanguageSemantics::isStandardInclusion(const std::string & /*n*/, const bool /*isLibInclusion*/) { return false; }
+bool ILanguageSemantics::isStandardInclusion(const std::string & /*n*/, bool /*isLibInclusion*/) { return false; }
 
 } // namespace semantics
 } // namespace hif

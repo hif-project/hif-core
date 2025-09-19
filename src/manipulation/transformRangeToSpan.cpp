@@ -23,13 +23,13 @@ namespace manipulation
 namespace /*anon*/
 {
 
-//const int MAX_INT_VAL = 2147483647;
+//int MAX_INT_VAL = 2147483647;
 
 /// this function is used to avoid the approximations due to floating point
 /// calculation of c99 log2 (double)
-unsigned long long log2_int(unsigned long long x)
+std::uint64_t log2_int(std::uint64_t x)
 {
-    unsigned long long ans = 0;
+    std::uint64_t ans = 0;
     while (x >>= 1)
         ++ans;
     return ans;
@@ -38,11 +38,11 @@ unsigned long long log2_int(unsigned long long x)
 /// Returns the number of bits needed to represent the given number minus
 /// one. This number can be used as is in the Range that represents
 /// the span.
-long long get_num_bits(long long n, bool is_signed)
+std::int64_t get_num_bits(std::int64_t n, bool is_signed)
 {
     if (n < 0)
         n = -n;
-    return static_cast<long long>(log2_int(static_cast<unsigned long long>(n)) + is_signed);
+    return static_cast<std::int64_t>(log2_int(static_cast<std::uint64_t>(n)) + is_signed);
 }
 /// Returns the value object representing the number of bits needed to
 /// represent the given range. That is log(n, 2) + is_signed
@@ -60,7 +60,7 @@ Value *get_num_bits(Value *n, bool is_signed, hif::semantics::ILanguageSemantics
 
 } // namespace
 
-Range *transformRangeToSpan(Range *range, hif::semantics::ILanguageSemantics *refLang, const bool isSigned)
+Range *transformRangeToSpan(Range *range, hif::semantics::ILanguageSemantics *refLang, bool isSigned)
 {
     messageDebugAssert(range != nullptr, "Unexpected nullptr range", nullptr, refLang);
     if (range->getDirection() != dir_upto && range->getDirection() != dir_downto) {

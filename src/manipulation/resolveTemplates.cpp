@@ -247,8 +247,7 @@ private:
 
     /// @brief Set the content of the copy of the declaration returned by the
     /// instantiate function call.
-    template <typename T>
-    T *_setDeclCopy(T *d, T *decl);
+    template <typename T> T *_setDeclCopy(T *d, T *decl);
 
     /// @brief Simplify given tree by setting context option to resolve
     /// symbols no more visible.
@@ -298,8 +297,8 @@ ResolveTemplates::~ResolveTemplates()
     // 1- Check if declarations can be removed:
     hif::semantics::ReferencesMap allRefs;
     hif::semantics::GetReferencesOptions getOpts;
-    getOpts.includeUnreferenced      = true;
-    getOpts.skipStandardDeclarations = true;
+    getOpts.include_unreferenced      = true;
+    getOpts.skip_standard_declarations = true;
     hif::semantics::getAllReferences(allRefs, _sem, _system);
     for (Declarations::iterator it(_instantiatedDeclarations.begin()); it != _instantiatedDeclarations.end(); ++it) {
         Declaration *decl                          = *it;
@@ -540,8 +539,8 @@ void ResolveTemplates::fixDeclarationsInMap(Declaration *o)
     _visitedDeclarations.insert(o);
     DeclarationsReferences referencesMapNew;
     hif::semantics::GetReferencesOptions opt;
-    opt.includeUnreferenced      = true;
-    opt.skipStandardDeclarations = true;
+    opt.include_unreferenced      = true;
+    opt.skip_standard_declarations = true;
     hif::semantics::getAllReferences(referencesMapNew, _sem, o, opt);
     referencesMapNew.erase(o);
 
@@ -605,8 +604,7 @@ bool ResolveTemplates::_isCTC(const BList<Declaration> &templates) const
     return false;
 }
 
-template <typename T>
-T *ResolveTemplates::_setDeclCopy(T *d, T *decl)
+template <typename T> T *ResolveTemplates::_setDeclCopy(T *d, T *decl)
 {
     T *declCopy                     = nullptr;
     InstanceToCopyMap::iterator git = _instanceToCopyMap.find(decl);
@@ -729,7 +727,7 @@ public:
     int visitTypeDef(TypeDef &o);
 
 private:
-    bool _checkRange(Range *range, const bool noError);
+    bool _checkRange(Range *range, bool noError);
     bool _checkBound(Value *v);
     bool _checkDeclaration(Declaration *o);
 
@@ -776,7 +774,7 @@ int RangeVisitor::visitFunctionCall(FunctionCall &o)
     if (!hif::semantics::isVectorType(baseType, _sem) && dynamic_cast<Int *>(baseType) == nullptr)
         return 0;
 
-    const bool ok = _checkRange(hif::typeGetSpan(baseType, _sem), true);
+    bool ok = _checkRange(hif::typeGetSpan(baseType, _sem), true);
     if (ok)
         return 0;
 
@@ -787,7 +785,7 @@ int RangeVisitor::visitFunctionCall(FunctionCall &o)
     // Checking that simplify() has done a good job:
     hif::semantics::resetTypes(&o);
     baseType           = hif::semantics::getBaseType(&o, false, _sem);
-    const bool checkOk = _checkRange(hif::typeGetSpan(baseType, _sem), true);
+    bool checkOk = _checkRange(hif::typeGetSpan(baseType, _sem), true);
     if (!checkOk) {
         messageDebug("Non-constant span type:", baseType, _sem);
         messageDebug("Unable to get a constant span", &o, _sem);
@@ -809,7 +807,7 @@ int RangeVisitor::visitRange(hif::Range &o)
 
 int RangeVisitor::visitView(View &o)
 {
-    const bool restore = _needConstant;
+    bool restore = _needConstant;
     if (_checkDeclaration(&o))
         return 0;
     hif::GuideVisitor::visitView(o);
@@ -826,7 +824,7 @@ int RangeVisitor::visitLibraryDef(LibraryDef &o)
 
 int RangeVisitor::visitFunction(Function &o)
 {
-    const bool restore = _needConstant;
+    bool restore = _needConstant;
     if (_checkDeclaration(&o))
         return 0;
     hif::GuideVisitor::visitFunction(o);
@@ -836,7 +834,7 @@ int RangeVisitor::visitFunction(Function &o)
 
 int RangeVisitor::visitProcedure(Procedure &o)
 {
-    const bool restore = _needConstant;
+    bool restore = _needConstant;
     if (_checkDeclaration(&o))
         return 0;
     hif::GuideVisitor::visitProcedure(o);
@@ -846,7 +844,7 @@ int RangeVisitor::visitProcedure(Procedure &o)
 
 int RangeVisitor::visitTypeDef(TypeDef &o)
 {
-    const bool restore = _needConstant;
+    bool restore = _needConstant;
     if (_checkDeclaration(&o))
         return 0;
     hif::GuideVisitor::visitTypeDef(o);
@@ -854,7 +852,7 @@ int RangeVisitor::visitTypeDef(TypeDef &o)
     return 0;
 }
 
-bool RangeVisitor::_checkRange(Range *range, const bool noError)
+bool RangeVisitor::_checkRange(Range *range, bool noError)
 {
     if (range == nullptr)
         return true;
@@ -872,15 +870,15 @@ bool RangeVisitor::_checkRange(Range *range, const bool noError)
             return true;
     }
 
-    const bool isSpanInformation = dynamic_cast<String *>(range->getParent()) != nullptr;
+    bool isSpanInformation = dynamic_cast<String *>(range->getParent()) != nullptr;
 
     Value *v               = range->getLeftBound();
-    const bool isLeftError = !_checkBound(v) && (v != nullptr || !isSpanInformation);
+    bool isLeftError = !_checkBound(v) && (v != nullptr || !isSpanInformation);
 
     v                       = range->getRightBound();
-    const bool isRightError = !_checkBound(v) && (v != nullptr || !isSpanInformation);
+    bool isRightError = !_checkBound(v) && (v != nullptr || !isSpanInformation);
 
-    unsigned long long bw = hif::semantics::spanGetBitwidth(range, _sem);
+    std::uint64_t bw = hif::semantics::spanGetBitwidth(range, _sem);
     if (bw == 0) {
         if (isLeftError) {
             if (noError)
@@ -922,7 +920,7 @@ bool RangeVisitor::_checkBound(Value *v)
         SubProgram *sub = valTp != nullptr ? dynamic_cast<SubProgram *>(valTp->getParent()) : nullptr;
         for (hif::semantics::ReferencesSet::iterator jt = refSet.begin(); jt != refSet.end(); ++jt) {
             Identifier *id        = dynamic_cast<Identifier *>(*jt);
-            const bool isTemplate = hif::isSubNode(id, td) || hif::isSubNode(id, sub);
+            bool isTemplate = hif::isSubNode(id, td) || hif::isSubNode(id, sub);
             if (!isTemplate)
                 return false;
         }

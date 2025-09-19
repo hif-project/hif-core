@@ -30,7 +30,7 @@ Value *typeGetSpanSize(Type *t, ILanguageSemantics *refLang)
     return hif::semantics::spanGetSize(range, refLang);
 }
 Value *
-spanGetSize(Range *r, ILanguageSemantics *sem, const bool simplify, const hif::manipulation::SimplifyOptions &opts)
+spanGetSize(Range *r, ILanguageSemantics *sem, bool simplify, const hif::manipulation::SimplifyOptions &opts)
 {
     messageAssert(r != nullptr, "Passed nullptr range", nullptr, sem);
 
@@ -70,7 +70,7 @@ spanGetSize(Range *r, ILanguageSemantics *sem, const bool simplify, const hif::m
         messageAssert(ivo1 != nullptr, "Cannot convert const value to int", cv1, sem);
         messageAssert(ivo2 != nullptr, "Cannot convert const value to int", cv2, sem);
 
-        long long res =
+        std::int64_t res =
             (r->getDirection() == dir_upto) ? ivo2->getValue() - ivo1->getValue() : ivo1->getValue() - ivo2->getValue();
 
         if (ivo1 != cv1)

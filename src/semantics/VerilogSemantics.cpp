@@ -188,12 +188,12 @@ bool _isPermittedOnReals(Operator operation);
 
 // Wrapper used to suppress useless warnings:
 #ifdef __GNUC__
-#pragma GCC diagnostic ignored "-Wswitch-default"
-#pragma GCC diagnostic ignored "-Wswitch-enum"
+#    pragma GCC diagnostic ignored "-Wswitch-default"
+#    pragma GCC diagnostic ignored "-Wswitch-enum"
 #else
-#pragma warning(disable : 4127)
-#pragma warning(disable : 4244)
-#pragma warning(disable : 4505)
+#    pragma warning(disable : 4127)
+#    pragma warning(disable : 4244)
+#    pragma warning(disable : 4505)
 #endif
 VerilogSemantics::VerilogSemantics()
     : ILanguageSemantics()
@@ -280,7 +280,7 @@ bool VerilogSemantics::isSyntacticTypeRebased() { return false; }
 Value *VerilogSemantics::getTypeDefaultValue(Type *type, Declaration *d)
 {
     // in case of nets, use 'Z' as default value instead of 'X'
-    const bool isNetDecl = (dynamic_cast<Signal *>(d) != nullptr) || (dynamic_cast<Port *>(d) != nullptr);
+    bool isNetDecl = (dynamic_cast<Signal *>(d) != nullptr) || (dynamic_cast<Port *>(d) != nullptr);
 
     if (dynamic_cast<Real *>(type) != nullptr) {
         Real *tt = static_cast<Real *>(type);
@@ -333,7 +333,7 @@ Value *VerilogSemantics::getTypeDefaultValue(Type *type, Declaration *d)
         if (range == nullptr)
             return nullptr;
 
-        unsigned long long size = hif::semantics::spanGetBitwidth(range, this);
+        std::uint64_t size = hif::semantics::spanGetBitwidth(range, this);
         if (size == 0) {
             // Failed to determine range: create an Aggregate with others = 'X'/'Z'
             BitValue *bit = new BitValue();
@@ -351,7 +351,7 @@ Value *VerilogSemantics::getTypeDefaultValue(Type *type, Declaration *d)
         // build a string made of the right number of 'X'/'Z'
         std::string ret;
         ret.reserve(std::string::size_type(size + 1));
-        for (unsigned long long i = 0; i < size; ++i) {
+        for (std::uint64_t i = 0; i < size; ++i) {
             if (isNetDecl)
                 ret.push_back('Z');
             else
@@ -425,7 +425,7 @@ Operator VerilogSemantics::getMapForOperator(
 {
     return srcOperation;
 }
-Type *VerilogSemantics::getSuggestedTypeForOp(Type *t, Operator, Type * /*opType*/, Object *, const bool /*isOp1*/)
+Type *VerilogSemantics::getSuggestedTypeForOp(Type *t, Operator, Type * /*opType*/, Object *, bool /*isOp1*/)
 {
     return hif::copy(t);
 }
@@ -439,7 +439,7 @@ Type *VerilogSemantics::getTypeForConstant(ConstValue *c)
 
     if (dynamic_cast<BitvectorValue *>(c)) {
         BitvectorValue *bv = static_cast<BitvectorValue *>(c);
-        Range *range       = new Range(static_cast<long long>(bv->getValue().size() - 1U), 0ULL);
+        Range *range       = new Range(static_cast<std::int64_t>(bv->getValue().size() - 1U), 0);
         return _makeVerilogRegisterType(range, true);
     }
 
@@ -541,10 +541,10 @@ Value *VerilogSemantics::explicitCast(Value *valueToCast, Type *castType, Type *
     ret->setType(hif::copy(castType));
     return ret;
 }
-long long VerilogSemantics::transformRealToInt(const double v)
+std::int64_t VerilogSemantics::transformRealToInt(const double v)
 {
     // TODO check, this is c++ like
-    return static_cast<long long>(v);
+    return static_cast<std::int64_t>(v);
 }
 Type *VerilogSemantics::isTypeAllowedAsBound(Type *t)
 {
@@ -616,7 +616,7 @@ bool VerilogSemantics::isTypeAllowedForConstValue(ConstValue *cv, Type *synType)
     opt.checkOnlyTypes    = true;
     opt.handleVectorTypes = true;
 
-    const bool res = hif::equals(dt, synType, opt);
+    bool res = hif::equals(dt, synType, opt);
     delete dt;
 
     return res;
@@ -646,7 +646,7 @@ void VerilogAnalysis::analyzeOperands(Type *op1Type, Type *op2Type)
         return;
     }
 
-    //long long size = spanGetSize();
+    //std::int64_t size = spanGetSize();
     Range *contextSpan = _sem->getContextPrecision(_srcObj);
     if (contextSpan != nullptr) {
         if (dynamic_cast<Bit *>(_result.returnedType) != nullptr && !_isLogical(_currOperator) &&
@@ -903,7 +903,7 @@ void VerilogAnalysis::map(Array *array, Bit *bit)
         return;
 
     Array *other = new Array();
-    Range *range = new Range(0ll, 0ll); // use long long
+    Range *range = new Range(0, 0); // use std::int64_t
     range->setDirection(array->getSpan()->getDirection());
     other->setSpan(range);
     other->setType(hif::copy(bit));
@@ -920,7 +920,7 @@ void VerilogAnalysis::map(Bitvector *array, Bit *bit)
         return;
 
     Bitvector *other = new Bitvector();
-    Range *range     = new Range(0ll, 0ll); // use long long
+    Range *range     = new Range(0, 0); // use std::int64_t
     range->setDirection(array->getSpan()->getDirection());
     other->setSpan(range);
     other->setSigned(false);
@@ -1224,12 +1224,12 @@ int VerilogTypeVisitor::visitInt(Int &o)
         // no range, make a 32 bit
         _result = _makeVerilogRegisterType(new Range(31, 0), o.isConstexpr(), true);
     } else {
-        //        unsigned long long size = hif::semantics::spanGetBitwidth(range, _sem, false);
+        //        std::uint64_t size = hif::semantics::spanGetBitwidth(range, _sem, false);
         //        if (size != 0)
         //        {
         //            // less than 32 bits or greater than 32 bits, build a bit array
         //            Bitvector* array = _makeVerilogRegisterType (
-        //                        new Range (static_cast<long long>(size - 1), 0));
+        //                        new Range (static_cast<std::int64_t>(size - 1), 0));
         //            array->setSigned(o.isSigned());
         //            _result = array;
         //        }
@@ -1347,7 +1347,7 @@ bool _isArithmetic(Operator operation)
 bool _isLogical(Operator operation) { return hif::operatorIsLogical(operation); }
 bool _isUnary(Operator operation) { return hif::operatorIsUnary(operation); }
 bool _isReduce(Operator operation) { return hif::operatorIsReduce(operation); }
-Bit *_makeVerilogBitType(const bool isConstexpr)
+Bit *_makeVerilogBitType(bool isConstexpr)
 {
     Bit *b = new Bit();
     b->setLogic(true);
@@ -1355,7 +1355,7 @@ Bit *_makeVerilogBitType(const bool isConstexpr)
     b->setConstexpr(isConstexpr);
     return b;
 }
-Bitvector *_makeVerilogRegisterType(Range *range, const bool isConstexpr, const bool isSigned)
+Bitvector *_makeVerilogRegisterType(Range *range, bool isConstexpr, bool isSigned)
 {
     Bitvector *ret = new Bitvector();
     ret->setLogic(true);

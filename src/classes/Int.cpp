@@ -45,7 +45,7 @@ Range *Int::setSpan(Range *x) { return setChild(_span, x); }
 
 bool Int::isSigned() const { return (_isSigned); }
 
-void Int::setSigned(const bool sign) { _isSigned = sign; }
+void Int::setSigned(bool sign) { _isSigned = sign; }
 
 Object *Int::toObject() { return this; }
 

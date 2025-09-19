@@ -18,8 +18,7 @@ class Alias;
 class Alt;
 class Array;
 class Assign;
-template <class T>
-class BList;
+template <class T> class BList;
 class BListHost;
 class BaseContents;
 class Bit;

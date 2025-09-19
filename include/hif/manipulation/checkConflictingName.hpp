@@ -20,7 +20,7 @@ namespace manipulation
 /// @return <tt>true</tt> if the name is conflicting, <tt>false</tt> otherwise.
 ///
 
-bool checkConflictingName(const std::string& n, Scope *scope);
+bool checkConflictingName(const std::string &n, Scope *scope);
 
 } // namespace manipulation
 } // namespace hif

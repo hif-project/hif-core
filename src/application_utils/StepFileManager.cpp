@@ -51,7 +51,7 @@ void StepFileManager::setParentManager(StepFileManager *parentManager) { _parent
 
 auto StepFileManager::getPrint() const -> bool { return _print; }
 
-void StepFileManager::setPrint(const bool print) { _print = print; }
+void StepFileManager::setPrint(bool print) { _print = print; }
 
 void StepFileManager::printStep(System *s, const std::string &stepName)
 {
@@ -109,7 +109,7 @@ void StepFileManager::setAutoStepFile(const std::string &autoStepFile)
         _autoStepFile             = autoStepFile;
         // Removing: .hif.xml
         _autoStepFile             = _autoStepFile.substr(0, _autoStepFile.size() - 8);
-        const size_t lastSlashIdx = _autoStepFile.find_last_of("\\/");
+        std::size_t lastSlashIdx = _autoStepFile.find_last_of("\\/");
         if (std::string::npos != lastSlashIdx) {
             _autoStepFile.erase(0, lastSlashIdx + 1);
         }
@@ -124,9 +124,9 @@ void StepFileManager::setAutoStepFile(const std::string &autoStepFile)
         return;
     }
 
-    _autoStepFile                = _parentManager->getAutoStepFile();
+    _autoStepFile          = _parentManager->getAutoStepFile();
     std::string parentStep = _parentManager->getCurrentStepName();
-    const std::size_t size       = 3 + parentStep.size() + 1;
+    const std::size_t size = 3 + parentStep.size() + 1;
     if (size >= _autoStepFile.size()) {
         _autoStepFile = "";
     } else {
@@ -145,7 +145,7 @@ auto StepFileManager::checkStepName() -> bool
     if (_autoStepFile.empty()) {
         return true;
     }
-    const bool ret = (_currentAutoStepNumber > _autoStepNumber);
+    bool ret = (_currentAutoStepNumber > _autoStepNumber);
     ++_currentAutoStepNumber;
     if (!ret) {
         ++_stepNumber;

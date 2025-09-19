@@ -55,11 +55,11 @@ public:
 
     /// @brief Sets whether this is the definition of a standard library.
     /// @param standard <tt>true</tt> if this is the definition of a standard library, <tt>false</tt> otherwise.
-    void setStandard(const bool standard);
+    void setStandard(bool standard);
 
     /// @brief Sets whether the linkage of C++ code has C linkage.
     /// @param cLinkage The new value.
-    void setCLinkage(const bool cLinkage);
+    void setCLinkage(bool cLinkage);
 
     /// @brief Sets whether the linkage of C++ code has C linkage.
     /// @return The current value.

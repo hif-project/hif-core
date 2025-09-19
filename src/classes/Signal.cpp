@@ -31,10 +31,10 @@ void Signal::_calculateFields() { DataDeclaration::_calculateFields(); }
 
 bool Signal::isStandard() const { return _isStandard; }
 
-void Signal::setStandard(const bool standard) { _isStandard = standard; }
+void Signal::setStandard(bool standard) { _isStandard = standard; }
 
 bool Signal::isWrapper() const { return _isWrapper; }
 
-void Signal::setWrapper(const bool wrapper) { _isWrapper = wrapper; }
+void Signal::setWrapper(bool wrapper) { _isWrapper = wrapper; }
 
 } // namespace hif

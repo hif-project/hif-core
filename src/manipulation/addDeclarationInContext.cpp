@@ -22,7 +22,7 @@ namespace /*anon*/
 
 } // namespace
 
-bool addDeclarationInContext(Declaration *newDecl, Declaration *context, const bool before)
+bool addDeclarationInContext(Declaration *newDecl, Declaration *context, bool before)
 {
     if (dynamic_cast<Port *>(newDecl) != nullptr) {
         Port *newPortDecl = static_cast<Port *>(newDecl);

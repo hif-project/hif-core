@@ -79,7 +79,7 @@ public:
     /// a valid operation in current semantics  (if possible).
     ///
     virtual Type *
-    getSuggestedTypeForOp(Type *t, Operator operation, Type *opType, Object *startingObject, const bool isOp1);
+    getSuggestedTypeForOp(Type *t, Operator operation, Type *opType, Object *startingObject, bool isOp1);
     ///
     /// @brief Function that given a ConstValue returns a Type
     /// pointer representing the type to associate to the constant according
@@ -130,7 +130,7 @@ public:
     /// SystemC truncates).
     /// @param v The value to convert.
     /// @return The converted value.
-    virtual long long transformRealToInt(const double v);
+    virtual std::int64_t transformRealToInt(const double v);
     /// @name Semantic checks methods
     ///@{
 
@@ -253,38 +253,38 @@ public:
     /// @brief Gets the standard Verilog package.
     /// @param hifFormat If true, returns the package in HIF format.
     /// @return Pointer to the standard package LibraryDef.
-    LibraryDef *getStandardPackage(const bool hifFormat = false);
+    LibraryDef *getStandardPackage(bool hifFormat = false);
 
     /// @brief Gets the VAMS standard package.
     /// @param hifFormat If true, returns the package in HIF format.
     /// @return Pointer to the VAMS standard package LibraryDef.
-    LibraryDef *getVAMSStandardPackage(const bool hifFormat = false);
+    LibraryDef *getVAMSStandardPackage(bool hifFormat = false);
 
     /// @brief Gets the VAMS constants package.
     /// @param hifFormat If true, returns the package in HIF format.
     /// @return Pointer to the VAMS constants package LibraryDef.
-    LibraryDef *getVAMSConstantsPackage(const bool hifFormat = false);
+    LibraryDef *getVAMSConstantsPackage(bool hifFormat = false);
 
     /// @brief Gets the VAMS disciplines package.
     /// @param hifFormat If true, returns the package in HIF format.
     /// @return Pointer to the VAMS disciplines package LibraryDef.
-    LibraryDef *getVAMSDisciplinesPackage(const bool hifFormat = false);
+    LibraryDef *getVAMSDisciplinesPackage(bool hifFormat = false);
 
     /// @brief Gets the VAMS driver access package.
     /// @param hifFormat If true, returns the package in HIF format.
     /// @return Pointer to the VAMS driver access package LibraryDef.
-    LibraryDef *getVAMSDriverAccessPackage(const bool hifFormat = false);
+    LibraryDef *getVAMSDriverAccessPackage(bool hifFormat = false);
 
     /// @brief Get the eventual LibraryDef matching the given name.
     /// @param n The name.
     /// @return The LibraryDef or nullptr.
-    virtual LibraryDef *getStandardLibrary(const std::string & n);
+    virtual LibraryDef *getStandardLibrary(const std::string &n);
 
     /// @brief Return True if the given library is native for the semantics.
     /// @param n The library name.
     /// @param hifFormat If true, check in HIF format.
     /// @return true if the library is native, false otherwise.
-    virtual bool isNativeLibrary(const std::string & n, const bool hifFormat = false);
+    virtual bool isNativeLibrary(const std::string & n, bool hifFormat = false);
 
     /// @brief Starting from system adds all required standard packages.
     /// @param s The system.
@@ -303,7 +303,7 @@ public:
     /// @param n The library name.
     /// @param isLibInclusion Whether it's a library inclusion.
     /// @return true if no namespace is needed, false otherwise.
-    virtual bool isStandardInclusion(const std::string & n, const bool isLibInclusion);
+    virtual bool isStandardInclusion(const std::string & n, bool isLibInclusion);
 
     /// @brief Returns the mapped symbol w.r.t. the current semantics.
     /// @param key The key symbol.
@@ -314,7 +314,7 @@ public:
     /// @brief Returns the event method name w.r.t. current semantics.
     /// @param hifFormat If true, return in HIF format.
     /// @return The event method name.
-    virtual std::string getEventMethodName(const bool hifFormat = false);
+    virtual std::string getEventMethodName(bool hifFormat = false);
 
     /// @brief Returns <tt>true</tt> if the given call is an event call w.r.t.
     /// the current semantics, <tt>false</tt> otherwise.

@@ -81,7 +81,7 @@ public:
 
     /// @brief Sets whether this is a standard declaration.
     /// @param standard <tt>true</tt> if this is a standard declaration, <tt>false</tt> otherwise.
-    void setStandard(const bool standard);
+    void setStandard(bool standard);
 
     /// @brief Returns the name of the file containing the view definition.
     /// @return The name of the file containing the view definition.

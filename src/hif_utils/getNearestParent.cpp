@@ -19,7 +19,7 @@ namespace /*anon*/
 
 } // namespace
 
-template <typename T> T *getNearestParent(Object *object, const bool matchStarting)
+template <typename T> T *getNearestParent(Object *object, bool matchStarting)
 {
     if (object == nullptr) {
         assert(false);
@@ -42,7 +42,7 @@ template <typename T> T *getNearestParent(Object *object, const bool matchStarti
 }
 
 /// @brief Defines a template method for retrieving the nearest parent object of a specific type.
-#define HIF_TEMPLATE_METHOD(T) T *getNearestParent<T>(Object *, const bool)
+#define HIF_TEMPLATE_METHOD(T) T *getNearestParent<T>(Object *, bool)
 
 HIF_INSTANTIATE_METHOD()
 

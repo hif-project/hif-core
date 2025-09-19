@@ -103,8 +103,8 @@ bool isSubType(
     Type *t1,
     Type *t2,
     ILanguageSemantics *refLang,
-    const bool compareSpan     = true,
-    const bool considerOpacity = false);
+    bool compareSpan     = true,
+    bool considerOpacity = false);
 
 /// @brief Checks if <tt>t</tt> is set as a semantics type of a typedObject.
 ///

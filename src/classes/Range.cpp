@@ -35,18 +35,6 @@ Range::Range(Value *lbound_, Value *rbound_, const RangeDirection dir_)
     setRightBound(rbound_);
 }
 
-Range::Range(long long lbound_, long long rbound_)
-    : _direction(dir_upto)
-    , _leftBound(nullptr)
-    , _rightBound(nullptr)
-    , _type(nullptr)
-{
-    setLeftBound(new IntValue(lbound_));
-    setRightBound(new IntValue(rbound_));
-    if (lbound_ >= rbound_)
-        _direction = dir_downto;
-}
-
 Range::~Range()
 {
     delete (_leftBound);

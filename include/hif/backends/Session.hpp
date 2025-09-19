@@ -99,10 +99,9 @@ public:
     void SetPath(std::string &sPath);
     /// @brief Set an instance name
     /// @param sName The instance name to set.
-    void SetInstName(std::string sName);
+    void SetInstName(const std::string &sName);
     /// @brief Set an entity name
-    /// @param sName The entity name to set.
-    void SetEntName(const std::string& sName);
+    void SetEntName(const std::string &sName);
     /// @brief Set an instance flag
     /// @param eTag The instance tag to set.
     void SetInstTag(InstTag_T eTag);

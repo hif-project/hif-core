@@ -20,14 +20,14 @@
 #include "hif/semantics/semantics.hpp"
 
 #ifdef __clang__
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wunused-member-function"
+#    pragma clang diagnostic push
+#    pragma clang diagnostic ignored "-Wunused-member-function"
 #elif defined __GNUC__
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-function"
-#if __GNUC__ >= 5
-#pragma GCC diagnostic ignored "-Wduplicated-cond"
-#endif
+#    pragma GCC diagnostic push
+#    pragma GCC diagnostic ignored "-Wunused-function"
+#    if __GNUC__ >= 5
+#        pragma GCC diagnostic ignored "-Wduplicated-cond"
+#    endif
 #endif
 
 namespace hif
@@ -208,7 +208,7 @@ public:
         bool &allowNotFound,
         ILanguageSemantics *refSem,
         const GetCandidatesOptions &dopt,
-        const bool isRecursive = false);
+        bool isRecursive = false);
     /// @brief Base Map: call the map recursively on the parent object.
     void map(Object *obj);
 
@@ -504,7 +504,7 @@ Declarations InternalDeclarationVisitor::findDeclarations(
     bool &allowNotFound,
     ILanguageSemantics *refSem,
     const GetCandidatesOptions &dopt,
-    const bool isRecursive)
+    bool isRecursive)
 {
     if (location == nullptr)
         location = startingObject;
@@ -818,7 +818,7 @@ void InternalDeclarationVisitor::_getDeclarationInInheritance(View *view)
         if (v == nullptr)
             continue;
 
-        const bool restore     = _data._isInInheritance;
+        bool restore     = _data._isInInheritance;
         _data._isInInheritance = true;
         map(v->getContents());
         _data._isInInheritance = restore;
@@ -1260,7 +1260,7 @@ void InternalDeclarationVisitor::_manageFieldReference(FieldReference *obj)
 void InternalDeclarationVisitor::_manageFunctionCall(FunctionCall *obj)
 {
     if (obj->getInstance() != nullptr) {
-        const bool search = _getMethodDeclaration(obj->getInstance());
+        bool search = _getMethodDeclaration(obj->getInstance());
         if (search)
             _searchInParent(obj);
         return;
@@ -1374,7 +1374,7 @@ void InternalDeclarationVisitor::_manageParameterAssign(ParameterAssign *obj)
     if (_data.index == hif::NameTable::getInstance()->none()) {
         // The name may be not set just after parsing. Thus this could help
         // even if it could be unsafe.
-        BList<ParameterAssign>::size_t pos = obj->getBList()->getPosition(obj);
+        auto pos = obj->getBList()->getPosition(obj);
         messageAssert(pos != obj->getBList()->size(), "Unexpected position", obj, _data.sem);
         _data.resultDeclarations.push_back(sub->parameters.at(pos));
     } else {
@@ -1412,7 +1412,7 @@ void InternalDeclarationVisitor::_manageProcedureCall(ProcedureCall *obj)
         return;
     }
 
-    const bool search = _getMethodDeclaration(obj->getInstance());
+    bool search = _getMethodDeclaration(obj->getInstance());
     if (search)
         _searchInParent(obj);
 }
@@ -1546,7 +1546,7 @@ public:
     /// @param isMandatory Always return at least one declaration, if any.
     ///
     template <typename T>
-    Declaration *getBestCandidate(Declarations &candidates, T *startingObject, const bool isMandatory);
+    Declaration *getBestCandidate(Declarations &candidates, T *startingObject, bool isMandatory);
 
 private:
     /// @brief Scores enums used to find best candidate.
@@ -1605,7 +1605,7 @@ private:
     void _getGreatestCandidates(CandidateInfoQueue &bestCandidates, Declarations &normalCandidates);
 
     /// @brief Print many infos about given removed candidate reason.
-    void _printRemovedCandidateReason(Declaration *candidate, const int index, const std::string &removeReason);
+    void _printRemovedCandidateReason(Declaration *candidate, int index, const std::string &removeReason);
 };
 
 GetDeclarationVisitor::GetDeclarationVisitor(
@@ -1789,7 +1789,7 @@ template <typename T> void GetDeclarationVisitor::_setCandidates(Declarations &l
 
 template <typename T>
 Declaration *
-GetDeclarationVisitor::getBestCandidate(Declarations &candidates, T *startingObject, const bool isMandatory)
+GetDeclarationVisitor::getBestCandidate(Declarations &candidates, T *startingObject, bool isMandatory)
 {
     if (candidates.empty())
         return nullptr;
@@ -2004,11 +2004,11 @@ GetDeclarationVisitor::getBestCandidate(Declarations &candidates, T *startingObj
             Type *t     = hif::semantics::getSemanticType(inst, _sem);
             messageAssert(_opt.looseTypeChecks || t != nullptr, "Cannot type instance", inst, _sem);
 
-            const bool callerIsScalar =
+            bool callerIsScalar =
                 (dynamic_cast<Array *>(t) == nullptr && dynamic_cast<Bitvector *>(t) == nullptr &&
                  dynamic_cast<Signed *>(t) == nullptr && dynamic_cast<Unsigned *>(t) == nullptr);
 
-            const bool functionIsScalar =
+            bool functionIsScalar =
                 (dynamic_cast<Array *>(f->getType()) == nullptr && dynamic_cast<Bitvector *>(f->getType()) == nullptr &&
                  dynamic_cast<Signed *>(f->getType()) == nullptr && dynamic_cast<Unsigned *>(f->getType()) == nullptr);
 
@@ -2288,14 +2288,14 @@ void GetDeclarationVisitor::_getGreatestCandidates(CandidateInfoQueue &bestCandi
 }
 
 #ifdef NDEBUG
-void GetDeclarationVisitor::_printRemovedCandidateReason(Declaration *, const int, const std::string &)
+void GetDeclarationVisitor::_printRemovedCandidateReason(Declaration *, int, const std::string &)
 {
     // never called
 }
 #else
 void GetDeclarationVisitor::_printRemovedCandidateReason(
     Declaration *candidate,
-    const int index,
+    int index,
     const std::string &removeReason)
 {
     std::stringstream ss;

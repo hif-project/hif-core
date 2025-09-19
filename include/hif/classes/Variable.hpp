@@ -37,7 +37,7 @@ public:
 
     /// @brief Sets whether the variable is an instance of a design unit.
     /// @param instance <tt>true</tt> if the variable is an instance of a design unit, <tt>false</tt> otherwise.
-    void setInstance(const bool instance);
+    void setInstance(bool instance);
 
     /// @brief Returns whether this is a standard declaration.
     /// @return <tt>true</tt> if this is a standard declaration, <tt>false</tt> otherwise.
@@ -45,7 +45,7 @@ public:
 
     /// @brief Sets whether this is a standard declaration.
     /// @param standard <tt>true</tt> if this is a standard declaration, <tt>false</tt> otherwise.
-    void setStandard(const bool standard);
+    void setStandard(bool standard);
 
     /// @brief Accepts a visitor to visit the current object.
     /// @param vis The visitor.

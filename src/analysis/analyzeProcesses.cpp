@@ -243,7 +243,7 @@ void ProcessVisitor::_analyze(StateTable *o)
 void ProcessVisitor::_classifySignals(ProcessInfos &infos, Object *proc)
 {
     ObjList list;
-    hif::semantics::collectSymbols(list, proc, _sem, _opt.skipStandardDeclarations);
+    hif::semantics::collectSymbols(list, proc, _sem, _opt.skip_standard_declarations);
 
     for (auto *o : list) {
         if (dynamic_cast<hif::features::ISymbol *>(o) == nullptr) {
@@ -311,13 +311,13 @@ void ProcessVisitor::_classifyWrtSensitivity(ProcessInfos &infos, StateTable * /
     if (_opt.clock.empty() && _opt.reset.empty()) {
         return;
     }
-    bool clockPos      = false;
-    bool clockNeg      = false;
-    bool resetPos      = false;
-    bool resetNeg      = false;
-    unsigned asynch    = 0;
-    unsigned asynchPos = 0;
-    unsigned asynchNeg = 0;
+    bool clockPos             = false;
+    bool clockNeg             = false;
+    bool resetPos             = false;
+    bool resetNeg             = false;
+    unsigned asynch           = 0;
+    unsigned asynchPos        = 0;
+    unsigned asynchNeg        = 0;
     std::string asynchName    = nullptr;
     std::string asynchPosName = nullptr;
     std::string asynchNegName = nullptr;
@@ -387,18 +387,18 @@ void ProcessVisitor::_classifyWrtSensitivity(ProcessInfos &infos, StateTable * /
     }
     // else maybe synch, but we do not know: already fine
     // Refining taking into account also other signals.
-    const bool noAsynch = (asynch == 0 && asynchPos == 0 && asynchNeg == 0);
+    bool noAsynch = (asynch == 0 && asynchPos == 0 && asynchNeg == 0);
     if (noAsynch) {
         return;
     }
-    const bool sameName = (asynchName.empty() || asynchPosName.empty() || asynchName == asynchPosName) &&
+    bool sameName = (asynchName.empty() || asynchPosName.empty() || asynchName == asynchPosName) &&
                           (asynchName.empty() || asynchNegName.empty() || asynchName == asynchNegName) &&
                           (asynchPosName.empty() || asynchNegName.empty() || asynchPosName == asynchNegName);
 
-    const bool oneAsynchForKind =
+    bool oneAsynchForKind =
         (asynch == 0 || asynch == 1) && (asynchPos == 0 || asynchPos == 1) && (asynchNeg == 0 || asynchNeg == 1);
 
-    const bool justOneAsynch = oneAsynchForKind && sameName;
+    bool justOneAsynch = oneAsynchForKind && sameName;
 
     if (infos.processKind == ProcessInfos::SYNCHRONOUS) {
         if (infos.resetKind == ProcessInfos::NO_RESET && justOneAsynch) {
@@ -711,9 +711,9 @@ auto ProcessVisitor::_mergeProcessStyle(ProcessInfos &infosRet, ProcessInfos &in
 
 auto ProcessVisitor::_mergeSignals(ProcessInfos &infosRet, ProcessInfos &infos1, ProcessInfos &infos2) -> bool
 {
-    const bool clockOk = infos1.clock == nullptr || infos2.clock == nullptr || infos1.clock == infos2.clock;
+    bool clockOk = infos1.clock == nullptr || infos2.clock == nullptr || infos1.clock == infos2.clock;
 
-    const bool resetOk = infos1.reset == nullptr || infos2.reset == nullptr || infos1.reset == infos2.reset;
+    bool resetOk = infos1.reset == nullptr || infos2.reset == nullptr || infos1.reset == infos2.reset;
 
     if (!clockOk || !resetOk) {
         return false;
@@ -834,7 +834,7 @@ auto ProcessVisitor::_isEqualsToZeroOrOne(Value *cond, DataDeclaration *&n, bool
         delete tmp;
         return false;
     }
-    long long cv = iv->getValue();
+    std::int64_t cv = iv->getValue();
     delete iv;
     if (cv != 0 && cv != 1) {
         return false;
@@ -1268,7 +1268,7 @@ auto ProcessInfos::isInSensitivity(ReferredDeclarations::value_type v) const -> 
 AnalyzeProcessOptions::AnalyzeProcessOptions()
     : clock(nullptr)
     , reset(nullptr)
-    , skipStandardDeclarations(true)
+    , skip_standard_declarations(true)
     , printWarnings(false)
 {
     // ntd
@@ -1280,7 +1280,7 @@ AnalyzeProcessOptions::~AnalyzeProcessOptions()
 AnalyzeProcessOptions::AnalyzeProcessOptions(const AnalyzeProcessOptions &other)
     : clock(other.clock)
     , reset(other.reset)
-    , skipStandardDeclarations(other.skipStandardDeclarations)
+    , skip_standard_declarations(other.skip_standard_declarations)
     , printWarnings(other.printWarnings)
 {
     // ntd
@@ -1293,7 +1293,7 @@ auto AnalyzeProcessOptions::operator=(const AnalyzeProcessOptions &other) -> Ana
     }
     clock                    = other.clock;
     reset                    = other.reset;
-    skipStandardDeclarations = other.skipStandardDeclarations;
+    skip_standard_declarations = other.skip_standard_declarations;
     printWarnings            = other.printWarnings;
 
     return *this;

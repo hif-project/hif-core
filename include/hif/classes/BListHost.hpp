@@ -26,6 +26,9 @@ class TypedObject;
 class BListHost
 {
 public:
+    /**
+     * @brief Function pointer type for checking if an object is suitable.
+     */
     typedef bool (*CheckSuitableMethod)(Object *);
 
 private:

@@ -27,6 +27,7 @@
 #endif
 
 // Upper bound to choose whether simplify or not assignments.
+/// @brief Threshold for assign unrolling.
 #define ASSIGN_UNROLL_THRESHOLD 1000
 namespace hif
 {

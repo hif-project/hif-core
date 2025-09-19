@@ -26,18 +26,26 @@ namespace application_utils
 //
 //        Constants
 //
+/// @brief Maximum buffer size.
 #define MAX_BUF_SIZE 4096
 
 // MESSAGGES
+/// @brief Error message for write permission denied.
 #define DIR_WRITE_PERM_DENIED    "Write permission denied.\n Cannnot write the file \"%s\"."
+/// @brief Error message for file already exists.
 #define DIR_EXISTS               "The file \"%s\" already exists."
+/// @brief Error message for too many links.
 #define DIR_PARENT_DIR_TOO_LINKS "Too many links.\nCannot treat the file \"%s\"."
+/// @brief Error message for not enough room.
 #define DIR_NOT_ENOUGH_ROOM      "Not enough rooms.\nCannot treat the file \"%s\"."
+/// @brief Error message for parent directory read-only.
 #define DIR_PARENT_DIR_READ_ONLY "Parent directory is in read-only mode.\nCannot treat the file \"%s\"."
 //#define DIR_SRC_PATH_NOT_FOUND "Path \"%s\" not found."
+/// @brief Error message for file does not exist.
 #define DIR_NO_EXIST             "The file named by \"%s\" doesn't exist."
 //#define DIR_COPY_FILE_FAILED "Cannot copy the file \"%s\" onto the file \"%s\"."
 //#define DIR_CANNOT_OPEN_FILE "Cannot open the file \"%s\".\n%s"
+/// @brief Error message for path too long.
 #define DIR_SUP_MAX_BUF_SIZE     "The absolute path corresponding to \"%s\" is too long."
 
 //

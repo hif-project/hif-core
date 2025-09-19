@@ -37,6 +37,7 @@
 // Constant for maximum allowed bit expansion.
 // otherwise we could create huge bitvectors in memory, with memory expansion.
 // //////////////////////////////////////////////////////////////////////////
+/// @brief Maximum allowed span size for bit expansion.
 #define HIF_MAX_ALLOWED_SPAN_SIZE 1024
 
 namespace hif

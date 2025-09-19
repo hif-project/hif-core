@@ -35,6 +35,11 @@ void moveToScope(
     Object *obj = nullptr);
 
 /// @brief Particular case used to deal with For declarations.
+/// @param oldScope The old for scope.
+/// @param newScope The new scope.
+/// @param sem The reference semantics.
+/// @param suffix The suffix to append to the future object(s) name.
+/// @param obj If specified, it means to move only that object.
 
 void moveToScope(
     For *oldScope,

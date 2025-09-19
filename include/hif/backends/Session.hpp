@@ -61,18 +61,22 @@ private:
 
     /// @brief Node status
     Mode_T m_eMode;
+
     /// @brief Instance flag
     InstTag_T m_eInstTag;
 
     /// @brief Path fixed by the property "path"
     std::vector<std::string> m_vPath;
+
     /// @brief Instance name
     std::string m_sInstName;
+
     /// @brief design unit name + view name
     std::string m_sEntName;
 
     /// @brief Link to the target parent node
     CNode *m_pnMovedTo;
+
     /// @brief If it the node is already instantiated :
     /// The pointer refers to the target node.
     CNode *m_pnFirstInst;
@@ -97,14 +101,20 @@ public:
     /// @brief Set a path (access to the node)
     /// @param sPath The path to set.
     void SetPath(std::string &sPath);
+
     /// @brief Set an instance name
     /// @param sName The instance name to set.
     void SetInstName(const std::string &sName);
-    /// @brief Set an entity name
+
+    /// @brief Set an entity name.
+    /// @param sName The entity name to set.
     void SetEntName(const std::string &sName);
+
     /// @brief Set an instance flag
     /// @param eTag The instance tag to set.
+
     void SetInstTag(InstTag_T eTag);
+
     /// @brief Set a status
     /// @param eMode The mode to set.
     void SetMode(Mode_T eMode);
@@ -116,6 +126,7 @@ public:
     /// @brief Set m_pnFirstInst
     /// @param pnInst The instance node to set.
     void SetOrgPath(CNode *pnInst);
+
     /// @brief Set m_pnMovedTo
     /// @param pnParent The parent node to set.
     void SetMovedPath(CNode *pnParent);
@@ -123,9 +134,11 @@ public:
     /// @brief Get the node name
     /// @return The node name.
     auto getName() -> std::string;
+
     /// @brief Get an abstract name which defining the node path
     /// @return The path vector.
     std::vector<std::string> GetPath();
+
     /// @brief Get an instance name
     /// @return The instance name.
     auto GetInstName() -> std::string { return m_sInstName; }
@@ -206,6 +219,7 @@ public:
     /// @param rnElt The element to find instance for.
     /// @return The instance node.
     auto FindAnInstance(CNode &rnElt) -> CNode *;
+
     /// @brief Return the original node instance corresponding to rnElt
     /// @param rnElt The element to find instance for.
     /// @return The original instance node.
@@ -214,6 +228,7 @@ public:
     /// @brief Update the session with the PRECHECK flag
     /// @return The result of the precheck.
     auto PreCheck() -> int;
+
     /// @brief Update the session with the UPDATE flag
     /// @return The result of the update.
     auto Update() -> int;
@@ -241,21 +256,25 @@ public:
     /// @param rduSrc The source design unit.
     /// @return The found paths.
     std::vector<std::string> Find(hif::DesignUnit &rduTgt, hif::DesignUnit &rduSrc);
+
     /// @brief Find paths from a design unit to a view.
     /// @param rduTgt The target design unit.
     /// @param rvSrc The source view.
     /// @return The found paths.
     std::vector<std::string> Find(hif::DesignUnit &rduTgt, hif::View &rvSrc);
+
     /// @brief Find paths from a design unit to an instance.
     /// @param rduTgt The target design unit.
     /// @param riSrc The source instance.
     /// @return The found paths.
     std::vector<std::string> Find(hif::DesignUnit &rduTgt, hif::Instance &riSrc);
+
     /// @brief Find paths from a design unit to a library definition.
     /// @param rduTgt The target design unit.
     /// @param rlSrc The source library definition.
     /// @return The found paths.
     std::vector<std::string> Find(hif::DesignUnit &rduTgt, hif::LibraryDef &rlSrc);
+
     /// @brief Find paths from a design unit to a base and view string.
     /// @param rduTgt The target design unit.
     /// @param sbSrc The source base string.
@@ -269,21 +288,25 @@ public:
     /// @param rduSrc The source design unit.
     /// @return The found paths.
     std::vector<std::string> Find(hif::View &rvTgt, hif::DesignUnit &rduSrc);
+
     /// @brief Find paths from a view to a view.
     /// @param rvTgt The target view.
     /// @param rvSrc The source view.
     /// @return The found paths.
     std::vector<std::string> Find(hif::View &rvTgt, hif::View &rvSrc);
+
     /// @brief Find paths from a view to an instance.
     /// @param rvTgt The target view.
     /// @param riSrc The source instance.
     /// @return The found paths.
     std::vector<std::string> Find(hif::View &rvTgt, hif::Instance &riSrc);
+
     /// @brief Find paths from a view to a library definition.
     /// @param rvTgt The target view.
     /// @param rlSrc The source library definition.
     /// @return The found paths.
     std::vector<std::string> Find(hif::View &rvTgt, hif::LibraryDef &rlSrc);
+
     /// @brief Find paths from a view to a base and view string.
     /// @param rvTgt The target view.
     /// @param sbSrc The source base string.
@@ -297,21 +320,25 @@ public:
     /// @param rduSrc The source design unit.
     /// @return The found paths.
     std::vector<std::string> Find(hif::Instance &riTgt, hif::DesignUnit &rduSrc);
+
     /// @brief Find paths from an instance to a view.
     /// @param riTgt The target instance.
     /// @param rvSrc The source view.
     /// @return The found paths.
     std::vector<std::string> Find(hif::Instance &riTgt, hif::View &rvSrc);
+
     /// @brief Find paths from an instance to an instance.
     /// @param riTgt The target instance.
     /// @param riSrc The source instance.
     /// @return The found paths.
     std::vector<std::string> Find(hif::Instance &riTgt, hif::Instance &riSrc);
+
     /// @brief Find paths from an instance to a library definition.
     /// @param riTgt The target instance.
     /// @param rlSrc The source library definition.
     /// @return The found paths.
     std::vector<std::string> Find(hif::Instance &riTgt, hif::LibraryDef &rlSrc);
+
     /// @brief Find paths from an instance to a base and view string.
     /// @param riTgt The target instance.
     /// @param sbSrc The source base string.
@@ -325,21 +352,25 @@ public:
     /// @param rduSrc The source design unit.
     /// @return The found paths.
     std::vector<std::string> Find(hif::LibraryDef &rlTgt, hif::DesignUnit &rduSrc);
+
     /// @brief Find paths from a library definition to a view.
     /// @param rlTgt The target library definition.
     /// @param rvSrc The source view.
     /// @return The found paths.
     std::vector<std::string> Find(hif::LibraryDef &rlTgt, hif::View &rvSrc);
+
     /// @brief Find paths from a library definition to an instance.
     /// @param rlTgt The target library definition.
     /// @param riSrc The source instance.
     /// @return The found paths.
     std::vector<std::string> Find(hif::LibraryDef &rlTgt, hif::Instance &riSrc);
+
     /// @brief Find paths from a library definition to a library definition.
     /// @param rlTgt The target library definition.
     /// @param rlSrc The source library definition.
     /// @return The found paths.
     std::vector<std::string> Find(hif::LibraryDef &rlTgt, hif::LibraryDef &rlSrc);
+
     /// @brief Find paths from a library definition to a base and view string.
     /// @param rlTgt The target library definition.
     /// @param sbSrc The source base string.
@@ -354,24 +385,28 @@ public:
     /// @param rduSrc The source design unit.
     /// @return The found paths.
     std::vector<std::string> Find(std::string &sbTgt, std::string &svTgt, hif::DesignUnit &rduSrc);
+
     /// @brief Find paths from a base and view string to a view.
     /// @param sbTgt The target base string.
     /// @param svTgt The target view string.
     /// @param rvSrc The source view.
     /// @return The found paths.
     std::vector<std::string> Find(std::string &sbTgt, std::string &svTgt, hif::View &rvSrc);
+
     /// @brief Find paths from a base and view string to an instance.
     /// @param sbTgt The target base string.
     /// @param svTgt The target view string.
     /// @param riSrc The source instance.
     /// @return The found paths.
     std::vector<std::string> Find(std::string &sbTgt, std::string &svTgt, hif::Instance &riSrc);
+
     /// @brief Find paths from a base and view string to a library definition.
     /// @param sbTgt The target base string.
     /// @param svTgt The target view string.
     /// @param rlSrc The source library definition.
     /// @return The found paths.
     std::vector<std::string> Find(std::string &sbTgt, std::string &svTgt, hif::LibraryDef &rlSrc);
+
     /// @brief Find paths from a base and view string to a base and view string.
     /// @param sbTgt The target base string.
     /// @param svTgt The target view string.
@@ -384,6 +419,7 @@ public:
     /// @param pcLine The command line to apply.
     /// @return The result of the apply.
     auto Apply(const char *pcLine) -> int;
+
     /// @brief Apply methods on a specific node
     /// @param rduTgt The target design unit.
     /// @param pcLine The command line.

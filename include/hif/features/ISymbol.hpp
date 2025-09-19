@@ -62,6 +62,7 @@ protected:
     /// @param decl The declaration.
     friend void hif::semantics::setDeclaration(Object *o, Object *decl);
 };
+
 /// @brief Interface for symbols, including their declaration type and other
 /// common features.
 template <class T> class TemplateSymbolIf : public ISymbol

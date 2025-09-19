@@ -583,8 +583,7 @@ template <bool isSub, class rebind_t> struct internal_rebind_t {
 /// @brief General case constructor implementation.
 /// @param o1 First object.
 /// @param o2 Second object.
-template <bool isSub, class rebind_t>
-internal_rebind_t<isSub, rebind_t>::internal_rebind_t(Object *o1, Object *o2)
+template <bool isSub, class rebind_t> internal_rebind_t<isSub, rebind_t>::internal_rebind_t(Object *o1, Object *o2)
 {
     rebind_t::FR_t::map(o1, o2); // Call the static map() function for object mapping.
 }
@@ -600,8 +599,9 @@ template <class rebind_t> struct internal_rebind_t<true, rebind_t> {
 /// @brief Implementation of the constructor for the subclass case.
 /// @param o1 First object.
 /// @param o2 Object of a derived type.
-template <class rebind_t> template <class T> internal_rebind_t<true, rebind_t>::internal_rebind_t(Object *o1, T *)
+template <class rebind_t> template <class T> internal_rebind_t<true, rebind_t>::internal_rebind_t(Object *o1, T *o2)
 {
+    (void)o2;
     MapVisitor1<rebind_t> v1(o1); // Use MapVisitor1 to handle the mapping.
 }
 

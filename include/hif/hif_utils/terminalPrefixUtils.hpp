@@ -42,6 +42,7 @@ struct TerminalPrefixOptions {
 ///
 
 Value *getTerminalPrefix(Value *obj, const TerminalPrefixOptions &opt = TerminalPrefixOptions());
+
 /// @brief This function sets the new prefix of a value.
 /// @param obj The object on which a new prefix is to be set.
 /// @param newPrefix The new prefix.

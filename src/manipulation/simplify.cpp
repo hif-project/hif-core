@@ -206,6 +206,7 @@ private:
     /// @param decl The reference declaration.
     /// @return True if a self loop is detected.
     bool _isSelfInitialization(Object *o, DataDeclaration *decl);
+
     /// @brief Overloaded of _isSelfInitialization() for TypeTPs.
     bool _isSelfInitialization(Object *o, TypeTP *decl);
 
@@ -232,8 +233,10 @@ private:
 
     /// @brief Handle simplification of template parameters assigns
     bool _simplifyTemplateParametersAssigns(FunctionCall *fc);
+
     /// @brief Transform function calls in constvalue if possible
     bool _simplifyFunctionCalls(FunctionCall *o);
+
     /// @brief Tries to unroll iterated concats
     bool _simplifyIteratedConcat(FunctionCall *o);
     /// @name For simplifications management
@@ -497,6 +500,7 @@ private:
 
     /// @brief Remove assigns to slices having null ranges. Assumes no side effects on the right hand side
     bool _removeNullRangeAssign(Assign *o);
+
     /// @brief Remove nested cast only if is useless.
     /// the situation is this: T1(T2(T3))
     /// where Tx(Ty) represent a cast from type Ty to type Tx.
@@ -600,6 +604,7 @@ private:
 
     /// @brief Checks whether the given range is a null range
     bool _isNullRange(Range *range);
+
     /// @brief Ensures that bound type is allowed according with current semantics.
     /// @param v The bound to be checked.
     void _fixBoundType(Value *v);
@@ -753,20 +758,27 @@ private:
     /// @brief If the Aggregate type is Bit, and only others field is set,
     /// replace the Aggregate with others field value.
     bool _simplifyBitAggregate(Aggregate *obj);
+
     /// @brief Convert Aggregate to a BitvectorValue.
     bool _simplifyBitvectorAggregate(Aggregate *obj, Type *t);
+
     /// @brief Convert Aggregate to a String or a Char
     bool _simplifyStringAggregate(Aggregate *obj, Type *t);
+
     /// @brief Tries to remove others field.
     bool _simplifyUnrollingAggregate(Aggregate *obj, Type *t);
+
     /// @brief Tries to removes alts equals to others or remove all alts
     /// creating others in case of all equals alts.
     bool _simplifyRollingAggregate(Aggregate *obj, Type *t);
+
     /// @brief Transform an aggregate made of member of same value to a slice
     bool _simplifyAggregateWithSameAlts(Aggregate *obj, Type *t);
+
     /// @brief If Aggregate is an expression of single bit for minbound index
     /// and zeros for other bits is replaced with a cast
     bool _simplifySigleBitExpressionAggregate(Aggregate *obj, Type *t);
+
     /// @brief Replace fixed width vector aggregate with a concat.
     bool _simplifyAggregateToConcat(Aggregate *obj, Type *t);
     ///@}

@@ -29,6 +29,7 @@ public:
     /// @brief Constructor
     /// @param nR value to return
     CNodeVisitor(int nR = 0);
+
     /// @brief Destructor
     virtual ~CNodeVisitor();
 
@@ -53,8 +54,10 @@ private:
 
     /// @brief Element to find.
     CNode m_nElt;
+
     /// @brief Find the original instance.
     bool m_bInst;
+
     /// @brief Found node.
     CNode *m_pnRes;
 
@@ -129,6 +132,7 @@ private:
 
     /// @brief Class operation.
     FMode_T m_eMode;
+
     /// @brief Session to update.
     CSession *m_psTop;
 };
@@ -169,6 +173,7 @@ private:
 
     /// @brief Apply status error code.
     int m_nError;
+
     /// @brief Command line.
     char *m_pcLine;
 };

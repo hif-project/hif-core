@@ -46,9 +46,11 @@ struct IndexInfo {
 
     /// @brief To be set only for single indices.
     Value *expression;
+
     /// @brief To be set to represent a range of indices, holding the same
     /// value.
     Range *range;
+
     /// @brief To be set for a span whose value is a span. Each index in the
     /// span will get the value at the matching index.
     Range *slice;

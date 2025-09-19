@@ -100,6 +100,7 @@ bool typeSetLogic(Type *type, bool logic, hif::semantics::ILanguageSemantics *re
 ///
 
 bool typeSetResolved(Type *type, bool resolved, hif::semantics::ILanguageSemantics *refLang);
+
 /// @brief Function that set range given as parameter to type,
 ///	if type allowed range specification.
 ///	@param to type to set the range

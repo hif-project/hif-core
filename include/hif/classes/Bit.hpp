@@ -64,6 +64,7 @@ protected:
 private:
     /// @brief Flag to store the <tt>logic</tt> attribute.
     bool _isLogic;
+
     /// @brief Flag to store the <tt>resolved</tt> attribute.
     bool _isResolved;
 };

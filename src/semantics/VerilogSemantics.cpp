@@ -113,6 +113,7 @@ private:
     VerilogAnalysis(const VerilogAnalysis &);
     VerilogAnalysis &operator=(const VerilogAnalysis &);
 };
+
 /// This class implements the getMapForType function. Each map function
 /// manages a different input type.
 class VerilogTypeVisitor : public HifVisitor
@@ -172,6 +173,7 @@ Bitvector *_makeVerilogRegisterType(Range *range = nullptr, bool is_constexpr = 
 /// This function builds a Bitvectorvalue Object with value specified as
 /// parameter and logic flag appropriated set.
 BitvectorValue *_makeVerilogBitVectorValue(const std::string &value);
+
 /// This function checks if the given real object respects the verilog
 /// semantics.
 /// @param real the object to check

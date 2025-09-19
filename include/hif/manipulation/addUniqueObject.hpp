@@ -23,10 +23,12 @@ struct AddUniqueObjectOptions {
     /// @brief Copy constructor.
     /// @param other The object to copy from.
     AddUniqueObjectOptions(const AddUniqueObjectOptions &other);
+
     /// @brief Assignment operator.
     /// @param other The object to assign from.
     /// @return Reference to this object.
     AddUniqueObjectOptions &operator=(AddUniqueObjectOptions other);
+
     /// @brief Swaps the contents of this object with another.
     /// @param other The object to swap with.
     void swap(AddUniqueObjectOptions &other);
@@ -34,10 +36,13 @@ struct AddUniqueObjectOptions {
     /// @brief If set, the object is inserted in the desired position.
     /// Otherwise, the object is inserted at the end of the list.
     unsigned int position;
+
     /// @brief If <tt>true</tt> copy the object when inserted.
     bool copyIfUnique;
+
     /// @brief If <tt>true</tt> delete the object when not inserted.
     bool deleteIfNotAdded;
+
     /// @brief The options used to check whether the object is already present.
     EqualsOptions equalsOptions;
 };

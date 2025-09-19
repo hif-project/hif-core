@@ -24,6 +24,7 @@ struct GetReferencesOptions;
 
 /// @brief Set for getAllreferences().
 using ReferencesSet = std::set<Object *>;
+
 /// @brief Map for getAllReferences().
 using ReferencesMap = std::map<Declaration *, ReferencesSet>;
 

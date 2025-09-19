@@ -78,6 +78,7 @@ template <class PARENT, class CHILD> struct checkSubclass {
 /// it suffices to write:
 /// @code
 /// MapVisitor2_t< MyCallback > v2( object1, object2 );
+
 /// @endcode
 /// where MyCallback is a class implementing a static map() method,
 /// able to take two objects. In this way, the map() method will know the actual
@@ -95,9 +96,11 @@ template <class PARENT, class CHILD> struct checkSubclass {
 ///    template < typename T1, typename T2 >
 ///    static void map( T1 * o1, T2 * o2 ) { S< T1, T2> s; ... } // do something, exploiting template partial specialization.
 /// };
+
 ///
 /// // Calling the map utility:
 /// MapVisitor2_t< my_mapper_t > v2( o1, o2 );
+
 /// @endcode
 //@{
 

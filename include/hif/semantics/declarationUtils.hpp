@@ -43,6 +43,7 @@ Declaration *getDeclaration(
     Object *o,
     hif::semantics::ILanguageSemantics *sem,
     const DeclarationOptions &opt = DeclarationOptions());
+
 /// @brief Finds the declaration of a given object @p o starting from
 /// @p location and potentially moving up the Hif tree.
 /// This function works only with object that have a declaration member
@@ -71,20 +72,25 @@ struct GetCandidatesOptions : public DeclarationOptions {
     /// @brief Copy constructor.
     /// @param other The object to copy from.
     GetCandidatesOptions(const GetCandidatesOptions &other);
+
     /// @brief Constructor from DeclarationOptions.
     /// @param other The DeclarationOptions object to copy from.
     GetCandidatesOptions(const DeclarationOptions &other);
+
     /// @brief Assignment operator from DeclarationOptions.
     /// @param other The DeclarationOptions object to assign from.
     /// @return Reference to this object.
     GetCandidatesOptions &operator=(DeclarationOptions other);
+
     /// @brief Assignment operator.
     /// @param other The object to assign from.
     /// @return Reference to this object.
     GetCandidatesOptions &operator=(GetCandidatesOptions other);
+
     /// @brief Swap function with DeclarationOptions.
     /// @param other The DeclarationOptions object to swap with.
     void swap(DeclarationOptions &other);
+
     /// @brief Swap function.
     /// @param other The object to swap with.
     void swap(GetCandidatesOptions &other);
@@ -121,6 +127,7 @@ void getCandidates(
     Object *o,
     hif::semantics::ILanguageSemantics *sem,
     const GetCandidatesOptions &opt = GetCandidatesOptions());
+
 /// @brief Returns all the declarations of a symbol visible
 /// from a given object @p o.
 /// If the declaration member of @p o is set, then only such

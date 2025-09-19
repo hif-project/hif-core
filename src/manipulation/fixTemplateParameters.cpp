@@ -107,6 +107,7 @@ GoodTypeMap goodTypeMap;
 /// @brief Map that store the new names assign to Const that should be moved to
 /// define. Needed for temporal dependency between visitors.
 DefinesMap definesMap;
+
 /// @brief If not already set, add a property to field concatenating record name
 /// with "_" and fieldName.
 /// @param f The field.

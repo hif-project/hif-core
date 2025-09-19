@@ -19,6 +19,7 @@ namespace manipulation
 struct MatchObjectOptions {
     /// @brief If <tt>true</tt>, relaxes the matching criterion.
     bool matchStructure;
+
     /// @brief If <tt>true</tt>, skips references when matching objects.
     bool skipReferences;
 

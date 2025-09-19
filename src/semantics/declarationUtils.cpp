@@ -209,6 +209,7 @@ public:
         ILanguageSemantics *refSem,
         const GetCandidatesOptions &dopt,
         bool isRecursive = false);
+
     /// @brief Base Map: call the map recursively on the parent object.
     void map(Object *obj);
 

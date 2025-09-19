@@ -919,12 +919,14 @@ std::ostream &operator<<(std::ostream &o, const hif::semantics::ILanguageSemanti
 /// @return The new suffixed declaration.
 template hif::SubProgram *
 hif::semantics::ILanguageSemantics::getSuffixedCopy<hif::SubProgram>(SubProgram *obj, const std::string &suffix);
+
 /// @brief Explicit instantiation for Function.
 /// @param obj The declaration to copy.
 /// @param suffix The suffix to add.
 /// @return The new suffixed declaration.
 template hif::Function *
 hif::semantics::ILanguageSemantics::getSuffixedCopy<hif::Function>(Function *obj, const std::string &suffix);
+
 /// @brief Explicit instantiation for Procedure.
 /// @param obj The declaration to copy.
 /// @param suffix The suffix to add.

@@ -16,31 +16,37 @@ namespace hif
 /// @return <tt>true</tt> if the operator is arithmetic, <tt>false</tt> otherwise.
 
 bool operatorIsArithmetic(const hif::Operator oper);
+
 /// @brief Checks whether the passed operator is binary.
 /// @param oper The operator.
 /// @return <tt>true</tt> if the operator is binary, <tt>false</tt> otherwise.
 
 bool operatorIsBinary(const hif::Operator oper);
+
 /// @brief Checks whether the passed operator is commutative.
 /// @param oper The operator.
 /// @return <tt>true</tt> if the operator is commutative, <tt>false</tt> otherwise.
 
 bool operatorIsCommutative(const hif::Operator oper);
+
 /// @brief Checks whether the passed operator is logical.
 /// @param oper The operator.
 /// @return <tt>true</tt> if the operator is logical, <tt>false</tt> otherwise.
 
 bool operatorIsLogical(const hif::Operator oper);
+
 /// @brief Checks whether the passed operator is logical bitwise.
 /// @param oper The operator.
 /// @return <tt>true</tt> if the operator is logical bitwise, <tt>false</tt> otherwise.
 
 bool operatorIsBitwise(const hif::Operator oper);
+
 /// @brief Checks whether the passed operator is a reduce one.
 /// @param oper The operator.
 /// @return <tt>true</tt> if the operator is a reduce operator, <tt>false</tt> otherwise.
 
 bool operatorIsReduce(const hif::Operator oper);
+
 /// @brief Checks whether the passed operator is relational.
 /// @param oper The operator.
 /// @return <tt>true</tt> if the operator is relational, <tt>false</tt> otherwise.
@@ -58,6 +64,7 @@ bool operatorIsEquality(const hif::Operator oper);
 /// @return <tt>true</tt> if the operator is a rotate operator, <tt>false</tt> otherwise.
 
 bool operatorIsRotate(const hif::Operator oper);
+
 /// @brief Checks whether the passed operator is a shift one.
 /// @param oper The operator.
 /// @return <tt>true</tt> if the operator is a shift operator, <tt>false</tt> otherwise.

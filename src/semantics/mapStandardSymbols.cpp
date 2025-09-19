@@ -36,6 +36,7 @@ hif::Trash trash;
 
 ILanguageSemantics *_srcSem  = nullptr;
 ILanguageSemantics *_destSem = nullptr;
+
 /// Insert the declaration/object inside trash. Before that, mark all inner
 /// symbols as already fixed.
 void _trash(Object *o)

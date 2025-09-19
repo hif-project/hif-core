@@ -389,7 +389,7 @@ LibraryDef *SystemCSemantics::getScAmsELNPackage(bool hifFormat)
              factory.parameter(factory.real(), "amplitude", factory.realval(0.0)),
              factory.parameter(factory.real(), "frequency", factory.realval(0.0)),
              factory.parameter(factory.real(), "phase", factory.realval(0.0)),
-             ///\TODO Check corretness for time attribute.
+             /// @todo Check corretness for time attribute.
              factory.parameter(new Time(), "delay", factory.noValue()),
              factory.parameter(factory.real(), "ac_amplitude", factory.realval(0.0)),
              factory.parameter(factory.real(), "ac_phase", factory.realval(0.0)),
@@ -429,7 +429,7 @@ LibraryDef *SystemCSemantics::getScAmsELNPackage(bool hifFormat)
              factory.parameter(factory.real(), "amplitude", factory.realval(0.0)),
              factory.parameter(factory.real(), "frequency", factory.realval(0.0)),
              factory.parameter(factory.real(), "phase", factory.realval(0.0)),
-             ///\TODO Check correctness
+             /// @todo Check correctness
              factory.parameter(new Time(), "delay", factory.noValue()),
              factory.parameter(factory.real(), "ac_amplitude", factory.realval(0.0)),
              factory.parameter(factory.real(), "ac_phase", factory.realval(0.0)),
@@ -2650,10 +2650,10 @@ SystemCSemantics::MapCases SystemCSemantics::mapStandardSymbol(
 
         value.libraries.clear();
         value.libraries.push_back(libName);
-        value.mappedSymbol   = symName;
+        value.mappedSymbol = symName;
         // Libraries are always replaced, therefore internal symbols must be kept
-        bool isLibrary = (libName == symName);
-        value.mapAction      = isLibrary ? MAP_DELETE : MAP_KEEP;
+        bool isLibrary     = (libName == symName);
+        value.mapAction    = isLibrary ? MAP_DELETE : MAP_KEEP;
         return value.mapAction;
     }
     // custom cases

@@ -22,10 +22,13 @@ class BaseContents : public Scope
 public:
     /// @brief List of declarations.
     BList<Declaration> declarations;
+
     /// @brief List of state tables (i.e., processes).
     BList<StateTable> stateTables;
+
     /// @brief List of component instances.
     BList<Instance> instances;
+
     /// @brief List of generate constructs.
     BList<Generate> generates;
 

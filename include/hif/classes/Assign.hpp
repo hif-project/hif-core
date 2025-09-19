@@ -82,8 +82,10 @@ protected:
 private:
     /// @brief The source (i.e., the right-hand side) of the assignment.
     Value *_leftHandSide;
+
     /// @brief The target (i.e., the left-hand side) of the assignment.
     Value *_rightHandSide;
+
     /// @brief The assignment delay.
     Value *_delay;
 };

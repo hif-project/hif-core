@@ -21,9 +21,11 @@ struct AnalyzeParams {
     typedef std::list<Type *> TypeList;
     AnalyzeParams();
     ~AnalyzeParams();
+
     /// @brief Copy constructor.
     /// @param t The object to copy from.
     AnalyzeParams(const AnalyzeParams &t);
+
     /// @brief Assignment operator.
     /// @param t The object to assign from.
     /// @return Reference to this object.
@@ -39,6 +41,7 @@ struct AnalyzeParams {
     /// @brief Pointer to the original object to analyze.
     Object *startingObj;
 };
+
 /// @brief Function to get informations about eventual casts to do on
 /// operands of an assignment, an aggregate and all the other objects
 /// with multiple Value.
@@ -52,6 +55,7 @@ struct AnalyzeParams {
 /// @return The result precision, nullptr if cannot be determinated.
 ///
 Type *analyzePrecisionType(const AnalyzeParams &params, ILanguageSemantics *sem);
+
 /// @brief Utility wrapper to general analyzePrecisionType().
 /// @param o The object.
 /// @param sem The semantics.

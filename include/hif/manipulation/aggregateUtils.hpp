@@ -29,6 +29,7 @@ namespace manipulation
 ///
 
 bool transformAggregateRollingAlts(Aggregate *obj, bool atLeastOne, hif::semantics::ILanguageSemantics *sem);
+
 /// @brief Tries to transform the given aggregate by expanding its others
 /// clause value for each missing alt.
 /// This can be done only if the span is statically computable.

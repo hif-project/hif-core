@@ -22,6 +22,7 @@ public:
     /// @brief Returns the name of the semantics.
     /// @return The name of the semantics.
     virtual std::string getName() const;
+
     /// @brief This function returns a struct containing informations about
     /// cast to be applied to the operands, in order to make the given
     /// operation HIF compliant.
@@ -40,6 +41,7 @@ public:
     /// @return the struct containing informations about the return type and
     ///   the type required to be casted the operands if they are different.
     virtual ExpressionTypeInfo getExprType(Type *op1Type, Type *op2Type, Operator operation, Object *srcObj);
+
     /// @brief Function that given a Type returns a Value pointer
     ///   to the default value associated to the type according with SystemC
     ///   semantics.
@@ -51,6 +53,7 @@ public:
     /// @return Value pointer to the type default value.
     ///
     virtual Value *getTypeDefaultValue(Type *type, Declaration *d);
+
     /// @brief Function that given a Type returns a Type pointer to
     ///   the correspondent SystemC type (if exists) according SystemC language.
     ///
@@ -60,6 +63,7 @@ public:
     ///
     virtual Type *getMapForType(Type *t);
     virtual Operator getMapForOperator(Operator srcOperation, Type *srcT1, Type *srcT2, Type *dstT1, Type *dstT2);
+
     /// @brief Function that given a type and an operation to do with
     /// operators of that type returns a pointer to a Type
     /// representing the type that operands have to be cast into to
@@ -75,6 +79,7 @@ public:
     /// a valid operation in current semantics  (if possible).
     ///
     virtual Type *getSuggestedTypeForOp(Type *t, Operator operation, Type *opType, Object *startingObject, bool isOp1);
+
     /// @brief Function that given a ConstValue returns a Type
     /// pointer representing the type to associate to the constant according
     /// SystemC requirements (opportunely setting flags of the type).
@@ -84,6 +89,7 @@ public:
     /// @return Type pointer to the constant type.
     ///
     virtual Type *getTypeForConstant(ConstValue *c);
+
     /// @brief Function that given Type representing a valid guard condition.
     /// Checks if its type is compatible with target language requirements.
     ///
@@ -94,6 +100,7 @@ public:
     /// language requirements, false otherwise.
     ///
     virtual bool checkCondition(Type *t, Object *o);
+
     /// @brief Function that given a Value representing a valid guard
     /// condition in SystemC returns an expression representing the explanation
     /// of the guard as boolean condition (with == operator).
@@ -117,6 +124,7 @@ public:
     /// @return Value pointer to the explicit cast.
     ///
     virtual Value *explicitCast(Value *valueToCast, Type *castType, Type *srcType);
+
     /// @brief Function that given a real value returns the correspondent
     /// int value according to semantics rules (e.g., VHDL rounds while
     /// SystemC truncates).
@@ -228,6 +236,7 @@ public:
     /// @return True if is allowed.
     ///
     virtual bool isTemplateAllowedType(Type *t);
+
     /// @brief Return the mapped of given type that is allowed as type
     /// in template parameter w.r.t. semantics.
     /// @param t The type to map.
@@ -241,6 +250,7 @@ public:
     /// @brief Function thats return an instance to SystemCSemantics class.
     /// @return The instance.
     static SystemCSemantics *getInstance();
+
     /// @brief This function returns true if the given operator is supported by
     /// the semantics, false otherwise.
     /// @param operation The operator to check.

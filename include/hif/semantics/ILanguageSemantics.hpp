@@ -156,6 +156,7 @@ public:
     /// @return type_info_t ExpressionTypeInfo containing informations about the operation.
     ///
     virtual ExpressionTypeInfo getExprType(Type *op1Type, Type *op2Type, Operator operation, Object *sourceObj) = 0;
+
     /// @brief Function to change the semantic checks mode.
     /// Usually, they are more permessive inside frontends,
     /// whilst backends are more strict.
@@ -192,6 +193,7 @@ public:
     /// @return Type pointer to the correspondent fresh type.
     ///
     virtual Type *getMapForType(Type *t)                                                                          = 0;
+
     /// @brief Function that given the operator and the Types of expression
     /// in the source semantics, returns the (eventually changed) operator
     /// in the target language (if exists).
@@ -204,6 +206,7 @@ public:
     /// @return Type pointer to the correspondent fresh type.
     ///
     virtual Operator getMapForOperator(Operator srcOperation, Type *srcT1, Type *srcT2, Type *dstT1, Type *dstT2) = 0;
+
     /// @brief Function that given a type and an operation to do with
     /// operators of that type returns a pointer to a Type
     /// representing the type that operands have to be cast into to
@@ -220,6 +223,7 @@ public:
     ///
     virtual Type *
     getSuggestedTypeForOp(Type *t, Operator operation, Type *opType, Object *startingObject, bool isOp1) = 0;
+
     /// @brief Function that given a ConstValue returns a Type
     /// pointer representing the type to associate to the constant according
     /// with target language requirements (opportunely setting flags of the type).
@@ -230,6 +234,7 @@ public:
     /// @return Type pointer to the constant type.
     ///
     virtual Type *getTypeForConstant(ConstValue *c)                                                      = 0;
+
     /// @brief Checks if given type is compatible with language requirements
     /// as condition.
     ///
@@ -240,6 +245,7 @@ public:
     /// language requirements, false otherwise.
     ///
     virtual bool checkCondition(Type *t, Object *o)                                                      = 0;
+
     /// @brief Function that given a Value representing a valid guard
     /// condition in the target language returns an expression representing
     /// the explanation of the guard as boolean condition (with == operator).
@@ -250,6 +256,7 @@ public:
     /// @return Value pointer to the created expression.
     ///
     virtual Value *explicitBoolConversion(Value *c)                                                      = 0;
+
     /// @brief Function that given a Value and a type which the given
     /// object have to be cast into, returns a Value representing the
     /// explicit cast (it may be a nested cast, a function call, a procedure
@@ -263,6 +270,7 @@ public:
     /// @return Value pointer to the explicit cast.
     ///
     virtual Value *explicitCast(Value *valueToCast, Type *castType, Type *srcType)                       = 0;
+
     /// @brief Function that given a real value returns the correspondent
     /// int value according to semantics rules (e.g., VHDL rounds while
     /// SystemC truncates).
@@ -648,6 +656,7 @@ protected:
         Value *paramValue,
         const std::string &paramIndex,
         bool hifFormat);
+
     /// @brief Adds a multiparameter function.
     /// @param ld The library definition.
     /// @param name The function name.

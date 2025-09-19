@@ -47,6 +47,7 @@ void moveToScope(
     hif::semantics::ILanguageSemantics *sem,
     const std::string &suffix,
     Object *obj = nullptr);
+
 /// @brief (Wrapper) Moves all the elements of a list contained in a scope
 /// into the corresponding list of another scope.
 /// @param oldScope The old scope.

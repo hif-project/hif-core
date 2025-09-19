@@ -64,6 +64,7 @@ public:
     ///
     virtual Type *getMapForType(Type *t);
     virtual Operator getMapForOperator(Operator srcOperation, Type *srcT1, Type *srcT2, Type *dstT1, Type *dstT2);
+
     /// @brief Function that given a type and an operation to do with
     /// operators of that type returns a pointer to a Type
     /// representing the type that operands have to be cast into to
@@ -125,6 +126,7 @@ public:
     /// @return Value pointer to the explicit cast.
     ///
     virtual Value *explicitCast(Value *valueToCast, Type *castType, Type *srcType);
+
     /// @brief Function that given a real value returns the correspondent
     /// int value according to semantics rules (e.g., VHDL rounds while
     /// SystemC truncates).
@@ -215,6 +217,7 @@ public:
     /// @return True if is allowed.
     ///
     virtual bool isTemplateAllowedType(Type *t);
+
     /// @brief Return the mapped of given type that is allowed as type
     /// in template parameter w.r.t. semantics.
     /// @param t The type to map.
@@ -229,11 +232,13 @@ public:
     /// @brief Function thats return an instance to VHDLSemantic class.
     /// @return Pointer to the singleton instance.
     static VerilogSemantics *getInstance();
+
     /// @brief This function returns true if the given operator is supported by
     /// the semantics, false otherwise.
     /// @param operation The operator to check.
     /// @return true if supported, false otherwise.
     bool isSupported(Operator operation);
+
     /// @brief Checks whether a name is forbidden in the current semantics.
     /// @param decl The declaration to check.
     /// @return true if the name is forbidden, false otherwise.

@@ -55,11 +55,14 @@ public:
     void appendProperty(const std::string &property_name, const std::string &property, bool evaluate = true);
 
     /// @brief Elaborate a value and return this evaluation
-    std::string eval(const std::string &) const;
+    /// @param s_in the string to elaborate
+    /// @return the elaborated string
+    std::string eval(const std::string &s_in) const;
 
 private:
     /// @brief Configuration file name.
     std::string name;
+
     /// @brief Properties map.
     std::map<std::string, std::string, std::less<std::string>> properties;
 };

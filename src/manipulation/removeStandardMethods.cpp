@@ -47,8 +47,10 @@ public:
 
     /// @brief Return the class field _isFixed value.
     bool isFixed();
+
     /// @brief Return the class field _isFixed value.
     Unsupported &getUnsupportedObjects();
+
     /// @brief Prints unsupported objects.
     void printUnsupported();
 
@@ -80,6 +82,7 @@ protected:
 
     /// @brief If true at least a fix has been computed.
     bool _isFixed;
+
     /// @brief List of unsupported objects.
     Unsupported _unsupportedObjects;
 

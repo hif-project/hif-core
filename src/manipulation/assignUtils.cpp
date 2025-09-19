@@ -72,10 +72,13 @@ public:
 private:
     /// @brief The last object visited.
     Object *_caller;
+
     /// @brief The result of elaboration.
     bool _isAssignTarget;
+
     /// @brief Reference to the assign target.
     Value *_target;
+
     /// @brief The options
     const LeftHandSideOptions &_opt;
 

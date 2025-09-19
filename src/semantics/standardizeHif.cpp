@@ -311,8 +311,10 @@ protected:
     /// @param o The data declaration.
     ///
     void _assureInitialValue(DataDeclaration *o);
+
     /// @brief Assure that PPAssigns have set correctly the direction field.
     void _fixPPAssignSrcDirection(PPAssign *o);
+
     /// @brief Create the declaration of the corresponding object
     /// into map. This is done getting the declaration of the source
     /// object and mapping in destination semantics calling the

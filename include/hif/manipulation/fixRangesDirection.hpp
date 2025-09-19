@@ -20,11 +20,13 @@ namespace manipulation
 /// A vhdl example:
 /// @code
 /// signal s : std_logic_vector(0 to 12);
+
 /// @endcode
 ///
 /// Is changed to:
 /// @code
 /// signal s : std_logic_vector(12 downto 0);
+
 /// @endcode
 ///
 /// @param o The system object.

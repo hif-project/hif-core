@@ -143,6 +143,7 @@ protected:
 ///    f.noTemplates(),
 ///    (f.parameter(f.integer(), "i"))
 ///);
+
 ///
 class HifFactory
 {
@@ -152,38 +153,55 @@ public:
 
     /// @brief Type for list of actions.
     typedef ListElement<Action> action_t;
+
     /// @brief Type for list of aggregate alternatives.
     typedef ListElement<AggregateAlt> aggregatealt_t;
+
     /// @brief Type for list of declarations.
     typedef ListElement<Declaration> declaration_t;
+
     /// @brief Type for list of templates.
     typedef ListElement<Declaration> template_t;
+
     /// @brief Type for list of enum values.
     typedef ListElement<EnumValue> enumValue_t;
+
     /// @brief Type for list of fields.
     typedef ListElement<Field> field_t;
+
     /// @brief Type for list of generates.
     typedef ListElement<Generate> generate_t;
+
     /// @brief Type for list of if alternatives.
     typedef ListElement<IfAlt> ifAlt_t;
+
     /// @brief Type for list of instances.
     typedef ListElement<Instance> instance_t;
+
     /// @brief Type for list of libraries.
     typedef ListElement<Library> library_t;
+
     /// @brief Type for list of record value alternatives.
     typedef ListElement<RecordValueAlt> recordvaluealt_t;
+
     /// @brief Type for list of parameters.
     typedef ListElement<Parameter> parameter_t;
+
     /// @brief Type for list of parameter arguments.
     typedef ListElement<ParameterAssign> parameterArgument_t;
+
     /// @brief Type for list of port assigns.
     typedef ListElement<PortAssign> portassign_t;
+
     /// @brief Type for list of state tables.
     typedef ListElement<StateTable> stateTable_t;
+
     /// @brief Type for list of template arguments.
     typedef ListElement<TPAssign> templateArgument_t;
+
     /// @brief Type for list of when alternatives.
     typedef ListElement<WhenAlt> whenAlt_t;
+
     /// @brief Type for list of view references.
     typedef ListElement<ViewReference> viewReference_t;
 

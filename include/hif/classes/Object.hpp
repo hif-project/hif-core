@@ -52,10 +52,13 @@ class Object
 public:
     /// @brief Type for list of fields.
     typedef std::list<Object **> Fields;
+
     /// @brief Type for list of BLists.
     typedef std::list<BList<Object> *> BLists;
+
     /// @brief List of standard strings.
     typedef std::list<std::string> StringList;
+
     /// @brief Struct storing code info.
     struct CodeInfo {
         /// @brief Default constructor.
@@ -98,6 +101,7 @@ public:
 
     /// @brief Map type for storing object properties.
     typedef std::map<std::string, TypedObject *> PropertyMap;
+
     /// @brief Iterator type for the property map.
     typedef PropertyMap::iterator PropertyMapIterator;
 
@@ -124,6 +128,7 @@ public:
     /// @brief Returns the parent of the object in the HIF tree.
     /// @return The parent of the object in the HIF tree.
     Object *getParent() const;
+
     /// @brief Returns the parent of the object in the HIF tree, dynamically casted to given type.
     /// @return The parent of the object in the HIF tree.
     template <typename T> T *getParent() const;

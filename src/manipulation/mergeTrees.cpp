@@ -316,7 +316,7 @@ void Bach::_mergeBLists(BList<Object> *l1, BList<Object> *l2)
         Object *found                   = nullptr;
         hif::features::INamedObject *n2 = dynamic_cast<hif::features::INamedObject *>(*jt);
 
-        bool isView = (dynamic_cast<View *>(*jt) != nullptr);
+        bool isView      = (dynamic_cast<View *>(*jt) != nullptr);
         bool isStdLibDef = (dynamic_cast<LibraryDef *>(*jt) != nullptr && static_cast<LibraryDef *>(*jt)->isStandard());
         if (n2 != nullptr) {
             // Named object.
@@ -344,8 +344,8 @@ void Bach::_mergeBLists(BList<Object> *l1, BList<Object> *l2)
                 found = *it;
 
                 if (isView) {
-                    auto v1          = dynamic_cast<View *>(*it);
-                    auto v2          = dynamic_cast<View *>(*jt);
+                    auto v1    = dynamic_cast<View *>(*it);
+                    auto v2    = dynamic_cast<View *>(*jt);
                     bool isStd = v1->isStandard() && v2->isStandard();
                     v1->setStandard(isStd);
                     v2->setStandard(isStd);
@@ -628,39 +628,6 @@ void _printStep(Object *tree, unsigned int stepNumber, Object *merged)
 #endif
 
 } // namespace
-
-MergeTreesOptions::MergeTreesOptions()
-    : printInfos(false)
-    , isIpxact(false)
-    , mergeBranches(false)
-{
-    // ntd
-}
-
-MergeTreesOptions::~MergeTreesOptions()
-{
-    // ntd
-}
-
-MergeTreesOptions::MergeTreesOptions(const MergeTreesOptions &o)
-    : printInfos(o.printInfos)
-    , isIpxact(o.isIpxact)
-    , mergeBranches(o.mergeBranches)
-{
-    // ntd
-}
-
-MergeTreesOptions &MergeTreesOptions::operator=(const MergeTreesOptions &o)
-{
-    if (this == &o)
-        return *this;
-
-    printInfos    = o.printInfos;
-    isIpxact      = o.isIpxact;
-    mergeBranches = o.mergeBranches;
-
-    return *this;
-}
 
 // //////////////////////////////////////
 // Defines

@@ -15,12 +15,6 @@ namespace manipulation
 {
 /// @brief Options for mergeTrees().
 struct MergeTreesOptions {
-    MergeTreesOptions();
-    ~MergeTreesOptions();
-
-    MergeTreesOptions(const MergeTreesOptions &o);
-    MergeTreesOptions &operator=(const MergeTreesOptions &o);
-
     /// @brief Identify if print addictional infos. Default is false.
     bool printInfos;
 

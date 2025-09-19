@@ -23,6 +23,7 @@ namespace semantics
 ///
 
 bool isSignedType(Type *type, ILanguageSemantics *refLang);
+
 /// @brief Check if a type is an Unsigned.
 ///
 /// @param type actual type
@@ -32,6 +33,7 @@ bool isSignedType(Type *type, ILanguageSemantics *refLang);
 ///
 
 bool isUnsignedType(Type *type, ILanguageSemantics *refLang);
+
 /// @brief Check if a type is an Bit.
 ///
 /// @param type actual type
@@ -42,6 +44,7 @@ bool isUnsignedType(Type *type, ILanguageSemantics *refLang);
 ///
 
 bool isBitType(Type *type, ILanguageSemantics *refLang);
+
 /// @brief Check if a type is an Array of Bit.
 ///
 /// @param type actual type
@@ -53,6 +56,7 @@ bool isBitType(Type *type, ILanguageSemantics *refLang);
 ///
 
 bool isBitVectorType(Type *type, ILanguageSemantics *refLang);
+
 /// @brief Check if a type is a logic Bit.
 ///
 /// @param type actual type
@@ -62,6 +66,7 @@ bool isBitVectorType(Type *type, ILanguageSemantics *refLang);
 ///
 
 bool isLogicBitType(Type *type, ILanguageSemantics *refLang);
+
 /// @brief Check if a type is an Array of logic Bit.
 ///
 /// @param type actual type
@@ -71,6 +76,7 @@ bool isLogicBitType(Type *type, ILanguageSemantics *refLang);
 ///
 
 bool isLogicVectorType(Type *type, ILanguageSemantics *refLang);
+
 /// @brief Check if given type is a vector type (with range).
 ///
 /// @param type given type.
@@ -89,6 +95,7 @@ bool isVectorType(Type *type, ILanguageSemantics *refLang);
 ///
 
 bool isSingleBitType(Type *type, ILanguageSemantics *sem);
+
 /// @brief Checks if a type is a subtype of another.
 ///
 ///	@param t1 first type

@@ -91,8 +91,10 @@ public:
         /// @brief Print indexes of object childen situated inside BLists.
         bool printListIndex;
     };
+
     /// @brief Constructor.
     PrintHifVisitor(const Object *root, const PrintHifOptions &opt);
+
     /// @brief Destructor.
     virtual ~PrintHifVisitor();
 
@@ -271,32 +273,43 @@ private:
 
     /// @brief Push current object data w.r.t. given options.
     void _push(const PushOptions &pushOpt = PushOptions());
+
     /// @brief Push BList data copying some options from last added object.
     void _pushBList();
+
     /// @brief Pop back object updating indentation.
     void _pop();
 
     /// @brief Returns true if object printing should be skipped due to summary.
     bool _skipIfSummary(Object *o);
+
     /// @brief Performs initial printings of parent field.
     void _printParentFieldBegin(Object *o);
+
     /// @brief Performs final printing of parent field.
     void _printParentFieldEnd(Object *o);
+
     /// @brief Performs initial printings of current object.
     bool _printObjectInit(Object *o);
+
     /// @brief Performs final printings of current object.
     void _printObjectEnd(Object *o);
+
     /// @brief Performs printing of object childen.
     void _printChildenStrings();
+
     /// @brief Return true if childen string must be printed in multiple lines.
     bool _checkMultiline();
 
     /// @brief Utility function to print flag.
     void _printFlag(bool value, const std::string &name, bool printAnyway = false);
+
     /// @brief Utility function to print string.
     void _printString(const std::string &value, const std::string &name, bool printAnyway = false);
+
     /// @brief Utility function to print integer.
     void _printInt(std::int64_t value, const std::string &name);
+
     /// @brief Utility function to print Hif name.
     void _printName(const std::string &value, const std::string &name, bool printAnyway = false);
 

@@ -202,25 +202,34 @@ public:
 private:
     /// @brief Default parent structure suffix
     static const char *const HifOut;
+
     /// @brief plugiprc parameter to get the temporary directory (.plugip by default)
     static const char *const HifTmp;
+
     /// @brief Default directory which the generated code (root directory)
     static const char *const DefaultHifOut;
+
     /// @brief Default temporary directory
     static const char *const DefaultHifTmp;
+
     /// @brief plugiprc parameter which identify the root directory for the generated code
     static const char *const CfgRoot;
+
     /// @brief plugiprc parameter which identify modified and user files
     static const char *const DateFileParam;
+
     /// @brief HIF property name to get the IP name to define the root directory
     static const char *const IPNameProp;
+
     /// @brief The name of the file which contain information of each generated file
     static const char *const DateFiles;
 
     /// @brief Status of the directory structure.
     DirectoryStatus m_eStatus;
+
     /// @brief The HIF system to treat.
     CSession *m_psSystem;
+
     /// @brief The root directory.
     application_utils::FileStructure *m_pfRoot;
 

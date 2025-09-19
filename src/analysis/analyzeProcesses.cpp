@@ -75,8 +75,10 @@ private:
 
     /// @brief Analysis of process signals (read, written and sensitivity).
     void _classifySignals(ProcessInfos &infos, Object *proc);
+
     /// @brief First analysis of process, according with sensitivity.
     void _classifyWrtSensitivity(ProcessInfos &infos, StateTable *proc) const;
+
     /// @brief Refinement of analysis, inspecting the process body.
     void _classifyProcessBody(ProcessInfos &infos, StateTable *proc);
 
@@ -104,14 +106,19 @@ private:
 
     /// @brief Check that process body is in the form <tt>if ... else if ... </tt>.
     static auto _isIfElseIfStatement(State *state, IfAlt *&resetIf, IfAlt *&clockIf) -> bool;
+
     /// @brief Check that it is a clocked if, with an optional inner reset if.
     static auto _isIfOptIfElseStatement(State *state, IfAlt *&resetIf, IfAlt *&clockIf) -> bool;
+
     /// @brief Checks if given expression is: == 1 or ==  0.
     auto _isEqualsToZeroOrOne(Value *cond, DataDeclaration *&n, bool &isZero) -> bool;
+
     /// @brief Checks if given expression is: == 1 or ==  0.
     auto _isRisingFallingEdge(Value *cond, DataDeclaration *&n, bool &isZero) -> bool;
+
     /// @brief Analyze given condition to match the reset pattern.
     auto _checkResetCondition(ProcessInfos &infos, Value *cond) -> bool;
+
     /// @brief Analyze given condition to match the clock pattern.
     auto _checkClockCondition(ProcessInfos &infos, Value *cond) -> bool;
 

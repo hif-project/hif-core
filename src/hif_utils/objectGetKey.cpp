@@ -29,6 +29,7 @@ class ObjectKeyVisitor : public GuideVisitor
 public:
     /// @brief Constructor.
     ObjectKeyVisitor();
+
     /// @brief Destructor.
     virtual ~ObjectKeyVisitor();
 

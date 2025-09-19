@@ -42,6 +42,7 @@ Object *getImplicitTemplate(
 
 /// @brief Specifies how to handle missing parameters during sorting.
 struct SortMissingKind {
+    /// @brief Enumeration of strategies for handling missing parameters.
     enum type : unsigned char {
         NOTHING, ///< Do not add missing parameters.
         ALL,     ///< Add all missing parameters.

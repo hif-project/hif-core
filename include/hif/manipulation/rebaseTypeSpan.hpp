@@ -19,11 +19,13 @@ namespace manipulation
 /// In source code types can have arbitrary span. A VHDL example:
 /// @code
 /// signal s : std_logic_vector(7 downto 4);
+
 /// @endcode
 ///
 /// It is translated in SystemC as:
 /// @code
 /// sc_lv<4> s;
+
 /// @endcode
 ///
 /// Thus, the length of the span is preserved.

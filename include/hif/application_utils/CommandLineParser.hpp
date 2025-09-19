@@ -66,12 +66,16 @@ public:
 
     /// @brief Type alias for a list of string chunks.
     using Chunks          = std::vector<std::string>;
+
     /// @brief Type alias for a list of options.
     using OptionsList     = std::vector<option>;
+
     /// @brief Type alias for a list of input files.
     using Files           = std::vector<std::string>;
+
     /// @brief Maps short options to their corresponding long options.
     using Options         = std::map<char, Option, DictionaryComparator>;
+
     /// @brief Maps long option names to their corresponding short options.
     using Long2ShortNames = std::map<std::string, char>;
 

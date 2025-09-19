@@ -17,7 +17,9 @@ namespace hif
 /// Example code:
 /// @code
 /// HifNodeRef ref(o);
+
 /// ref.replace(factory.xxx(xxx, o, xxx));
+
 /// @endcode
 class HifNodeRef
 {

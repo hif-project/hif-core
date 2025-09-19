@@ -46,6 +46,7 @@ public:
 
     /// @brief Map for storing directives within a section.
     using Directives = std::map<std::string, KeyValues>;
+
     /// @brief Map for storing variables within a section.
     using Variables  = std::map<std::string, KeyValues>;
 
@@ -58,6 +59,7 @@ public:
 
     /// @brief Map for storing sections in the configuration file.
     using Sections        = std::map<std::string, SectionData>;
+
     /// @brief List for maintaining the order of sections as they appear in the file.
     using OrderedSections = std::list<std::string>;
 

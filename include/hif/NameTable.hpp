@@ -30,6 +30,7 @@ class NameTable
 public:
     /// @brief Type alias for a set of strings representing names.
     using NameMap        = std::set<std::string>;
+
     /// @brief Type alias for a set of strings representing forbidden names.
     using ForbiddenNames = std::set<std::string>;
 

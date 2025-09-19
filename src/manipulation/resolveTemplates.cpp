@@ -18,12 +18,16 @@
 
 /// @brief Set of object references.
 typedef std::set<hif::Object *> References;
+
 /// @brief Set of declarations.
 typedef std::set<hif::Declaration *> Declarations;
+
 /// @brief Map of declarations to their references.
 typedef std::map<hif::Declaration *, References> DeclarationsReferences;
+
 /// @brief Map of declarations to their copies.
 typedef std::map<hif::Declaration *, hif::Declaration *> InstanceToCopyMap;
+
 /// @brief List of declarations references maps.
 typedef std::list<DeclarationsReferences *> ReferencesMapList;
 
@@ -191,6 +195,7 @@ class ResolveTemplates : public HifVisitor
 {
 public:
     typedef std::set<DesignUnit *> DesignUnits;
+
     /// @brief Constructor.
     ResolveTemplates(
         hif::System *sysObj,

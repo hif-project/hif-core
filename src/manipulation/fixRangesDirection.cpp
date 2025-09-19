@@ -56,11 +56,13 @@ std::set<Range *> typeSpansToRevert;
 /// A vhdl example:
 /// @code{.vhd}
 /// signal s : std_logic_vector(0 to 12);
+
 /// @endcode
 ///
 /// Is changed to:
 /// @code{.vhd}
 /// signal s : std_logic_vector(12 downto 0);
+
 /// @endcode
 ///
 /// Also Members and Slices are fixed wrt to their types (as they were before
@@ -92,18 +94,21 @@ private:
 
     hif::semantics::ILanguageSemantics *_sem;
     hif::HifFactory _factory;
+
     /// @brief Check type span. The span of Array (not packed), Array (packed),
     /// Signed and Unsigned must be downto. If not, collect it for further
     /// fixes.
     /// @param typeSpan the span of the type to check.
     ///
     void _checkType(Range *typeSpan);
+
     /// @brief Revert a Value depending on Value's type span.
     /// All reverted span must have direction downto.
     /// @param indexToFix the index of the Value.
     /// @param refSpan is the Value's type span.
     ///
     void _fixIndex(Value *indexToFix, Range *refSpan, Value *prefix = nullptr);
+
     /// @brief Revert a Span of a Value depending on Value's type span.
     /// All reverted span must have direction downto.
     /// @param spanToFix is the Span of a Value.

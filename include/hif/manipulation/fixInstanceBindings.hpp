@@ -46,6 +46,7 @@ struct FixBindingOptions {
     /// @brief Allow bindings only with segnals and ports. Default false.
     bool allowOnlySignalPorts;
 };
+
 /// @brief Replaces port bindings with no name-to-name binding, inserting auxiliary signals.
 /// This fix tries to avoid introducing extra delta cycles if it is possible.
 /// Otherwise, global actions will be introduced, resulting in extra delta cycle(s).

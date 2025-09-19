@@ -22,10 +22,12 @@ struct SortOptions {
     /// @brief Indicates whether to recursively proceed with the visit
     /// on children nodes. Default is true.
     bool sortChildren;
+
     /// @brief <tt>true</tt> if parameters sorting methods must be called to sort
     /// PortAssigns, ParameterAssigns, etc. Default is false.
     bool sortParameters;
 };
+
 /// @brief Sorts the given object according with passed options.
 ///
 /// @param obj The object to be sorted.

@@ -19,10 +19,13 @@ namespace manipulation
 struct FlattenDesignOptions {
     /// @brief Verbose output flag.
     bool verbose;
+
     /// @brief The name of the top-level design unit.
     std::string topLevelName;
+
     /// @brief The set of names of root design units, as hierarchical names.
     std::set<std::string> rootDUs;
+
     /// @brief The set of names of root instances.
     /// Their format is the hierarchical name.
     std::set<std::string> rootInstances;

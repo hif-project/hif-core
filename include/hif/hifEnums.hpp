@@ -133,6 +133,7 @@ enum Operator : unsigned char {
 /// @return String representation of the operator.
 
 std::string operatorToString(const Operator t);
+
 /// @brief Return the string representation of an operator.
 /// @details Converts an operator enum to a plain string representation,
 /// optionally adding a prefix or suffix. For example, `op_and` becomes `"op_and"`,
@@ -227,6 +228,7 @@ enum PropertyId : unsigned char {
     PROPERTY_TEMPORARY_OBJECT,           ///< Marks the object as temporary.
     PROPERTY_ORIGINAL_BITWIDTH           ///< Original bitwidth of a type before manipulations.
 };
+
 /// @brief Get the string name of a property.
 /// @details Maps a `PropertyId` to its corresponding string representation.
 /// Useful for debugging or reporting purposes.

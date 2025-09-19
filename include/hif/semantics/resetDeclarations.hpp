@@ -18,13 +18,16 @@ namespace semantics
 struct ResetDeclarationsOptions {
     ResetDeclarationsOptions();
     virtual ~ResetDeclarationsOptions();
+
     /// @brief Copy constructor.
     /// @param other The object to copy from.
     ResetDeclarationsOptions(const ResetDeclarationsOptions &other);
+
     /// @brief Assignment operator.
     /// @param other The object to assign from.
     /// @return Reference to this object.
     ResetDeclarationsOptions &operator=(ResetDeclarationsOptions other);
+
     /// @brief Swaps the contents of this object with another.
     /// @param other The object to swap with.
     void swap(ResetDeclarationsOptions &other);
@@ -47,6 +50,7 @@ struct ResetDeclarationsOptions {
     /// Default is HIF.
     ILanguageSemantics *sem;
 };
+
 /// @brief Resets the declaration member of objects that have it
 /// starting from @p o.
 /// Declaration members will be set to nullptr.

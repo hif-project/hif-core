@@ -64,6 +64,7 @@ public:
 
     /// @brief Sets the value of the time value.
     /// @param v The value of the time value to be set.
+    /// @return The old value of the time value.
     double setValue(const double v);
 
     /// @brief Converts the TimeValue to the given unit.

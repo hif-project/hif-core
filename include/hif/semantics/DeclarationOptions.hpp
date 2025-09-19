@@ -16,6 +16,9 @@ namespace semantics
 
 /// @brief Options for get/update declaration methods.
 struct DeclarationOptions {
+
+    /// @brief Swap the contents of this DeclarationOptions with another.
+    /// @param other The other DeclarationOptions to swap with.
     void swap(DeclarationOptions &other);
 
     /// @brief The object from which to start the search. If it is

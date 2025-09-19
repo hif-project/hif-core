@@ -27,24 +27,34 @@ class HifQueryBase
 public:
     /// @brief Maximum search depth. Default is no limit.
     std::size_t depth;
+
     /// @brief The name of the object to search for.
     std::string name;
+
     /// @brief Set of object types to avoid during the search.
     std::set<ClassId> classToAvoid;
+
     /// @brief Custom method to filter objects. Default is nullptr.
     std::function<bool(Object *, const HifQueryBase *)> check_object_method;
+
     /// @brief Enables search within method call declarations.
     bool checkInsideCallsDeclarations;
+
     /// @brief If true, stops searching after the first match.
     bool onlyFirstMatch;
+
     /// @brief Skips standard scopes during the search. Default is false.
     bool skipStandardScopes;
+
     /// @brief Enables matching based on type variant.
     bool matchTypeVariant;
+
     /// @brief Desired type variant to match. Default is `Type::NATIVE_TYPE`.
     Type::TypeVariant typeVariant;
+
     /// @brief Language semantics for the query.
     hif::semantics::ILanguageSemantics *sem;
+
     /// @brief Checks if the given object matches the query type.
     /// @param o The object to check.
     /// @return True if the object matches, false otherwise.

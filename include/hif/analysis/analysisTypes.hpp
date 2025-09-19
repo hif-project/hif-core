@@ -25,14 +25,19 @@ namespace analysis
 template <class KEY, class VALUE = KEY> struct Types {
     /// @brief Key type.
     using Key   = KEY;
+
     /// @brief Value type.
     using Value = VALUE;
+
     /// @brief Type for storing sets of objects.
     using Set   = std::set<Value *>;
+
     /// @brief Type for storing maps of objects.
     using Map   = std::map<Key *, Set>;
+
     /// @brief Type for storing lists of objects.
     using List  = std::list<Key *>;
+
     /// @brief Type for storing graphs of objects.
     /// First element maps children to parents,
     /// second element maps parents to children.

@@ -66,20 +66,13 @@ protected:
     /// @param base The base type to use for restoration.
     void _restoreTypeReference(TypeReference *tr, Type *base);
 
-    /// @name Common unary mapping functions
-    /// @{
     /// @brief Maps a type reference for unary operations.
     /// @param op The operand's type reference.
-    /// @return void
     void _map(TypeReference *op);
-    /// @}
 
-    /// @name Common binary mapping functions
-    /// @{
     /// @brief Maps a type reference and a type for binary operations.
     /// @param op1 The first operand's type reference.
     /// @param op2 The second operand's type.
-    /// @return void
     void _map(TypeReference *op1, Type *op2);
 
     /// @brief Maps a type and a type reference for binary operations.
@@ -92,7 +85,6 @@ protected:
     /// @param op2 The second operand's type reference.
     /// @param checkOpacity Whether to check for opacity.
     void _map(TypeReference *op1, TypeReference *op2, bool checkOpacity);
-    /// @}
 };
 
 } // namespace semantics

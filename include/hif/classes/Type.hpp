@@ -31,6 +31,7 @@ public:
         SYSTEMC_BITVECTOR_BASE,     /// <@brief sc_lv_base, sc_bv_base
         SYSTEMC_BIT_BITREF          /// <@brief sc_bitref_l, sc_bitref_b
     };
+
     /// @brief Constructor.
     Type();
 

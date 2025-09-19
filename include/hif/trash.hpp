@@ -18,7 +18,8 @@ namespace hif
 class Trash
 {
 public:
-    typedef std::set<Object *> TrashHolder;
+    /// @brief The type used to hold the objects in trash.
+    using TrashHolder = std::set<Object *>;
 
     Trash();
 
@@ -48,6 +49,7 @@ public:
 
     /// @brief Check whether given object is in trash.
     /// @param o The object.
+    /// @return True if the object is in trash.
     bool contains(Object *o) const;
 
     /// @brief Removes a root object from the trash, if contained, without

@@ -16,11 +16,12 @@ namespace manipulation
 {
 /// @brief The definition style used by method buildHierarchicalSymbol.
 struct DefinitionStyle {
+    /// @brief The type of definition style.
     enum Type : unsigned char {
-        HIF,
-        VHDL,
-        VERILOG,
-        SYSTEMC,
+        HIF,     ///< Definitions follows HIF conventions.
+        VHDL,    ///< Definitions follows VHDL conventions.
+        VERILOG, ///< Definitions follows Verilog conventions.
+        SYSTEMC, ///< Definitions follows SystemC conventions.
     };
 };
 

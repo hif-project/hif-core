@@ -89,6 +89,7 @@ private:
     /// (e.g., TLM for SystemC or IEEE.numeric_std for VHDL) from a library
     /// definition which is part of a design.
     bool _isStandard;
+
     /// @brief Generates C++ code, wrapped by "extern C" linkage.
     bool _hasCLinkage;
 };

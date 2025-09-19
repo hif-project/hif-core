@@ -60,6 +60,7 @@ public:
     /// @brief Returns an iterator to the beginning of the additional keywords list.
     /// @return Iterator to the beginning.
     KeywordList::iterator getAdditionalKeywordsBeginIterator();
+
     /// @brief Returns an iterator to the end of the additional keywords list.
     /// @return Iterator to the end.
     KeywordList::iterator getAdditionalKeywordsEndIterator();

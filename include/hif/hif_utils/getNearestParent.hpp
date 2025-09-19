@@ -20,6 +20,7 @@ namespace hif
 /// Call example:
 /// @code
 /// hif::Type result = getNearestParent< hif::Type >( staringObj);
+
 /// @endcode
 ///
 /// @tparam T The type of the object to be returned.

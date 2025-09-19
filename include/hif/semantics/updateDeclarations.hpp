@@ -23,17 +23,21 @@ struct UpdateDeclarationOptions : public DeclarationOptions {
     /// @brief Copy constructor.
     /// @param other The object to copy from.
     UpdateDeclarationOptions(const UpdateDeclarationOptions &other);
+
     /// @brief Assignment operator from DeclarationOptions.
     /// @param other The DeclarationOptions object to assign from.
     /// @return Reference to this object.
     UpdateDeclarationOptions &operator=(DeclarationOptions other);
+
     /// @brief Assignment operator.
     /// @param other The object to assign from.
     /// @return Reference to this object.
     UpdateDeclarationOptions &operator=(UpdateDeclarationOptions other);
+
     /// @brief Swap function with DeclarationOptions.
     /// @param other The DeclarationOptions object to swap with.
     void swap(DeclarationOptions &other);
+
     /// @brief Swap function.
     /// @param other The object to swap with.
     void swap(UpdateDeclarationOptions &other);

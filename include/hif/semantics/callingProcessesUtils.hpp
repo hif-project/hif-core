@@ -17,6 +17,7 @@ namespace semantics
 
 /// @brief The set of calling objects (processes and global actions).
 typedef std::set<Object *> CallerSet;
+
 /// @brief The map from sub programs to calling objects.
 typedef std::map<SubProgram *, CallerSet> CallerMap;
 

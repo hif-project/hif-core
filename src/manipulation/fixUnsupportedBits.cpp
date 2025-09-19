@@ -56,8 +56,10 @@ private:
     /// @brief Simplify special expressions, which cannot be matched.
     /// @param o The expression.
     bool _simplifyEqualityExpressions(Expression *o);
+
     /// @brief Returns true if value is a constant containing logic bits.
     bool _isLogicConst(Value *o);
+
     /// @brief Checks whether given value is an initial value that must be skipped.
     /// @param v The value.
     /// @return The check result.

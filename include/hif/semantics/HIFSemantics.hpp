@@ -23,6 +23,7 @@ public:
     /// @brief Returns the name of the semantics.
     /// @return The name of the semantics.
     virtual std::string getName() const;
+
     /// @brief This function returns a struct containing informations about
     /// cast to be applied to the operands, in order to make the given
     /// operation HIF compliant.
@@ -53,6 +54,7 @@ public:
     /// @return Value pointer to the type default value.
     ///
     virtual Value *getTypeDefaultValue(Type *t, Declaration *d);
+
     /// @brief Function that given a Type returns a Type pointer to
     ///   the correspondent HIF type (if exists) according HIF language.
     ///
@@ -61,6 +63,7 @@ public:
     ///
     virtual Type *getMapForType(Type *t);
     virtual Operator getMapForOperator(Operator srcOperation, Type *srcT1, Type *srcT2, Type *dstT1, Type *dstT2);
+
     /// @brief Function that given a type and an operation to do with
     /// operators of that type returns a pointer to a Type
     /// representing the type that operands have to be cast into to
@@ -121,6 +124,7 @@ public:
     /// @return Value pointer to the explicit cast.
     ///
     virtual Value *explicitCast(Value *valueToCast, Type *castType, Type *srcType);
+
     /// @brief Function that given a real value returns the correspondent
     /// int value according to semantics rules (e.g., VHDL rounds while
     /// SystemC truncates).
@@ -211,6 +215,7 @@ public:
     /// @return True if is allowed.
     ///
     virtual bool isTemplateAllowedType(Type *t);
+
     /// @brief Return the mapped of given type that is allowed as type
     /// in template parameter w.r.t. semantics.
     /// @param t The type to map.
@@ -225,6 +230,7 @@ public:
     /// @brief Function thats return an instance to VHDLSemantic class.
     /// @return The instance of HIFSemantics.
     static HIFSemantics *getInstance();
+
     /// @brief Checks whether a name is forbidden in the current semantics.
     /// @param decl The declaration to check.
     /// @return true if the name is forbidden, false otherwise.

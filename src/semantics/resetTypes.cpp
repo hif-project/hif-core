@@ -345,6 +345,7 @@ template <typename T> void resetTypes(BList<T> &root, bool recursive)
     resetTypes(*tmp, recursive);
 }
 
+/// @brief Macro for template method instantiation.
 #define HIF_TEMPLATE_METHOD(T) void resetTypes<T>(BList<T> &, bool)
 
 HIF_INSTANTIATE_METHOD()

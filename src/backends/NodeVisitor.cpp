@@ -560,6 +560,7 @@ int CDateVisitor::visitList(std::list<CNode *> &rL)
 
 //
 // VisitCNode(CNode & rN)
+/// @brief Maximum buffer size for CNode visitor.
 #define BUFF_MAX 32
 int CDateVisitor::visitCNode(CNode &rN)
 {

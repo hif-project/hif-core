@@ -20,8 +20,10 @@
 #endif
 
 #ifdef NDEBUG
+/// @brief Macro to check if debug mode is active.
 #    define HIF_IS_ACTIVE false
 #else
+/// @brief Macro to check if debug mode is active.
 #    define HIF_IS_ACTIVE true
 #endif
 

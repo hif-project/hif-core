@@ -39,8 +39,21 @@ struct DeclarationVisitorOptions {
 
     DeclarationVisitorOptions();
     ~DeclarationVisitorOptions();
+    /**
+     * @brief Copy constructor.
+     * @param o The object to copy.
+     */
     DeclarationVisitorOptions(const DeclarationVisitorOptions &o);
+    /**
+     * @brief Copy assignment operator.
+     * @param o The object to assign.
+     * @return Reference to this object.
+     */
     DeclarationVisitorOptions &operator=(DeclarationVisitorOptions o);
+    /**
+     * @brief Swaps the contents with another object.
+     * @param o The object to swap with.
+     */
     void swap(DeclarationVisitorOptions &o);
 };
 

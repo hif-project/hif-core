@@ -14,6 +14,7 @@
 
 #include "hif/backends/IndentedStream.hpp"
 
+/// @brief Macro for casting buffer to IndentedBuffer.
 #define buffer_cast(b) static_cast<IndentedBuffer *>(b)
 
 namespace hif

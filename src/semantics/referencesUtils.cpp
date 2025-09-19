@@ -495,12 +495,14 @@ void getAllReferences(
     getAllReferences(refMap, refSem, root.template toOtherBList<Object>(), opt);
 }
 
+/// @brief Macro for template method instantiation.
 #define HIF_TEMPLATE_METHOD(T)                                                                                         \
     void getReferences<T>(                                                                                             \
         Declaration *, ReferencesSet &, ILanguageSemantics *, BList<T> &, const GetReferencesOptions &)
 HIF_INSTANTIATE_METHOD()
 #undef HIF_TEMPLATE_METHOD
 
+/// @brief Macro for template method instantiation.
 #define HIF_TEMPLATE_METHOD(T)                                                                                         \
     void getAllReferences<T>(ReferencesMap &, ILanguageSemantics *, BList<T> &, const GetReferencesOptions &)
 HIF_INSTANTIATE_METHOD()

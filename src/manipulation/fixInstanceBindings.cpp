@@ -665,51 +665,6 @@ bool check_object_method(Object *o, const HifQueryBase *)
 
 } // namespace
 
-FixBindingOptions::FixBindingOptions()
-    : fixCasts(true)
-    , fixVectorCasts(false)
-    , fixMembers(true)
-    , fixSlices(true)
-    , fixConstants(true)
-    , fixOthers(true)
-    , allowOnlySignalPorts(false)
-{
-    // ntd
-}
-
-FixBindingOptions::~FixBindingOptions()
-{
-    // ntd
-}
-
-FixBindingOptions::FixBindingOptions(const FixBindingOptions &o)
-    : fixCasts(o.fixCasts)
-    , fixVectorCasts(o.fixVectorCasts)
-    , fixMembers(o.fixMembers)
-    , fixSlices(o.fixSlices)
-    , fixConstants(o.fixConstants)
-    , fixOthers(o.fixOthers)
-    , allowOnlySignalPorts(o.allowOnlySignalPorts)
-{
-    // ntd
-}
-
-FixBindingOptions &FixBindingOptions::operator=(const FixBindingOptions &o)
-{
-    if (this == &o)
-        return *this;
-
-    fixCasts             = o.fixCasts;
-    fixVectorCasts       = o.fixVectorCasts;
-    fixMembers           = o.fixMembers;
-    fixSlices            = o.fixSlices;
-    fixConstants         = o.fixConstants;
-    fixOthers            = o.fixOthers;
-    allowOnlySignalPorts = o.allowOnlySignalPorts;
-
-    return *this;
-}
-
 bool fixInstanceBindings(Object *root, hif::semantics::ILanguageSemantics *sem, const FixBindingOptions &opt)
 {
     hif::HifTypedQuery<Instance> q;

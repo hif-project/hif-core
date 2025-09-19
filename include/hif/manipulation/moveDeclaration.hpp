@@ -17,13 +17,9 @@ namespace manipulation
 /// @brief Moves a declaration into another scope.
 /// This function:
 ///     - removes declaration from old scope;
-
 ///     - moves declaration into newScope;
-
 ///     - renames declaration with a fresh name (avoid collisions);
-
 ///     - substitutes all occurrences with the fresh name starting from subtree.
-///
 /// @param decl Declaration object to be moved.
 /// @param newScope Scope where the declaration should be moved.
 /// @param subtree Subtree where the declaration is used.

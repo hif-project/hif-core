@@ -14,43 +14,6 @@
 namespace hif
 {
 
-namespace /*anon*/
-{
-
-} // namespace
-TerminalPrefixOptions::TerminalPrefixOptions()
-    : recurseIntoFieldRefs(true)
-    , recurseIntoMembers(true)
-    , recurseIntoSlices(true)
-    , recurseIntoDerefExpressions(false)
-{
-    // ntd
-}
-
-TerminalPrefixOptions::~TerminalPrefixOptions()
-{
-    // ntd
-}
-
-TerminalPrefixOptions::TerminalPrefixOptions(const TerminalPrefixOptions &other)
-    : recurseIntoFieldRefs(other.recurseIntoFieldRefs)
-    , recurseIntoMembers(other.recurseIntoMembers)
-    , recurseIntoSlices(other.recurseIntoSlices)
-    , recurseIntoDerefExpressions(other.recurseIntoDerefExpressions)
-{
-    // ntd
-}
-
-TerminalPrefixOptions &TerminalPrefixOptions::operator=(const TerminalPrefixOptions &other)
-{
-    if (&other == this)
-        return *this;
-    recurseIntoFieldRefs        = other.recurseIntoFieldRefs;
-    recurseIntoMembers          = other.recurseIntoMembers;
-    recurseIntoSlices           = other.recurseIntoSlices;
-    recurseIntoDerefExpressions = other.recurseIntoDerefExpressions;
-    return *this;
-}
 Value *getTerminalPrefix(Value *obj, const TerminalPrefixOptions &opt)
 {
     if (obj == nullptr)

@@ -17,12 +17,6 @@ namespace hif
 /// e.g. with recurseIntoFieldRefs = false:
 /// struct.field[index] -> return field, otherwise return struct.
 struct TerminalPrefixOptions {
-    TerminalPrefixOptions();
-    ~TerminalPrefixOptions();
-
-    TerminalPrefixOptions(const TerminalPrefixOptions &other);
-    TerminalPrefixOptions &operator=(const TerminalPrefixOptions &other);
-
     /// Recurse within field references. Default is true.
     bool recurseIntoFieldRefs;
     /// Recurse within member objects. Default is true.

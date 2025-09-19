@@ -720,8 +720,8 @@ void Flattener::_propagateConcatInitialValueToPrefixedReference(
         ++index;
         return;
     } else if (s != nullptr) {
-        std::uint64_t w = hif::semantics::spanGetBitwidth(s->getSpan(), _sem);
-        BitvectorValue *bv   = factory.bitvectorval(
+        std::uint64_t w    = hif::semantics::spanGetBitwidth(s->getSpan(), _sem);
+        BitvectorValue *bv = factory.bitvectorval(
             str.substr(static_cast<std::string::size_type>(index), static_cast<std::string::size_type>(w)),
             factory.bitvector(
                 hif::copy(s->getSpan()), hif::typeIsLogic(t, _sem), hif::typeIsResolved(t, _sem),
@@ -960,44 +960,6 @@ bool Flattener::ObjectCompare::operator()(const Object *o1, const Object *o2) co
 
 } // anonymous namespace
 
-// ///////////////////////////////////////////////////////////////////
-// FlattenDesignOptions
-// ///////////////////////////////////////////////////////////////////
-
-FlattenDesignOptions::FlattenDesignOptions()
-    : verbose(false)
-    , topLevelName()
-    , rootDUs()
-    , rootInstances()
-{
-}
-
-FlattenDesignOptions::~FlattenDesignOptions()
-{
-    // ntd
-}
-
-FlattenDesignOptions::FlattenDesignOptions(const FlattenDesignOptions &f)
-    : verbose(f.verbose)
-    , topLevelName(f.topLevelName)
-    , rootDUs(f.rootDUs)
-    , rootInstances(f.rootInstances)
-{
-    // ntd
-}
-
-FlattenDesignOptions &FlattenDesignOptions::operator=(const FlattenDesignOptions &f)
-{
-    if (this == &f)
-        return *this;
-
-    verbose       = f.verbose;
-    topLevelName  = f.topLevelName;
-    rootDUs       = f.rootDUs;
-    rootInstances = f.rootInstances;
-
-    return *this;
-}
 // ///////////////////////////////////////////////////////////////////
 // flattenDesign
 // ///////////////////////////////////////////////////////////////////

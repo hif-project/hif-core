@@ -23,7 +23,6 @@ namespace hif
 /// The user-defined function must have the following signature:
 /// ```cpp
 /// bool myFunction(Object *obj, void *data);
-
 /// ```
 /// - The first parameter is the current object being processed.
 /// - The second parameter is user-defined data that can be passed for context or state.

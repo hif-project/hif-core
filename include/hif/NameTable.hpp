@@ -86,7 +86,7 @@ public:
 
     /// @brief Return the name associated to a given string.
     /// This one creates the name if it is not in the table yet.
-    /// @param s the string whose name is sought.
+    /// @param name the string whose name is sought.
     /// @param index The index to concat at the end of @p s.
     /// @return The name.
     std::string registerName(const std::string &name, int index);

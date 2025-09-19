@@ -319,6 +319,9 @@ bool isInLeftHandSide(Object *obj, const LeftHandSideOptions &opt)
     return atv.isAssignTarget();
 }
 
+/// @brief Gets the left-hand side value of an assignment.
+/// @param obj The value object.
+/// @return The left-hand side value.
 Value *getLeftHandSide(Value *obj)
 {
     if (!isInLeftHandSide(obj)) {

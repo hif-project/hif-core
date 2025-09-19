@@ -335,6 +335,7 @@ template <typename T> void resetDeclarations(BList<T> &o, const ResetDeclaration
     resetDeclarations(o.template toOtherBList<Object>(), opt);
 }
 
+/// @brief Macro for template method instantiation.
 #define HIF_TEMPLATE_METHOD(T) void resetDeclarations<T>(BList<T> &, const ResetDeclarationsOptions &)
 HIF_INSTANTIATE_METHOD()
 

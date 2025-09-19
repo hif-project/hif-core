@@ -60,7 +60,11 @@ protected:
     /// @brief Fills the internal fields and blists lists.
     virtual void _calculateFields();
 
-    /// @brief Returns the name of given child w.r.t. this.
+    /**
+     * @brief Returns the name of given child w.r.t. this.
+     * @param child The child object.
+     * @return The name of the child.
+     */
     virtual std::string _getFieldName(const Object *child) const;
 
 private:

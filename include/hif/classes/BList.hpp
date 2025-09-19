@@ -32,7 +32,7 @@ public:
     /// @brief Default constructor.
     BList();
 
-    /// @brief Deep copy of all objects.
+    /** @brief Deep copy of all objects. @param other The list to copy. */
     BList(const BList<T> &other);
 
     /// @brief Deep copy of all objects.

@@ -51,8 +51,10 @@ std::int64_t unsigned int __expressionId = 0;
 // Configuration macros
 /////////////////////////////////////////
 // Upper bound to choose whether simplify or not for statements.
+/// @brief Threshold for for loop unrolling.
 #define FOR_UNROLL_THRESHOLD      1000
 // Upper bound to choose whether unroll aggregate alts.
+/// @brief Threshold for aggregate unrolling.
 #define AGGREGATE_UROLL_THRESHOLD 128
 
 namespace hif
@@ -7575,16 +7577,19 @@ typename SimplifiedType<T>::type *getAggressiveSimplified(T *o, hif::semantics::
     return dynamic_cast<typename SimplifiedType<T>::type *>(getAggressiveSimplified(static_cast<Object *>(o), refSem));
 }
 
+/// @brief Macro for template method instantiation.
 #define HIF_TEMPLATE_METHOD(T)                                                                                         \
     SimplifiedType<T>::type *simplify<T>(T * o, hif::semantics::ILanguageSemantics * refSem, const SimplifyOptions &opt)
 HIF_INSTANTIATE_METHOD()
 #undef HIF_TEMPLATE_METHOD
 
+/// @brief Macro for template method instantiation.
 #define HIF_TEMPLATE_METHOD(T)                                                                                         \
     void simplify<T>(BList<T> & o, hif::semantics::ILanguageSemantics * refSem, const SimplifyOptions &opt)
 HIF_INSTANTIATE_METHOD()
 #undef HIF_TEMPLATE_METHOD
 
+/// @brief Macro for template method instantiation.
 #define HIF_TEMPLATE_METHOD(T)                                                                                         \
     SimplifiedType<T>::type *getAggressiveSimplified<T>(T * o, hif::semantics::ILanguageSemantics * refSem)
 HIF_INSTANTIATE_METHOD()

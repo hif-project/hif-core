@@ -14,6 +14,7 @@ namespace hif
 
 /// @brief Checks whether it is possible to reach the System object starting
 /// from the passed object.
+/// @param obj The object to check.
 /// @return <tt>true</tt> if System is reachable.
 ///
 

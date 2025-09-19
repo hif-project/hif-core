@@ -56,6 +56,8 @@ protected:
     virtual void _calculateFields();
 
     /// @brief Returns the name of given child w.r.t. this.
+    /// @param child The child object to get the name for.
+    /// @return The name of the child.
     virtual std::string _getFieldName(const Object *child) const;
 
 private:

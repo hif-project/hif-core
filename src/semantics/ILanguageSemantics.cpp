@@ -913,9 +913,12 @@ std::ostream &operator<<(std::ostream &o, const hif::semantics::ILanguageSemanti
 }
 // Explicit instantiation for getSuffixedCopy() method
 
+/// @brief Explicit instantiation for SubProgram.
 template hif::SubProgram *
 hif::semantics::ILanguageSemantics::getSuffixedCopy<hif::SubProgram>(SubProgram *obj, const std::string &suffix);
+/// @brief Explicit instantiation for Function.
 template hif::Function *
 hif::semantics::ILanguageSemantics::getSuffixedCopy<hif::Function>(Function *obj, const std::string &suffix);
+/// @brief Explicit instantiation for Procedure.
 template hif::Procedure *
 hif::semantics::ILanguageSemantics::getSuffixedCopy<hif::Procedure>(Procedure *obj, const std::string &suffix);

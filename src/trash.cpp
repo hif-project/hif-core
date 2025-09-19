@@ -103,6 +103,7 @@ bool Trash::remove(Object *o)
 }
 
 template <typename T> void Trash::insert(BList<T> &list) { Trash::insert(list.template toOtherBList<Object>()); }
+/// @brief Macro for template method instantiation.
 #define HIF_TEMPLATE_METHOD(T) void Trash::insert<T>(BList<T> & list)
 HIF_INSTANTIATE_METHOD()
 #undef HIF_TEMPLATE_METHOD

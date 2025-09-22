@@ -51,6 +51,10 @@ void sortGraph(
     bool fromLeaves,
     typename Types<KEY, VALUE>::List *stableList = nullptr)
 {
+    static_assert(std::is_base_of<Object, KEY>::value, "KEY must be derived from Object");
+    static_assert(std::is_base_of<Object, VALUE>::value, "VALUE must be derived from Object");
+    // Safe reinterpret_cast: Types<KEY, VALUE> and Types<Object, Object> have identical memory layout since KEY/VALUE
+    // derive from Object and pointers are compatible.
     auto *g = reinterpret_cast<typename Types<Object, Object>::Graph *>(&graph);
     auto *l = reinterpret_cast<typename Types<Object, Object>::List *>(&list);
     auto *s = reinterpret_cast<typename Types<Object, Object>::List *>(stableList);

@@ -21,25 +21,10 @@ namespace analysis
 /// the port to inject, the number of clock or delta cycles, and whether it
 /// represents a half-clock delay.
 struct DelayProperties {
-    /// @brief Constructor.
-    DelayProperties();
-
-    /// @brief Destructor.
-    ~DelayProperties();
-
-    /// @brief Copy constructor.
-    /// @param other The other instance to copy.
-    DelayProperties(const DelayProperties &other);
-
-    /// @brief Assignment operator.
-    /// @param other The other instance to copy.
-    /// @return a reference to this instance.
-    auto operator=(const DelayProperties &other) -> DelayProperties &;
-
-    Port *port;              ///< The port where the delay will be injected.
-    std::size_t clockCycles; ///< Number of clock cycles of delay.
-    std::size_t deltas;      ///< Number of delta cycles of delay.
-    bool halfClock;          ///< Indicates if this is a half-clock delay.
+    Port *port              = nullptr; ///< The port where the delay will be injected.
+    std::size_t clockCycles = 0;       ///< Number of clock cycles of delay.
+    std::size_t deltas      = 0;       ///< Number of delta cycles of delay.
+    bool halfClock          = false;   ///< Indicates if this is a half-clock delay.
 };
 
 /// @brief Stores delay information associated with a specific design unit.
@@ -50,27 +35,12 @@ struct DelayInfos {
     using WorkingEdge = ProcessInfos::WorkingEdge;         ///< Alias for the working edge type.
     using ResetPhase  = ProcessInfos::ResetPhase;          ///< Alias for the reset phase type.
 
-    /// @brief Constructor.
-    DelayInfos();
-
-    /// @brief Destructor.
-    ~DelayInfos();
-
-    /// @brief Copy constructor.
-    /// @param other The other instance to copy.
-    DelayInfos(const DelayInfos &other);
-
-    /// @brief Assignment operator.
-    /// @param other The other instance to copy.
-    /// @return a reference to this instance.
-    auto operator=(const DelayInfos &other) -> DelayInfos &;
-
-    View *view;               ///< The view to be injected with delays.
-    Port *clock;              ///< The reference clock for the delays.
-    Port *reset;              ///< The reference reset for the delays.
-    WorkingEdge workingEdge;  ///< The clock's working edge.
-    ResetPhase resetPhase;    ///< The reset phase.
-    DelayMap delayProperties; ///< Map of delays to be injected.
+    View *view              = nullptr;                ///< The view to be injected with delays.
+    Port *clock             = nullptr;                ///< The reference clock for the delays.
+    Port *reset             = nullptr;                ///< The reference reset for the delays.
+    WorkingEdge workingEdge = ProcessInfos::NO_EDGE;  ///< The clock's working edge.
+    ResetPhase resetPhase   = ProcessInfos::NO_PHASE; ///< The reset phase.
+    DelayMap delayProperties;                         ///< Map of delays to be injected.
 };
 
 /// @brief List of delay information to be applied to design units.

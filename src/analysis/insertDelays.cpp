@@ -23,11 +23,8 @@ using RefSet    = std::set<Object *>;
 using RefMap    = std::map<Declaration *, RefSet>;
 using Processes = std::list<StateTable *>;
 
-auto _makeName(
-    const std::string &prefix,
-    const std::size_t clocks,
-    const std::size_t deltas,
-    bool halfClock) -> std::string
+auto _makeName(const std::string &prefix, const std::size_t clocks, const std::size_t deltas, bool halfClock)
+    -> std::string
 {
     std::stringstream ss;
     ss << prefix << clocks;
@@ -459,89 +456,6 @@ auto _insertDelay(DelayInfos &delayInfos, hif::semantics::ILanguageSemantics *se
     return true;
 }
 } // namespace
-// /////////////////////////////////////
-// DelayProperties
-// /////////////////////////////////////
-
-DelayProperties::DelayProperties()
-    : port(nullptr)
-    , clockCycles(0)
-    , deltas(0)
-    , halfClock(false)
-{
-    // ntd
-}
-DelayProperties::~DelayProperties()
-{
-    // ntd
-}
-DelayProperties::DelayProperties(const DelayProperties &other)
-    : port(other.port)
-    , clockCycles(other.clockCycles)
-    , deltas(other.deltas)
-    , halfClock(other.halfClock)
-{
-    // ntd
-}
-
-auto DelayProperties::operator=(const DelayProperties &other) -> DelayProperties &
-{
-    if (this == &other) {
-        return *this;
-    }
-    port        = other.port;
-    clockCycles = other.clockCycles;
-    deltas      = other.deltas;
-    halfClock   = other.halfClock;
-
-    return *this;
-}
-// /////////////////////////////////////
-// DelayInfos
-// /////////////////////////////////////
-
-DelayInfos::DelayInfos()
-    : view(nullptr)
-    , clock(nullptr)
-    , reset(nullptr)
-    , workingEdge(ProcessInfos::NO_EDGE)
-    , resetPhase(ProcessInfos::NO_PHASE)
-
-{
-    // ntd
-}
-DelayInfos::~DelayInfos()
-{
-    // ntd
-}
-DelayInfos::DelayInfos(const DelayInfos &other)
-    : view(other.view)
-    , clock(other.clock)
-    , reset(other.reset)
-    , workingEdge(other.workingEdge)
-    , resetPhase(other.resetPhase)
-    , delayProperties(other.delayProperties)
-{
-    // ntd
-}
-
-auto DelayInfos::operator=(const DelayInfos &other) -> DelayInfos &
-{
-    if (this == &other) {
-        return *this;
-    }
-    view            = other.view;
-    clock           = other.clock;
-    reset           = other.reset;
-    workingEdge     = other.workingEdge;
-    resetPhase      = other.resetPhase;
-    delayProperties = other.delayProperties;
-
-    return *this;
-}
-// /////////////////////////////////////
-// insertDelay()
-// /////////////////////////////////////
 
 auto insertDelays(DelayList &delays, hif::semantics::ILanguageSemantics *sem) -> bool
 {

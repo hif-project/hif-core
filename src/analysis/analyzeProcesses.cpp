@@ -399,8 +399,8 @@ void ProcessVisitor::_classifyWrtSensitivity(ProcessInfos &infos, StateTable * /
         return;
     }
     bool sameName = (asynchName.empty() || asynchPosName.empty() || asynchName == asynchPosName) &&
-                          (asynchName.empty() || asynchNegName.empty() || asynchName == asynchNegName) &&
-                          (asynchPosName.empty() || asynchNegName.empty() || asynchPosName == asynchNegName);
+                    (asynchName.empty() || asynchNegName.empty() || asynchName == asynchNegName) &&
+                    (asynchPosName.empty() || asynchNegName.empty() || asynchPosName == asynchNegName);
 
     bool oneAsynchForKind =
         (asynch == 0 || asynch == 1) && (asynchPos == 0 || asynchPos == 1) && (asynchNeg == 0 || asynchNeg == 1);
@@ -1193,62 +1193,6 @@ auto ProcessVisitor::_isProcessStyle6(ProcessInfos &infos, State *state) -> bool
     return true;
 }
 } // namespace
-ProcessInfos::ProcessInfos()
-    : processKind(ASYNCHRONOUS)
-    , resetKind(NO_RESET)
-    , workingEdge(NO_EDGE)
-    , resetPhase(NO_PHASE)
-    , processStyle(NO_STYLE)
-    , clock(nullptr)
-    , reset(nullptr)
-{
-    // ntd
-}
-ProcessInfos::~ProcessInfos()
-{
-    // ntd
-}
-ProcessInfos::ProcessInfos(const ProcessInfos &other)
-    : processKind(other.processKind)
-    , resetKind(other.resetKind)
-    , workingEdge(other.workingEdge)
-    , resetPhase(other.resetPhase)
-    , processStyle(other.processStyle)
-    , risingSensitivity(other.risingSensitivity)
-    , fallingSensitivity(other.fallingSensitivity)
-    , sensitivity(other.sensitivity)
-    , inputs(other.inputs)
-    , outputs(other.outputs)
-    , inputVariables(other.inputVariables)
-    , outputVariables(other.outputVariables)
-    , clock(other.clock)
-    , reset(other.reset)
-{
-    // ntd
-}
-
-auto ProcessInfos::operator=(const ProcessInfos &other) -> ProcessInfos &
-{
-    if (this == &other) {
-        return *this;
-    }
-    processKind        = other.processKind;
-    resetKind          = other.resetKind;
-    workingEdge        = other.workingEdge;
-    resetPhase         = other.resetPhase;
-    processStyle       = other.processStyle;
-    risingSensitivity  = other.risingSensitivity;
-    fallingSensitivity = other.fallingSensitivity;
-    sensitivity        = other.sensitivity;
-    inputs             = other.inputs;
-    outputs            = other.outputs;
-    inputVariables     = other.inputVariables;
-    outputVariables    = other.outputVariables;
-    clock              = other.clock;
-    reset              = other.reset;
-
-    return *this;
-}
 
 auto ProcessInfos::getSensitivitySize() const -> ProcessInfos::ReferredDeclarations::size_type
 {
@@ -1271,39 +1215,6 @@ auto ProcessInfos::isInSensitivity(ReferredDeclarations::value_type v) const -> 
     }
     i = fallingSensitivity.find(v);
     return i != fallingSensitivity.end();
-}
-AnalyzeProcessOptions::AnalyzeProcessOptions()
-    : clock(nullptr)
-    , reset(nullptr)
-    , skip_standard_declarations(true)
-    , printWarnings(false)
-{
-    // ntd
-}
-AnalyzeProcessOptions::~AnalyzeProcessOptions()
-{
-    // ntd.
-}
-AnalyzeProcessOptions::AnalyzeProcessOptions(const AnalyzeProcessOptions &other)
-    : clock(other.clock)
-    , reset(other.reset)
-    , skip_standard_declarations(other.skip_standard_declarations)
-    , printWarnings(other.printWarnings)
-{
-    // ntd
-}
-
-auto AnalyzeProcessOptions::operator=(const AnalyzeProcessOptions &other) -> AnalyzeProcessOptions &
-{
-    if (this == &other) {
-        return *this;
-    }
-    clock                    = other.clock;
-    reset                    = other.reset;
-    skip_standard_declarations = other.skip_standard_declarations;
-    printWarnings            = other.printWarnings;
-
-    return *this;
 }
 
 auto analyzeProcesses(

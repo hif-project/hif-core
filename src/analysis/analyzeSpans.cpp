@@ -575,37 +575,6 @@ auto SpanAnalyzer::_setSpanMaxIndex(Range *r, Value *v) -> Value *
 // IndexInfo
 // ///////////////////////////////////////////////////////////////////
 
-IndexInfo::IndexInfo()
-    : expression(nullptr)
-    , range(nullptr)
-    , slice(nullptr)
-{
-    // ntd
-}
-IndexInfo::~IndexInfo()
-{
-    // ntd
-}
-IndexInfo::IndexInfo(const IndexInfo &o)
-    : expression(o.expression)
-    , range(o.range)
-    , slice(o.slice)
-{
-    // ntd
-}
-
-auto IndexInfo::operator=(const IndexInfo &o) -> IndexInfo &
-{
-    if (this == &o) {
-        return *this;
-    }
-    expression = o.expression;
-    range      = o.range;
-    slice      = o.slice;
-
-    return *this;
-}
-
 auto IndexInfo::operator<(const IndexInfo &o) const -> bool { return (this < &o); }
 // ///////////////////////////////////////////////////////////////////
 // ValueIndex
@@ -619,38 +588,8 @@ ValueIndex::ValueIndex()
     , _minSliceIndex(0)
     , _maxSliceIndex(0)
 {
-    // ntd
-}
-ValueIndex::~ValueIndex()
-{
-    // ntd
-}
-ValueIndex::ValueIndex(const ValueIndex &other)
-    : _kind(other._kind)
-    , _index(other._index)
-    , _minRangeIndex(other._minRangeIndex)
-    , _maxRangeIndex(other._maxRangeIndex)
-    , _minSliceIndex(other._minSliceIndex)
-    , _maxSliceIndex(other._maxSliceIndex)
-{
-    // ntd
 }
 
-auto ValueIndex::operator=(ValueIndex other) -> ValueIndex &
-{
-    swap(other);
-    return *this;
-}
-
-void ValueIndex::swap(ValueIndex &other) noexcept
-{
-    std::swap(_kind, other._kind);
-    std::swap(_index, other._index);
-    std::swap(_minRangeIndex, other._minRangeIndex);
-    std::swap(_maxRangeIndex, other._maxRangeIndex);
-    std::swap(_minSliceIndex, other._minSliceIndex);
-    std::swap(_maxSliceIndex, other._maxSliceIndex);
-}
 ValueIndex::ValueIndex(const IndexKind kind, std::uint64_t min, std::uint64_t max)
     : _kind(kind)
     , _index(min)
@@ -663,6 +602,16 @@ ValueIndex::ValueIndex(const IndexKind kind, std::uint64_t min, std::uint64_t ma
     if (min == max) {
         _kind = AnalyzeSpansResult::INDEX_EXPRESSION;
     }
+}
+
+void ValueIndex::swap(ValueIndex &other) noexcept
+{
+    std::swap(_kind, other._kind);
+    std::swap(_index, other._index);
+    std::swap(_minRangeIndex, other._minRangeIndex);
+    std::swap(_maxRangeIndex, other._maxRangeIndex);
+    std::swap(_minSliceIndex, other._minSliceIndex);
+    std::swap(_maxSliceIndex, other._maxSliceIndex);
 }
 
 auto ValueIndex::operator<(const ValueIndex &other) const -> bool
@@ -711,13 +660,7 @@ auto ValueIndex::getSize() const -> std::uint64_t { return (getMax() - getMin() 
 // ///////////////////////////////////////////////////////////////////
 // AnalyzeSpansResult
 // ///////////////////////////////////////////////////////////////////
-AnalyzeSpansResult::AnalyzeSpansResult()
-    : maxBound(0)
-    , allSpecified(false)
-    , allOthers(false)
-{
-    // ntd
-}
+
 AnalyzeSpansResult::~AnalyzeSpansResult()
 {
     for (auto &i : resultMap) {
@@ -726,32 +669,42 @@ AnalyzeSpansResult::~AnalyzeSpansResult()
     }
     resultMap.clear();
 }
-AnalyzeSpansResult::AnalyzeSpansResult(const AnalyzeSpansResult &other)
-    : resultMap(other.resultMap)
+
+AnalyzeSpansResult::AnalyzeSpansResult(AnalyzeSpansResult &&other) noexcept
+    : resultMap(std::move(other.resultMap))
     , maxBound(other.maxBound)
     , allSpecified(other.allSpecified)
     , allOthers(other.allOthers)
 {
-    auto &mutableOther = const_cast<AnalyzeSpansResult &>(other);
-    mutableOther.resultMap.clear();
-    mutableOther.maxBound     = 0;
-    mutableOther.allSpecified = false;
-    mutableOther.allOthers    = false;
+    other.resultMap.clear();
+    other.maxBound     = 0;
+    other.allSpecified = false;
+    other.allOthers    = false;
 }
 
-auto AnalyzeSpansResult::operator=(AnalyzeSpansResult other) -> AnalyzeSpansResult &
+auto AnalyzeSpansResult::operator=(AnalyzeSpansResult &&other) noexcept -> AnalyzeSpansResult &
 {
-    swap(other);
+    if (this != &other) {
+        // Clean up current resources
+        for (auto &i : resultMap) {
+            delete i.second;
+        }
+        resultMap.clear();
+
+        // Move from other
+        resultMap    = std::move(other.resultMap);
+        maxBound     = other.maxBound;
+        allSpecified = other.allSpecified;
+        allOthers    = other.allOthers;
+
+        other.resultMap.clear();
+        other.maxBound     = 0;
+        other.allSpecified = false;
+        other.allOthers    = false;
+    }
     return *this;
 }
 
-void AnalyzeSpansResult::swap(AnalyzeSpansResult &other) noexcept
-{
-    std::swap(resultMap, other.resultMap);
-    std::swap(maxBound, other.maxBound);
-    std::swap(allSpecified, other.allSpecified);
-    std::swap(allOthers, other.allOthers);
-}
 // ///////////////////////////////////////////////////////////////////
 // analyzeSpans()
 // ///////////////////////////////////////////////////////////////////
@@ -771,7 +724,7 @@ auto analyzeSpans(
     if (!ret) {
         return ret;
     }
-    result = analyzer.getResult();
+    result = std::move(analyzer.getResult());
     return ret;
 }
 

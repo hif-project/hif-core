@@ -18,6 +18,9 @@ endif()
 # Set the install prefix.
 set(CMAKE_INSTALL_PREFIX /usr/local)
 
+# Enable the generation of compile_commands.json for tools like clang-tidy.
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
 # -----------------------------------------------------------------------------
 # OPTIONS
 # -----------------------------------------------------------------------------

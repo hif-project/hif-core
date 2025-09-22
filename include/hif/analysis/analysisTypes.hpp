@@ -13,6 +13,7 @@
 #include <set>
 
 #include "hif/application_utils/portability.hpp"
+#include "hif/classes/forwards.hpp"
 
 namespace hif
 {
@@ -25,19 +26,14 @@ namespace analysis
 template <class KEY, class VALUE = KEY> struct Types {
     /// @brief Key type.
     using Key   = KEY;
-
     /// @brief Value type.
     using Value = VALUE;
-
     /// @brief Type for storing sets of objects.
     using Set   = std::set<Value *>;
-
     /// @brief Type for storing maps of objects.
     using Map   = std::map<Key *, Set>;
-
     /// @brief Type for storing lists of objects.
     using List  = std::list<Key *>;
-
     /// @brief Type for storing graphs of objects.
     /// First element maps children to parents,
     /// second element maps parents to children.
@@ -131,11 +127,11 @@ struct ProcessInfos {
     /// @name Process Behavior
     /// @brief Attributes related to the behavior of a process.
     /// @{
-    ProcessKind processKind;   ///< Kind of the process.
-    ResetKind resetKind;       ///< Kind of the reset.
-    WorkingEdge workingEdge;   ///< Working edge of the process.
-    ResetPhase resetPhase;     ///< Reset phase of the process.
-    ProcessStyle processStyle; ///< Style of the process.
+    ProcessKind processKind   = ASYNCHRONOUS; ///< Kind of the process.
+    ResetKind resetKind       = NO_RESET;     ///< Kind of the reset.
+    WorkingEdge workingEdge   = NO_EDGE;      ///< Working edge of the process.
+    ResetPhase resetPhase     = NO_PHASE;     ///< Reset phase of the process.
+    ProcessStyle processStyle = NO_STYLE;     ///< Style of the process.
     /// @}
 
     /// @name Sensitivities
@@ -158,24 +154,9 @@ struct ProcessInfos {
     /// @name Signals
     /// @brief Clock and reset signals associated with the process.
     /// @{
-    DataDeclaration *clock; ///< Clock signal.
-    DataDeclaration *reset; ///< Reset signal.
+    DataDeclaration *clock = nullptr; ///< Clock signal.
+    DataDeclaration *reset = nullptr; ///< Reset signal.
     /// @}
-
-    /// @brief Constructor.
-    ProcessInfos();
-
-    /// @brief Destructor.
-    ~ProcessInfos();
-
-    /// @brief Copy constructor.
-    /// @param other The other instance to copy.
-    ProcessInfos(const ProcessInfos &other);
-
-    /// @brief Assignment operator.
-    /// @param other The other instance to copy.
-    /// @return a reference to this instance.
-    auto operator=(const ProcessInfos &other) -> ProcessInfos &;
 
     /// @brief Gets the size of the sensitivity list.
     /// @return Number of elements in the sensitivity list.
@@ -193,26 +174,14 @@ struct AnalyzeProcessOptions {
 
     /// @name Configuration Options
     /// @{
-    std::string clock;               ///< Main clock name (default: nullptr).
-    std::string reset;               ///< Main reset name (default: nullptr).
-    bool skip_standard_declarations; ///< Skip standard declarations (default: true).
-    bool printWarnings;              ///< Print warnings (default: false).
+    std::string clock               = std::string(); ///< Main clock name (default: nullptr).
+    std::string reset               = std::string(); ///< Main reset name (default: nullptr).
+    bool skip_standard_declarations = true;          ///< Skip standard declarations (default: true).
+    bool printWarnings              = false;         ///< Print warnings (default: false).
     /// @}
 
     /// @brief Constructor.
     AnalyzeProcessOptions();
-
-    /// @brief Destructor.
-    ~AnalyzeProcessOptions();
-
-    /// @brief Copy constructor.
-    /// @param other The other instance to copy.
-    AnalyzeProcessOptions(const AnalyzeProcessOptions &other);
-
-    /// @brief Assignment operator.
-    /// @param other The other instance to copy.
-    /// @return a reference to this instance.
-    auto operator=(const AnalyzeProcessOptions &other) -> AnalyzeProcessOptions &;
 };
 
 } // namespace analysis

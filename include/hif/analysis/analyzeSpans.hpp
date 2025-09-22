@@ -24,21 +24,6 @@ namespace analysis
 /// range of indices, or a slice of indices. It supports comparisons to
 /// facilitate its use in ordered containers.
 struct IndexInfo {
-    /// @brief Constructor.
-    IndexInfo();
-
-    /// @brief Destructor.
-    ~IndexInfo();
-
-    /// @brief Copy constructor.
-    /// @param other The other instance to copy.
-    IndexInfo(const IndexInfo &other);
-
-    /// @brief Assignment operator.
-    /// @param other The other instance to copy.
-    /// @return a reference to this instance.
-    auto operator=(const IndexInfo &other) -> IndexInfo &;
-
     /// @brief Comparison operator for ordered containers.
     /// @param other The other instance to compare against.
     /// @return true if this index is lower than other.
@@ -80,16 +65,25 @@ struct AnalyzeSpansResult {
         ValueIndex();
 
         /// @brief Destructor.
-        ~ValueIndex();
+        virtual ~ValueIndex() = default;
 
         /// @brief Copy constructor.
         /// @param other The other instance to copy.
-        ValueIndex(const ValueIndex &other);
+        ValueIndex(const ValueIndex &other) = default;
 
-        /// @brief Assignment operator.
+        /// @brief Copy assignment operator.
         /// @param other The other instance to copy.
         /// @return a reference to this instance.
-        auto operator=(ValueIndex other) -> ValueIndex &;
+        auto operator=(const ValueIndex &other) -> ValueIndex & = default;
+
+        /// @brief Move constructor.
+        /// @param other The other instance to move.
+        ValueIndex(ValueIndex &&other) noexcept = default;
+
+        /// @brief Move assignment operator.
+        /// @param other The other instance to move.
+        /// @return a reference to this instance.
+        auto operator=(ValueIndex &&other) noexcept -> ValueIndex & = default;
 
         /// @brief Constructor with kind and range.
         /// @param kind The kind of the index.
@@ -135,28 +129,37 @@ struct AnalyzeSpansResult {
     using ValueMap = std::map<ValueIndex, Value *>;
 
     /// @brief Constructor.
-    AnalyzeSpansResult();
+    AnalyzeSpansResult() = default;
 
     /// @brief Destructor.
     ~AnalyzeSpansResult();
 
     /// @brief Copy constructor.
     /// @param other The other instance to copy.
-    AnalyzeSpansResult(const AnalyzeSpansResult &other);
+    AnalyzeSpansResult(const AnalyzeSpansResult &other) = delete;
 
     /// @brief Assignment operator.
     /// @param other The other instance to copy.
     /// @return a reference to this instance.
-    auto operator=(AnalyzeSpansResult other) -> AnalyzeSpansResult &;
+    auto operator=(const AnalyzeSpansResult &other) -> AnalyzeSpansResult & = delete;
+
+    /// @brief Move constructor.
+    /// @param other The other instance to move.
+    AnalyzeSpansResult(AnalyzeSpansResult &&other) noexcept;
+
+    /// @brief Move assignment operator.
+    /// @param other The other instance to move.
+    /// @return a reference to this instance.
+    auto operator=(AnalyzeSpansResult &&other) noexcept -> AnalyzeSpansResult &;
 
     /// @brief Swaps the contents of two AnalyzeSpansResult objects.
     /// @param other The other instance to swap with.
     void swap(AnalyzeSpansResult &other) noexcept;
 
-    ValueMap resultMap;     ///< The result map from indices to values.
-    std::uint64_t maxBound; ///< The maximum bound shifted to zero.
-    bool allSpecified;      ///< True if indices fully cover the original span.
-    bool allOthers;         ///< True if all index values match a given default.
+    ValueMap resultMap;             ///< The result map from indices to values.
+    std::uint64_t maxBound = 0;     ///< The maximum bound shifted to zero.
+    bool allSpecified      = false; ///< True if indices fully cover the original span.
+    bool allOthers         = false; ///< True if all index values match a given default.
 };
 
 /// @brief Analyzes a set of indices to unroll and pack their values.

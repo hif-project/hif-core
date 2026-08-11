@@ -423,9 +423,10 @@ void SimplifyMap::_resolveRealExpr(double r1, double r2, Value *v1, Value *v2)
                 }
                 // Get the span bitwidth of the type.
                 auto trunc = hif::semantics::typeGetSpanBitwidth(type1, _data.sem);
-                //
+                // Mask to truncate the value to the bitwidth of the type.
                 auto mask  = (trunc >= 64) ? ~0ULL : ((1ULL << trunc) - 1);
-                cv1        = cv1 & mask;
+                // Apply the mask to the value.
+                cv1        = cv1 & static_cast<std::int64_t>(mask);
                 intResult  = cv1 >> cv2;
             }
 
@@ -461,7 +462,7 @@ void SimplifyMap::_resolveRealExpr(double r1, double r2, Value *v1, Value *v2)
                     // Get the span bitwidth of the type.
                     auto trunc = hif::semantics::typeGetSpanBitwidth(type1, _data.sem);
                     auto mask  = (trunc >= 64) ? ~0ULL : ((1ULL << trunc) - 1);
-                    cv1        = cv1 & mask;
+                    cv1        = cv1 & static_cast<std::int64_t>(mask);
                     intResult  = cv1 >> (static_cast<std::int64_t>(r2));
                 }
             }

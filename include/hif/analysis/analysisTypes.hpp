@@ -179,9 +179,6 @@ struct AnalyzeProcessOptions {
     bool skip_standard_declarations = true;          ///< Skip standard declarations (default: true).
     bool printWarnings              = false;         ///< Print warnings (default: false).
     /// @}
-
-    /// @brief Constructor.
-    AnalyzeProcessOptions();
 };
 
 } // namespace analysis

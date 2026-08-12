@@ -368,6 +368,12 @@ LibraryDef *VerilogSemantics::getStandardPackage(bool hifFormat)
 
     // Math functions
     //$clog2
+    {
+        SubProgram *p = factory.subprogram(
+            hif::copy(integerBV), _makeHifName("_system_clog2", hifFormat).c_str(), factory.noTemplates(),
+            factory.parameter(hif::copy(integerBV), "value"));
+        ld->declarations.push_back(p);
+    }
     //$ln
     //$log10
     //$exp

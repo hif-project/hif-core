@@ -225,6 +225,8 @@ void HIFSemantics::_initStandardSymbols()
         _makeValue(hif_verilog_standard, 1, "hif_verilog__system_fopen", SIMPLIFIED);
     _standardSymbols[_makeKey("standard", "_system_random")] =
         _makeValue(hif_verilog_standard, 1, "hif_verilog__system_random", SIMPLIFIED);
+    _standardSymbols[_makeKey("standard", "_system_clog2")] =
+        _makeValue(hif_verilog_standard, 1, "hif_verilog__system_clog2", SIMPLIFIED);
     _standardSymbols[_makeKey("standard", "_system_readmemb")] =
         _makeValue(hif_verilog_standard, 1, "hif_verilog__system_readmemb", SIMPLIFIED);
     _standardSymbols[_makeKey("standard", "_system_readmemh")] =

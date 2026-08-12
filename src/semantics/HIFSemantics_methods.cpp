@@ -807,6 +807,10 @@ Object *HIFSemantics::_getSimplifiedSymbolStandard(KeySymbol &key, Object *s)
         std::vector<int> v;
         v.push_back(0);
         return _getSimplifiedSymbol_withVerilogIntegers(s, true, v);
+    } else if (key.second == "_system_clog2") {
+        std::vector<int> v;
+        v.push_back(0);
+        return _getSimplifiedSymbol_withVerilogIntegers(s, true, v);
     } else if (key.second == "_system_readmemb") {
         std::vector<int> v;
         v.push_back(2);

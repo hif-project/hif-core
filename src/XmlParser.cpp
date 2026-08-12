@@ -3297,7 +3297,7 @@ void XmlParser::_addCodeInfoPropertiesComments(Poco::XML::Node *n, Object *o)
         o->setSourceLineNumber(line_number);
 
     if (column_number != 0)
-        o->setSourceLineNumber(column_number);
+        o->setSourceColumnNumber(column_number);
 }
 void XmlParser::_checkExactlyOneChild(Poco::XML::Node *n, const std::string &s, Object *obj)
 {

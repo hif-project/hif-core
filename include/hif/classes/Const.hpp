@@ -1,8 +1,9 @@
 /// @file Const.hpp
-/// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// @brief Constant declaration for HIF data structures.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #pragma once
 
@@ -37,12 +38,12 @@ public:
     /// @brief Sets whether this constant must be treated as a class member.
     /// @param instance <tt>true</tt> if this constant must be treated as a class member,
     /// <tt>false</tt> otherwise.
-    void setInstance(const bool instance);
+    void setInstance(bool instance);
 
     /// @brief Sets whether this constant must be treated as a define.
     /// @param define <tt>true</tt> if this constant must be treated as a define,
     /// <tt>false</tt> otherwise.
-    void setDefine(const bool define);
+    void setDefine(bool define);
 
     /// @brief Returns whether this constant must be treated as a define.
     /// @return <tt>true</tt> if this constant must be treated as a define,
@@ -55,7 +56,7 @@ public:
 
     /// @brief Sets whether this is a standard declaration.
     /// @param standard <tt>true</tt> if this is a standard declaration, <tt>false</tt> otherwise.
-    void setStandard(const bool standard);
+    void setStandard(bool standard);
 
     /// @brief Accepts a visitor to visit the current object.
     /// @param vis The visitor.

@@ -1,8 +1,9 @@
 /// @file matchedInsert.cpp
 /// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #include <iostream>
 
@@ -20,7 +21,7 @@ namespace manipulation
 namespace /* anon */
 {
 
-bool _checkExisting(Object *_existing, Object *_newParent, Object *_oldObj, const MatchedInsertType::type _type)
+bool _checkExisting(Object *_existing, Object *_newParent, Object *_oldObj, MatchedInsertType _type)
 {
     if (_existing == nullptr)
         return true;
@@ -42,8 +43,7 @@ bool _checkExisting(Object *_existing, Object *_newParent, Object *_oldObj, cons
 
     return true;
 }
-template <typename T>
-bool _checked_cast(Object *o, T *&no)
+template <typename T> bool _checked_cast(Object *o, T *&no)
 {
     no = dynamic_cast<T *>(o);
     return (o == nullptr || no != nullptr);
@@ -57,13 +57,13 @@ bool _matchBList(
     BList<T> &newList,
     Object *_newObj,
     Object *_oldObj,
-    const MatchedInsertType::type _type)
+    MatchedInsertType _type)
 {
-    typename BList<T>::size_t position = oldList.getPosition(static_cast<T *>(_oldObj));
+    auto position = oldList.getPosition(static_cast<T *>(_oldObj));
     if (position == oldList.size())
         return false;
 
-    typename BList<T>::size_t listSize = newList.size();
+    auto listSize = newList.size();
     if (position <= listSize && _type != MatchedInsertType::TYPE_EXPAND) {
         _existing = newList.at(position);
         // Position is already correct
@@ -94,7 +94,7 @@ bool matchedInsert(
     Object *newParent,
     Object *oldObj,
     Object *oldParent,
-    const MatchedInsertType::type type)
+    MatchedInsertType type)
 {
     if (oldParent == nullptr)
         oldParent = oldObj->getParent();

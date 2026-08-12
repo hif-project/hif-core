@@ -1,8 +1,9 @@
 /// @file mapStandardSymbols.cpp
 /// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #include "hif/hif.hpp"
 #include "hif/semantics/standardization.hpp"
@@ -35,6 +36,7 @@ hif::Trash trash;
 
 ILanguageSemantics *_srcSem  = nullptr;
 ILanguageSemantics *_destSem = nullptr;
+
 /// Insert the declaration/object inside trash. Before that, mark all inner
 /// symbols as already fixed.
 void _trash(Object *o)
@@ -512,7 +514,7 @@ void mapStandardSymbols(Object *o, ILanguageSemantics *srcSem, ILanguageSemantic
 
     // step 1
     hif::semantics::GetReferencesOptions opt;
-    opt.includeUnreferenced = true;
+    opt.include_unreferenced = true;
     opt.error               = true;
     getAllReferences(referenceMap, destSem, root, opt);
 

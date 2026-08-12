@@ -1,8 +1,9 @@
 /// @file getNearestParent.hpp
-/// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// @brief Find the nearest parent node for a given HIF object.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #pragma once
 
@@ -19,15 +20,15 @@ namespace hif
 /// Call example:
 /// @code
 /// hif::Type result = getNearestParent< hif::Type >( staringObj);
+
 /// @endcode
 ///
 /// @tparam T The type of the object to be returned.
-/// @param o The starting point of the function search.
-/// @param matchStarting If <tt>true</tt> match also the passed @p o.
+/// @param object The starting point of the function search.
+/// @param matchStarting If <tt>true</tt> match also the passed object.
 /// Default is <tt>false</tt>.
 /// @return The wanted Hif object or nullptr if it has not been found.
 ///
-template <typename T>
-T *getNearestParent(Object *o, const bool matchStarting = false);
+template <typename T> T *getNearestParent(Object *object, bool matchStarting = false);
 
 } // namespace hif

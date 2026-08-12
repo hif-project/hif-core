@@ -1,8 +1,9 @@
 /// @file DeclarationOptions.cpp
 /// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #include "hif/semantics/DeclarationOptions.hpp"
 
@@ -14,42 +15,6 @@ namespace hif
 {
 namespace semantics
 {
-
-namespace /*anon*/
-{
-
-} // namespace
-
-DeclarationOptions::DeclarationOptions()
-    : location(nullptr)
-    , forceRefresh(false)
-    , dontSearch(false)
-    , error(false)
-    , looseTypeChecks(false)
-{
-    // ntd
-}
-
-DeclarationOptions::~DeclarationOptions()
-{
-    // ntd
-}
-
-DeclarationOptions::DeclarationOptions(const DeclarationOptions &other)
-    : location(other.location)
-    , forceRefresh(other.forceRefresh)
-    , dontSearch(other.dontSearch)
-    , error(other.error)
-    , looseTypeChecks(other.looseTypeChecks)
-{
-    // ntd
-}
-
-DeclarationOptions &DeclarationOptions::operator=(DeclarationOptions other)
-{
-    swap(other);
-    return *this;
-}
 
 void DeclarationOptions::swap(DeclarationOptions &other)
 {

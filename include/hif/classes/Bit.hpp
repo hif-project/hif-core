@@ -1,8 +1,9 @@
 /// @file Bit.hpp
-/// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// @brief Bit type definition for HIF data structures.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #pragma once
 
@@ -41,7 +42,7 @@ public:
 
     /// @brief Sets the <tt>logic</tt> attribute.
     /// @param logic The <tt>logic</tt> attribute to be set.
-    void setLogic(const bool logic);
+    void setLogic(bool logic);
 
     /// @brief Sets the <tt>resolved</tt> attribute.
     /// @return The <tt>resolved</tt> attribute.
@@ -49,7 +50,7 @@ public:
 
     /// @brief Set the <tt>resolved</tt> attribute.
     /// @param resolved The <tt>resolved</tt> attribute to be set.
-    void setResolved(const bool resolved);
+    void setResolved(bool resolved);
 
     /// @brief Accepts a visitor to visit the current object.
     /// @param vis The visitor.
@@ -63,6 +64,7 @@ protected:
 private:
     /// @brief Flag to store the <tt>logic</tt> attribute.
     bool _isLogic;
+
     /// @brief Flag to store the <tt>resolved</tt> attribute.
     bool _isResolved;
 };

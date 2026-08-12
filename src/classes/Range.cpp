@@ -1,8 +1,9 @@
 /// @file Range.cpp
 /// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #include <cstdlib>
 
@@ -32,18 +33,6 @@ Range::Range(Value *lbound_, Value *rbound_, const RangeDirection dir_)
 {
     setLeftBound(lbound_);
     setRightBound(rbound_);
-}
-
-Range::Range(long long lbound_, long long rbound_)
-    : _direction(dir_upto)
-    , _leftBound(nullptr)
-    , _rightBound(nullptr)
-    , _type(nullptr)
-{
-    setLeftBound(new IntValue(lbound_));
-    setRightBound(new IntValue(rbound_));
-    if (lbound_ >= rbound_)
-        _direction = dir_downto;
 }
 
 Range::~Range()

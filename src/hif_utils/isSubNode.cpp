@@ -1,8 +1,9 @@
 /// @file isSubNode.cpp
 /// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #include "hif/hif_utils/isSubNode.hpp"
 
@@ -18,7 +19,7 @@ namespace /*anon*/
 
 } // namespace
 
-bool isSubNode(Object *obj, Object *parent, const bool matchStarting)
+bool isSubNode(Object *obj, Object *parent, bool matchStarting)
 {
     if (parent == nullptr)
         return false;
@@ -32,7 +33,7 @@ bool isSubNode(Object *obj, Object *parent, const bool matchStarting)
 
     return (current == parent);
 }
-bool isSubNode(Object *obj, BList<Object> &parentList, const bool matchStarting)
+bool isSubNode(Object *obj, BList<Object> &parentList, bool matchStarting)
 {
     for (BList<Object>::iterator i = parentList.begin(); i != parentList.end(); ++i) {
         if (isSubNode(obj, *i, matchStarting))
@@ -42,8 +43,7 @@ bool isSubNode(Object *obj, BList<Object> &parentList, const bool matchStarting)
     return false;
 }
 
-template <typename T>
-bool isSubNode(Object *obj, BList<T> &parentList, const bool matchStarting)
+template <typename T> bool isSubNode(Object *obj, BList<T> &parentList, bool matchStarting)
 {
     BList<Object> *tmp = reinterpret_cast<BList<Object> *>(&parentList);
     return isSubNode(obj, *tmp, matchStarting);
@@ -54,7 +54,7 @@ bool isSubNode(Object *obj, BList<T> &parentList, const bool matchStarting)
 /// `Object::isSubNode` method template. It ensures all necessary specializations
 /// are available for linking across all HIF object types.
 /// @param T The type of the objects being checked as subnodes.
-#define HIF_TEMPLATE_METHOD(T) bool isSubNode<T>(Object *, BList<T> &, const bool)
+#define HIF_TEMPLATE_METHOD(T) bool isSubNode<T>(Object *, BList<T> &, bool)
 HIF_INSTANTIATE_METHOD()
 #undef HIF_TEMPLATE_METHOD
 

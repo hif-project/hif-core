@@ -1,8 +1,9 @@
 /// @file equals.cpp
 /// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #include <cmath>
 #include <cstring>
@@ -130,8 +131,7 @@ public:
     virtual int visitWithAlt(WithAlt &o);
     bool _equals(Object *obj1, Object *obj2);
 
-    template <typename T>
-    bool _equals(BList<T> &list1, BList<T> &list2);
+    template <typename T> bool _equals(BList<T> &list1, BList<T> &list2);
 
 private:
     bool _equalsSpanOfConstexpr(Range *r1, Range *r2);
@@ -139,8 +139,7 @@ private:
     bool _equalsSymbolDeclarations(Object *s1, Object *s2);
     bool _equalsCheckInnerType(Type *s1, Type *s2);
     bool _equalsChildren(Object *o1, Object *o2);
-    template <typename T>
-    bool _equalsChildren(BList<T> &o1, BList<T> &o2);
+    template <typename T> bool _equalsChildren(BList<T> &o1, BList<T> &o2);
     bool _equalsSpans(Range *r1, Range *r2);
     bool _equalsInstance(Object *o1, Object *o2);
     bool _equalsProperties(Object *o1, Object *o2);
@@ -177,12 +176,12 @@ Value *HifEqualsVisitor::_spanGetSize(Range *r)
 {
     Value *rangeSpan = nullptr;
     messageAssert(_options.sem != nullptr, "Expected semantics", nullptr, nullptr);
-    unsigned long long rangeSize = hif::semantics::spanGetBitwidth(r, _options.sem);
+    std::uint64_t rangeSize = hif::semantics::spanGetBitwidth(r, _options.sem);
     if (rangeSize == 0) {
         Value *lBound = hif::copy(r->getLeftBound());
         Value *rBound = hif::copy(r->getRightBound());
 
-        IntValue *rightAddendum = new IntValue(1ll);
+        IntValue *rightAddendum = new IntValue(1);
 
         if (r->getDirection() == dir_upto) {
             // Generate Expression (SUP-INF)
@@ -211,7 +210,7 @@ Value *HifEqualsVisitor::_spanGetSize(Range *r)
             delete rightAddendum;
         }
     } else {
-        rangeSpan = new IntValue(static_cast<long long>(rangeSize));
+        rangeSpan = new IntValue(static_cast<std::int64_t>(rangeSize));
     }
 
     return rangeSpan;
@@ -372,8 +371,7 @@ bool HifEqualsVisitor::_equalsAdditionalKeywords(Declaration *o1, Declaration *o
     return true;
 }
 
-template <typename T>
-bool HifEqualsVisitor::_equalsChildren(BList<T> &o1, BList<T> &o2)
+template <typename T> bool HifEqualsVisitor::_equalsChildren(BList<T> &o1, BList<T> &o2)
 {
     if (_options.skipChilden && !_isInSignature)
         return true;
@@ -464,8 +462,7 @@ bool HifEqualsVisitor::_equals(Object *obj1, Object *obj2)
     return (o1->acceptVisitor(*this) != 0);
 }
 
-template <typename T>
-bool HifEqualsVisitor::_equals(BList<T> &list1, BList<T> &list2)
+template <typename T> bool HifEqualsVisitor::_equals(BList<T> &list1, BList<T> &list2)
 {
     typename BList<T>::iterator i, j;
 
@@ -1928,8 +1925,8 @@ int HifEqualsVisitor::visitView(View &o)
 {
     View *obj2 = static_cast<View *>(_objToCompare);
 
-    const bool areComponents         = (o.getContents() == nullptr) || (obj2->getContents() == nullptr);
-    const bool isComponentComparison = _options.skipDeclarationBodies && areComponents;
+    bool areComponents         = (o.getContents() == nullptr) || (obj2->getContents() == nullptr);
+    bool isComponentComparison = _options.skipDeclarationBodies && areComponents;
     if (!isComponentComparison) {
         if (o.getName() != obj2->getName())
             return false;

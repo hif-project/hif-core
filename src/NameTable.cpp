@@ -1,8 +1,9 @@
 /// @file NameTable.cpp
 /// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #include <cstdint>
 #include <cstring>
@@ -18,9 +19,6 @@ namespace hif
 
 namespace
 {
-
-const char *const a_to_Z       = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-const char *const zero_to_nine = "0123456789";
 
 const char *const name_none                  = "(no name)";
 const char *const name_any                   = "(any name)";
@@ -50,7 +48,7 @@ NameTable *NameTable::getInstance()
     return &instance;
 }
 
-bool NameTable::setForbiddenListFromFile(std::string file_name, bool append)
+bool NameTable::setForbiddenListFromFile(const std::string &file_name, bool append)
 {
     if (!append) {
         fobbidden_name_list.clear();
@@ -91,7 +89,7 @@ bool NameTable::nameExists(const std::string &name) { return m_name_map.count(na
 std::string NameTable::getFreshName(const std::string &prefix)
 {
     std::string _prefix = ((prefix.empty()) ? "hif" : prefix) + "_";
-    std::uint64_t id    = 0ULL;
+    std::uint64_t id    = 0;
     std::string name;
     do {
         name = _prefix + std::to_string(id++);
@@ -105,7 +103,7 @@ std::string NameTable::getFreshName(const std::string &name, const std::string &
     return this->getFreshName(name + suffix);
 }
 
-std::string NameTable::getFreshName(const std::string &name, unsigned long long suffix)
+std::string NameTable::getFreshName(const std::string &name, std::uint64_t suffix)
 {
     return this->getFreshName(name + "_" + std::to_string(suffix));
 }
@@ -116,7 +114,7 @@ std::string NameTable::registerName(const std::string &name)
     return name;
 }
 
-std::string NameTable::registerName(const std::string &name, const int index)
+std::string NameTable::registerName(const std::string &name, int index)
 {
     return this->registerName(name + "_" + std::to_string(index));
 }

@@ -1,8 +1,9 @@
 /// @file expandGenerates.cpp
 /// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #include "hif/manipulation/expandGenerates.hpp"
 
@@ -15,11 +16,11 @@
 #include "hif/semantics/semantics.hpp"
 
 #ifdef __clang__
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wunused-member-function"
+#    pragma clang diagnostic push
+#    pragma clang diagnostic ignored "-Wunused-member-function"
 #elif defined __GNUC__
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-function"
+#    pragma GCC diagnostic push
+#    pragma GCC diagnostic ignored "-Wunused-function"
 #endif
 
 namespace hif
@@ -64,8 +65,7 @@ bool _assureTemplateDefaultValues(View *v, hif::semantics::ILanguageSemantics *r
 
             vtp->setValue(refLang->getTypeDefaultValue(vtp->getType(), nullptr));
             messageDebug(
-                std::string("Set default value of template parameter ") + v->getName() + "->" +
-                    vtp->getName(),
+                std::string("Set default value of template parameter ") + v->getName() + "->" + vtp->getName(),
                 vtp->getValue(), refLang);
             warnDefault = true;
         } else //if( dynamic_cast< TypeTP * >( *i ) != nullptr )
@@ -126,7 +126,7 @@ bool _instantiateSubModules(
             messageAssert(instantiated != nullptr, "Cannot instantiate viewref", vr, refLang);
             //_simplifyIntantiatedView(instantiated, vr)
 
-            View *instView        = nullptr;
+            View *instView = nullptr;
             std::string newName;
             NameMap::iterator nit = nameMap.find(instantiated);
             if (nit != nameMap.end()) {

@@ -1,8 +1,9 @@
 /// @file LibraryDef.hpp
 /// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #pragma once
 
@@ -54,11 +55,11 @@ public:
 
     /// @brief Sets whether this is the definition of a standard library.
     /// @param standard <tt>true</tt> if this is the definition of a standard library, <tt>false</tt> otherwise.
-    void setStandard(const bool standard);
+    void setStandard(bool standard);
 
     /// @brief Sets whether the linkage of C++ code has C linkage.
     /// @param cLinkage The new value.
-    void setCLinkage(const bool cLinkage);
+    void setCLinkage(bool cLinkage);
 
     /// @brief Sets whether the linkage of C++ code has C linkage.
     /// @return The current value.
@@ -74,6 +75,8 @@ protected:
     virtual void _calculateFields();
 
     /// @brief Returns the name of given BList w.r.t. this.
+    /// @param list The BList to get the name for.
+    /// @return The name of the BList.
     virtual std::string _getBListName(const BList<Object> &list) const;
 
 private:
@@ -86,6 +89,7 @@ private:
     /// (e.g., TLM for SystemC or IEEE.numeric_std for VHDL) from a library
     /// definition which is part of a design.
     bool _isStandard;
+
     /// @brief Generates C++ code, wrapped by "extern C" linkage.
     bool _hasCLinkage;
 };

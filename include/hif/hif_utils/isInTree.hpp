@@ -1,8 +1,9 @@
 /// @file isInTree.hpp
 /// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #pragma once
 
@@ -13,9 +14,10 @@ namespace hif
 
 /// @brief Checks whether it is possible to reach the System object starting
 /// from the passed object.
+/// @param obj The object to check.
 /// @return <tt>true</tt> if System is reachable.
 ///
 
-bool isInTree(Object *obj);
+bool isInTree(const Object *obj);
 
 } // namespace hif

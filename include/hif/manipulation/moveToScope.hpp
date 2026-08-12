@@ -1,8 +1,9 @@
 /// @file moveToScope.hpp
 /// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #pragma once
 
@@ -34,6 +35,11 @@ void moveToScope(
     Object *obj = nullptr);
 
 /// @brief Particular case used to deal with For declarations.
+/// @param oldScope The old for scope.
+/// @param newScope The new scope.
+/// @param sem The reference semantics.
+/// @param suffix The suffix to append to the future object(s) name.
+/// @param obj If specified, it means to move only that object.
 
 void moveToScope(
     For *oldScope,
@@ -41,6 +47,7 @@ void moveToScope(
     hif::semantics::ILanguageSemantics *sem,
     const std::string &suffix,
     Object *obj = nullptr);
+
 /// @brief (Wrapper) Moves all the elements of a list contained in a scope
 /// into the corresponding list of another scope.
 /// @param oldScope The old scope.

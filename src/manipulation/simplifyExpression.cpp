@@ -1,19 +1,20 @@
 /// @file simplifyExpression.cpp
 /// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #include <cmath>
 
 #include "hif/manipulation/simplifyExpression.hpp"
 
 #ifdef __clang__
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wunused-member-function"
+#    pragma clang diagnostic push
+#    pragma clang diagnostic ignored "-Wunused-member-function"
 #elif defined __GNUC__
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-function"
+#    pragma GCC diagnostic push
+#    pragma GCC diagnostic ignored "-Wunused-function"
 #endif
 
 namespace hif
@@ -27,7 +28,7 @@ namespace /*anon*/
 #if (defined _MSC_VER)
 double log2(double d) { return log(d) / log(2.0); }
 #else
-#pragma GCC diagnostic ignored "-Wswitch-enum"
+#    pragma GCC diagnostic ignored "-Wswitch-enum"
 #endif
 
 // ///////////////////////////////////////////////////////////////////
@@ -390,36 +391,43 @@ void SimplifyMap::_resolveRealExpr(double r1, double r2, Value *v1, Value *v2)
         } else if ((_data.oper == op_sll || _data.oper == op_sla) && only_integers) {
             IntValue *iv1 = dynamic_cast<IntValue *>(v1);
             messageAssert(iv1 != nullptr, "Unexpected non int value", v1, _data.sem);
-            long long intResult = 0;
+            std::int64_t intResult = 0;
 
-            if (static_cast<long long>(r2) >= 64LL) {
+            if (static_cast<std::int64_t>(r2) >= 64LL) {
                 intResult = 0;
             } else {
-                intResult = iv1->getValue() << static_cast<long long>(r2);
+                intResult = iv1->getValue() << static_cast<std::int64_t>(r2);
             }
 
             IntValue *ivRes = new IntValue(intResult);
             _setConstValueResult(ivRes, v1, v2);
             return;
         } else if (_data.oper == op_srl && only_integers) {
+            // Cast the first operand to an integer.
             IntValue *iv1 = static_cast<IntValue *>(v1);
+            // Ensure iv1 is not null and is indeed an integer value.
             messageAssert(iv1 != nullptr, "Unexpected non int value", v1, _data.sem);
-            long long intResult = 0;
 
-            long long cv2 = static_cast<long long>(r2);
+            std::int64_t intResult = 0;
+
+            std::int64_t cv2 = static_cast<std::int64_t>(r2);
             if (cv2 >= 64LL) {
                 intResult = 0;
             } else if (cv2 == 0 || iv1->getValue() == 0) {
                 intResult = iv1->getValue();
             } else {
-                long long cv1 = iv1->getValue();
-                Type *type1   = iv1->getType();
-                if (type1 == nullptr)
+                std::int64_t cv1 = iv1->getValue();
+                Type *type1      = iv1->getType();
+                if (type1 == nullptr) {
                     type1 = _data.sem->getTypeForConstant(iv1);
-                long long trunc    = static_cast<long long>(hif::semantics::typeGetSpanBitwidth(type1, _data.sem));
-                const int64_t mask = int64_t(((~0ULL) << (64 - trunc)) >> (64 - trunc));
-                cv1                = cv1 & mask;
-                intResult          = cv1 >> cv2;
+                }
+                // Get the span bitwidth of the type.
+                auto trunc = hif::semantics::typeGetSpanBitwidth(type1, _data.sem);
+                // Mask to truncate the value to the bitwidth of the type.
+                auto mask  = (trunc >= 64) ? ~0ULL : ((1ULL << trunc) - 1);
+                // Apply the mask to the value.
+                cv1        = cv1 & static_cast<std::int64_t>(mask);
+                intResult  = cv1 >> cv2;
             }
 
             IntValue *ivRes = new IntValue(intResult);
@@ -428,32 +436,34 @@ void SimplifyMap::_resolveRealExpr(double r1, double r2, Value *v1, Value *v2)
         } else if (_data.oper == op_sra && only_integers) {
             IntValue *iv1 = dynamic_cast<IntValue *>(v1);
             messageAssert(iv1 != nullptr, "Unexpected non int value", v1, _data.sem);
-            long long intResult = 0;
+            std::int64_t intResult = 0;
 
             Type *t1            = hif::semantics::getSemanticType(v1, _data.sem);
-            const bool isSigned = hif::typeIsSigned(t1, _data.sem);
-            if (static_cast<long long>(r2) >= 64LL) {
-                long long tmp = static_cast<long long>(r1);
+            bool isSigned = hif::typeIsSigned(t1, _data.sem);
+            if (static_cast<std::int64_t>(r2) >= 64LL) {
+                std::int64_t tmp = static_cast<std::int64_t>(r1);
                 if (!isSigned)
                     intResult = 0;
                 else if (tmp >= 0)
                     intResult = 0;
                 else
                     intResult = -1;
-            } else if (static_cast<long long>(r2) == 0 || iv1->getValue() == 0) {
+            } else if (static_cast<std::int64_t>(r2) == 0 || iv1->getValue() == 0) {
                 intResult = iv1->getValue();
             } else {
                 if (isSigned) {
-                    intResult = iv1->getValue() >> static_cast<long long>(r2);
+                    intResult = iv1->getValue() >> static_cast<std::int64_t>(r2);
                 } else {
-                    long long cv1 = iv1->getValue();
-                    Type *type1   = iv1->getType();
-                    if (type1 == nullptr)
+                    std::int64_t cv1 = iv1->getValue();
+                    Type *type1      = iv1->getType();
+                    if (type1 == nullptr) {
                         type1 = _data.sem->getTypeForConstant(iv1);
-                    long long trunc    = static_cast<long long>(hif::semantics::typeGetSpanBitwidth(type1, _data.sem));
-                    const int64_t mask = int64_t(((~0ULL) << (64 - trunc)) >> (64 - trunc));
-                    cv1                = cv1 & mask;
-                    intResult          = cv1 >> (static_cast<long long>(r2));
+                    }
+                    // Get the span bitwidth of the type.
+                    auto trunc = hif::semantics::typeGetSpanBitwidth(type1, _data.sem);
+                    auto mask  = (trunc >= 64) ? ~0ULL : ((1ULL << trunc) - 1);
+                    cv1        = cv1 & static_cast<std::int64_t>(mask);
+                    intResult  = cv1 >> (static_cast<std::int64_t>(r2));
                 }
             }
 
@@ -461,16 +471,16 @@ void SimplifyMap::_resolveRealExpr(double r1, double r2, Value *v1, Value *v2)
             _setConstValueResult(ivRes, v1, v2);
             return;
         } else if (_data.oper == op_log) {
-            if (static_cast<long long>(r2) == 2ll)
+            if (static_cast<std::int64_t>(r2) == 2ll)
                 result = log2(r1);
-            else if (static_cast<long long>(r2) == 10ll)
+            else if (static_cast<std::int64_t>(r2) == 10)
                 result = log(r1);
             else
                 return;
         } else if (_data.oper == op_rem && only_integers) {
             IntValue *iv1 = dynamic_cast<IntValue *>(v1);
             messageAssert(iv1 != nullptr, "Unexpected non int value", v1, _data.sem);
-            long long intResult = iv1->getValue() % (static_cast<long long>(r2));
+            std::int64_t intResult = iv1->getValue() % (static_cast<std::int64_t>(r2));
 
             IntValue *ivRes = new IntValue(intResult);
             _setConstValueResult(ivRes, v1, v2);
@@ -479,16 +489,16 @@ void SimplifyMap::_resolveRealExpr(double r1, double r2, Value *v1, Value *v2)
             IntValue *iv1 = dynamic_cast<IntValue *>(v1);
             messageAssert(iv1 != nullptr, "Unexpected non int value", v1, _data.sem);
 
-            long long a = iv1->getValue();
-            long long n = static_cast<long long>(r2);
-            long long r = 0;
+            std::int64_t a = iv1->getValue();
+            std::int64_t n = static_cast<std::int64_t>(r2);
+            std::int64_t r = 0;
 
             // implementation taken from hif_mod
-            if (a >= 0ll && n >= 0ll) {
+            if (a >= 0 && n >= 0) {
                 r = a % n;
-            } else if (a < 0ll && n < 0ll) {
+            } else if (a < 0 && n < 0) {
                 r = -((-a) % (-n));
-            } else if (a < 0ll && n >= 0ll) {
+            } else if (a < 0 && n >= 0) {
                 r = ((n - ((-a) % (n))) % n);
             } else //if(a >= 0 && n < 0)
             {
@@ -533,7 +543,7 @@ void SimplifyMap::_resolveRealExpr(double r1, double r2, Value *v1, Value *v2)
         messageAssert(iv1 != nullptr, "Unexpected non int value", v1, _data.sem);
         IntValue *iv2 = dynamic_cast<IntValue *>(v2);
         messageAssert(iv2 != nullptr, "Unexpected non int value", v2, _data.sem);
-        long long result = 0;
+        std::int64_t result = 0;
 
         if (_data.oper == op_band && only_integers) {
             result = iv1->getValue() & iv2->getValue();
@@ -563,10 +573,10 @@ void SimplifyMap::_resolveBitExpr(BitConstant b1, BitConstant b2, Value *v1, Val
         return;
     }
 
-    const bool a  = (b1 == bit_one || b1 == bit_h);
-    const bool b  = (b2 == bit_one || b2 == bit_h);
-    const bool ax = (b1 == bit_x || b1 == bit_u || b1 == bit_z || b1 == bit_w);
-    const bool bx = (b2 == bit_x || b2 == bit_u || b2 == bit_z || b1 == bit_w);
+    bool a  = (b1 == bit_one || b1 == bit_h);
+    bool b  = (b2 == bit_one || b2 == bit_h);
+    bool ax = (b1 == bit_x || b1 == bit_u || b1 == bit_z || b1 == bit_w);
+    bool bx = (b2 == bit_x || b2 == bit_u || b2 == bit_z || b1 == bit_w);
 
     bool res     = false;
     bool unknown = false;
@@ -675,9 +685,9 @@ void SimplifyMap::_resolveConstRealExpr(double r1, Value *v1, Value *v2)
     } else if (hif::operatorIsBitwise(_data.oper)) {
         Value *res              = nullptr;
         Type *operandType       = hif::semantics::getBaseType(v2, false, _data.sem);
-        const bool operandIsExr = (dynamic_cast<Expression *>(operandType) != nullptr);
+        bool operandIsExr = (dynamic_cast<Expression *>(operandType) != nullptr);
         Expression *innerExpr   = operandIsExr ? static_cast<Expression *>(v2) : nullptr;
-        const bool isIntOperand =
+        bool isIntOperand =
             (innerExpr != nullptr) ? (dynamic_cast<IntValue *>(innerExpr->getValue2()) != nullptr) : false;
 
         if (_data.oper == op_band && only_integers) {
@@ -685,10 +695,10 @@ void SimplifyMap::_resolveConstRealExpr(double r1, Value *v1, Value *v2)
             messageAssert(iv1 != nullptr, "Unexpected non int value", v1, _data.sem);
 
             if (iv1->getValue() <= 0 && iv1->getValue() >= 0) {
-                res = new IntValue(0ULL);
-            } else if (iv1->getValue() == static_cast<long long>(-1)) {
+                res = new IntValue(0);
+            } else if (iv1->getValue() == static_cast<std::int64_t>(-1)) {
                 res = hif::copy(v2);
-            } else if (iv1->getValue() == static_cast<long long>(1) && dynamic_cast<Cast *>(v2) != nullptr) {
+            } else if (iv1->getValue() == static_cast<std::int64_t>(1) && dynamic_cast<Cast *>(v2) != nullptr) {
                 Cast *c2       = static_cast<Cast *>(v2);
                 Value *castVal = c2->getValue();
                 Type *valType  = hif::semantics::getBaseType(castVal, false, _data.sem);
@@ -696,9 +706,9 @@ void SimplifyMap::_resolveConstRealExpr(double r1, Value *v1, Value *v2)
                     return;
                 res = hif::copy(v2);
             } else if (isIntOperand) {
-                IntValue *iv              = dynamic_cast<IntValue *>(innerExpr->getValue2());
-                unsigned long long orVal  = static_cast<unsigned long long>(iv->getValue());
-                unsigned long long andVal = static_cast<unsigned long long>(iv1->getValue());
+                IntValue *iv         = dynamic_cast<IntValue *>(innerExpr->getValue2());
+                std::uint64_t orVal  = static_cast<std::uint64_t>(iv->getValue());
+                std::uint64_t andVal = static_cast<std::uint64_t>(iv1->getValue());
                 if (orVal >= andVal) {
                     res = _factory.expression(innerExpr->getValue1(), op_band, v1);
                 }
@@ -710,8 +720,8 @@ void SimplifyMap::_resolveConstRealExpr(double r1, Value *v1, Value *v2)
 
             if (iv1->getValue() <= 0 && iv1->getValue() >= 0) {
                 res = hif::copy(v2);
-            } else if (iv1->getValue() == static_cast<long long>(-1)) {
-                res = new IntValue(static_cast<long long>(-1));
+            } else if (iv1->getValue() == static_cast<std::int64_t>(-1)) {
+                res = new IntValue(static_cast<std::int64_t>(-1));
             }
             _setConstValueResult(res, v1, v2);
         } else if (_data.oper == op_bxor && only_integers) {
@@ -733,17 +743,17 @@ void SimplifyMap::_resolveConstRealExpr(double r1, Value *v1, Value *v2)
         return;
     } else if (hif::operatorIsRelational(_data.oper)) {
         ConstValue *res   = nullptr;
-        const bool isZero = (r1 <= 0.0 && r1 >= 0.0);
+        bool isZero = (r1 <= 0.0 && r1 >= 0.0);
 
         Type *prec            = _getOperationPrecision(v1, v2);
-        const bool isUnsigned = !hif::typeIsSigned(prec, _data.sem);
+        bool isUnsigned = !hif::typeIsSigned(prec, _data.sem);
         delete prec;
 
         Cast *c2            = dynamic_cast<Cast *>(v2);
         Type *castInnerType = (c2 == nullptr) ? nullptr : hif::semantics::getBaseType(c2->getValue(), false, _data.sem);
-        const bool isCastOfBool = (dynamic_cast<Bool *>(castInnerType) != nullptr);
-        const bool isOne        = (r1 <= 1.0 && r1 >= 1.0);
-        const bool isPositive   = (r1 >= 0.0);
+        bool isCastOfBool = (dynamic_cast<Bool *>(castInnerType) != nullptr);
+        bool isOne        = (r1 <= 1.0 && r1 >= 1.0);
+        bool isPositive   = (r1 >= 0.0);
 
         bool isNegativeBitwise = false;
         Expression *expr2      = dynamic_cast<Expression *>(v2);
@@ -855,13 +865,13 @@ void SimplifyMap::_resolveConstRealExpr(Value *v1, double r2, Value *v2)
     if (hif::operatorIsArithmetic(_data.oper) || hif::operatorIsShift(_data.oper)) {
         Value *result = nullptr;
 
-        unsigned long long span = 0;
+        std::uint64_t span = 0;
         if (t1 != nullptr) {
             span = hif::semantics::spanGetBitwidth(hif::typeGetSpan(t1, _data.sem), _data.sem);
         }
 
-        Type *prec                  = _getOperationPrecision(v1, v2);
-        unsigned long long precSpan = hif::semantics::spanGetBitwidth(hif::typeGetSpan(prec, _data.sem), _data.sem);
+        Type *prec             = _getOperationPrecision(v1, v2);
+        std::uint64_t precSpan = hif::semantics::spanGetBitwidth(hif::typeGetSpan(prec, _data.sem), _data.sem);
         delete prec;
 
         if (_data.oper == op_plus) {
@@ -918,19 +928,19 @@ void SimplifyMap::_resolveConstRealExpr(Value *v1, double r2, Value *v2)
     } else if (hif::operatorIsBitwise(_data.oper)) {
         Value *res              = nullptr;
         Type *operandType       = hif::semantics::getBaseType(v1, false, _data.sem);
-        const bool operandIsExr = (dynamic_cast<Expression *>(operandType) != nullptr);
+        bool operandIsExr = (dynamic_cast<Expression *>(operandType) != nullptr);
         Expression *innerExpr   = operandIsExr ? static_cast<Expression *>(v1) : nullptr;
-        const bool isIntOperand =
+        bool isIntOperand =
             (innerExpr != nullptr) ? (dynamic_cast<IntValue *>(innerExpr->getValue2()) != nullptr) : false;
         if (_data.oper == op_band && only_integers) {
             IntValue *iv2 = dynamic_cast<IntValue *>(v2);
             messageAssert(iv2 != nullptr, "Unexpected non int value", v2, _data.sem);
 
             if (iv2->getValue() <= 0 && iv2->getValue() >= 0) {
-                res = new IntValue(0ULL);
-            } else if (iv2->getValue() == static_cast<long long>(-1)) {
+                res = new IntValue(0);
+            } else if (iv2->getValue() == static_cast<std::int64_t>(-1)) {
                 res = hif::copy(v1);
-            } else if (iv2->getValue() == static_cast<long long>(1) && dynamic_cast<Cast *>(v1) != nullptr) {
+            } else if (iv2->getValue() == static_cast<std::int64_t>(1) && dynamic_cast<Cast *>(v1) != nullptr) {
                 Cast *c1       = static_cast<Cast *>(v1);
                 Value *castVal = c1->getValue();
                 Type *valType  = hif::semantics::getBaseType(castVal, false, _data.sem);
@@ -938,9 +948,9 @@ void SimplifyMap::_resolveConstRealExpr(Value *v1, double r2, Value *v2)
                     return;
                 res = hif::copy(v1);
             } else if (isIntOperand) {
-                IntValue *iv              = dynamic_cast<IntValue *>(innerExpr->getValue2());
-                unsigned long long orVal  = static_cast<unsigned long long>(iv->getValue());
-                unsigned long long andVal = static_cast<unsigned long long>(iv2->getValue());
+                IntValue *iv         = dynamic_cast<IntValue *>(innerExpr->getValue2());
+                std::uint64_t orVal  = static_cast<std::uint64_t>(iv->getValue());
+                std::uint64_t andVal = static_cast<std::uint64_t>(iv2->getValue());
                 if (orVal >= andVal) {
                     res = _factory.expression(innerExpr->getValue1(), op_band, v2);
                 }
@@ -952,8 +962,8 @@ void SimplifyMap::_resolveConstRealExpr(Value *v1, double r2, Value *v2)
 
             if (iv2->getValue() <= 0 && iv2->getValue() >= 0) {
                 res = hif::copy(v1);
-            } else if (iv2->getValue() == static_cast<long long>(-1)) {
-                res = new IntValue(static_cast<long long>(-1));
+            } else if (iv2->getValue() == static_cast<std::int64_t>(-1)) {
+                res = new IntValue(static_cast<std::int64_t>(-1));
             }
             _setConstValueResult(res, v1, v2);
         } else if (_data.oper == op_bxor && only_integers) {
@@ -975,17 +985,17 @@ void SimplifyMap::_resolveConstRealExpr(Value *v1, double r2, Value *v2)
         return;
     } else if (hif::operatorIsRelational(_data.oper)) {
         ConstValue *res   = nullptr;
-        const bool isZero = (r2 <= 0.0 && r2 >= 0.0);
+        bool isZero = (r2 <= 0.0 && r2 >= 0.0);
 
         Type *prec            = _getOperationPrecision(v1, v2);
-        const bool isUnsigned = !hif::typeIsSigned(prec, _data.sem);
+        bool isUnsigned = !hif::typeIsSigned(prec, _data.sem);
         delete prec;
 
         Cast *c1            = dynamic_cast<Cast *>(v1);
         Type *castInnerType = (c1 == nullptr) ? nullptr : hif::semantics::getBaseType(c1->getValue(), false, _data.sem);
-        const bool isCastOfBool = (dynamic_cast<Bool *>(castInnerType) != nullptr);
-        const bool isOne        = (r2 <= 1.0 && r2 >= 1.0);
-        const bool isPositive   = (r2 >= 0.0);
+        bool isCastOfBool = (dynamic_cast<Bool *>(castInnerType) != nullptr);
+        bool isOne        = (r2 <= 1.0 && r2 >= 1.0);
+        bool isPositive   = (r2 >= 0.0);
 
         bool isNegativeBitwise = false;
         Expression *expr1      = dynamic_cast<Expression *>(v1);
@@ -1286,18 +1296,18 @@ void SimplifyMap::map(IntValue *v1)
     if (_data.oper == op_plus) {
         _data.result = hif::copy(v1);
     } else if (_data.oper == op_minus) {
-        long long value = v1->getValue();
-        IntValue *rVal  = new IntValue();
+        std::int64_t value = v1->getValue();
+        IntValue *rVal     = new IntValue();
         rVal->setValue(-value);
         _data.result = rVal;
     } else if (_data.oper == op_not) {
-        long long value = v1->getValue();
-        IntValue *rVal  = new IntValue();
+        std::int64_t value = v1->getValue();
+        IntValue *rVal     = new IntValue();
         rVal->setValue((value == 0));
         _data.result = rVal;
     } else if (_data.oper == op_bnot) {
-        long long value = v1->getValue();
-        IntValue *rVal  = new IntValue();
+        std::int64_t value = v1->getValue();
+        IntValue *rVal     = new IntValue();
         rVal->setValue(~value);
         _data.result = rVal;
     }
@@ -1430,8 +1440,8 @@ void SimplifyMap::map(BitValue *v1, Value *v2)
         return;
 
     const BitConstant bitval = v1->getValue();
-    const bool val           = (bitval == bit_h) || (bitval == bit_one);
-    const bool notVal        = (bitval == bit_l) || (bitval == bit_zero);
+    bool val           = (bitval == bit_h) || (bitval == bit_one);
+    bool notVal        = (bitval == bit_l) || (bitval == bit_zero);
     if (_data.oper == op_band || _data.oper == op_and) {
         if (val)
             _data.result = hif::copy(v2);
@@ -1495,7 +1505,7 @@ void SimplifyMap::map(BitvectorValue *v1, BitvectorValue *v2)
         if (!v1->is01() || !v2->is01()) {
             if (_data.oper == op_eq || _data.oper == op_neq || _data.oper == op_case_eq || _data.oper == op_case_neq) {
                 BitValue *bv    = new BitValue();
-                const bool isEq = v1->getValue() == v2->getValue();
+                bool isEq = v1->getValue() == v2->getValue();
                 if (_data.oper == op_eq)
                     bv->setValue(bit_x);
                 else if (_data.oper == op_neq)
@@ -1644,7 +1654,7 @@ void SimplifyMap::map(BitvectorValue *v1, IntValue *v2)
             Type *t1 = hif::semantics::getSemanticType(v1, _data.sem);
             if (t1 == nullptr)
                 return;
-            const bool isSigned = hif::typeIsSigned(t1, _data.sem);
+            bool isSigned = hif::typeIsSigned(t1, _data.sem);
             // Sign extension
             if (!isSigned)
                 sign = '0';
@@ -1797,7 +1807,7 @@ void SimplifyMap::map(BoolValue *v1, Value *v2)
     if (!hif::operatorIsLogical(_data.oper))
         return;
 
-    const bool val = v1->getValue();
+    bool val = v1->getValue();
     if (_data.oper == op_and) {
         if (val)
             _data.result = hif::copy(v2);
@@ -1821,7 +1831,7 @@ void SimplifyMap::map(Value *v1, BoolValue *v2)
     if (!hif::operatorIsLogical(_data.oper))
         return;
 
-    const bool val = v2->getValue();
+    bool val = v2->getValue();
     if (_data.oper == op_and) {
         if (val)
             _data.result = hif::copy(v1);
@@ -2207,13 +2217,13 @@ void SimplifyMap::map(Value *v1, Value *v2)
 {
     EqualsOptions eqOpts;
     eqOpts.checkConstexprFlag = false;
-    const bool res            = hif::equals(v1, v2, eqOpts);
+    bool res            = hif::equals(v1, v2, eqOpts);
     if (!res)
         return;
     Type *rType = _getOperationType(v1, v2);
     if (rType == nullptr)
         return;
-    const bool isLogic = hif::typeIsLogic(rType, _data.sem);
+    bool isLogic = hif::typeIsLogic(rType, _data.sem);
     delete rType;
     if (_data.oper == op_eq || _data.oper == op_neq) {
         // only not logic, since 'x' == 'x' --> 'x' !!!
@@ -2308,7 +2318,7 @@ Value *simplifyExpression(Expression *e, hif::semantics::ILanguageSemantics *sem
     // ID * ID
     // CAST(x)(BV) + CAST(x)(BV) should be CAST(x)(BV) * 2
     // but it is not allowed by HIFSemantics (different types)
-    const bool complexOps =
+    bool complexOps =
         (dynamic_cast<ConstValue *>(e->getValue1()) == nullptr ||
          dynamic_cast<ConstValue *>(e->getValue2()) == nullptr);
 
@@ -2321,10 +2331,10 @@ Value *simplifyExpression(Expression *e, hif::semantics::ILanguageSemantics *sem
 
     // Known case3: in case of logic/logic_vector op_eq/op_neq logic, it must not be simplified.
     Type *exprType     = hif::semantics::getBaseType(hif::semantics::getSemanticType(e, sem), false, sem);
-    const bool isOpRel = hif::operatorIsRelational(e->getOperator()) && hif::typeIsLogic(exprType, sem);
+    bool isOpRel = hif::operatorIsRelational(e->getOperator()) && hif::typeIsLogic(exprType, sem);
     cannotBeSimplified |= isOpRel;
 
-#if 0 // ENABLE TO DEBUG SIMPLIFICATION
+#    if 0 // ENABLE TO DEBUG SIMPLIFICATION
     if (!cannotBeSimplified)
     {
         if (e->getValue2() == nullptr)
@@ -2337,7 +2347,7 @@ Value *simplifyExpression(Expression *e, hif::semantics::ILanguageSemantics *sem
         }
 
     }
-#endif
+#    endif
 
     messageAssert(cannotBeSimplified, "Unable to simplify expression.", e, sem);
 

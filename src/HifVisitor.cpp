@@ -1,8 +1,9 @@
 /// @file HifVisitor.cpp
 /// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #include "hif/hif.hpp"
 
@@ -105,11 +106,7 @@ int HifVisitor::visitWith(With & /* o */) { return 0; }
 int HifVisitor::visitWithAlt(WithAlt & /* o */) { return 0; }
 // /////////////////////////////////////////////////////////////////////////////////////////////
 
-template <class T>
-int HifVisitor::visitList(BList<T> &l)
-{
-    return visitList(l.template toOtherBList<Object>());
-}
+template <class T> int HifVisitor::visitList(BList<T> &l) { return visitList(l.template toOtherBList<Object>()); }
 
 int HifVisitor::visitList(BList<Object> &l)
 {
@@ -136,173 +133,47 @@ int HifVisitor::AfterVisit(Object &)
 
     return 0;
 }
-
-/// @relates HifVisitor
-/// @brief Instantiation of visitList for a list of generic Object.
 template int HifVisitor::visitList<Object>(BList<Object> &l);
-
-/// @relates HifVisitor
-/// @brief Instantiation of visitList for a list of TypedObject.
 template int HifVisitor::visitList<TypedObject>(BList<TypedObject> &l);
-
-/// @relates HifVisitor
-/// @brief Instantiation of visitList for a list of Action elements.
 template int HifVisitor::visitList<Action>(BList<Action> &l);
-
-/// @relates HifVisitor
-/// @brief Instantiation of visitList for a list of AggregateAlt elements.
 template int HifVisitor::visitList<AggregateAlt>(BList<AggregateAlt> &l);
-
-/// @relates HifVisitor
-/// @brief Instantiation of visitList for a list of ReferencedAssign elements.
 template int HifVisitor::visitList<ReferencedAssign>(BList<ReferencedAssign> &l);
-
-/// @relates HifVisitor
-/// @brief Instantiation of visitList for a list of IfAlt elements.
 template int HifVisitor::visitList<IfAlt>(BList<IfAlt> &l);
-
-/// @relates HifVisitor
-/// @brief Instantiation of visitList for a list of DesignUnit elements.
 template int HifVisitor::visitList<DesignUnit>(BList<DesignUnit> &l);
-
-/// @relates HifVisitor
-/// @brief Instantiation of visitList for a list of DataDeclaration elements.
 template int HifVisitor::visitList<DataDeclaration>(BList<DataDeclaration> &l);
-
-/// @relates HifVisitor
-/// @brief Instantiation of visitList for a list of Declaration elements.
 template int HifVisitor::visitList<Declaration>(BList<Declaration> &l);
-
-/// @relates HifVisitor
-/// @brief Instantiation of visitList for a list of EnumValue elements.
 template int HifVisitor::visitList<EnumValue>(BList<EnumValue> &l);
-
-/// @relates HifVisitor
-/// @brief Instantiation of visitList for a list of Field elements.
 template int HifVisitor::visitList<Field>(BList<Field> &l);
-
-/// @relates HifVisitor
-/// @brief Instantiation of visitList for a list of Generate elements.
 template int HifVisitor::visitList<Generate>(BList<Generate> &l);
-
-/// @relates HifVisitor
-/// @brief Instantiation of visitList for a list of Instance elements.
 template int HifVisitor::visitList<Instance>(BList<Instance> &l);
-
-/// @relates HifVisitor
-/// @brief Instantiation of visitList for a list of Library elements.
 template int HifVisitor::visitList<Library>(BList<Library> &l);
-
-/// @relates HifVisitor
-/// @brief Instantiation of visitList for a list of LibraryDef elements.
 template int HifVisitor::visitList<LibraryDef>(BList<LibraryDef> &l);
-
-/// @relates HifVisitor
-/// @brief Instantiation of visitList for a list of Identifier elements.
 template int HifVisitor::visitList<Identifier>(BList<Identifier> &l);
-
-/// @relates HifVisitor
-/// @brief Instantiation of visitList for a list of Parameter elements.
 template int HifVisitor::visitList<Parameter>(BList<Parameter> &l);
-
-/// @relates HifVisitor
-/// @brief Instantiation of visitList for a list of ParameterAssign elements.
 template int HifVisitor::visitList<ParameterAssign>(BList<ParameterAssign> &l);
-
-/// @relates HifVisitor
-/// @brief Instantiation of visitList for a list of PortAssign elements.
 template int HifVisitor::visitList<PortAssign>(BList<PortAssign> &l);
-
-/// @relates HifVisitor
-/// @brief Instantiation of visitList for a list of Port elements.
 template int HifVisitor::visitList<Port>(BList<Port> &l);
-
-/// @relates HifVisitor
-/// @brief Instantiation of visitList for a list of PPAssign elements.
 template int HifVisitor::visitList<PPAssign>(BList<PPAssign> &l);
-
-/// @relates HifVisitor
-/// @brief Instantiation of visitList for a list of Range elements.
 template int HifVisitor::visitList<Range>(BList<Range> &l);
-
-/// @relates HifVisitor
-/// @brief Instantiation of visitList for a list of RecordValueAlt elements.
 template int HifVisitor::visitList<RecordValueAlt>(BList<RecordValueAlt> &l);
-
-/// @relates HifVisitor
-/// @brief Instantiation of visitList for a list of State elements.
 template int HifVisitor::visitList<State>(BList<State> &l);
-
-/// @relates HifVisitor
-/// @brief Instantiation of visitList for a list of StateTable elements.
 template int HifVisitor::visitList<StateTable>(BList<StateTable> &l);
-
-/// @relates HifVisitor
-/// @brief Instantiation of visitList for a list of SwitchAlt elements.
 template int HifVisitor::visitList<SwitchAlt>(BList<SwitchAlt> &l);
-
-/// @relates HifVisitor
-/// @brief Instantiation of visitList for a list of TPAssign elements.
 template int HifVisitor::visitList<TPAssign>(BList<TPAssign> &l);
-
-/// @relates HifVisitor
-/// @brief Instantiation of visitList for a list of Value elements.
 template int HifVisitor::visitList<Value>(BList<Value> &l);
-
-/// @relates HifVisitor
-/// @brief Instantiation of visitList for a list of View elements.
 template int HifVisitor::visitList<View>(BList<View> &l);
-
-/// @relates HifVisitor
-/// @brief Instantiation of visitList for a list of ViewReference elements.
 template int HifVisitor::visitList<ViewReference>(BList<ViewReference> &l);
-
-/// @relates HifVisitor
-/// @brief Instantiation of visitList for a list of WhenAlt elements.
 template int HifVisitor::visitList<WhenAlt>(BList<WhenAlt> &l);
-
-/// @relates HifVisitor
-/// @brief Instantiation of visitList for a list of WithAlt elements.
 template int HifVisitor::visitList<WithAlt>(BList<WithAlt> &l);
-
-/// @relates HifVisitor
-/// @brief Instantiation of visitList for a list of Transition elements.
 template int HifVisitor::visitList<Transition>(BList<Transition> &l);
-
-/// @relates HifVisitor
-/// @brief Instantiation of visitList for a list of Aggregate elements.
 template int HifVisitor::visitList<Aggregate>(BList<Aggregate> &l);
-
-/// @relates HifVisitor
-/// @brief Instantiation of visitList for a list of Expression elements.
 template int HifVisitor::visitList<Expression>(BList<Expression> &l);
-
-/// @relates HifVisitor
-/// @brief Instantiation of visitList for a list of Assign elements.
 template int HifVisitor::visitList<Assign>(BList<Assign> &l);
-
-/// @relates HifVisitor
-/// @brief Instantiation of visitList for a list of FunctionCall elements.
 template int HifVisitor::visitList<FunctionCall>(BList<FunctionCall> &l);
-
-/// @relates HifVisitor
-/// @brief Instantiation of visitList for a list of ProcedureCall elements.
 template int HifVisitor::visitList<ProcedureCall>(BList<ProcedureCall> &l);
-
-/// @relates HifVisitor
-/// @brief Instantiation of visitList for a list of Break elements.
 template int HifVisitor::visitList<Break>(BList<Break> &l);
-
-/// @relates HifVisitor
-/// @brief Instantiation of visitList for a list of Continue elements.
 template int HifVisitor::visitList<Continue>(BList<Continue> &l);
-
-/// @relates HifVisitor
-/// @brief Instantiation of visitList for a list of Wait elements.
 template int HifVisitor::visitList<Wait>(BList<Wait> &l);
-
-/// @relates HifVisitor
-/// @brief Instantiation of visitList for a list of SubProgram elements.
 template int HifVisitor::visitList<SubProgram>(BList<SubProgram> &l);
 
 } // namespace hif

@@ -1,8 +1,9 @@
 /// @file System.hpp
 /// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #pragma once
 
@@ -49,12 +50,20 @@ public:
 
     /// @brief Struct containing information about the current version of HIF.
     struct VersionInfo {
-        typedef unsigned long long VersionNumber;
+        /// @brief Type for version numbers.
+        typedef std::uint64_t VersionNumber;
 
         VersionInfo();
         ~VersionInfo();
+        /// @brief Copy constructor.
+        /// @param other The object to copy from.
         VersionInfo(const VersionInfo &other);
+        /// @brief Assignment operator.
+        /// @param other The object to assign from.
+        /// @return Reference to this object.
         VersionInfo &operator=(VersionInfo other);
+        /// @brief Swap function.
+        /// @param other The object to swap with.
         void swap(VersionInfo &other);
 
         /// @brief The HIF release version.
@@ -109,6 +118,8 @@ protected:
     virtual void _calculateFields();
 
     /// @brief Returns the name of given BList w.r.t. this.
+    /// @param list The BList to get the name for.
+    /// @return The name of the BList.
     virtual std::string _getBListName(const BList<Object> &list) const;
 
 private:

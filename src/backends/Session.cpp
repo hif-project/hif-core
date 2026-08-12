@@ -1,13 +1,15 @@
 /// @file Session.cpp
 /// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #include <cstdlib>
 #include <fstream>
 #include <list>
 #include <string>
+#include <utility>
 #include <vector>
 
 #include "hif/backends/NodeVisitor.hpp"
@@ -67,13 +69,13 @@ void CNode::SetPath(std::string &sPath)
 
 //
 // SetInstName(std::stringsName)
-void CNode::SetInstName(std::string sName) { m_sInstName = sName; }
+void CNode::SetInstName(const std::string &sName) { m_sInstName = sName; }
 
 //
 // SetEntName(std::stringsName)
-void CNode::SetEntName(std::string sName)
+void CNode::SetEntName(const std::string &sName)
 {
-    m_sEntName += (m_sEntName.size() != 0) ? std::string("__") + sName : sName;
+    m_sEntName += (!m_sEntName.empty()) ? std::string("__") + sName : sName;
 }
 
 //
@@ -107,18 +109,17 @@ void CNode::SetMovedPath(CNode *pnParent) { m_pnMovedTo = pnParent; }
 
 //
 // getName()
-const std::string CNode::getName()
+auto CNode::getName() -> std::string
 {
-    if (m_sInstName.size() != 0) {
+    if (!m_sInstName.empty()) {
         return m_sInstName;
-    } else {
-        return m_sEntName;
     }
+    return m_sEntName;
 }
 
 //
 // GetPath()
-std::vector<std::string> CNode::GetPath()
+auto CNode::GetPath() -> std::vector<std::string>
 {
     if (!(m_vPath.empty())) {
         return m_vPath;
@@ -126,7 +127,7 @@ std::vector<std::string> CNode::GetPath()
     std::vector<std::string> vsPath;
     vsPath.push_back(this->getName());
     CNode *pnCur = m_pnParent;
-    while (pnCur) {
+    while (pnCur != nullptr) {
         vsPath.insert(vsPath.begin(), pnCur->getName());
         pnCur = pnCur->GetParent();
     }
@@ -135,20 +136,22 @@ std::vector<std::string> CNode::GetPath()
 
 //
 // operator ==(const CNode & rNr)
-bool CNode::operator==(const CNode &rNr)
+auto CNode::operator==(const CNode &rNr) -> bool
 {
-    if (this->m_sInstName != rNr.m_sInstName)
+    if (this->m_sInstName != rNr.m_sInstName) {
         return false;
+    }
 
-    if (this->m_sEntName != rNr.m_sEntName)
+    if (this->m_sEntName != rNr.m_sEntName) {
         return false;
+    }
 
     return true;
 }
 
 //
 // acceptVisitor(CNodeVisitor & rVis)
-int CNode::acceptVisitor(CNodeVisitor &rVis) { return rVis.visitCNode(*this); }
+auto CNode::acceptVisitor(CNodeVisitor &rVis) -> int { return rVis.visitCNode(*this); }
 
 //
 // CSession constants definition
@@ -170,19 +173,20 @@ CSession::~CSession()
 {
     std::list<CNode *>::iterator iElt;
 
-    for (iElt = m_lpHead.begin(); iElt != m_lpHead.end(); iElt = m_lpHead.erase(iElt))
+    for (iElt = m_lpHead.begin(); iElt != m_lpHead.end(); iElt = m_lpHead.erase(iElt)) {
         delete *iElt;
+    }
 }
 
 //
 // FindAnInstance(CNode & rnElt)
-CNode *CSession::FindAnInstance(CNode &rnElt)
+auto CSession::FindAnInstance(CNode &rnElt) -> CNode *
 {
     CFindVisitor fvPath(*this, rnElt, false);
-    CNode *pnElt;
+    CNode *pnElt = nullptr;
 
     pnElt = fvPath.GetNode();
-    if (pnElt) {
+    if (pnElt != nullptr) {
         pnElt->SetInstTag(CNode::ORIGINAL);
     }
     return pnElt;
@@ -190,7 +194,7 @@ CNode *CSession::FindAnInstance(CNode &rnElt)
 
 //
 // FindTheInstance(CNode & rnElt)
-CNode *CSession::FindTheInstance(CNode &rnElt)
+auto CSession::FindTheInstance(CNode &rnElt) -> CNode *
 {
     CFindVisitor fvPath(*this, rnElt, true);
 
@@ -199,7 +203,7 @@ CNode *CSession::FindTheInstance(CNode &rnElt)
 
 //
 // PreCheck()
-int CSession::PreCheck()
+auto CSession::PreCheck() -> int
 {
     CUpdateVisitor uvPreCheck(this, CUpdateVisitor::PRECHECK);
 
@@ -208,7 +212,7 @@ int CSession::PreCheck()
 
 //
 // Update()
-int CSession::Update()
+auto CSession::Update() -> int
 {
     CUpdateVisitor uvUpdate(this, CUpdateVisitor::UPDATE);
 
@@ -217,9 +221,10 @@ int CSession::Update()
 
 //
 // Find(LibraryDef & rlTgt)
-std::vector<std::string> CSession::Find(LibraryDef &rlTgt)
+auto CSession::Find(LibraryDef &rlTgt) -> std::vector<std::string>
 {
-    CNode nElt, *pnRes;
+    CNode nElt;
+    CNode *pnRes;
     std::string nIdent;
     std::vector<std::string> vsNull;
 
@@ -227,7 +232,7 @@ std::vector<std::string> CSession::Find(LibraryDef &rlTgt)
     nElt.SetEntName(nIdent);
     CFindVisitor fvPath(*this, nElt, false);
     pnRes = fvPath.GetNode();
-    if (!pnRes) {
+    if (pnRes == nullptr) {
         return vsNull;
     }
     //
@@ -236,9 +241,10 @@ std::vector<std::string> CSession::Find(LibraryDef &rlTgt)
 
 //
 // Find(DesignUnit & rduTgt)
-std::vector<std::string> CSession::Find(DesignUnit &rduTgt)
+auto CSession::Find(DesignUnit &rduTgt) -> std::vector<std::string>
 {
-    CNode nElt, *pnRes;
+    CNode nElt;
+    CNode *pnRes;
     messageDebugAssert(rduTgt.views.size() == 1, "Unexpected view list size", nullptr, nullptr);
     View *pvTgt = rduTgt.views.front();
     std::string nIdent;
@@ -246,19 +252,19 @@ std::vector<std::string> CSession::Find(DesignUnit &rduTgt)
 
     nIdent = rduTgt.getName();
     nElt.SetEntName(nIdent);
-    if (!pvTgt) {
+    if (pvTgt == nullptr) {
         return vsNull;
     }
     nIdent = pvTgt->getName();
     nElt.SetEntName(nIdent);
     CFindVisitor fvPath(*this, nElt, false);
     pnRes = fvPath.GetNode();
-    if (!pnRes) {
+    if (pnRes == nullptr) {
         return vsNull;
     }
     // If is a multi-instantiation node
     // get the original node
-    if ((pnRes->GetInstTag() == CNode::ANOTHERONE) && (pnRes->GetOrgNode())) {
+    if ((pnRes->GetInstTag() == CNode::ANOTHERONE) && ((pnRes->GetOrgNode()) != nullptr)) {
         pnRes = pnRes->GetOrgNode();
     }
     //
@@ -267,14 +273,15 @@ std::vector<std::string> CSession::Find(DesignUnit &rduTgt)
 
 //
 // Find(View & rvTgt)
-std::vector<std::string> CSession::Find(View &rvTgt)
+auto CSession::Find(View &rvTgt) -> std::vector<std::string>
 {
-    CNode nElt, *pnRes;
-    DesignUnit *pduTgt = hif::getNearestParent<DesignUnit>(&rvTgt);
+    CNode nElt;
+    CNode *pnRes;
+    auto *pduTgt = hif::getNearestParent<DesignUnit>(&rvTgt);
     std::string nIdent;
     std::vector<std::string> vsNull;
 
-    if (!pduTgt) {
+    if (pduTgt == nullptr) {
         return vsNull;
     }
     nIdent = pduTgt->getName();
@@ -283,12 +290,12 @@ std::vector<std::string> CSession::Find(View &rvTgt)
     nElt.SetEntName(nIdent);
     CFindVisitor fvPath(*this, nElt, false);
     pnRes = fvPath.GetNode();
-    if (!pnRes) {
+    if (pnRes == nullptr) {
         return vsNull;
     }
     // If is a multi-instantiation node
     // get the original node
-    if ((pnRes->GetInstTag() == CNode::ANOTHERONE) && (pnRes->GetOrgNode())) {
+    if ((pnRes->GetInstTag() == CNode::ANOTHERONE) && ((pnRes->GetOrgNode()) != nullptr)) {
         pnRes = pnRes->GetOrgNode();
     }
     //
@@ -297,15 +304,16 @@ std::vector<std::string> CSession::Find(View &rvTgt)
 
 //
 // Find(Instance & riTgt)
-std::vector<std::string> CSession::Find(Instance &riTgt)
+auto CSession::Find(Instance &riTgt) -> std::vector<std::string>
 {
-    CNode nElt, *pnRes;
-    ViewReference *pvrTgt = dynamic_cast<ViewReference *>(riTgt.getReferencedType());
+    CNode nElt;
+    CNode *pnRes;
+    auto *pvrTgt = dynamic_cast<ViewReference *>(riTgt.getReferencedType());
     messageAssert(pvrTgt != nullptr, "Unexpected referenced type", riTgt.getReferencedType(), nullptr);
     std::string nIdent;
     std::vector<std::string> vsNull;
 
-    if (!pvrTgt) {
+    if (pvrTgt == nullptr) {
         return vsNull;
     }
     nIdent = pvrTgt->getDesignUnit();
@@ -318,12 +326,12 @@ std::vector<std::string> CSession::Find(Instance &riTgt)
     //
     CFindVisitor fvPath(*this, nElt, true);
     pnRes = fvPath.GetNode();
-    if (!pnRes) {
+    if (pnRes == nullptr) {
         return vsNull;
     }
     // If is a multi-instantiation node
     // get the original node
-    if ((pnRes->GetInstTag() == CNode::ANOTHERONE) && (pnRes->GetOrgNode())) {
+    if ((pnRes->GetInstTag() == CNode::ANOTHERONE) && ((pnRes->GetOrgNode()) != nullptr)) {
         pnRes = pnRes->GetOrgNode();
     }
     //
@@ -332,21 +340,22 @@ std::vector<std::string> CSession::Find(Instance &riTgt)
 
 //
 // Find(std::string& sBase, std::string & sView)
-std::vector<std::string> CSession::Find(std::string &sBase, std::string &sView)
+auto CSession::Find(std::string &sBase, std::string &sView) -> std::vector<std::string>
 {
-    CNode nElt, *pnRes;
+    CNode nElt;
+    CNode *pnRes;
     std::vector<std::string> vsNull;
 
     nElt.SetEntName(sBase);
     nElt.SetEntName(sView);
     CFindVisitor fvPath(*this, nElt, false);
     pnRes = fvPath.GetNode();
-    if (!pnRes) {
+    if (pnRes == nullptr) {
         return vsNull;
     }
     // If is a multi-instantiation node
     // get the original node
-    if ((pnRes->GetInstTag() == CNode::ANOTHERONE) && (pnRes->GetOrgNode())) {
+    if ((pnRes->GetInstTag() == CNode::ANOTHERONE) && ((pnRes->GetOrgNode()) != nullptr)) {
         pnRes = pnRes->GetOrgNode();
     }
     //
@@ -355,16 +364,17 @@ std::vector<std::string> CSession::Find(std::string &sBase, std::string &sView)
 
 //
 // Find(std::vector<std::string> & vsTgt, std::vector<std::string> & vsSrc)
-std::vector<std::string> CSession::Find(std::vector<std::string> &vsTgt, std::vector<std::string> &vsSrc)
+auto CSession::Find(std::vector<std::string> &vsTgt, std::vector<std::string> &vsSrc) -> std::vector<std::string>
 {
-    std::vector<std::string>::iterator iTgt, iSrc;
+    std::vector<std::string>::iterator iTgt;
+    std::vector<std::string>::iterator iSrc;
     std::vector<std::string> vsRes;
     std::vector<std::string> vsNull;
 
-    if (vsTgt.size() == 0) {
+    if (vsTgt.empty()) {
         return vsNull;
     }
-    if (vsSrc.size() == 0) {
+    if (vsSrc.empty()) {
         return vsTgt;
     }
     iTgt = vsTgt.begin();
@@ -374,15 +384,15 @@ std::vector<std::string> CSession::Find(std::vector<std::string> &vsTgt, std::ve
         iSrc++;
     }
     while (iSrc != vsSrc.end()) {
-        vsRes.push_back(std::string(".."));
+        vsRes.emplace_back("..");
         iSrc++;
     }
     while (iTgt != vsTgt.end()) {
         vsRes.push_back(*iTgt);
         iTgt++;
     }
-    if (vsRes.size() == 0) {
-        vsRes.push_back(std::string("."));
+    if (vsRes.empty()) {
+        vsRes.emplace_back(".");
     }
     return vsRes;
 }
@@ -393,7 +403,7 @@ std::vector<std::string> CSession::Find(std::vector<std::string> &vsTgt, std::ve
 
 //
 // Find(DesignUnit & rduTgt, DesignUnit & rduSrc)
-std::vector<std::string> CSession::Find(DesignUnit &rduTgt, DesignUnit &rduSrc)
+auto CSession::Find(DesignUnit &rduTgt, DesignUnit &rduSrc) -> std::vector<std::string>
 {
     std::vector<std::string> vsTgt = Find(rduTgt);
     std::vector<std::string> vsSrc = Find(rduSrc);
@@ -403,7 +413,7 @@ std::vector<std::string> CSession::Find(DesignUnit &rduTgt, DesignUnit &rduSrc)
 
 //
 // Find(DesignUnit & rduTgt, View & rvSrc)
-std::vector<std::string> CSession::Find(DesignUnit &rduTgt, View &rvSrc)
+auto CSession::Find(DesignUnit &rduTgt, View &rvSrc) -> std::vector<std::string>
 {
     std::vector<std::string> vsTgt = Find(rduTgt);
     std::vector<std::string> vsSrc = Find(rvSrc);
@@ -413,7 +423,7 @@ std::vector<std::string> CSession::Find(DesignUnit &rduTgt, View &rvSrc)
 
 //
 // Find(DesignUnit & rduTgt, Instance & riSrc)
-std::vector<std::string> CSession::Find(DesignUnit &rduTgt, Instance &riSrc)
+auto CSession::Find(DesignUnit &rduTgt, Instance &riSrc) -> std::vector<std::string>
 {
     std::vector<std::string> vsTgt = Find(rduTgt);
     std::vector<std::string> vsSrc = Find(riSrc);
@@ -422,7 +432,7 @@ std::vector<std::string> CSession::Find(DesignUnit &rduTgt, Instance &riSrc)
 }
 
 // Find(DesignUnit & rduTgt, LibraryDef & rlSrc)
-std::vector<std::string> CSession::Find(DesignUnit &rduTgt, LibraryDef &rlSrc)
+auto CSession::Find(DesignUnit &rduTgt, LibraryDef &rlSrc) -> std::vector<std::string>
 {
 #ifdef HIFDIR_DBG
     cout << INDENT << METHOD << "CSession Find(DesignUnit & rduTgt, LibraryDef & rlSrc)" << endl;
@@ -434,7 +444,7 @@ std::vector<std::string> CSession::Find(DesignUnit &rduTgt, LibraryDef &rlSrc)
 }
 
 // Find(DesignUnit & rduTgt, std::string & sbSrc, std::string svSrc)
-std::vector<std::string> CSession::Find(DesignUnit &rduTgt, std::string &sbSrc, std::string &svSrc)
+auto CSession::Find(DesignUnit &rduTgt, std::string &sbSrc, std::string &svSrc) -> std::vector<std::string>
 {
 #ifdef HIFDIR_DBG
     cout << INDENT << METHOD << "CSession Find(DesignUnit & rduTgt, std::string & sbSrc, std::string & svSrc)" << endl;
@@ -451,7 +461,7 @@ std::vector<std::string> CSession::Find(DesignUnit &rduTgt, std::string &sbSrc, 
 
 //
 // Find(View & rvTgt, DesignUnit & rduSrc)
-std::vector<std::string> CSession::Find(View &rvTgt, DesignUnit &rduSrc)
+auto CSession::Find(View &rvTgt, DesignUnit &rduSrc) -> std::vector<std::string>
 {
 #ifdef HIFDIR_DBG
     cout << INDENT << METHOD << "CSession Find(View & rvTgt, DesignUnit & rduSrc)" << endl;
@@ -464,7 +474,7 @@ std::vector<std::string> CSession::Find(View &rvTgt, DesignUnit &rduSrc)
 
 //
 // Find(View & rvTgt, View & rvSrc)
-std::vector<std::string> CSession::Find(View &rvTgt, View &rvSrc)
+auto CSession::Find(View &rvTgt, View &rvSrc) -> std::vector<std::string>
 {
 #ifdef HIFDIR_DBG
     cout << INDENT << METHOD << "CSession Find(View & rvTgt, View & rvSrc)" << endl;
@@ -477,7 +487,7 @@ std::vector<std::string> CSession::Find(View &rvTgt, View &rvSrc)
 
 //
 // Find(View & rvTgt, Instance & riSrc)
-std::vector<std::string> CSession::Find(View &rvTgt, Instance &riSrc)
+auto CSession::Find(View &rvTgt, Instance &riSrc) -> std::vector<std::string>
 {
 #ifdef HIFDIR_DBG
     cout << INDENT << METHOD << "CSession Find(View & rvTgt, Instance & riSrc)" << endl;
@@ -489,7 +499,7 @@ std::vector<std::string> CSession::Find(View &rvTgt, Instance &riSrc)
 }
 
 // Find(View & rvTgt, LibraryDef & rlSrc)
-std::vector<std::string> CSession::Find(View &rvTgt, LibraryDef &rlSrc)
+auto CSession::Find(View &rvTgt, LibraryDef &rlSrc) -> std::vector<std::string>
 {
 #ifdef HIFDIR_DBG
     cout << INDENT << METHOD << "CSession Find(View & rvTgt, LibraryDef & rlSrc)" << endl;
@@ -501,7 +511,7 @@ std::vector<std::string> CSession::Find(View &rvTgt, LibraryDef &rlSrc)
 }
 
 // Find(View & rvTgt, std::string & sbSrc, std::string svSrc)
-std::vector<std::string> CSession::Find(View &rvTgt, std::string &sbSrc, std::string &svSrc)
+auto CSession::Find(View &rvTgt, std::string &sbSrc, std::string &svSrc) -> std::vector<std::string>
 {
 #ifdef HIFDIR_DBG
     cout << INDENT << METHOD << "CSession Find(View & rvTgt, std::string & sbSrc, std::string & svSrc)" << endl;
@@ -518,7 +528,7 @@ std::vector<std::string> CSession::Find(View &rvTgt, std::string &sbSrc, std::st
 
 //
 // Find(Instance & riTgt, DesignUnit & rduSrc)
-std::vector<std::string> CSession::Find(Instance &riTgt, DesignUnit &rduSrc)
+auto CSession::Find(Instance &riTgt, DesignUnit &rduSrc) -> std::vector<std::string>
 {
 #ifdef HIFDIR_DBG
     cout << INDENT << METHOD << "CSession Find(Instance & riTgt, DesignUnit & rduSrc)" << endl;
@@ -531,7 +541,7 @@ std::vector<std::string> CSession::Find(Instance &riTgt, DesignUnit &rduSrc)
 
 //
 // Find(Instance & riTgt, View & rvSrc)
-std::vector<std::string> CSession::Find(Instance &riTgt, View &rvSrc)
+auto CSession::Find(Instance &riTgt, View &rvSrc) -> std::vector<std::string>
 {
 #ifdef HIFDIR_DBG
     cout << INDENT << METHOD << "CSession Find(Instance & riTgt, View & rvSrc)" << endl;
@@ -544,7 +554,7 @@ std::vector<std::string> CSession::Find(Instance &riTgt, View &rvSrc)
 
 //
 // Find(Instance & riTgt, Instance & riSrc)
-std::vector<std::string> CSession::Find(Instance &riTgt, Instance &riSrc)
+auto CSession::Find(Instance &riTgt, Instance &riSrc) -> std::vector<std::string>
 {
 #ifdef HIFDIR_DBG
     cout << INDENT << METHOD << "CSession Find(Instance & riTgt, Instance & riSrc)" << endl;
@@ -556,7 +566,7 @@ std::vector<std::string> CSession::Find(Instance &riTgt, Instance &riSrc)
 }
 
 // Find(Instance & riTgt, LibraryDef & rlSrc)
-std::vector<std::string> CSession::Find(Instance &riTgt, LibraryDef &rlSrc)
+auto CSession::Find(Instance &riTgt, LibraryDef &rlSrc) -> std::vector<std::string>
 {
 #ifdef HIFDIR_DBG
     cout << INDENT << METHOD << "CSession Find(Instance & riTgt, LibraryDef & rlSrc)" << endl;
@@ -568,7 +578,7 @@ std::vector<std::string> CSession::Find(Instance &riTgt, LibraryDef &rlSrc)
 }
 
 // Find(Instance & riTgt, std::string & sbSrc, std::string svSrc)
-std::vector<std::string> CSession::Find(Instance &riTgt, std::string &sbSrc, std::string &svSrc)
+auto CSession::Find(Instance &riTgt, std::string &sbSrc, std::string &svSrc) -> std::vector<std::string>
 {
 #ifdef HIFDIR_DBG
     cout << INDENT << METHOD << "CSession Find(Instance & riTgt, std::string & sbSrc, std::string & svSrc)" << endl;
@@ -585,7 +595,7 @@ std::vector<std::string> CSession::Find(Instance &riTgt, std::string &sbSrc, std
 
 //
 // Find(LibraryDef & rlTgt, DesignUnit & rduSrc)
-std::vector<std::string> CSession::Find(LibraryDef &rlTgt, DesignUnit &rduSrc)
+auto CSession::Find(LibraryDef &rlTgt, DesignUnit &rduSrc) -> std::vector<std::string>
 {
 #ifdef HIFDIR_DBG
     cout << INDENT << METHOD << "CSession Find(LibraryDef & rlTgt, DesignUnit & rduSrc)" << endl;
@@ -598,7 +608,7 @@ std::vector<std::string> CSession::Find(LibraryDef &rlTgt, DesignUnit &rduSrc)
 
 //
 // Find(LibraryDef & rlTgt, View & rvSrc)
-std::vector<std::string> CSession::Find(LibraryDef &rlTgt, View &rvSrc)
+auto CSession::Find(LibraryDef &rlTgt, View &rvSrc) -> std::vector<std::string>
 {
 #ifdef HIFDIR_DBG
     cout << INDENT << METHOD << "CSession Find(LibraryDef & rlTgt, View & rvSrc)" << endl;
@@ -611,7 +621,7 @@ std::vector<std::string> CSession::Find(LibraryDef &rlTgt, View &rvSrc)
 
 //
 // Find(LibraryDef & rlTgt, Instance & riSrc)
-std::vector<std::string> CSession::Find(LibraryDef &rlTgt, Instance &riSrc)
+auto CSession::Find(LibraryDef &rlTgt, Instance &riSrc) -> std::vector<std::string>
 {
 #ifdef HIFDIR_DBG
     cout << INDENT << METHOD << "CSession Find(LibraryDef & rlTgt, Instance & riSrc)" << endl;
@@ -623,7 +633,7 @@ std::vector<std::string> CSession::Find(LibraryDef &rlTgt, Instance &riSrc)
 }
 
 // Find(LibraryDef & rlTgt, LibraryDef & rlSrc)
-std::vector<std::string> CSession::Find(LibraryDef &rlTgt, LibraryDef &rlSrc)
+auto CSession::Find(LibraryDef &rlTgt, LibraryDef &rlSrc) -> std::vector<std::string>
 {
 #ifdef HIFDIR_DBG
     cout << INDENT << METHOD << "CSession Find(LibraryDef & rlTgt, LibraryDef & rlSrc)" << endl;
@@ -635,7 +645,7 @@ std::vector<std::string> CSession::Find(LibraryDef &rlTgt, LibraryDef &rlSrc)
 }
 
 // Find(LibraryDef & rlTgt, std::string & sbSrc, std::string svSrc)
-std::vector<std::string> CSession::Find(LibraryDef &rlTgt, std::string &sbSrc, std::string &svSrc)
+auto CSession::Find(LibraryDef &rlTgt, std::string &sbSrc, std::string &svSrc) -> std::vector<std::string>
 {
 #ifdef HIFDIR_DBG
     cout << INDENT << METHOD << "CSession Find(LibraryDef & rlTgt, std::string & sbSrc, std::string & svSrc)" << endl;
@@ -651,7 +661,7 @@ std::vector<std::string> CSession::Find(LibraryDef &rlTgt, std::string &sbSrc, s
 //
 
 // Find(std::string& sbTgt, std::string & svTgt, DesignUnit & rduSrc)
-std::vector<std::string> CSession::Find(std::string &sbTgt, std::string &svTgt, DesignUnit &rduSrc)
+auto CSession::Find(std::string &sbTgt, std::string &svTgt, DesignUnit &rduSrc) -> std::vector<std::string>
 {
 #ifdef HIFDIR_DBG
     cout << INDENT << METHOD << "CSession Find(std::string& sbTgt, std::string & svTgt, DesignUnit & rduSrc)" << endl;
@@ -663,7 +673,7 @@ std::vector<std::string> CSession::Find(std::string &sbTgt, std::string &svTgt, 
 }
 
 // Find(std::string& sbTgt, std::string & svTgt, View & rvSrc)
-std::vector<std::string> CSession::Find(std::string &sbTgt, std::string &svTgt, View &rvSrc)
+auto CSession::Find(std::string &sbTgt, std::string &svTgt, View &rvSrc) -> std::vector<std::string>
 {
 #ifdef HIFDIR_DBG
     cout << INDENT << METHOD << "CSession Find(std::string& sbTgt, std::string & svTgt, View & rvSrc)" << endl;
@@ -675,7 +685,7 @@ std::vector<std::string> CSession::Find(std::string &sbTgt, std::string &svTgt, 
 }
 
 // Find(std::string& sbTgt, std::string & svTgt, Instance & riSrc)
-std::vector<std::string> CSession::Find(std::string &sbTgt, std::string &svTgt, Instance &riSrc)
+auto CSession::Find(std::string &sbTgt, std::string &svTgt, Instance &riSrc) -> std::vector<std::string>
 {
 #ifdef HIFDIR_DBG
     cout << INDENT << METHOD << "CSession Find(std::string& sbTgt, std::string & svTgt, Instance & riSrc)" << endl;
@@ -687,7 +697,7 @@ std::vector<std::string> CSession::Find(std::string &sbTgt, std::string &svTgt, 
 }
 
 // Find(std::string& sbTgt, std::string & svTgt, LibraryDef & rlSrc)
-std::vector<std::string> CSession::Find(std::string &sbTgt, std::string &svTgt, LibraryDef &rlSrc)
+auto CSession::Find(std::string &sbTgt, std::string &svTgt, LibraryDef &rlSrc) -> std::vector<std::string>
 {
 #ifdef HIFDIR_DBG
     cout << INDENT << METHOD << "CSession Find(std::string& sbTgt, std::string & svTgt, LibraryDef & rlSrc)" << endl;
@@ -699,7 +709,8 @@ std::vector<std::string> CSession::Find(std::string &sbTgt, std::string &svTgt, 
 }
 
 // Find(std::string& sbTgt, std::string & svTgt, std::string & sbSrc, std::string svSrc)
-std::vector<std::string> CSession::Find(std::string &sbTgt, std::string &svTgt, std::string &sbSrc, std::string &svSrc)
+auto CSession::Find(std::string &sbTgt, std::string &svTgt, std::string &sbSrc, std::string &svSrc)
+    -> std::vector<std::string>
 {
 #ifdef HIFDIR_DBG
     cout << INDENT << METHOD
@@ -717,12 +728,12 @@ std::vector<std::string> CSession::Find(std::string &sbTgt, std::string &svTgt, 
 
 //
 // Apply(const char * pcLine)
-int CSession::Apply(const char *pcLine)
+auto CSession::Apply(const char *pcLine) -> int
 {
 #ifdef HIFDIR_DBG
     cout << INDENT << METHOD << "CSession Apply(const char * pcLine)" << endl;
 #endif // HIFDIR_DBG
-    if (!pcLine) {
+    if (pcLine == nullptr) {
         return 4;
     }
 
@@ -732,7 +743,7 @@ int CSession::Apply(const char *pcLine)
 
 //
 // Apply(DesignUnit & rduTgt, const char * pcLine, const char * pcSuffix)
-int CSession::Apply(DesignUnit &rduTgt, const char *pcLine, const char *pcSuffix)
+auto CSession::Apply(DesignUnit &rduTgt, const char *pcLine, const char *pcSuffix) -> int
 {
 #ifdef HIFDIR_DBG
     cout << INDENT << METHOD << "CSession Apply(DesignUnit & rduTgt, const char * pcLine, const char * pcSuffix)"
@@ -745,15 +756,15 @@ int CSession::Apply(DesignUnit &rduTgt, const char *pcLine, const char *pcSuffix
 
     fPADir = fPDir.getAbsoluteFile();
 
-    if (!pcLine) {
+    if (pcLine == nullptr) {
         return 4;
     }
 
     for (iElt = rduTgt.views.begin(); iElt != rduTgt.views.end(); iElt++) {
         vsPath = Find(**iElt);
-        if (vsPath.size() != 0) {
-            if (pcSuffix) {
-                vsPath.push_back(std::string(pcSuffix));
+        if (!vsPath.empty()) {
+            if (pcSuffix != nullptr) {
+                vsPath.emplace_back(pcSuffix);
             }
             application_utils::FileStructure fCDir(vsPath);
             if (!(fCDir.chdir())) {
@@ -772,20 +783,20 @@ int CSession::Apply(DesignUnit &rduTgt, const char *pcLine, const char *pcSuffix
 
 //
 // Apply(View & rvTgt, const char * pcLine, const char * pcSuffix)
-int CSession::Apply(View &rvTgt, const char *pcLine, const char *pcSuffix)
+auto CSession::Apply(View &rvTgt, const char *pcLine, const char *pcSuffix) -> int
 {
 #ifdef HIFDIR_DBG
     cout << INDENT << METHOD << "CSession Apply(View & rvTgt, const char * pcLine, const char * pcSuffix)" << endl;
 #endif // HIFDIR_DBG
     std::vector<std::string> vsPath;
 
-    if (!pcLine) {
+    if (pcLine == nullptr) {
         return 4;
     }
 
     vsPath = Find(rvTgt);
-    if (pcSuffix) {
-        vsPath.push_back(std::string(pcSuffix));
+    if (pcSuffix != nullptr) {
+        vsPath.emplace_back(pcSuffix);
     }
     application_utils::FileStructure fCDir(vsPath);
     if (!(fCDir.chdir())) {
@@ -799,20 +810,20 @@ int CSession::Apply(View &rvTgt, const char *pcLine, const char *pcSuffix)
 
 //
 // Apply(Instance & riTgt, const char * pcLine, const char * pcSuffix)
-int CSession::Apply(Instance &riTgt, const char *pcLine, const char *pcSuffix)
+auto CSession::Apply(Instance &riTgt, const char *pcLine, const char *pcSuffix) -> int
 {
 #ifdef HIFDIR_DBG
     cout << INDENT << METHOD << "CSession Apply(Instance & riTgt, const char * pcLine, const char * pcSuffix)" << endl;
 #endif // HIFDIR_DBG
     std::vector<std::string> vsPath;
 
-    if (!pcLine) {
+    if (pcLine == nullptr) {
         return 4;
     }
 
     vsPath = Find(riTgt);
-    if (pcSuffix) {
-        vsPath.push_back(std::string(pcSuffix));
+    if (pcSuffix != nullptr) {
+        vsPath.emplace_back(pcSuffix);
     }
     application_utils::FileStructure fCDir(vsPath);
     if (!(fCDir.chdir())) {
@@ -826,7 +837,7 @@ int CSession::Apply(Instance &riTgt, const char *pcLine, const char *pcSuffix)
 
 //
 // Apply(LibraryDef & rlTgt, const char * pcLine, const char * pcSuffix)
-int CSession::Apply(LibraryDef &rlTgt, const char *pcLine, const char *pcSuffix)
+auto CSession::Apply(LibraryDef &rlTgt, const char *pcLine, const char *pcSuffix) -> int
 {
 #ifdef HIFDIR_DBG
     cout << INDENT << METHOD << "CSession Apply(LibraryDef & rlTgt, const char * pcLine, const char * pcSuffix)"
@@ -839,14 +850,14 @@ int CSession::Apply(LibraryDef &rlTgt, const char *pcLine, const char *pcSuffix)
 
     fPADir = fPDir.getAbsoluteFile();
 
-    if (!pcLine) {
+    if (pcLine == nullptr) {
         return 4;
     }
 
     vsPath = Find(rlTgt);
-    if (vsPath.size() != 0) {
-        if (pcSuffix) {
-            vsPath.push_back(std::string(pcSuffix));
+    if (!vsPath.empty()) {
+        if (pcSuffix != nullptr) {
+            vsPath.emplace_back(pcSuffix);
         }
         application_utils::FileStructure fCDir(vsPath);
         if (!(fCDir.chdir())) {
@@ -864,7 +875,7 @@ int CSession::Apply(LibraryDef &rlTgt, const char *pcLine, const char *pcSuffix)
 
 //
 // Apply(std::string& sbTgt, std::string & svTgt, const char * pcLine, const char * pcSuffix)
-int CSession::Apply(std::string &sbTgt, std::string &svTgt, const char *pcLine, const char *pcSuffix)
+auto CSession::Apply(std::string &sbTgt, std::string &svTgt, const char *pcLine, const char *pcSuffix) -> int
 {
 #ifdef HIFDIR_DBG
     cout << INDENT << METHOD
@@ -878,14 +889,14 @@ int CSession::Apply(std::string &sbTgt, std::string &svTgt, const char *pcLine, 
 
     fPADir = fPDir.getAbsoluteFile();
 
-    if (!pcLine) {
+    if (pcLine == nullptr) {
         return 4;
     }
 
     vsPath = Find(sbTgt, svTgt);
-    if (vsPath.size() != 0) {
-        if (pcSuffix) {
-            vsPath.push_back(std::string(pcSuffix));
+    if (!vsPath.empty()) {
+        if (pcSuffix != nullptr) {
+            vsPath.emplace_back(pcSuffix);
         }
         application_utils::FileStructure fCDir(vsPath);
         if (!(fCDir.chdir())) {

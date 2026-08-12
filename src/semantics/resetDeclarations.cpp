@@ -1,8 +1,9 @@
 /// @file resetDeclarations.cpp
 /// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #include "hif/semantics/resetDeclarations.hpp"
 
@@ -48,8 +49,7 @@ public:
 private:
     const ResetDeclarationsOptions &_opt;
 
-    template <typename T>
-    void _resetDeclaration(T *obj);
+    template <typename T> void _resetDeclaration(T *obj);
 
     ResetDeclarationVisitor(const ResetDeclarationVisitor &);
     ResetDeclarationVisitor &operator=(const ResetDeclarationVisitor &);
@@ -68,8 +68,7 @@ ResetDeclarationVisitor::~ResetDeclarationVisitor()
     // ntd
 }
 
-template <typename T>
-void ResetDeclarationVisitor::_resetDeclaration(T *obj)
+template <typename T> void ResetDeclarationVisitor::_resetDeclaration(T *obj)
 {
     typename T::DeclarationType *oldDecl = nullptr;
     if (_opt.onlyVisible) {
@@ -331,12 +330,12 @@ void resetDeclarations(BList<Object> &o, const ResetDeclarationsOptions &opt)
     }
 }
 
-template <typename T>
-void resetDeclarations(BList<T> &o, const ResetDeclarationsOptions &opt)
+template <typename T> void resetDeclarations(BList<T> &o, const ResetDeclarationsOptions &opt)
 {
     resetDeclarations(o.template toOtherBList<Object>(), opt);
 }
 
+/// @brief Macro for template method instantiation.
 #define HIF_TEMPLATE_METHOD(T) void resetDeclarations<T>(BList<T> &, const ResetDeclarationsOptions &)
 HIF_INSTANTIATE_METHOD()
 

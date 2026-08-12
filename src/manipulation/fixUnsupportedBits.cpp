@@ -1,8 +1,9 @@
 /// @file fixUnsupportedBits.cpp
 /// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #include "hif/manipulation/fixUnsupportedBits.hpp"
 #include "hif/GuideVisitor.hpp"
@@ -47,18 +48,18 @@ private:
 
     /// @brief Removes cases into Switch and With, having dontcare bits.
     /// @param o The Switch or With.
-    template <typename T>
-    void _removeDontcareCases(T *o);
+    template <typename T> void _removeDontcareCases(T *o);
 
     /// @brief Transform CASE_X and CASE_Z in CASE_LITERAL.
-    template <typename T>
-    void _fixCaseSemantics(T *o);
+    template <typename T> void _fixCaseSemantics(T *o);
 
     /// @brief Simplify special expressions, which cannot be matched.
     /// @param o The expression.
     bool _simplifyEqualityExpressions(Expression *o);
+
     /// @brief Returns true if value is a constant containing logic bits.
     bool _isLogicConst(Value *o);
+
     /// @brief Checks whether given value is an initial value that must be skipped.
     /// @param v The value.
     /// @return The check result.
@@ -292,8 +293,8 @@ bool BadBitsVisitor::_simplifyEqualityExpressions(Expression *o)
     // Equality on 4 values will always be false when mapped to 2 values!
     // Eg. XXX01 == a --> false
     // Ref design: m6502_original + ddt
-    const bool isLogic1 = _isLogicConst(o->getValue1());
-    const bool isLogic2 = _isLogicConst(o->getValue2());
+    bool isLogic1 = _isLogicConst(o->getValue1());
+    bool isLogic2 = _isLogicConst(o->getValue2());
     if (!isLogic1 && !isLogic2)
         return false;
 
@@ -372,8 +373,7 @@ bool BadBitsVisitor::_skipInitialValues(Value *v)
     DataDeclaration *ddecl = dynamic_cast<DataDeclaration *>(v->getParent());
     return ddecl != nullptr && ddecl->getValue() == v;
 }
-template <typename T>
-void BadBitsVisitor::_removeDontcareCases(T *o)
+template <typename T> void BadBitsVisitor::_removeDontcareCases(T *o)
 {
     if (_semOpts.lang_hasDontCare && !_opts.onlyBinaryBits)
         return;
@@ -406,8 +406,7 @@ void BadBitsVisitor::_removeDontcareCases(T *o)
 
     altTrash.clear();
 }
-template <typename T>
-void BadBitsVisitor::_fixCaseSemantics(T *o)
+template <typename T> void BadBitsVisitor::_fixCaseSemantics(T *o)
 {
     if (o->getCaseSemantics() == hif::CASE_LITERAL)
         return;
@@ -420,7 +419,7 @@ void BadBitsVisitor::_fixCaseSemantics(T *o)
     // Check type of condition.
     // It may be different from logic vector or logic bit in case of manipulation
     // (e.g. DDT). In this case CASE_X and CASE_Z are mapped in CASE_LITERAL.
-    const bool isLogic = hif::typeIsLogic(condBaseType, _sem);
+    bool isLogic = hif::typeIsLogic(condBaseType, _sem);
     if (isLogic)
         return;
 

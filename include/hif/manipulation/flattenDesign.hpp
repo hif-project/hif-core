@@ -1,8 +1,9 @@
 /// @file flattenDesign.hpp
 /// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #pragma once
 
@@ -25,12 +26,6 @@ struct FlattenDesignOptions {
     /// @brief The set of names of root instances.
     /// Their format is the hierarchical name.
     std::set<std::string> rootInstances;
-
-    FlattenDesignOptions();
-    ~FlattenDesignOptions();
-
-    FlattenDesignOptions(const FlattenDesignOptions &);
-    FlattenDesignOptions &operator=(const FlattenDesignOptions &);
 };
 
 /// @brief Flattens the given system description (i.e., removes its hierarchy).

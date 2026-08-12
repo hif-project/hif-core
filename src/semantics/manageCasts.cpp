@@ -1,8 +1,9 @@
 /// @file manageCasts.cpp
 /// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #include <cstdlib>
 #include <iostream>
@@ -168,7 +169,7 @@ void ManageCast_t::_fixCondition(Value *cond)
 
     EqualsOptions opt;
     opt.checkOnlyTypes = true;
-    const bool isEq    = hif::equals(co->getType(), mappedBool, opt);
+    bool isEq    = hif::equals(co->getType(), mappedBool, opt);
     delete mappedBool;
     if (isEq) {
         // ok, no need for explicit bool conversion

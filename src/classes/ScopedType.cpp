@@ -1,8 +1,9 @@
 /// @file ScopedType.cpp
 /// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #include "hif/classes/ScopedType.hpp"
 
@@ -22,7 +23,7 @@ ScopedType::~ScopedType()
 
 void ScopedType::_calculateFields() { Type::_calculateFields(); }
 
-void ScopedType::setConstexpr(const bool v) { _isConstexpr = v; }
+void ScopedType::setConstexpr(bool v) { _isConstexpr = v; }
 
 bool ScopedType::isConstexpr() { return _isConstexpr; }
 

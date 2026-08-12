@@ -1,8 +1,9 @@
 /// @file equals.hpp
-/// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// @brief Utilities for checking equality of HIF objects and structures.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #pragma once
 
@@ -20,8 +21,18 @@ namespace hif
 struct EqualsOptions {
     EqualsOptions();
     ~EqualsOptions();
+
+    /// @brief Copy constructor.
+    /// @param o The object to copy from.
     EqualsOptions(const EqualsOptions &o);
+
+    /// @brief Assignment operator.
+    /// @param o The object to assign from.
+    /// @return Reference to this object.
     EqualsOptions &operator=(EqualsOptions o);
+
+    /// @brief Swap function.
+    /// @param o The object to swap with.
     void swap(EqualsOptions &o);
 
     /// @name General options.
@@ -120,6 +131,7 @@ struct EqualsOptions {
 
     /// @}
 
+    /// @brief Language semantics to use for comparison.
     hif::semantics::ILanguageSemantics *sem;
 };
 
@@ -134,6 +146,7 @@ struct EqualsOptions {
 ///
 
 bool equals(Object *obj1, Object *obj2, const EqualsOptions &options = EqualsOptions());
+
 ///
 /// @brief Compares two Hif lists.
 /// This function checks whether two lists are identical.
@@ -143,8 +156,7 @@ bool equals(Object *obj1, Object *obj2, const EqualsOptions &options = EqualsOpt
 /// @param options The comparison options.
 /// @return <tt>true</tt> if the lists are identical, <tt>false</tt> otherwise.
 ///
-template <class T>
-bool equals(BList<T> &list1, BList<T> &list2, const EqualsOptions &options = EqualsOptions())
+template <class T> bool equals(BList<T> &list1, BList<T> &list2, const EqualsOptions &options = EqualsOptions())
 {
     typename BList<T>::iterator i, j;
 

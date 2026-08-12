@@ -1,9 +1,10 @@
 /// @file CommandLineParser.hpp
 /// @brief Defines the CommandLineParser class for managing command line
 /// arguments.
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #pragma once
 
@@ -65,12 +66,16 @@ public:
 
     /// @brief Type alias for a list of string chunks.
     using Chunks          = std::vector<std::string>;
+
     /// @brief Type alias for a list of options.
     using OptionsList     = std::vector<option>;
+
     /// @brief Type alias for a list of input files.
     using Files           = std::vector<std::string>;
+
     /// @brief Maps short options to their corresponding long options.
     using Options         = std::map<char, Option, DictionaryComparator>;
+
     /// @brief Maps long option names to their corresponding short options.
     using Long2ShortNames = std::map<std::string, char>;
 
@@ -82,7 +87,7 @@ public:
 
     CommandLineParser *operator=(const CommandLineParser &) = delete;
 
-    virtual ~CommandLineParser() =default;
+    virtual ~CommandLineParser() = default;
 
     /// @name Main methods.
     /// @{
@@ -98,8 +103,8 @@ public:
     void addOption(
         const char shortName,
         const std::string &longName,
-        const bool hasArgument,
-        const bool isActive,
+        bool hasArgument,
+        bool isActive,
         const std::string &description,
         const std::string &defaultValue = "");
 
@@ -202,7 +207,7 @@ public:
 
     /// @brief Adds the configuration file option to the command-line parser.
     /// @param generateStub add option to generate a stub config file with given file name.
-    void addConfigFile(const bool generateStub);
+    void addConfigFile(bool generateStub);
 
     /// @brief Adds the optimization option to the command-line parser.
     void addOptimization();
@@ -321,14 +326,14 @@ protected:
     /// @param s The string to be split.
     /// @param maxSize THe maximum size.
     /// @param margin Additional margin when wrapping. Default is 0.
-    static void _makeChunks(Chunks &chunks, std::string s, const std::size_t maxSize, const std::size_t margin = 0) ;
+    static void _makeChunks(Chunks &chunks, std::string s, const std::size_t maxSize, const std::size_t margin = 0);
 
     /// @brief Pads given string to fix exactely maxLineSize.
     ///
     /// @param s The string.
     /// @param maxLineSize The line size.
     /// @return The padded string.
-    static std::string _padString(const std::string &s, const std::size_t maxLineSize) ;
+    static std::string _padString(const std::string &s, const std::size_t maxLineSize);
 
     /// @}
 

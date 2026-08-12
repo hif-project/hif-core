@@ -1,8 +1,9 @@
 /// @file getMatchingScope.cpp
 /// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #include "hif/hif_utils/getMatchingScope.hpp"
 #include "hif/hif_utils/getNearestParent.hpp"
@@ -13,7 +14,7 @@ namespace hif
 namespace /*anon*/
 {
 
-Object *_getMatchingScope(Object *o, const std::string &name, const bool checkSwitch)
+Object *_getMatchingScope(Object *o, const std::string &name, bool checkSwitch)
 {
     if (o == nullptr)
         return nullptr;

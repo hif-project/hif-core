@@ -1,8 +1,9 @@
 /// @file StringValue.cpp
 /// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #include "hif/classes/StringValue.hpp"
 #include "hif/HifVisitor.hpp"
@@ -31,7 +32,7 @@ StringValue::~StringValue()
 
 void StringValue::setValue(const std::string &text) { _text = text; }
 
-void StringValue::setPlain(const bool plain) { _isPlain = plain; }
+void StringValue::setPlain(bool plain) { _isPlain = plain; }
 
 bool StringValue::isPlain() const { return _isPlain; }
 

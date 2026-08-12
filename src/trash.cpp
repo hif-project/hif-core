@@ -1,8 +1,9 @@
 /// @file trash.cpp
 /// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #include "hif/trash.hpp"
 
@@ -101,11 +102,8 @@ bool Trash::remove(Object *o)
     return true;
 }
 
-template <typename T>
-void Trash::insert(BList<T> &list)
-{
-    Trash::insert(list.template toOtherBList<Object>());
-}
+template <typename T> void Trash::insert(BList<T> &list) { Trash::insert(list.template toOtherBList<Object>()); }
+/// @brief Macro for template method instantiation.
 #define HIF_TEMPLATE_METHOD(T) void Trash::insert<T>(BList<T> & list)
 HIF_INSTANTIATE_METHOD()
 #undef HIF_TEMPLATE_METHOD

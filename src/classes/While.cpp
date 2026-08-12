@@ -1,8 +1,9 @@
 /// @file While.cpp
 /// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #include "hif/classes/While.hpp"
 #include "hif/HifVisitor.hpp"
@@ -26,7 +27,7 @@ Value *While::setCondition(Value *x) { return setChild(_condition, x); }
 
 bool While::isDoWhile() const { return _doWhile; }
 
-void While::setDoWhile(const bool doWhile) { _doWhile = doWhile; }
+void While::setDoWhile(bool doWhile) { _doWhile = doWhile; }
 
 ClassId While::getClassId() const { return CLASSID_WHILE; }
 

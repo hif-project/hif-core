@@ -1,8 +1,9 @@
 /// @file matchObject.hpp
 /// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #pragma once
 
@@ -18,6 +19,7 @@ namespace manipulation
 struct MatchObjectOptions {
     /// @brief If <tt>true</tt>, relaxes the matching criterion.
     bool matchStructure;
+
     /// @brief If <tt>true</tt>, skips references when matching objects.
     bool skipReferences;
 

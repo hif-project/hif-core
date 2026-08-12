@@ -1,8 +1,9 @@
 /// @file State.hpp
 /// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #pragma once
 
@@ -81,21 +82,27 @@ public:
     //@{
 
     /// @brief Gets all edges with this state as destination.
+    /// @return List of incoming edges.
     EdgeList_t getInEdges();
 
     /// @brief Gets all edges with this state as source.
+    /// @return List of outgoing edges.
     EdgeList_t getOutEdges();
 
     /// @brief Sets the edge priority.
+    /// @param p The priority value to set.
     void setPriority(const priority_t p);
 
     /// @brief Sets the edge priority.
+    /// @return The current priority value.
     priority_t getPriority() const;
 
     /// @brief Sets the flag atomic.
-    void setAtomic(const bool v);
+    /// @param v The atomic flag value to set.
+    void setAtomic(bool v);
 
     /// @brief Gets the flag atomic.
+    /// @return True if the state is atomic, false otherwise.
     bool isAtomic() const;
 
     //@}
@@ -105,6 +112,8 @@ protected:
     virtual void _calculateFields();
 
     /// @brief Returns the name of given BList w.r.t. this.
+    /// @param list The BList to get the name for.
+    /// @return The name of the BList.
     virtual std::string _getBListName(const BList<Object> &list) const;
 
 private:

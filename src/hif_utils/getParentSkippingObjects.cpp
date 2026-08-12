@@ -1,8 +1,9 @@
 /// @file getParentSkippingObjects.cpp
 /// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #include "hif/hif_utils/getParentSkippingObjects.hpp"
 
@@ -20,8 +21,7 @@ namespace /*anon*/
 
 Object *getParentSkippingCasts(Value *o) { return getParentSkippingClass<Cast>(o); }
 
-template <class T>
-Object *getParentSkippingClass(Object *o)
+template <class T> Object *getParentSkippingClass(Object *o)
 {
     if (o->getParent() == nullptr)
         return nullptr;

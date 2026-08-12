@@ -1,8 +1,9 @@
 /// @file BaseContents.hpp
-/// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// @brief Base class for contents of HIF composite objects.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #pragma once
 
@@ -21,10 +22,13 @@ class BaseContents : public Scope
 public:
     /// @brief List of declarations.
     BList<Declaration> declarations;
+
     /// @brief List of state tables (i.e., processes).
     BList<StateTable> stateTables;
+
     /// @brief List of component instances.
     BList<Instance> instances;
+
     /// @brief List of generate constructs.
     BList<Generate> generates;
 

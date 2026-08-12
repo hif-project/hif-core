@@ -1,8 +1,9 @@
 /// @file splitAssignTargets.hpp
 /// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #pragma once
 
@@ -17,23 +18,38 @@ namespace manipulation
 struct SplitAssignTargetOptions {
     SplitAssignTargetOptions();
     ~SplitAssignTargetOptions();
+
+    /// @brief Copy constructor.
+    /// @param other The object to copy from.
     SplitAssignTargetOptions(const SplitAssignTargetOptions &other);
+
+    /// @brief Assignment operator.
+    /// @param other The object to assign from.
+    /// @return Reference to this object.
     SplitAssignTargetOptions &operator=(SplitAssignTargetOptions other);
+
+    /// @brief Swaps the contents of this object with another.
+    /// @param other The object to swap with.
     void swap(SplitAssignTargetOptions &other);
 
     /// @name General configuration.
     /// @{
 
     /// @brief Skip standard scopes. Default is true.
-    bool skipStandardDeclarations;
+    bool skip_standard_declarations;
+
     /// @brief Split concat targets. Default is false.
     bool splitConcats;
+
     /// @brief Split target vectors, whose size is greater than given trashold. Default is false.
     bool splitVectors;
+
     /// @brief Split target integers, whose size is greater than given trashold. Default is false.
     bool splitIntegers;
+
     /// @brief Split target arrays. Default is false.
     bool splitArrays;
+
     /// @brief Enable fix for array of ports and signals used as parameters. Default is false.
     bool removeSignalPortArrayParameters;
 
@@ -44,8 +60,10 @@ struct SplitAssignTargetOptions {
 
     /// @brief Split also targets which are record values involved in concats. Default is false.
     bool splitRecordValueConcats;
+
     /// @brief When splitting concats, create support signal instead of variables. Default is false.
     bool createSignals;
+
     /// @brief Split also port bindings with concats. Default is false.
     bool splitPortassigns;
 
@@ -55,10 +73,11 @@ struct SplitAssignTargetOptions {
     /// @{
 
     /// @brief Assign targets of given types are splitted in chunks of this maximum bitwidth. Default is 64.
-    unsigned long long maxBitwidth;
+    std::uint64_t maxBitwidth;
+
     /// @brief Sets a custom maximum unrolling factor, in order to avoid HIF code explosion.
     /// Zero means force unrolling.
-    unsigned long long unrollingUpperBound;
+    std::uint64_t unrollingUpperBound;
 
     /// @}
 };

@@ -1,8 +1,9 @@
 /// @file Library.hpp
 /// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #pragma once
 
@@ -48,7 +49,7 @@ public:
 
     /// @brief Sets whether the referenced library is a standard library.
     /// @param standard <tt>true</tt> if the referenced library is a standard library, <tt>false</tt> otherwise.
-    void setStandard(const bool standard);
+    void setStandard(bool standard);
 
     /// @brief Returns whether the referenced library is to be included as
     /// a system include or as a local include.
@@ -62,7 +63,7 @@ public:
     /// @param system <tt>true</tt> if the referenced library is to be included
     /// as a system include, <tt>false</tt> if it is to be included as a
     /// local include.
-    void setSystem(const bool system);
+    void setSystem(bool system);
 
     /// @brief Accepts a visitor to visit the current object.
     /// @param vis The visitor.

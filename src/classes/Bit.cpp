@@ -1,8 +1,9 @@
 /// @file Bit.cpp
 /// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #include "hif/classes/Bit.hpp"
 #include "hif/HifVisitor.hpp"
@@ -30,10 +31,10 @@ void Bit::_calculateFields() { SimpleType::_calculateFields(); }
 
 bool Bit::isLogic() const { return _isLogic; }
 
-void Bit::setLogic(const bool logic) { _isLogic = logic; }
+void Bit::setLogic(bool logic) { _isLogic = logic; }
 
 bool Bit::isResolved() const { return _isResolved; }
 
-void Bit::setResolved(const bool resolved) { _isResolved = resolved; }
+void Bit::setResolved(bool resolved) { _isResolved = resolved; }
 
 } // namespace hif

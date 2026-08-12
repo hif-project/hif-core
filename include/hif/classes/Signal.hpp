@@ -1,8 +1,9 @@
 /// @file Signal.hpp
 /// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #pragma once
 
@@ -36,7 +37,7 @@ public:
 
     /// @brief Sets whether this is a standard declaration.
     /// @param standard <tt>true</tt> if this is a standard declaration, <tt>false</tt> otherwise.
-    void setStandard(const bool standard);
+    void setStandard(bool standard);
 
     /// @brief Returns whether this is a wrapper for an object with
     /// similar features, which does not have a matching data model.
@@ -46,7 +47,7 @@ public:
     /// @brief Sets whether this is actually a wrapper for an object with
     /// similar features, which does not have a matching data model.
     /// @param wrapper <tt>true</tt> if this is a wrapper, <tt>false</tt> otherwise.
-    void setWrapper(const bool wrapper);
+    void setWrapper(bool wrapper);
 
     /// @brief Accepts a visitor to visit the current object.
     /// @param vis The visitor.

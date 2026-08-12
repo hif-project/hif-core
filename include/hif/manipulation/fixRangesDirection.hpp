@@ -1,8 +1,9 @@
 /// @file fixRangesDirection.hpp
 /// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #pragma once
 
@@ -19,11 +20,13 @@ namespace manipulation
 /// A vhdl example:
 /// @code
 /// signal s : std_logic_vector(0 to 12);
+
 /// @endcode
 ///
 /// Is changed to:
 /// @code
 /// signal s : std_logic_vector(12 downto 0);
+
 /// @endcode
 ///
 /// @param o The system object.

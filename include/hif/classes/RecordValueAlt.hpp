@@ -1,8 +1,9 @@
 /// @file RecordValueAlt.hpp
 /// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #pragma once
 
@@ -41,6 +42,7 @@ public:
 
     /// @brief Sets the value of the alternative.
     /// @param v The value of the alternative to be set.
+    /// @return The old value of the alternative.
     Value *setValue(Value *v);
 
     /// @brief Accepts a visitor to visit the current object.
@@ -57,6 +59,8 @@ protected:
     virtual void _calculateFields();
 
     /// @brief Returns the name of given child w.r.t. this.
+    /// @param child The child object.
+    /// @return The name of the child.
     virtual std::string _getFieldName(const Object *child) const;
 
 private:

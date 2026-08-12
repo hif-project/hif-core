@@ -1,8 +1,9 @@
 /// @file Variable.cpp
 /// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #include "hif/classes/Variable.hpp"
 #include "hif/HifVisitor.hpp"
@@ -24,7 +25,7 @@ Variable::~Variable()
 
 bool Variable::isInstance() const { return _isInstance; }
 
-void Variable::setInstance(const bool instance) { _isInstance = instance; }
+void Variable::setInstance(bool instance) { _isInstance = instance; }
 
 ClassId Variable::getClassId() const { return CLASSID_VARIABLE; }
 
@@ -34,6 +35,6 @@ void Variable::_calculateFields() { DataDeclaration::_calculateFields(); }
 
 bool Variable::isStandard() const { return _isStandard; }
 
-void Variable::setStandard(const bool standard) { _isStandard = standard; }
+void Variable::setStandard(bool standard) { _isStandard = standard; }
 
 } // namespace hif

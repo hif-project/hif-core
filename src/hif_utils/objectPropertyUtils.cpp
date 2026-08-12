@@ -1,8 +1,9 @@
 /// @file objectPropertyUtils.cpp
 /// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #include "hif/hif_utils/objectPropertyUtils.hpp"
 
@@ -191,7 +192,7 @@ hif::LanguageID objectGetLanguage(Object *obj)
 
     messageError("Unexpected case", obj, nullptr);
 }
-void objectSetLanguage(Object *obj, const hif::LanguageID id, const bool recursive)
+void objectSetLanguage(Object *obj, const hif::LanguageID id, bool recursive)
 {
     if (obj == nullptr)
         return;
@@ -337,13 +338,13 @@ bool objectIsProcess(Object *o)
     return (reinterpret_cast<BList<Object> *>(&p->stateTables) == st->getBList());
 }
 
-bool objectIsInProcess(Object *o, const bool matchAssigns, const bool matchStarting)
+bool objectIsInProcess(Object *o, bool matchAssigns, bool matchStarting)
 {
     auto ret = objectGetProcess(o, matchAssigns, matchStarting);
     return ret != nullptr;
 }
 
-Object *objectGetProcess(Object *o, const bool matchAssigns, const bool matchStarting)
+Object *objectGetProcess(Object *o, bool matchAssigns, bool matchStarting)
 {
     if (o == nullptr)
         return nullptr;
@@ -477,7 +478,7 @@ bool objectIsStandard(Object *o)
     return false;
 }
 
-void objectSetStandard(Object *o, const bool isStandard)
+void objectSetStandard(Object *o, bool isStandard)
 {
     if (o == nullptr)
         return;
@@ -524,7 +525,7 @@ bool objectIsExternal(Object *o)
     return false;
 }
 
-void objectSetExternal(Object *o, const bool isExternal)
+void objectSetExternal(Object *o, bool isExternal)
 {
     if (dynamic_cast<TypeDef *>(o) != nullptr) {
         TypeDef *local = static_cast<TypeDef *>(o);

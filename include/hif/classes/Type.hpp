@@ -1,8 +1,9 @@
 /// @file Type.hpp
 /// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #pragma once
 
@@ -30,6 +31,7 @@ public:
         SYSTEMC_BITVECTOR_BASE,     /// <@brief sc_lv_base, sc_bv_base
         SYSTEMC_BIT_BITREF          /// <@brief sc_bitref_l, sc_bitref_b
     };
+
     /// @brief Constructor.
     Type();
 

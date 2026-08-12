@@ -1,8 +1,9 @@
 /// @file backendManipulations.cpp
 /// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #include "hif/hif.hpp"
 
@@ -20,9 +21,9 @@ template <typename T>
 void _makeParametersAssignable(
     T *call,
     hif::semantics::ILanguageSemantics *sem,
-    const bool shiftToZero,
+    bool shiftToZero,
     unsigned int skip,
-    const bool removeCastOnOutputs)
+    bool removeCastOnOutputs)
 {
     if (shiftToZero) {
         unsigned int count = 0;
@@ -199,9 +200,9 @@ Scope *_getNearestIncludeScope(Scope *scope)
 void makeParametersAssignable(
     ProcedureCall *call,
     hif::semantics::ILanguageSemantics *sem,
-    const bool shiftToZero,
+    bool shiftToZero,
     unsigned int skip,
-    const bool removeCastOnOutputs)
+    bool removeCastOnOutputs)
 {
     _makeParametersAssignable(call, sem, shiftToZero, skip, removeCastOnOutputs);
 }
@@ -209,9 +210,9 @@ void makeParametersAssignable(
 void makeParametersAssignable(
     FunctionCall *call,
     hif::semantics::ILanguageSemantics *sem,
-    const bool shiftToZero,
+    bool shiftToZero,
     unsigned int skip,
-    const bool removeCastOnOutputs)
+    bool removeCastOnOutputs)
 {
     _makeParametersAssignable(call, sem, shiftToZero, skip, removeCastOnOutputs);
 }
@@ -233,7 +234,7 @@ bool addHifLibrary(
     Object *scope,
     System *system,
     hif::semantics::ILanguageSemantics *sem,
-    const bool standard)
+    bool standard)
 {
     hif::HifFactory factory(sem);
 

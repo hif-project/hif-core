@@ -1,8 +1,9 @@
 /// @file transformSwitchToIf.cpp
 /// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #include "hif/manipulation/transformSwitchToIf.hpp"
 
@@ -56,7 +57,7 @@ void _makeSupportVariable(T *sw, hif::semantics::ILanguageSemantics *sem, Transf
         Declaration *decl      = hif::semantics::getDeclaration(cond, sem);
         Port *port             = dynamic_cast<Port *>(decl);
         Signal *signal         = dynamic_cast<Signal *>(decl);
-        const bool isSigOrPort = (port != nullptr || signal != nullptr) && !opt.fixSignalOrPortCondition;
+        bool isSigOrPort = (port != nullptr || signal != nullptr) && !opt.fixSignalOrPortCondition;
         if ((id != nullptr || fr != nullptr) && !isSigOrPort)
             return;
     }
@@ -264,8 +265,7 @@ Type *_checkCaseType(Value *v, hif::semantics::ILanguageSemantics *sem)
     return ret;
 }
 
-template <class T>
-void _mapSignedUnsigned(T *obj, hif::semantics::ILanguageSemantics *sem)
+template <class T> void _mapSignedUnsigned(T *obj, hif::semantics::ILanguageSemantics *sem)
 {
     typedef typename T::AltType AltType;
     // Map signed and unsigned to corresponding logic vector since:

@@ -1,8 +1,9 @@
 /// @file LibraryDef.cpp
 /// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #include "hif/classes/Library.hpp"
 
@@ -32,9 +33,9 @@ LibraryDef::~LibraryDef()
 
 bool LibraryDef::isStandard() const { return _isStandard; }
 
-void LibraryDef::setStandard(const bool standard) { _isStandard = standard; }
+void LibraryDef::setStandard(bool standard) { _isStandard = standard; }
 
-void LibraryDef::setCLinkage(const bool cLinkage) { _hasCLinkage = cLinkage; }
+void LibraryDef::setCLinkage(bool cLinkage) { _hasCLinkage = cLinkage; }
 
 bool LibraryDef::hasCLinkage() const { return _hasCLinkage; }
 

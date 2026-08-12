@@ -1,8 +1,9 @@
 /// @file Transition.cpp
 /// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #include "hif/classes/Transition.hpp"
 #include "hif/HifVisitor.hpp"
@@ -92,7 +93,7 @@ std::string Transition::_getBListName(const BList<Object> &list) const
     return Action::_getBListName(list);
 }
 
-void Transition::setEnablingOrCondition(const bool flag) { _enablingLabelOrMode = flag; }
+void Transition::setEnablingOrCondition(bool flag) { _enablingLabelOrMode = flag; }
 
 ClassId Transition::getClassId() const { return CLASSID_TRANSITION; }
 

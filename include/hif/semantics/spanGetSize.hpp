@@ -1,8 +1,9 @@
 /// @file spanGetSize.hpp
 /// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #pragma once
 
@@ -23,6 +24,7 @@ namespace semantics
 ///
 
 Value *typeGetSpanSize(Type *t, ILanguageSemantics *refLang);
+
 /// @brief Returns the size of span @p r.
 /// The size of the span @p r is computed as (r'high - r'low + 1).
 /// If the size of the span can not be computed, nullptr will be returned.
@@ -37,8 +39,9 @@ Value *typeGetSpanSize(Type *t, ILanguageSemantics *refLang);
 Value *spanGetSize(
     Range *r,
     ILanguageSemantics *sem,
-    const bool simplify                            = true,
+    bool simplify                            = true,
     const hif::manipulation::SimplifyOptions &opts = hif::manipulation::SimplifyOptions());
+
 /// @brief Extracts the span of a type @p t.
 /// If it's an array extracts the sum of every element's span
 ///

@@ -1,8 +1,9 @@
 /// @file Assign.hpp
-/// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// @brief Assignment statement for HIF objects.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #pragma once
 
@@ -81,8 +82,10 @@ protected:
 private:
     /// @brief The source (i.e., the right-hand side) of the assignment.
     Value *_leftHandSide;
+
     /// @brief The target (i.e., the left-hand side) of the assignment.
     Value *_rightHandSide;
+
     /// @brief The assignment delay.
     Value *_delay;
 };

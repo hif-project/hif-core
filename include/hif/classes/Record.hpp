@@ -1,8 +1,9 @@
 /// @file Record.hpp
 /// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #pragma once
 
@@ -45,7 +46,7 @@ public:
 
     /// @brief Sets the <tt>packed</tt> attribute.
     /// @param packed The <tt>packed</tt> attribute to be set.
-    void setPacked(const bool packed);
+    void setPacked(bool packed);
 
     /// @brief Returns the <tt>union</tt> attribute.
     /// @return The <tt>union</tt> attribute.
@@ -53,7 +54,7 @@ public:
 
     /// @brief Sets the <tt>union</tt> attribute.
     /// @param u The <tt>union</tt> attribute to be set.
-    void setUnion(const bool u);
+    void setUnion(bool u);
 
     /// @brief Accepts a visitor to visit the current object.
     /// @param vis The visitor.
@@ -63,20 +64,22 @@ public:
     /// @brief Returns the composite base type.
     /// @param considerOpacity <tt>true</tt> if opacity is to be considered, <tt>false</tt> otherwise.
     /// @return The composite base type.
-    Type *getBaseType(const bool considerOpacity) const;
+    Type *getBaseType(bool considerOpacity) const;
 
     /// @brief Sets the composite base type.
     /// @param t The new composite type to be set.
     /// @param considerOpacity <tt>true</tt> if opacity is to be considered, <tt>false</tt> otherwise.
     /// @return The old composite base type if it is different
     /// from the new one, nullptr otherwise.
-    Type *setBaseType(Type *t, const bool considerOpacity);
+    Type *setBaseType(Type *t, bool considerOpacity);
 
 protected:
     /// @brief Fills the internal fields and blists lists.
     virtual void _calculateFields();
 
     /// @brief Returns the name of given BList w.r.t. this.
+    /// @param list The BList to get the name for.
+    /// @return The name of the BList.
     virtual std::string _getBListName(const BList<Object> &list) const;
 
 private:

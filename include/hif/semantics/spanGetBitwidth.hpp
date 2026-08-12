@@ -1,8 +1,9 @@
 /// @file spanGetBitwidth.hpp
 /// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #pragma once
 
@@ -26,10 +27,10 @@ namespace semantics
 /// @return The numebr of elements in the span @p r if statically computable,
 /// 0 otherwise.
 
-unsigned long long spanGetBitwidth(
+std::uint64_t spanGetBitwidth(
     Range *r,
     ILanguageSemantics *sem                        = HIFSemantics::getInstance(),
-    const bool simplify                            = true,
+    bool simplify                            = true,
     const hif::manipulation::SimplifyOptions &opts = hif::manipulation::SimplifyOptions());
 
 /// @brief Function that return the size of <tt>t</tt>,
@@ -41,10 +42,10 @@ unsigned long long spanGetBitwidth(
 /// @param opts The simplify options.
 /// @return size of <tt>t</tt> measured in number of bits if it is found, 0 otherwise.
 
-unsigned long long typeGetSpanBitwidth(
+std::uint64_t typeGetSpanBitwidth(
     Type *type,
     ILanguageSemantics *sem,
-    const bool simplify                            = true,
+    bool simplify                            = true,
     const hif::manipulation::SimplifyOptions &opts = hif::manipulation::SimplifyOptions());
 
 } // namespace semantics

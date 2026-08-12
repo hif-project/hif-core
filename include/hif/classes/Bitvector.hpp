@@ -1,8 +1,9 @@
 /// @file Bitvector.hpp
-/// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// @brief Bitvector type for representing arrays of bits in HIF.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #pragma once
 
@@ -27,12 +28,12 @@ class Bitvector : public SimpleType, public hif::features::ITypeSpan
 {
 public:
 #if (defined _MSC_VER)
-#pragma warning(push)
-#pragma warning(disable : 4251)
+#    pragma warning(push)
+#    pragma warning(disable : 4251)
 #endif
 
 #if (defined _MSC_VER)
-#pragma warning(pop)
+#    pragma warning(pop)
 #endif
 
     /// @brief Constructor.
@@ -54,7 +55,7 @@ public:
 
     /// @brief Sets the <tt>logic</tt> attribute.
     /// @param logic The <tt>logic</tt> attribute to be set.
-    void setLogic(const bool logic);
+    void setLogic(bool logic);
 
     /// @brief Sets the <tt>resolved</tt> attribute.
     /// @return The <tt>resolved</tt> attribute.
@@ -62,7 +63,7 @@ public:
 
     /// @brief Set the <tt>resolved</tt> attribute.
     /// @param resolved The <tt>resolved</tt> attribute to be set.
-    void setResolved(const bool resolved);
+    void setResolved(bool resolved);
 
     /// @brief Sets the span of the bit vector.
     /// @param t The new span of the bit vector.
@@ -72,7 +73,7 @@ public:
 
     /// @brief Sets the <tt>signed</tt> attribute.
     /// @param sign The <tt>signed</tt> attribute.
-    void setSigned(const bool sign);
+    void setSigned(bool sign);
 
     /// @brief Returns the <tt>signed</tt> attribute.
     /// @return The <tt>signed</tt> attribute.
@@ -99,8 +100,10 @@ protected:
 private:
     /// @brief Flag to store the <tt>logic</tt> attribute.
     bool _isLogic;
+
     /// @brief Flag to store the <tt>resolved</tt> attribute.
     bool _isResolved;
+
     /// @brief Flag to store the <tt>signed</tt> attribute.
     bool _isSigned;
 };

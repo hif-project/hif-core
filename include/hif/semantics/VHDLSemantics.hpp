@@ -1,8 +1,9 @@
 /// @file VHDLSemantics.hpp
 /// @brief Header file of VHDLSemantics class.
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #pragma once
 
@@ -59,6 +60,7 @@ public:
     ///
     virtual Type *getMapForType(Type *t);
     virtual Operator getMapForOperator(Operator srcOperation, Type *srcT1, Type *srcT2, Type *dstT1, Type *dstT2);
+
     /// @brief Function that given a type and an operation to do with
     /// operators of that type returns a pointer to a Type
     /// representing the type that operands have to be cast into to
@@ -73,8 +75,7 @@ public:
     /// @return Type pointer to the suggested type to obtain
     /// a valid operation in current semantics  (if possible).
     ///
-    virtual Type *
-    getSuggestedTypeForOp(Type *t, Operator operation, Type *opType, Object *startingObject, const bool isOp1);
+    virtual Type *getSuggestedTypeForOp(Type *t, Operator operation, Type *opType, Object *startingObject, bool isOp1);
     ///
     /// @brief Function that given a ConstValue returns a Type
     /// pointer representing the type to associate to the constant according
@@ -120,12 +121,13 @@ public:
     /// @return Value pointer to the explicit cast.
     ///
     virtual Value *explicitCast(Value *valueToCast, Type *castType, Type *srcType);
+
     /// @brief Function that given a real value returns the correspondent
     /// int value according to semantics rules (e.g., VHDL rounds while
     /// SystemC truncates).
     /// @param v The value to convert.
     /// @return The converted value.
-    virtual long long transformRealToInt(const double v);
+    virtual std::int64_t transformRealToInt(const double v);
     /// @name Semantic checks methods
     ///@{
 
@@ -207,7 +209,7 @@ public:
     /// @param isLogic If the type is logic.
     /// @return True if operators are bitwise, false if they are logical.
     ///
-    virtual bool hasBitwiseOperationsOnBits(const bool isLogic) const;
+    virtual bool hasBitwiseOperationsOnBits(bool isLogic) const;
 
     ///@}
     /// @name Template related stuff
@@ -219,6 +221,7 @@ public:
     /// @return True if is allowed.
     ///
     virtual bool isTemplateAllowedType(Type *t);
+
     /// @brief Return the mapped of given type that is allowed as type
     /// in template parameter w.r.t. semantics.
     /// @param t The type to map.
@@ -231,28 +234,37 @@ public:
     /// Singleton stuff.
     ///
     /// @brief Function thats return an instance to VHDLSemantic class.
-    ///
+    /// @return The instance.
     static VHDLSemantics *getInstance();
     ///
     /// @brief This function returns true if the given operator is supported by
     /// the semantics, false otherwise.
-    ///
+    /// @param operation The operator to check.
+    /// @return True if supported.
     bool isSupported(Operator operation);
 
     /// @brief Checks whether a name is forbidden in the current semantics.
+    /// @param decl The declaration to check.
+    /// @return True if forbidden.
     virtual bool isForbiddenName(Declaration *decl);
 
+    /// @brief Check if slice type is rebased.
+    /// @return True if slice type is rebased.
     virtual bool isSliceTypeRebased();
 
+    /// @brief Check if syntactic type is rebased.
+    /// @return True if syntactic type is rebased.
     virtual bool isSyntacticTypeRebased();
 
     /// @name Flags management.
     /// @{
 
     /// @brief Set if Semantics have to use PSL relaxed checks.
-    void setUsePsl(const bool v);
+    /// @param v The value to set.
+    void setUsePsl(bool v);
 
     /// @brief Get if Semantics have use PSL relaxed checks.
+    /// @return True if using PSL.
     bool usingPsl();
 
     /// @}
@@ -260,48 +272,121 @@ public:
     /// @name Standard packages
     /// @{
 
-    LibraryDef *getIeeeMathComplexPackage(const bool hifFormat = false);
-    LibraryDef *getIeeeMathRealPackage(const bool hifFormat = false);
-    LibraryDef *getIeeeNumericBitPackage(const bool hifFormat = false);
-    LibraryDef *getIeeeNumericStdPackage(const bool hifFormat = false);
-    LibraryDef *getIeeeStdLogic1164Package(const bool hifFormat = false);
-    LibraryDef *getIeeeStdLogicArithPackage(const bool hifFormat = false);
-    LibraryDef *getIeeeStdLogicArithExPackage(const bool hifFormat = false);
-    LibraryDef *getIeeeStdLogicMiscPackage(const bool hifFormat = false);
-    LibraryDef *getIeeeStdLogicSignedPackage(const bool hifFormat = false);
-    LibraryDef *getIeeeStdLogicTextIOPackage(const bool hifFormat = false);
-    LibraryDef *getIeeeStdLogicUnsignedPackage(const bool hifFormat = false);
-    LibraryDef *getStandardPackage(const bool hifFormat = false);
-    LibraryDef *getTextIOPackage(const bool hifFormat = false);
-    LibraryDef *getPSLStandardPackage(const bool hifFormat = false);
+    /// @brief Get the IEEE math complex package.
+    /// @param hifFormat Whether to use HIF format.
+    /// @return The package.
+    LibraryDef *getIeeeMathComplexPackage(bool hifFormat = false);
+
+    /// @brief Get the IEEE math real package.
+    /// @param hifFormat Whether to use HIF format.
+    /// @return The package.
+    LibraryDef *getIeeeMathRealPackage(bool hifFormat = false);
+
+    /// @brief Get the IEEE numeric bit package.
+    /// @param hifFormat Whether to use HIF format.
+    /// @return The package.
+    LibraryDef *getIeeeNumericBitPackage(bool hifFormat = false);
+
+    /// @brief Get the IEEE numeric std package.
+    /// @param hifFormat Whether to use HIF format.
+    /// @return The package.
+    LibraryDef *getIeeeNumericStdPackage(bool hifFormat = false);
+
+    /// @brief Get the IEEE std logic 1164 package.
+    /// @param hifFormat Whether to use HIF format.
+    /// @return The package.
+    LibraryDef *getIeeeStdLogic1164Package(bool hifFormat = false);
+
+    /// @brief Get the IEEE std logic arith package.
+    /// @param hifFormat Whether to use HIF format.
+    /// @return The package.
+    LibraryDef *getIeeeStdLogicArithPackage(bool hifFormat = false);
+
+    /// @brief Get the IEEE std logic arith ex package.
+    /// @param hifFormat Whether to use HIF format.
+    /// @return The package.
+    LibraryDef *getIeeeStdLogicArithExPackage(bool hifFormat = false);
+
+    /// @brief Get the IEEE std logic misc package.
+    /// @param hifFormat Whether to use HIF format.
+    /// @return The package.
+    LibraryDef *getIeeeStdLogicMiscPackage(bool hifFormat = false);
+
+    /// @brief Get the IEEE std logic signed package.
+    /// @param hifFormat Whether to use HIF format.
+    /// @return The package.
+    LibraryDef *getIeeeStdLogicSignedPackage(bool hifFormat = false);
+
+    /// @brief Get the IEEE std logic text IO package.
+    /// @param hifFormat Whether to use HIF format.
+    /// @return The package.
+    LibraryDef *getIeeeStdLogicTextIOPackage(bool hifFormat = false);
+
+    /// @brief Get the IEEE std logic unsigned package.
+    /// @param hifFormat Whether to use HIF format.
+    /// @return The package.
+    LibraryDef *getIeeeStdLogicUnsignedPackage(bool hifFormat = false);
+
+    /// @brief Get the standard package.
+    /// @param hifFormat Whether to use HIF format.
+    /// @return The package.
+    LibraryDef *getStandardPackage(bool hifFormat = false);
+
+    /// @brief Get the text IO package.
+    /// @param hifFormat Whether to use HIF format.
+    /// @return The package.
+    LibraryDef *getTextIOPackage(bool hifFormat = false);
+
+    /// @brief Get the PSL standard package.
+    /// @param hifFormat Whether to use HIF format.
+    /// @return The package.
+    LibraryDef *getPSLStandardPackage(bool hifFormat = false);
 
     /// @brief Get the eventual library def matching the given name.
     /// @param n The name.
     /// @return The library def or nullptr.
-    virtual LibraryDef *getStandardLibrary(const std::string & n);
+    virtual LibraryDef *getStandardLibrary(const std::string &n);
 
     /// @brief Return True if the given library is native for the semantics.
-    virtual bool isNativeLibrary(const std::string & n, const bool hifFormat = false);
+    /// @param n The library name.
+    /// @param hifFormat Whether to use HIF format.
+    /// @return True if native.
+    virtual bool isNativeLibrary(const std::string &n, bool hifFormat = false);
 
     /// @brief Starting from system adds all required standard packeges.
     /// @param s The system.
     virtual void addStandardPackages(System *s);
 
     /// @brief Map an input symbol into the corresponding output one.
+    /// @param decl The declaration.
+    /// @param key The key symbol.
+    /// @param value The value symbol.
+    /// @param srcSem The source semantics.
+    /// @return The map cases.
     virtual MapCases
     mapStandardSymbol(Declaration *decl, KeySymbol &key, ValueSymbol &value, ILanguageSemantics *srcSem);
 
     /// @brief Returns the mapped symbol w.r.t. the current semantics.
+    /// @param key The key symbol.
+    /// @param s The object.
+    /// @return The mapped object.
     virtual Object *getSimplifiedSymbol(KeySymbol &key, Object *s);
 
     /// @brief Returns true if no namespaces is needed for given library name.
-    virtual bool isStandardInclusion(const std::string & n, const bool isLibInclusion);
+    /// @param n The library name.
+    /// @param isLibInclusion Whether it's a library inclusion.
+    /// @return True if standard inclusion.
+    virtual bool isStandardInclusion(const std::string &n, bool isLibInclusion);
 
     /// @brief Returns the event method name w.r.t. current semantics.
-    virtual std::string getEventMethodName(const bool hifFormat = false);
+    /// @param hifFormat Whether to use HIF format.
+    /// @return The event method name.
+    virtual std::string getEventMethodName(bool hifFormat = false);
 
     /// @brief Returns <tt>true</tt> if the given call is an event call w.r.t.
     /// the current semantics, <tt>false</tt> otherwise.
+    /// @param call The function call.
+    /// @return True if event call.
     virtual bool isEventCall(FunctionCall *call);
 
     /// @}

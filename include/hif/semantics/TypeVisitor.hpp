@@ -1,8 +1,9 @@
 /// @file TypeVisitor.hpp
 /// @brief Declares the `TypeVisitor` class for analyzing and simplifying types in HIF constructs.
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #pragma once
 
@@ -22,7 +23,7 @@ public:
     /// @brief Constructor.
     /// @param ref Pointer to the language semantics object.
     /// @param error Flag to enable error reporting.
-    TypeVisitor(ILanguageSemantics *ref, const bool error);
+    TypeVisitor(ILanguageSemantics *ref, bool error);
 
     /// @brief Deleted copy constructor to prevent copying.
     TypeVisitor(const TypeVisitor &v) = delete;
@@ -72,12 +73,12 @@ public:
     /// @brief Updates the semantic type of an object using cached declarations.
     /// @param obj The object whose type needs updating.
     /// @param onlySignature If true, updates only the signature.
-    void _updateCachedDeclarations(TypedObject *obj, const bool onlySignature = false);
+    void _updateCachedDeclarations(TypedObject *obj, bool onlySignature = false);
 
     /// @brief Simplifies a type and adds it to the cache.
     /// @param o The type to simplify.
     /// @param simplified If true, assumes the type is already simplified.
-    void _simplify(Type *o, const bool simplified = false);
+    void _simplify(Type *o, bool simplified = false);
 
     /// @brief Determines the type of a parameter assignment.
     /// @param o Pointer to the parameter assignment object.
@@ -85,8 +86,8 @@ public:
     /// @param looseTypeChecks If true, performs less strict type checks.
     void _getTypeOfParameterAssign(
         ParameterAssign *o,
-        const bool checkAllCandidates = false,
-        const bool looseTypeChecks    = false);
+        bool checkAllCandidates = false,
+        bool looseTypeChecks    = false);
 
     /// @brief Determines the type of a port assignment.
     /// @param o Pointer to the port assignment object.
@@ -119,7 +120,7 @@ public:
     /// @param v Pointer to the value object.
     /// @param min Reference to store the minimum bound.
     /// @return True if the minimum bound is successfully determined.
-    bool _getBoundMin(Value *v, long long &min);
+    bool _getBoundMin(Value *v, std::int64_t &min);
 
     /// @brief Checks if an aggregate is auto-determinate.
     /// @param o Pointer to the aggregate object.
@@ -127,14 +128,14 @@ public:
     /// @param size Reference to store the size.
     /// @param min Reference to store the minimum bound.
     /// @return True if the aggregate is auto-determinate.
-    bool _aggregateIsAutoDeterminate(Aggregate *o, Value *&sizeExpr, long long &size, long long &min);
+    bool _aggregateIsAutoDeterminate(Aggregate *o, Value *&sizeExpr, std::int64_t &size, std::int64_t &min);
 
     /// @brief Calculates the size of an aggregate.
     /// @param sizeExpr Reference to the size expression.
     /// @param size The calculated size.
     /// @param min The minimum bound.
     /// @return True if the size is successfully calculated.
-    bool _aggregateCalulateSize(Value *&sizeExpr, long long size, long long min);
+    bool _aggregateCalulateSize(Value *&sizeExpr, std::int64_t size, std::int64_t min);
 
     /// @}
 };

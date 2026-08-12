@@ -1,8 +1,9 @@
 /// @file declarationPropertyUtils.cpp
 /// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #include "hif/hif_utils/declarationPropertyUtils.hpp"
 
@@ -214,33 +215,33 @@ bool DeclarationIsPartOfStandardOptions::areAllAllowFlagsSet() const
            allowVhdl || allowVhdlPSL || allowVerilog || allowVerilogAMS;
 }
 
-void DeclarationIsPartOfStandardOptions::enableCppFamily(const bool enable)
+void DeclarationIsPartOfStandardOptions::enableCppFamily(bool enable)
 {
     allowC            = enable;
     allowCpp          = enable;
     allowCppExtraLibs = enable;
 }
 
-void DeclarationIsPartOfStandardOptions::enableSystemCFamily(const bool enable)
+void DeclarationIsPartOfStandardOptions::enableSystemCFamily(bool enable)
 {
     allowSystemCRTL = enable;
     allowSystemCTLM = enable;
 }
 
-void DeclarationIsPartOfStandardOptions::enableSystemCAMSFamily(const bool enable)
+void DeclarationIsPartOfStandardOptions::enableSystemCAMSFamily(bool enable)
 {
     allowSystemCRTL = enable;
     allowSystemCTLM = enable;
     allowSystemCAMS = enable;
 }
 
-void DeclarationIsPartOfStandardOptions::enableVhdlFamily(const bool enable)
+void DeclarationIsPartOfStandardOptions::enableVhdlFamily(bool enable)
 {
     allowVhdl    = enable;
     allowVhdlPSL = enable;
 }
 
-void DeclarationIsPartOfStandardOptions::enableVerilogFamily(const bool enable)
+void DeclarationIsPartOfStandardOptions::enableVerilogFamily(bool enable)
 {
     allowVerilog    = enable;
     allowVerilogAMS = enable;

@@ -1,8 +1,9 @@
 /// @file View.cpp
 /// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #include "hif/classes/Library.hpp"
 #include "hif/classes/ViewReference.hpp"
@@ -99,6 +100,6 @@ hif::LanguageID View::setLanguageID(const hif::LanguageID languageID)
 
 bool View::isStandard() const { return _isStandard; }
 
-void View::setStandard(const bool standard) { _isStandard = standard; }
+void View::setStandard(bool standard) { _isStandard = standard; }
 
 } // namespace hif

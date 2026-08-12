@@ -1,8 +1,9 @@
 /// @file trash.hpp
-/// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// @brief Utilities for handling and managing unused or temporary HIF objects.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #pragma once
 
@@ -17,7 +18,8 @@ namespace hif
 class Trash
 {
 public:
-    typedef std::set<Object *> TrashHolder;
+    /// @brief The type used to hold the objects in trash.
+    using TrashHolder = std::set<Object *>;
 
     Trash();
 
@@ -43,11 +45,11 @@ public:
 
     /// @brief Add given list objects in trash. All list elements are removed.
     /// @param list The list
-    template <typename T>
-    void insert(BList<T> &list);
+    template <typename T> void insert(BList<T> &list);
 
     /// @brief Check whether given object is in trash.
     /// @param o The object.
+    /// @return True if the object is in trash.
     bool contains(Object *o) const;
 
     /// @brief Removes a root object from the trash, if contained, without

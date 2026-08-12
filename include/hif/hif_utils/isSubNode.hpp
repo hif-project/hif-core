@@ -1,8 +1,9 @@
 /// @file isSubNode.hpp
 /// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #pragma once
 
@@ -20,7 +21,7 @@ namespace hif
 /// @return <tt>true</tt> if the passed object is in the sub tree of parent.
 ///
 
-bool isSubNode(Object *obj, Object *parent, const bool matchStarting = true);
+bool isSubNode(Object *obj, Object *parent, bool matchStarting = true);
 
 /// @brief Checks whether the passed object is in the subtree of @p parentList.
 /// @param obj The passed object.
@@ -30,7 +31,7 @@ bool isSubNode(Object *obj, Object *parent, const bool matchStarting = true);
 /// @return <tt>true</tt> if the passed object is in the sub tree of parentList.
 ///
 
-bool isSubNode(Object *obj, BList<Object> &parentList, const bool matchStarting = true);
+bool isSubNode(Object *obj, BList<Object> &parentList, bool matchStarting = true);
 
 /// @brief Checks whether the passed object is in the subtree of @p parentList.
 /// @param obj The passed object.
@@ -39,7 +40,6 @@ bool isSubNode(Object *obj, BList<Object> &parentList, const bool matchStarting 
 /// Default is <tt>true</tt>.
 /// @return <tt>true</tt> if the passed object is in the sub tree of parentList.
 ///
-template <typename T>
-bool isSubNode(Object *obj, BList<T> &parentList, const bool matchStarting = true);
+template <typename T> bool isSubNode(Object *obj, BList<T> &parentList, bool matchStarting = true);
 
 } // namespace hif

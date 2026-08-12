@@ -1,8 +1,9 @@
 /// @file Object.hpp
 /// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #pragma once
 
@@ -23,7 +24,7 @@ namespace semantics
 {
 class ILanguageSemantics;
 
-Type *getBaseType(Type *type, const bool consider_opacity, ILanguageSemantics *, const bool compositeRecurse);
+Type *getBaseType(Type *type, bool consider_opacity, ILanguageSemantics *, bool compositeRecurse);
 
 } // namespace semantics
 
@@ -35,7 +36,7 @@ bool matchedInsert(
     Object *newParent,
     Object *oldObj,
     Object *oldParent,
-    const MatchedInsertType::type type);
+    MatchedInsertType type);
 
 Object *matchedGet(Object *newParent, Object *oldObj, Object *oldParent);
 
@@ -51,18 +52,37 @@ class Object
 public:
     /// @brief Type for list of fields.
     typedef std::list<Object **> Fields;
+
     /// @brief Type for list of BLists.
     typedef std::list<BList<Object> *> BLists;
+
     /// @brief List of standard strings.
     typedef std::list<std::string> StringList;
+
     /// @brief Struct storing code info.
     struct CodeInfo {
+        /// @brief Default constructor.
         CodeInfo();
-        CodeInfo(const std::string f, unsigned int l, unsigned int c);
+        /// @brief Constructor with filename, line, and column.
+        /// @param f The filename.
+        /// @param l The line number.
+        /// @param c The column number.
+        CodeInfo(const std::string & f, unsigned int l, unsigned int c);
+        /// @brief Destructor.
         ~CodeInfo();
+        /// @brief Copy constructor.
+        /// @param other The other CodeInfo to copy from.
         CodeInfo(const CodeInfo &other);
+        /// @brief Assignment operator.
+        /// @param other The other CodeInfo to assign from.
+        /// @return Reference to this CodeInfo.
         CodeInfo &operator=(const CodeInfo &other);
+        /// @brief Swap with another CodeInfo.
+        /// @param other The other CodeInfo to swap with.
         void swap(CodeInfo &other);
+        /// @brief Less than operator.
+        /// @param o The other CodeInfo to compare with.
+        /// @return true if this is less than o.
         bool operator<(const CodeInfo &o) const;
 
         /// @brief Returns the source file name concatenated with ':' and
@@ -79,7 +99,10 @@ public:
         unsigned int columnNumber;
     };
 
+    /// @brief Map type for storing object properties.
     typedef std::map<std::string, TypedObject *> PropertyMap;
+
+    /// @brief Iterator type for the property map.
     typedef PropertyMap::iterator PropertyMapIterator;
 
     /// @brief Destructor.
@@ -105,16 +128,16 @@ public:
     /// @brief Returns the parent of the object in the HIF tree.
     /// @return The parent of the object in the HIF tree.
     Object *getParent() const;
+
     /// @brief Returns the parent of the object in the HIF tree, dynamically casted to given type.
     /// @return The parent of the object in the HIF tree.
-    template <typename T>
-    T *getParent() const;
+    template <typename T> T *getParent() const;
 
     /// @brief Adds a property to the object.
     /// @param n The name of the property to be added to the object.
     /// @param v An optional value to be associated with the property.
     /// @return The previous value associated with the property if any.
-    TypedObject *addProperty(const std::string n, TypedObject *v = nullptr);
+    TypedObject *addProperty(const std::string &n, TypedObject *v = nullptr);
 
     /// @brief Adds a property to the object.
     /// @param n The name of the property to be added to the object.
@@ -124,7 +147,7 @@ public:
 
     /// @brief Removes a property from the object deleting associated value if any.
     /// @param n The name of the property to be removed.
-    void removeProperty(const std::string n);
+    void removeProperty(const std::string &n);
 
     /// @brief Removes a property from the object deleting associated value if any.
     /// @param n The name of the property to be removed.
@@ -135,7 +158,7 @@ public:
     /// @param n The name of the property to be checked.
     /// @return <tt>true</tt> if the object contains at least one property
     /// named @p n, <tt>false</tt> otherwise.
-    bool checkProperty(const std::string n) const;
+    bool checkProperty(const std::string &n) const;
 
     /// @brief Checks whether the object contains at least one property
     /// having @p n as its name.
@@ -147,7 +170,7 @@ public:
     /// @brief Returns the values of the property named @p n in the object.
     /// @param n The name of the property to be searched for.
     /// @return The value corresponding to the searched property.
-    TypedObject *getProperty(const std::string n) const;
+    TypedObject *getProperty(const std::string &n) const;
 
     /// @brief Returns the values of the property named @p n in the object.
     /// @param n The name of the property to be searched for.
@@ -198,9 +221,11 @@ public:
     std::string getSourceFileName() const;
 
     /// @brief Gets all current codeinfos.
+    /// @return The current code info.
     const CodeInfo &getCodeInfo() const;
 
     /// @brief Sets all current codeinfos.
+    /// @param ci The code info to set.
     void setCodeInfo(const CodeInfo &ci);
 
     /// @brief Returns the source file name concatenated with ':' and
@@ -244,9 +269,11 @@ public:
     bool replaceWithList(BList<Object> &list);
 
     /// @brief Gets the list of internal fields.
+    /// @return The list of internal fields.
     const Fields &getFields();
 
     /// @brief Gets the list of internal blists.
+    /// @return The list of internal blists.
     const BLists &getBLists();
 
     /// @brief Sets a field, also updating pointers to parent.
@@ -254,15 +281,21 @@ public:
     /// @param newObj The new object to be set into the field.
     /// @return The old field object.
 
-    template <typename T>
-    T *setChild(T *&field, T *newObj);
+    template <typename T> T *setChild(T *&field, T *newObj);
 
     /// @brief Gets the field name into which this object is set.
+    /// @return The field name.
     std::string getFieldName() const;
 
     /// @brief Gets the given BList name w.r.t. this.
+    /// @param list The BList.
+    /// @return The BList name.
     std::string getBListName(const BList<Object> &list) const;
 
+    /// @brief Gets the given BList name w.r.t. this.
+    /// @tparam T The type of objects in the BList.
+    /// @param list The BList.
+    /// @return The BList name.
     template <typename T>
     std::string getBListName(const BList<T> &list) const;
 
@@ -280,8 +313,7 @@ protected:
 
     /// @brief Sets the BList containing the object.
     /// @param p The BList containing the object to be set.
-    template <typename T>
-    void _setBListParent(BList<T> &p);
+    template <typename T> void _setBListParent(BList<T> &p);
 
     /// @brief Sets the parent BList link of the object.
     /// @param p The parent BList link of the object to be set.
@@ -300,24 +332,26 @@ protected:
     /// @tparam T The field type. Implicit.
     /// @param f The field.
     ///
-    template <typename T>
-    void _addField(T *&f);
+    template <typename T> void _addField(T *&f);
 
     /// @brief Adds a BList.
     ///
     /// @tparam T The BList type. Implicit.
     /// @param l The BList.
     ///
-    template <typename T>
-    void _addBList(BList<T> &l);
+    template <typename T> void _addBList(BList<T> &l);
 
     /// @brief Fills the internal fields and blists lists.
     virtual void _calculateFields() = 0;
 
     /// @brief Returns the name of given child w.r.t. this.
+    /// @param child The child object to get the name for.
+    /// @return The name of the child field.
     virtual std::string _getFieldName(const Object *child) const;
 
     /// @brief Returns the name of given BList w.r.t. this.
+    /// @param list The BList to get the name for.
+    /// @return The name of the BList.
     virtual std::string _getBListName(const BList<Object> &list) const;
 
     /// @brief The parent BList link of the object (if the object is stored in a BList).
@@ -326,6 +360,7 @@ protected:
     /// @brief The parent of the object in the HIF tree.
     Object *_parent;
 
+    /// @brief Code information for the object.
     CodeInfo *_codeInfo;
 
     /// @brief Map of properties related to the object.
@@ -350,23 +385,22 @@ private:
     /// @brief Private assignment operator to prevent assignment.
     Object &operator=(const Object &o);
 
-    template <class T>
-    friend class BList;
+    template <class T> friend class BList;
 
     friend class BListHost;
 
     friend Type *hif::semantics::getBaseType(
         Type *type,
-        const bool consider_opacity,
+        bool consider_opacity,
         hif::semantics::ILanguageSemantics *,
-        const bool compositeRecurse);
+        bool compositeRecurse);
 
     friend bool hif::manipulation::matchedInsert(
         Object *newObj,
         Object *newParent,
         Object *oldObj,
         Object *oldParent,
-        const hif::manipulation::MatchedInsertType::type type);
+        const hif::manipulation::MatchedInsertType type);
 
     friend Object *hif::manipulation::matchedGet(Object *newParent, Object *oldObj, Object *oldParent);
 };

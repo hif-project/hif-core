@@ -1,8 +1,9 @@
 /// @file TypeDef.cpp
 /// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #include "hif/classes/TypeDef.hpp"
 #include "hif/HifVisitor.hpp"
@@ -59,10 +60,10 @@ std::string TypeDef::_getBListName(const BList<Object> &list) const
 
 bool TypeDef::isStandard() const { return _isStandard; }
 
-void TypeDef::setStandard(const bool standard) { _isStandard = standard; }
+void TypeDef::setStandard(bool standard) { _isStandard = standard; }
 
 bool TypeDef::isExternal() const { return _isExternal; }
 
-void TypeDef::setExternal(const bool external) { _isExternal = external; }
+void TypeDef::setExternal(bool external) { _isExternal = external; }
 
 } // namespace hif

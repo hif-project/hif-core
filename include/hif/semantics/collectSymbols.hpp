@@ -1,8 +1,9 @@
 /// @file collectSymbols.hpp
 /// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #pragma once
 
@@ -14,6 +15,7 @@ namespace hif
 namespace semantics
 {
 
+/// @brief A list of Object pointers representing symbols.
 typedef std::list<Object *> SymbolList;
 
 /// @brief Collects all symbols (i.e., all objects having a declaration member)
@@ -22,15 +24,15 @@ typedef std::list<Object *> SymbolList;
 /// @param list The result list where to store all symbols.
 /// @param root The starting root object.
 /// @param sem The reference semantics.
-/// @param skipStandardDeclarations If <tt>true</tt> skip standard declarations
+/// @param skip_standard_declarations If <tt>true</tt> skip standard declarations
 /// and declarations inside standard LibraryDefs. default = false
 ///
 
 void collectSymbols(
     SymbolList &list,
     Object *root,
-    ILanguageSemantics *sem             = hif::semantics::HIFSemantics::getInstance(),
-    const bool skipStandardDeclarations = false);
+    ILanguageSemantics *sem               = hif::semantics::HIFSemantics::getInstance(),
+    bool skip_standard_declarations = false);
 
 } // namespace semantics
 } // namespace hif

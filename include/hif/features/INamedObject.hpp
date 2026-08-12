@@ -1,8 +1,9 @@
 /// @file INamedObject.hpp
-/// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// @brief Interface for objects with a name property in HIF.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #pragma once
 
@@ -24,7 +25,7 @@ public:
 
     /// @brief Sets the name.
     ///
-    /// @param n the name to be set.
+    /// @param name the name to be set.
     ///
     void setName(const std::string &name);
 
@@ -42,9 +43,19 @@ public:
     /// @}
 
 protected:
+    /// @brief Default constructor.
     INamedObject();
+
+    /// @brief Virtual destructor.
     virtual ~INamedObject() = default;
+
+    /// @brief Copy constructor.
+    /// @param other The INamedObject to copy.
     INamedObject(const INamedObject &other);
+
+    /// @brief Assignment operator.
+    /// @param other The INamedObject to assign.
+    /// @return Reference to this.
     INamedObject &operator=(const INamedObject &other);
 
 private:

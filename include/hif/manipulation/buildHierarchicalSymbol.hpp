@@ -1,8 +1,9 @@
 /// @file buildHierarchicalSymbol.hpp
-/// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// @brief Build hierarchical symbol names for HIF objects.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #pragma once
 
@@ -15,11 +16,12 @@ namespace manipulation
 {
 /// @brief The definition style used by method buildHierarchicalSymbol.
 struct DefinitionStyle {
+    /// @brief The type of definition style.
     enum Type : unsigned char {
-        HIF,
-        VHDL,
-        VERILOG,
-        SYSTEMC,
+        HIF,     ///< Definitions follows HIF conventions.
+        VHDL,    ///< Definitions follows VHDL conventions.
+        VERILOG, ///< Definitions follows Verilog conventions.
+        SYSTEMC, ///< Definitions follows SystemC conventions.
     };
 };
 

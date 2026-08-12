@@ -1,8 +1,9 @@
 /// @file IFeature.hpp
-/// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// @brief Interface for feature objects in the HIF framework.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #pragma once
 
@@ -26,8 +27,16 @@ public:
     virtual ~IFeature() = 0;
 
 protected:
+    /// @brief Default constructor.
     IFeature();
+
+    /// @brief Copy constructor.
+    /// @param other The IFeature to copy.
     IFeature(const IFeature &other);
+
+    /// @brief Assignment operator.
+    /// @param other The IFeature to assign.
+    /// @return Reference to this.
     IFeature &operator=(const IFeature &other);
 };
 

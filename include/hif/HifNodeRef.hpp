@@ -1,8 +1,9 @@
 /// @file HifNodeRef.hpp
-/// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// @brief Reference wrapper for HIF nodes, enabling safe and efficient access.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #pragma once
 
@@ -16,7 +17,9 @@ namespace hif
 /// Example code:
 /// @code
 /// HifNodeRef ref(o);
+
 /// ref.replace(factory.xxx(xxx, o, xxx));
+
 /// @endcode
 class HifNodeRef
 {
@@ -29,6 +32,8 @@ public:
     ~HifNodeRef();
 
     /// @brief Method to replace the reference with another object.
+    /// @param o The new object to replace with.
+    /// @return True if the replacement was successful.
     bool replace(Object *o);
 
 private:

@@ -1,8 +1,9 @@
 /// @file copy.cpp
 /// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #include <cstring>
 
@@ -151,11 +152,9 @@ public:
 
     void _callUserFunction(Object *s, Object *d);
 
-    template <typename T>
-    T *_copyChild(T *s);
+    template <typename T> T *_copyChild(T *s);
 
-    template <typename T>
-    void _copyChild(BList<T> &s, BList<T> &d);
+    template <typename T> void _copyChild(BList<T> &s, BList<T> &d);
 
     /// @brief Copies the properties.
     /// This function copies src properties field in dst. It uses <tt>copy</tt> to create
@@ -206,15 +205,13 @@ void CopyVisitor::_callUserFunction(Object *s, Object *d)
         return;
     _result = (*_opt.userFunction)(s, d, _opt.userData);
 }
-template <typename T>
-T *CopyVisitor::_copyChild(T *s)
+template <typename T> T *CopyVisitor::_copyChild(T *s)
 {
     if (!_opt.copyChildObjects)
         return nullptr;
     return copy(s, _opt);
 }
-template <typename T>
-void CopyVisitor::_copyChild(BList<T> &s, BList<T> &d)
+template <typename T> void CopyVisitor::_copyChild(BList<T> &s, BList<T> &d)
 {
     if (!_opt.copyChildObjects)
         return;

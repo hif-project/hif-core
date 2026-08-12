@@ -1,16 +1,18 @@
 /// @file FileStructure.cpp
 /// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #include <cerrno>
 #include <iostream>
 #if (defined _MSC_VER)
-#include <windows.h>
+#    include <windows.h>
 #endif
 #include <cstdlib>
 #include <cstring>
+#include <filesystem>
 #include <sys/stat.h>
 #include <sys/types.h>
 
@@ -24,18 +26,26 @@ namespace application_utils
 //
 //        Constants
 //
+/// @brief Maximum buffer size.
 #define MAX_BUF_SIZE 4096
 
 // MESSAGGES
+/// @brief Error message for write permission denied.
 #define DIR_WRITE_PERM_DENIED    "Write permission denied.\n Cannnot write the file \"%s\"."
+/// @brief Error message for file already exists.
 #define DIR_EXISTS               "The file \"%s\" already exists."
+/// @brief Error message for too many links.
 #define DIR_PARENT_DIR_TOO_LINKS "Too many links.\nCannot treat the file \"%s\"."
+/// @brief Error message for not enough room.
 #define DIR_NOT_ENOUGH_ROOM      "Not enough rooms.\nCannot treat the file \"%s\"."
+/// @brief Error message for parent directory read-only.
 #define DIR_PARENT_DIR_READ_ONLY "Parent directory is in read-only mode.\nCannot treat the file \"%s\"."
 //#define DIR_SRC_PATH_NOT_FOUND "Path \"%s\" not found."
+/// @brief Error message for file does not exist.
 #define DIR_NO_EXIST             "The file named by \"%s\" doesn't exist."
 //#define DIR_COPY_FILE_FAILED "Cannot copy the file \"%s\" onto the file \"%s\"."
 //#define DIR_CANNOT_OPEN_FILE "Cannot open the file \"%s\".\n%s"
+/// @brief Error message for path too long.
 #define DIR_SUP_MAX_BUF_SIZE     "The absolute path corresponding to \"%s\" is too long."
 
 //
@@ -320,7 +330,8 @@ auto FileStructure::compareTo(const FileStructure &path_name) const -> int
 
 auto FileStructure::exists() const -> bool
 {
-    struct stat f_st{};
+    struct stat f_st {
+    };
     if (stat(toString().c_str(), &f_st) == 0) {
         return true;
     }
@@ -335,17 +346,13 @@ auto FileStructure::getAbsoluteFile() const -> FileStructure
     FileStructure path_name;
 
     if (!isAbsolute()) {
-        char *tmp = new char[MAX_BUF_SIZE];
+
         std::string string_af;
         std::string string_t;
         auto first_e = abstractName.begin();
         auto end_e   = abstractName.end();
 
-        tmp = hif::application_utils::hif_getcwd(tmp, MAX_BUF_SIZE);
-        if (tmp == nullptr) {
-            msg_error(".");
-        }
-        string_af.append(tmp);
+        string_af              = std::filesystem::current_path();
         path_name.prefix       = prefix;
         path_name.separator    = separator;
         path_name.absolutePath = true;
@@ -354,7 +361,6 @@ auto FileStructure::getAbsoluteFile() const -> FileStructure
         while (first_e != end_e) {
             path_name.abstractName.push_back(*first_e++);
         }
-        delete[] tmp;
     } else {
         path_name = *this;
     }
@@ -400,50 +406,11 @@ auto FileStructure::isAbsolute() const -> bool
     return (true);
 }
 
-auto FileStructure::isDirectory() const -> bool
-{
-    struct stat f_st{};
+auto FileStructure::isDirectory() const -> bool { return std::filesystem::is_directory(toString()); }
 
-    if (stat(toString().c_str(), &f_st) == 0) {
-        if (hif_isdir(f_st.st_mode) != 0) {
-            return (true);
-        }
-    } else {
-        // error
-    }
-    return (false);
-}
+auto FileStructure::isFile() const -> bool { return std::filesystem::is_regular_file(toString()); }
 
-auto FileStructure::isFile() const -> bool
-{
-    struct stat f_st{};
-
-    if (stat(toString().c_str(), &f_st) == 0) {
-        if ((f_st.st_mode & S_IFMT) == 0X8000) {
-            return (true);
-        }
-    }
-    return (false);
-}
-
-auto FileStructure::isLink() const -> bool
-{
-    struct stat f_st{};
-    if (stat(toString().c_str(), &f_st) == 0) {
-#if (defined _MSC_VER)
-#pragma warning(push)
-#pragma warning(disable : 4127)
-#endif
-        if (hif_islink(f_st.st_mode) != 0) {
-#if (defined _MSC_VER)
-#pragma warning(pop)
-#endif
-            return (true);
-        }
-    }
-
-    return (false);
-}
+auto FileStructure::isLink() const -> bool { return std::filesystem::is_symlink(toString()); }
 
 auto FileStructure::isHidden() const -> bool
 {
@@ -456,7 +423,8 @@ auto FileStructure::isHidden() const -> bool
 
 auto FileStructure::lastModified() const -> time_t
 {
-    struct stat f_st{};
+    struct stat f_st {
+    };
 
     if (stat(toString().c_str(), &f_st) == 0) {
         return (f_st.st_mtime);
@@ -466,7 +434,8 @@ auto FileStructure::lastModified() const -> time_t
 
 auto FileStructure::lastAccess() const -> time_t
 {
-    struct stat f_st{};
+    struct stat f_st {
+    };
 
     if (stat(toString().c_str(), &f_st) == 0) {
         return (f_st.st_atime);
@@ -476,7 +445,8 @@ auto FileStructure::lastAccess() const -> time_t
 
 auto FileStructure::lastAttributesChange() const -> time_t
 {
-    struct stat f_st{};
+    struct stat f_st {
+    };
 
     if (stat(toString().c_str(), &f_st) == 0) {
         return (f_st.st_ctime);
@@ -495,21 +465,26 @@ auto FileStructure::length() const -> long
 
 auto FileStructure::size() const -> long
 {
-    struct stat f_st{};
-
-    if (stat(toString().c_str(), &f_st) == 0) {
-        return static_cast<long>(hif_getfilesize(f_st));
+    const std::filesystem::path path = toString();
+    std::error_code ec;
+    auto sz = std::filesystem::file_size(path, ec);
+    if (ec) {
+        return 0;
     }
-    return (0);
+    return static_cast<long>(sz);
 }
 
 auto FileStructure::depth() const -> int { return static_cast<int>(abstractName.size()); }
 
 auto FileStructure::setToExe() const -> int
 {
-    return hif_chmod(
-        toString().c_str(),
-        PERMISSION_RWX_USR | PERMISSION_R_GRP | PERMISSION_X_GRP | PERMISSION_R_OTH | PERMISSION_X_OTH);
+    std::filesystem::permissions(
+        toString(),
+        std::filesystem::perms::owner_all |                                            // Owner: read, write, execute
+            std::filesystem::perms::group_read | std::filesystem::perms::group_exec |  // Group: read, execute
+            std::filesystem::perms::others_read | std::filesystem::perms::others_exec, // Others: read, execute
+        std::filesystem::perm_options::replace);
+    return 0;
 }
 
 #if (defined _MSC_VER)
@@ -682,7 +657,7 @@ auto FileStructure::openfile(char *mode) const -> FILE *
     fp = fopen(string_e.c_str(), mode);
     if (fp == nullptr) {
         char *c        = strerror(errno);
-        const size_t s = strlen(c) + 1;
+        std::size_t s = strlen(c) + 1;
         tmp_error      = static_cast<char *>(malloc(sizeof(char) * s));
         strcpy(tmp_error, c);
         std::ostringstream os;
@@ -694,17 +669,16 @@ auto FileStructure::openfile(char *mode) const -> FILE *
 
 auto FileStructure::make_dir() -> bool
 {
-    std::string string_e = toString();
-    std::string child_e  = abstractName.back();
-
-    if (child_e != ".") {
-        if (hif_mkdir(
-                string_e.c_str(),
-                PERMISSION_RWX_USR | PERMISSION_R_GRP | PERMISSION_X_GRP | PERMISSION_R_OTH | PERMISSION_X_OTH) != 0) {
-            msg_error(string_e);
-        }
+    if (abstractName.back() == ".") {
+        return true;
     }
-    return (true);
+    std::error_code ec;
+    std::filesystem::create_directory(toString(), ec);
+    if (ec) {
+        msg_error(toString());
+        return false;
+    }
+    return true;
 }
 
 auto FileStructure::make_dirs() -> bool
@@ -716,7 +690,8 @@ auto FileStructure::make_dirs() -> bool
     std::string string_e;
     auto first_e = abstractName.begin();
     auto end_e   = abstractName.end();
-    struct stat buf{};
+    struct stat buf {
+    };
 
     if (isAbsolute()) {
         string_e.append(prefix);
@@ -755,82 +730,59 @@ auto FileStructure::make_dirs() -> bool
 
 auto FileStructure::symbolicLink(FileStructure &dest) -> bool
 {
-    std::string string_e = toString();
-    std::string child_e  = abstractName.back();
-    std::string string_d = dest.toString();
-
-    if ((child_e != ".") && (child_e != "..") && (!string_d.empty())) {
-        if (hif_symlink(string_d.c_str(), string_e.c_str()) != 0) {
-            if (errno == EEXIST) {
-                return true;
-            }
-            msg_error(string_e);
-        }
+    std::string target = dest.toString();
+    std::string link   = toString();
+    std::string name   = abstractName.back();
+    if (name == "." || name == ".." || target.empty()) {
+        return true;
     }
-    return (true);
+    std::error_code ec;
+    std::filesystem::create_symlink(target, link, ec);
+    if (ec) {
+        if (ec.value() == static_cast<int>(std::errc::file_exists)) {
+            return true;
+        }
+        msg_error(link);
+        return false;
+    }
+    return true;
 }
 
 auto FileStructure::chdir() const -> bool
 {
-    std::string string_e;
-
-    string_e = toString();
-    if (hif_chdir(string_e.c_str()) != 0) {
+    const std::filesystem::path path = toString();
+    std::error_code ec;
+    std::filesystem::current_path(path, ec);
+    if (ec) {
         std::ostringstream os;
-        os << "Path \"" << string_e.c_str() << "\" not found.";
+        os << "Path \"" << path.string() << "\" not found.";
         messageError(os.str(), nullptr, nullptr);
+        return false;
     }
-    return (true);
+    return true;
 }
 
 auto FileStructure::rmdir() -> bool
 {
-    std::vector<FileStructure> list_files = listFiles();
-    std::string child_e                   = abstractName.back();
-
-    if (isDirectory()) {
-        if (list_files.empty()) {
-            if (child_e != "." && child_e != "..") {
-                if (hif_rmdir(toString().c_str()) != 0) {
-                    msg_error(toString());
-                }
-            }
-        } else {
-            auto first_e = list_files.begin();
-            auto end_e   = list_files.end();
-
-            while (first_e != end_e) {
-                if ((*first_e).isDirectory()) {
-                    (*first_e).rmdir();
-                } else {
-                    if (::remove(((*first_e).toString()).c_str()) != 0) {
-                        msg_error((*first_e).toString());
-                    }
-                }
-                first_e++;
-            }
-            if (hif_rmdir(toString().c_str()) != 0) {
-                msg_error(toString());
-            }
-        }
+    std::error_code ec;
+    std::filesystem::remove_all(toString(), ec);
+    if (ec) {
+        msg_error(toString());
+        return false;
     }
-    return (true);
+    return true;
 }
 
 auto FileStructure::rmdirs() -> bool
 {
-    FileStructure file_t = *this;
-    auto first_e         = file_t.abstractName.begin();
-    auto end_e           = file_t.abstractName.end();
-
-    while (first_e != end_e) {
-        if (!file_t.rmdir()) {
-            return (false);
+    FileStructure current = *this;
+    while (!current.abstractName.empty()) {
+        if (!current.rmdir()) {
+            return false;
         }
-        file_t.abstractName.pop_back();
-        end_e--;
+        current.abstractName.pop_back();
     }
-    return (true);
+    return true;
 }
 
 auto FileStructure::rmfile() const -> bool

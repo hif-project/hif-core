@@ -1,8 +1,9 @@
 /// @file Int.cpp
 /// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #include "hif/classes/Int.hpp"
 #include "hif/HifVisitor.hpp"
@@ -44,7 +45,7 @@ Range *Int::setSpan(Range *x) { return setChild(_span, x); }
 
 bool Int::isSigned() const { return (_isSigned); }
 
-void Int::setSigned(const bool sign) { _isSigned = sign; }
+void Int::setSigned(bool sign) { _isSigned = sign; }
 
 Object *Int::toObject() { return this; }
 

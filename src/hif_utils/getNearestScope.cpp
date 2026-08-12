@@ -1,8 +1,9 @@
 /// @file getNearestScope.cpp
 /// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #include "hif/hif_utils/getNearestScope.hpp"
 
@@ -18,7 +19,7 @@ namespace /*anon*/
 
 } // namespace
 
-Scope *getNearestScope(Object *o, const bool needDeclarationList, const bool needLibraryList, const bool needTemplates)
+Scope *getNearestScope(Object *o, bool needDeclarationList, bool needLibraryList, bool needTemplates)
 {
     if (o == nullptr)
         return nullptr;

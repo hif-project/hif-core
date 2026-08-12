@@ -1,8 +1,9 @@
 /// @file rebaseTypeSpan.cpp
 /// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #include "hif/manipulation/rebaseTypeSpan.hpp"
 
@@ -52,7 +53,7 @@ void _explicitCallsParameters(Object *root, hif::semantics::ILanguageSemantics *
 class RebaseTypeVisitor : public hif::GuideVisitor
 {
 public:
-    RebaseTypeVisitor(hif::semantics::ILanguageSemantics *sem, const bool currentOnly);
+    RebaseTypeVisitor(hif::semantics::ILanguageSemantics *sem, bool currentOnly);
     ~RebaseTypeVisitor();
 
     virtual int visitAggregate(Aggregate &o);
@@ -87,9 +88,9 @@ private:
 
     Value *_innerShift;
 
-    const bool _currentOnly;
+    bool _currentOnly;
 };
-RebaseTypeVisitor::RebaseTypeVisitor(hif::semantics::ILanguageSemantics *sem, const bool currentOnly)
+RebaseTypeVisitor::RebaseTypeVisitor(hif::semantics::ILanguageSemantics *sem, bool currentOnly)
     : _sem(sem)
     , _factory(sem)
     , _ranges()
@@ -129,7 +130,7 @@ bool RebaseTypeVisitor::_fixTypedRange(Range *tSpan)
     Identifier *rb = dynamic_cast<Identifier *>(tSpan->getRightBound());
     ValueTP *lbDec = dynamic_cast<ValueTP *>(hif::semantics::getDeclaration(lb, _sem));
     ValueTP *rbDec = dynamic_cast<ValueTP *>(hif::semantics::getDeclaration(rb, _sem));
-    const bool isTyped =
+    bool isTyped =
         (lb != nullptr && rb != nullptr && lbDec != nullptr && rbDec != nullptr && lbDec->isInBList() &&
          rbDec->isInBList() && lbDec->getBList() == rbDec->getBList());
 
@@ -145,7 +146,7 @@ bool RebaseTypeVisitor::_fixTypedRange(Range *tSpan)
     }
 
     // Special management for standard methods (created by us)
-    const bool isStandard =
+    bool isStandard =
         (bListOwner->getParent() != nullptr && dynamic_cast<SubProgram *>(bListOwner) != nullptr &&
          dynamic_cast<LibraryDef *>(bListOwner->getParent()) != nullptr &&
          static_cast<LibraryDef *>(bListOwner->getParent())->isStandard());
@@ -357,7 +358,7 @@ int RebaseTypeVisitor::visitSlice(Slice &o)
         _innerShift = min;
     }
 
-    const bool isTop = _isTop(&o);
+    bool isTop = _isTop(&o);
 
     IntValue *i = dynamic_cast<IntValue *>(_innerShift);
     if (i == nullptr || i->getValue() != 0) {
@@ -415,7 +416,7 @@ int RebaseTypeVisitor::visitUnsigned(Unsigned &o)
 
 } // namespace
 
-bool rebaseTypeSpan(Object *root, hif::semantics::ILanguageSemantics *refLang, const bool currentOnly)
+bool rebaseTypeSpan(Object *root, hif::semantics::ILanguageSemantics *refLang, bool currentOnly)
 {
     _explicitCallsParameters(root, refLang);
 

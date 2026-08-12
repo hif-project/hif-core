@@ -1,8 +1,9 @@
 /// @file fixRangesDirection.cpp
 /// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #include "hif/manipulation/fixRangesDirection.hpp"
 
@@ -55,11 +56,13 @@ std::set<Range *> typeSpansToRevert;
 /// A vhdl example:
 /// @code{.vhd}
 /// signal s : std_logic_vector(0 to 12);
+
 /// @endcode
 ///
 /// Is changed to:
 /// @code{.vhd}
 /// signal s : std_logic_vector(12 downto 0);
+
 /// @endcode
 ///
 /// Also Members and Slices are fixed wrt to their types (as they were before
@@ -91,18 +94,21 @@ private:
 
     hif::semantics::ILanguageSemantics *_sem;
     hif::HifFactory _factory;
+
     /// @brief Check type span. The span of Array (not packed), Array (packed),
     /// Signed and Unsigned must be downto. If not, collect it for further
     /// fixes.
     /// @param typeSpan the span of the type to check.
     ///
     void _checkType(Range *typeSpan);
+
     /// @brief Revert a Value depending on Value's type span.
     /// All reverted span must have direction downto.
     /// @param indexToFix the index of the Value.
     /// @param refSpan is the Value's type span.
     ///
     void _fixIndex(Value *indexToFix, Range *refSpan, Value *prefix = nullptr);
+
     /// @brief Revert a Span of a Value depending on Value's type span.
     /// All reverted span must have direction downto.
     /// @param spanToFix is the Span of a Value.
@@ -292,8 +298,8 @@ void PreRefine_ranges::_fixIndex(Value *indexToFix, Range *refSpan, Value *prefi
     Value *maxBound = hif::manipulation::assureSyntacticType(hif::copy(hif::rangeGetMaxBound(refSpan)), _sem);
     Value *minBound = hif::manipulation::assureSyntacticType(hif::copy(hif::rangeGetMinBound(refSpan)), _sem);
 
-    const bool bothSet   = (maxBound != nullptr && minBound != nullptr);
-    const bool bothUnset = (maxBound == nullptr && minBound == nullptr);
+    bool bothSet   = (maxBound != nullptr && minBound != nullptr);
+    bool bothUnset = (maxBound == nullptr && minBound == nullptr);
 
     if (bothSet) {
         Expression *bound = new Expression(hif::op_plus, maxBound, minBound);
@@ -353,8 +359,8 @@ void PreRefine_ranges::_fixRange(Range *spanToFix, Range *refSpan, Value *prefix
     Value *maxBound = hif::manipulation::assureSyntacticType(hif::copy(hif::rangeGetMaxBound(refSpan)), _sem);
     Value *minBound = hif::manipulation::assureSyntacticType(hif::copy(hif::rangeGetMinBound(refSpan)), _sem);
 
-    const bool bothSet   = (maxBound != nullptr && minBound != nullptr);
-    const bool bothUnset = (maxBound == nullptr && minBound == nullptr);
+    bool bothSet   = (maxBound != nullptr && minBound != nullptr);
+    bool bothUnset = (maxBound == nullptr && minBound == nullptr);
     messageAssert(bothSet || bothUnset, "Unsupporte case", refSpan, _sem);
 
     if (bothSet) {
@@ -406,12 +412,12 @@ bool PreRefine_ranges::_mustBeReverted(Range *r)
 {
     if (r == nullptr)
         return false;
-    const bool isString   = (dynamic_cast<String *>(r->getParent()) != nullptr);
+    bool isString   = (dynamic_cast<String *>(r->getParent()) != nullptr);
     // If enabling this:
     // - check systemc_semantics_methods and switch array bounds.
     // - check ref designs: vhdl/gaisler/can_oc and vhdl/custom/polar2rect.
-    //const bool isArray = (dynamic_cast <Array *>(r->getParent()) != nullptr);
-    const bool mustBeUpto = isString /*|| isArray*/;
+    //bool isArray = (dynamic_cast <Array *>(r->getParent()) != nullptr);
+    bool mustBeUpto = isString /*|| isArray*/;
     if (r->getDirection() == dir_downto && !mustBeUpto)
         return false;
     if (r->getDirection() == dir_upto && mustBeUpto)

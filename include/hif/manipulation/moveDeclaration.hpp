@@ -1,8 +1,9 @@
 /// @file moveDeclaration.hpp
 /// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #pragma once
 
@@ -19,7 +20,6 @@ namespace manipulation
 ///     - moves declaration into newScope;
 ///     - renames declaration with a fresh name (avoid collisions);
 ///     - substitutes all occurrences with the fresh name starting from subtree.
-///
 /// @param decl Declaration object to be moved.
 /// @param newScope Scope where the declaration should be moved.
 /// @param subtree Subtree where the declaration is used.

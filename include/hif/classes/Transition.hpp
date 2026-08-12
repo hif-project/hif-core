@@ -1,8 +1,9 @@
 /// @file Transition.hpp
 /// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #pragma once
 
@@ -49,7 +50,7 @@ public:
     ///
     /// @param n The name representing next state's new name.
     ///
-    void setName(const std::string& n);
+    void setName(const std::string &n);
 
     /// @brief Function to get the name of next state.
     ///
@@ -61,7 +62,7 @@ public:
     ///
     /// @param n The name representing prev state's new name.
     ///
-    void setPrevName(const std::string& n);
+    void setPrevName(const std::string &n);
 
     /// @brief Function to get the name of prev state.
     ///
@@ -81,9 +82,11 @@ public:
     //@{
 
     /// @brief Sets the edge priority.
+    /// @param p The priority value to set.
     void setPriority(const priority_t p);
 
-    /// @brief Sets the edge priority.
+    /// @brief Gets the edge priority.
+    /// @return The current priority value.
     priority_t getPriority() const;
 
     /// @brief Composes all enablingList expressions into a single expression.
@@ -98,7 +101,7 @@ public:
     ///
     /// @param flag boolean value of the enablingLabelOrMode flag.
     ///
-    void setEnablingOrCondition(const bool flag);
+    void setEnablingOrCondition(bool flag);
 
     /// @brief Function to get the value of the enablingLabelOrMode flag.
     ///
@@ -127,6 +130,8 @@ protected:
     virtual void _calculateFields();
 
     /// @brief Returns the name of given BList w.r.t. this.
+    /// @param list The BList to get the name for.
+    /// @return The name of the BList.
     virtual std::string _getBListName(const BList<Object> &list) const;
 
 private:

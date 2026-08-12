@@ -1,8 +1,9 @@
 /// @file analyzeProcesses.cpp
 /// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #include <utility>
 
@@ -74,8 +75,10 @@ private:
 
     /// @brief Analysis of process signals (read, written and sensitivity).
     void _classifySignals(ProcessInfos &infos, Object *proc);
+
     /// @brief First analysis of process, according with sensitivity.
     void _classifyWrtSensitivity(ProcessInfos &infos, StateTable *proc) const;
+
     /// @brief Refinement of analysis, inspecting the process body.
     void _classifyProcessBody(ProcessInfos &infos, StateTable *proc);
 
@@ -103,14 +106,19 @@ private:
 
     /// @brief Check that process body is in the form <tt>if ... else if ... </tt>.
     static auto _isIfElseIfStatement(State *state, IfAlt *&resetIf, IfAlt *&clockIf) -> bool;
+
     /// @brief Check that it is a clocked if, with an optional inner reset if.
     static auto _isIfOptIfElseStatement(State *state, IfAlt *&resetIf, IfAlt *&clockIf) -> bool;
+
     /// @brief Checks if given expression is: == 1 or ==  0.
     auto _isEqualsToZeroOrOne(Value *cond, DataDeclaration *&n, bool &isZero) -> bool;
+
     /// @brief Checks if given expression is: == 1 or ==  0.
     auto _isRisingFallingEdge(Value *cond, DataDeclaration *&n, bool &isZero) -> bool;
+
     /// @brief Analyze given condition to match the reset pattern.
     auto _checkResetCondition(ProcessInfos &infos, Value *cond) -> bool;
+
     /// @brief Analyze given condition to match the clock pattern.
     auto _checkClockCondition(ProcessInfos &infos, Value *cond) -> bool;
 
@@ -242,7 +250,7 @@ void ProcessVisitor::_analyze(StateTable *o)
 void ProcessVisitor::_classifySignals(ProcessInfos &infos, Object *proc)
 {
     ObjList list;
-    hif::semantics::collectSymbols(list, proc, _sem, _opt.skipStandardDeclarations);
+    hif::semantics::collectSymbols(list, proc, _sem, _opt.skip_standard_declarations);
 
     for (auto *o : list) {
         if (dynamic_cast<hif::features::ISymbol *>(o) == nullptr) {
@@ -310,13 +318,13 @@ void ProcessVisitor::_classifyWrtSensitivity(ProcessInfos &infos, StateTable * /
     if (_opt.clock.empty() && _opt.reset.empty()) {
         return;
     }
-    bool clockPos      = false;
-    bool clockNeg      = false;
-    bool resetPos      = false;
-    bool resetNeg      = false;
-    unsigned asynch    = 0;
-    unsigned asynchPos = 0;
-    unsigned asynchNeg = 0;
+    bool clockPos             = false;
+    bool clockNeg             = false;
+    bool resetPos             = false;
+    bool resetNeg             = false;
+    unsigned asynch           = 0;
+    unsigned asynchPos        = 0;
+    unsigned asynchNeg        = 0;
     std::string asynchName    = nullptr;
     std::string asynchPosName = nullptr;
     std::string asynchNegName = nullptr;
@@ -386,18 +394,18 @@ void ProcessVisitor::_classifyWrtSensitivity(ProcessInfos &infos, StateTable * /
     }
     // else maybe synch, but we do not know: already fine
     // Refining taking into account also other signals.
-    const bool noAsynch = (asynch == 0 && asynchPos == 0 && asynchNeg == 0);
+    bool noAsynch = (asynch == 0 && asynchPos == 0 && asynchNeg == 0);
     if (noAsynch) {
         return;
     }
-    const bool sameName = (asynchName.empty() || asynchPosName.empty() || asynchName == asynchPosName) &&
-                          (asynchName.empty() || asynchNegName.empty() || asynchName == asynchNegName) &&
-                          (asynchPosName.empty() || asynchNegName.empty() || asynchPosName == asynchNegName);
+    bool sameName = (asynchName.empty() || asynchPosName.empty() || asynchName == asynchPosName) &&
+                    (asynchName.empty() || asynchNegName.empty() || asynchName == asynchNegName) &&
+                    (asynchPosName.empty() || asynchNegName.empty() || asynchPosName == asynchNegName);
 
-    const bool oneAsynchForKind =
+    bool oneAsynchForKind =
         (asynch == 0 || asynch == 1) && (asynchPos == 0 || asynchPos == 1) && (asynchNeg == 0 || asynchNeg == 1);
 
-    const bool justOneAsynch = oneAsynchForKind && sameName;
+    bool justOneAsynch = oneAsynchForKind && sameName;
 
     if (infos.processKind == ProcessInfos::SYNCHRONOUS) {
         if (infos.resetKind == ProcessInfos::NO_RESET && justOneAsynch) {
@@ -710,9 +718,9 @@ auto ProcessVisitor::_mergeProcessStyle(ProcessInfos &infosRet, ProcessInfos &in
 
 auto ProcessVisitor::_mergeSignals(ProcessInfos &infosRet, ProcessInfos &infos1, ProcessInfos &infos2) -> bool
 {
-    const bool clockOk = infos1.clock == nullptr || infos2.clock == nullptr || infos1.clock == infos2.clock;
+    bool clockOk = infos1.clock == nullptr || infos2.clock == nullptr || infos1.clock == infos2.clock;
 
-    const bool resetOk = infos1.reset == nullptr || infos2.reset == nullptr || infos1.reset == infos2.reset;
+    bool resetOk = infos1.reset == nullptr || infos2.reset == nullptr || infos1.reset == infos2.reset;
 
     if (!clockOk || !resetOk) {
         return false;
@@ -833,7 +841,7 @@ auto ProcessVisitor::_isEqualsToZeroOrOne(Value *cond, DataDeclaration *&n, bool
         delete tmp;
         return false;
     }
-    long long cv = iv->getValue();
+    std::int64_t cv = iv->getValue();
     delete iv;
     if (cv != 0 && cv != 1) {
         return false;
@@ -1185,62 +1193,6 @@ auto ProcessVisitor::_isProcessStyle6(ProcessInfos &infos, State *state) -> bool
     return true;
 }
 } // namespace
-ProcessInfos::ProcessInfos()
-    : processKind(ASYNCHRONOUS)
-    , resetKind(NO_RESET)
-    , workingEdge(NO_EDGE)
-    , resetPhase(NO_PHASE)
-    , processStyle(NO_STYLE)
-    , clock(nullptr)
-    , reset(nullptr)
-{
-    // ntd
-}
-ProcessInfos::~ProcessInfos()
-{
-    // ntd
-}
-ProcessInfos::ProcessInfos(const ProcessInfos &other)
-    : processKind(other.processKind)
-    , resetKind(other.resetKind)
-    , workingEdge(other.workingEdge)
-    , resetPhase(other.resetPhase)
-    , processStyle(other.processStyle)
-    , risingSensitivity(other.risingSensitivity)
-    , fallingSensitivity(other.fallingSensitivity)
-    , sensitivity(other.sensitivity)
-    , inputs(other.inputs)
-    , outputs(other.outputs)
-    , inputVariables(other.inputVariables)
-    , outputVariables(other.outputVariables)
-    , clock(other.clock)
-    , reset(other.reset)
-{
-    // ntd
-}
-
-auto ProcessInfos::operator=(const ProcessInfos &other) -> ProcessInfos &
-{
-    if (this == &other) {
-        return *this;
-    }
-    processKind        = other.processKind;
-    resetKind          = other.resetKind;
-    workingEdge        = other.workingEdge;
-    resetPhase         = other.resetPhase;
-    processStyle       = other.processStyle;
-    risingSensitivity  = other.risingSensitivity;
-    fallingSensitivity = other.fallingSensitivity;
-    sensitivity        = other.sensitivity;
-    inputs             = other.inputs;
-    outputs            = other.outputs;
-    inputVariables     = other.inputVariables;
-    outputVariables    = other.outputVariables;
-    clock              = other.clock;
-    reset              = other.reset;
-
-    return *this;
-}
 
 auto ProcessInfos::getSensitivitySize() const -> ProcessInfos::ReferredDeclarations::size_type
 {
@@ -1263,39 +1215,6 @@ auto ProcessInfos::isInSensitivity(ReferredDeclarations::value_type v) const -> 
     }
     i = fallingSensitivity.find(v);
     return i != fallingSensitivity.end();
-}
-AnalyzeProcessOptions::AnalyzeProcessOptions()
-    : clock(nullptr)
-    , reset(nullptr)
-    , skipStandardDeclarations(true)
-    , printWarnings(false)
-{
-    // ntd
-}
-AnalyzeProcessOptions::~AnalyzeProcessOptions()
-{
-    // ntd.
-}
-AnalyzeProcessOptions::AnalyzeProcessOptions(const AnalyzeProcessOptions &other)
-    : clock(other.clock)
-    , reset(other.reset)
-    , skipStandardDeclarations(other.skipStandardDeclarations)
-    , printWarnings(other.printWarnings)
-{
-    // ntd
-}
-
-auto AnalyzeProcessOptions::operator=(const AnalyzeProcessOptions &other) -> AnalyzeProcessOptions &
-{
-    if (this == &other) {
-        return *this;
-    }
-    clock                    = other.clock;
-    reset                    = other.reset;
-    skipStandardDeclarations = other.skipStandardDeclarations;
-    printWarnings            = other.printWarnings;
-
-    return *this;
 }
 
 auto analyzeProcesses(

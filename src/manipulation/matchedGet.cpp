@@ -1,8 +1,9 @@
 /// @file matchedGet.cpp
 /// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #include "hif/manipulation/matchedGet.hpp"
 
@@ -42,7 +43,7 @@ Object *matchedGet(Object *newParent, Object *oldObj, Object *oldParent)
 
         BList<Object> *newList = reinterpret_cast<BList<Object> *>(reinterpret_cast<Byte *>(newParent) + shift);
 
-        const BList<Object>::size_t pos = oldList->getPosition(oldObj);
+        std::size_t pos = oldList->getPosition(oldObj);
         ret                             = newList->at(pos);
     } else {
         const std::ptrdiff_t shift = reinterpret_cast<Byte *>(oldObj->_field) - reinterpret_cast<Byte *>(oldParent);

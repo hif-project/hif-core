@@ -1,8 +1,9 @@
 /// @file sortGraph.hpp
 /// @brief Provides utilities for sorting graphs of objects.
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #pragma once
 
@@ -47,9 +48,13 @@ template <class KEY, class VALUE>
 void sortGraph(
     typename Types<KEY, VALUE>::Graph &graph,
     typename Types<KEY, VALUE>::List &list,
-    const bool fromLeaves,
+    bool fromLeaves,
     typename Types<KEY, VALUE>::List *stableList = nullptr)
 {
+    static_assert(std::is_base_of<Object, KEY>::value, "KEY must be derived from Object");
+    static_assert(std::is_base_of<Object, VALUE>::value, "VALUE must be derived from Object");
+    // Safe reinterpret_cast: Types<KEY, VALUE> and Types<Object, Object> have identical memory layout since KEY/VALUE
+    // derive from Object and pointers are compatible.
     auto *g = reinterpret_cast<typename Types<Object, Object>::Graph *>(&graph);
     auto *l = reinterpret_cast<typename Types<Object, Object>::List *>(&list);
     auto *s = reinterpret_cast<typename Types<Object, Object>::List *>(stableList);

@@ -1,8 +1,9 @@
 /// @file Array.cpp
 /// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #include "hif/classes/Array.hpp"
 #include "hif/HifVisitor.hpp"
@@ -43,7 +44,7 @@ Range *Array::setSpan(Range *x) { return setChild(_span, x); }
 
 bool Array::isSigned() const { return _isSigned; }
 
-void Array::setSigned(const bool sign) { _isSigned = sign; }
+void Array::setSigned(bool sign) { _isSigned = sign; }
 
 Object *Array::toObject() { return this; }
 

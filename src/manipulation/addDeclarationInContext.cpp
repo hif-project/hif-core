@@ -1,8 +1,9 @@
 /// @file addDeclarationInContext.cpp
 /// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #include "hif/manipulation/addDeclarationInContext.hpp"
 
@@ -21,7 +22,7 @@ namespace /*anon*/
 
 } // namespace
 
-bool addDeclarationInContext(Declaration *newDecl, Declaration *context, const bool before)
+bool addDeclarationInContext(Declaration *newDecl, Declaration *context, bool before)
 {
     if (dynamic_cast<Port *>(newDecl) != nullptr) {
         Port *newPortDecl = static_cast<Port *>(newDecl);

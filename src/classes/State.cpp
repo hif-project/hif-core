@@ -1,8 +1,9 @@
 /// @file State.cpp
 /// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #include <cstring>
 
@@ -61,7 +62,7 @@ void State::setPriority(const priority_t p) { _priority = p; }
 
 State::priority_t State::getPriority() const { return _priority; }
 
-void State::setAtomic(const bool v) { _atomic = v; }
+void State::setAtomic(bool v) { _atomic = v; }
 
 bool State::isAtomic() const { return _atomic; }
 

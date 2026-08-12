@@ -1,8 +1,9 @@
 /// @file ILanguageSemantics.hpp
 /// @brief File containing the definition of the ILanguageSemantics class.
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #pragma once
 
@@ -55,12 +56,15 @@ public:
         ExpressionTypeInfo();
 
         /// @brief Copy constructor.
+        /// @param t The ExpressionTypeInfo to copy from.
         ExpressionTypeInfo(const ExpressionTypeInfo &t);
 
         /// @brief Destructor.
         virtual ~ExpressionTypeInfo();
 
         /// @brief Assignment operator.
+        /// @param t The ExpressionTypeInfo to assign from.
+        /// @return Reference to this.
         ExpressionTypeInfo &operator=(const ExpressionTypeInfo &t);
     };
 
@@ -82,9 +86,12 @@ public:
         ~ValueSymbol();
 
         /// @brief Copy constructor.
+        /// @param other The ValueSymbol to copy from.
         ValueSymbol(const ValueSymbol &other);
 
         /// @brief Assignment operator.
+        /// @param other The ValueSymbol to assign from.
+        /// @return Reference to this.
         ValueSymbol &operator=(const ValueSymbol &other);
     };
 
@@ -94,32 +101,29 @@ public:
 
     /// @brief Struct representing the semantic options.
     struct SemanticOptions {
-        enum ForConditionType { RANGE, EXPRESSION, RANGE_AND_EXPRESSION }; ///< Allowed types for `for` conditions.
+        /// @brief Allowed types for `for` conditions.
+        enum ForConditionType { RANGE, EXPRESSION, RANGE_AND_EXPRESSION };
 
-        bool port_inNoInitialValue;         ///< Ensure input ports have no initial values.
-        bool port_outInitialValue;          ///< Ensure output ports have initial values.
-        bool dataDeclaration_initialValue;  ///< Ensure declarations have initial values.
-        bool scopedType_insideTypedef;      ///< Ensure scoped types are inside typedefs.
-        bool int_bitfields;                 ///< Treat native ints as bitfields.
-        bool designUnit_uniqueView;         ///< Ensure a design unit has only one view.
-        bool for_implictIndex;              ///< Ensure `for` loops have a single implicit index declaration.
-        ForConditionType for_conditionType; ///< Allowed type for `for` conditions.
-        bool generates_isNoAllowed;         ///< Disallow `generate` constructs.
-        bool after_isNoAllowed;             ///< Disallow `after` constructs.
-        bool with_isNoAllowed;              ///< Disallow `with` constructs.
-        bool globact_isNoAllowed;           ///< Disallow global actions.
-        bool valueStatement_isNoAllowed;    ///< Disallow value statements.
-        bool case_isOnlyLiteral;            ///< Restrict case constructs to literals only.
-        bool lang_signPortNoBitAccess;      ///< Disallow bit access on signals and ports.
-        bool lang_hasDontCare;              ///< Indicate language supports "don't care" values.
-        bool lang_has9logic;                ///< Indicate language has 9 logic values (false means 4 values).
-        bool waitWithActions;               ///< Allow waits to embrace actions.
-        hif::manipulation::SortMissingKind::type lang_sortKind; ///< Sorting strategy for missing parameters.
-
-        SemanticOptions();                                    ///< Default constructor.
-        ~SemanticOptions();                                   ///< Destructor.
-        SemanticOptions(const SemanticOptions &t);            ///< Copy constructor.
-        SemanticOptions &operator=(const SemanticOptions &t); ///< Assignment operator.
+        bool port_inNoInitialValue         = false; ///< Ensure input ports have no initial values.
+        bool port_outInitialValue          = false; ///< Ensure output ports have initial values.
+        bool dataDeclaration_initialValue  = false; ///< Ensure declarations have initial values.
+        bool scopedType_insideTypedef      = false; ///< Ensure scoped types are inside typedefs.
+        bool int_bitfields                 = false; ///< Treat native ints as bitfields.
+        bool designUnit_uniqueView         = false; ///< Ensure a design unit has only one view.
+        bool for_implictIndex              = false; ///< Ensure `for` loops have a single implicit index declaration.
+        ForConditionType for_conditionType = RANGE_AND_EXPRESSION; ///< Allowed type for `for` conditions.
+        bool generates_isNoAllowed         = false;                ///< Disallow `generate` constructs.
+        bool after_isNoAllowed             = false;                ///< Disallow `after` constructs.
+        bool with_isNoAllowed              = false;                ///< Disallow `with` constructs.
+        bool globact_isNoAllowed           = false;                ///< Disallow global actions.
+        bool valueStatement_isNoAllowed    = false;                ///< Disallow value statements.
+        bool case_isOnlyLiteral            = false;                ///< Restrict case constructs to literals only.
+        bool lang_signPortNoBitAccess      = false;                ///< Disallow bit access on signals and ports.
+        bool lang_hasDontCare              = false;                ///< Indicate language supports "don't care" values.
+        bool lang_has9logic                = false; ///< Indicate language has 9 logic values (false means 4 values).
+        bool waitWithActions               = false; ///< Allow waits to embrace actions.
+        hif::manipulation::SortMissingKind lang_sortKind =
+            hif::manipulation::SortMissingKind::NOTHING; ///< Sorting strategy for missing parameters.
     };
 
     /// @brief Returns the current semantic options.
@@ -130,6 +134,7 @@ public:
     virtual ~ILanguageSemantics() = 0;
 
     /// @brief Returns the name of the semantics.
+    /// @return The name of the semantics.
     virtual std::string getName() const = 0;
 
     /// @name Type management methods.
@@ -151,13 +156,14 @@ public:
     /// @return type_info_t ExpressionTypeInfo containing informations about the operation.
     ///
     virtual ExpressionTypeInfo getExprType(Type *op1Type, Type *op2Type, Operator operation, Object *sourceObj) = 0;
+
     /// @brief Function to change the semantic checks mode.
     /// Usually, they are more permessive inside frontends,
     /// whilst backends are more strict.
     ///
     /// @param v The mode.
     ///
-    void setStrictTypeChecks(const bool v);
+    void setStrictTypeChecks(bool v);
 
     /// @brief Function to get the semantic checks mode.
     ///
@@ -187,6 +193,7 @@ public:
     /// @return Type pointer to the correspondent fresh type.
     ///
     virtual Type *getMapForType(Type *t)                                                                          = 0;
+
     /// @brief Function that given the operator and the Types of expression
     /// in the source semantics, returns the (eventually changed) operator
     /// in the target language (if exists).
@@ -199,6 +206,7 @@ public:
     /// @return Type pointer to the correspondent fresh type.
     ///
     virtual Operator getMapForOperator(Operator srcOperation, Type *srcT1, Type *srcT2, Type *dstT1, Type *dstT2) = 0;
+
     /// @brief Function that given a type and an operation to do with
     /// operators of that type returns a pointer to a Type
     /// representing the type that operands have to be cast into to
@@ -214,7 +222,8 @@ public:
     /// a valid operation in current semantics  (if possible).
     ///
     virtual Type *
-    getSuggestedTypeForOp(Type *t, Operator operation, Type *opType, Object *startingObject, const bool isOp1) = 0;
+    getSuggestedTypeForOp(Type *t, Operator operation, Type *opType, Object *startingObject, bool isOp1) = 0;
+
     /// @brief Function that given a ConstValue returns a Type
     /// pointer representing the type to associate to the constant according
     /// with target language requirements (opportunely setting flags of the type).
@@ -224,7 +233,8 @@ public:
     ///
     /// @return Type pointer to the constant type.
     ///
-    virtual Type *getTypeForConstant(ConstValue *c)                                                            = 0;
+    virtual Type *getTypeForConstant(ConstValue *c)                                                      = 0;
+
     /// @brief Checks if given type is compatible with language requirements
     /// as condition.
     ///
@@ -234,7 +244,8 @@ public:
     /// @return true if the type of the condition is compatible with target
     /// language requirements, false otherwise.
     ///
-    virtual bool checkCondition(Type *t, Object *o)                                                            = 0;
+    virtual bool checkCondition(Type *t, Object *o)                                                      = 0;
+
     /// @brief Function that given a Value representing a valid guard
     /// condition in the target language returns an expression representing
     /// the explanation of the guard as boolean condition (with == operator).
@@ -244,7 +255,8 @@ public:
     ///
     /// @return Value pointer to the created expression.
     ///
-    virtual Value *explicitBoolConversion(Value *c)                                                            = 0;
+    virtual Value *explicitBoolConversion(Value *c)                                                      = 0;
+
     /// @brief Function that given a Value and a type which the given
     /// object have to be cast into, returns a Value representing the
     /// explicit cast (it may be a nested cast, a function call, a procedure
@@ -257,13 +269,14 @@ public:
     ///
     /// @return Value pointer to the explicit cast.
     ///
-    virtual Value *explicitCast(Value *valueToCast, Type *castType, Type *srcType)                             = 0;
+    virtual Value *explicitCast(Value *valueToCast, Type *castType, Type *srcType)                       = 0;
+
     /// @brief Function that given a real value returns the correspondent
     /// int value according to semantics rules (e.g., VHDL rounds while
     /// SystemC truncates).
     /// @param v The value to convert.
     /// @return The converted value.
-    virtual long long transformRealToInt(const double v)                                                       = 0;
+    virtual std::int64_t transformRealToInt(const double v)                                              = 0;
 
     /// @brief Function that given a member returns its semantic type
     /// according to semantics rules (e.g., SystemC with Bitvector prefix type
@@ -392,7 +405,7 @@ public:
     /// @param isLogic If the type is logic.
     /// @return True if operators are bitwise, false if they are logical.
     ///
-    virtual bool hasBitwiseOperationsOnBits(const bool isLogic) const;
+    virtual bool hasBitwiseOperationsOnBits(bool isLogic) const;
 
     ///@}
     /// @name Template related stuff
@@ -428,17 +441,24 @@ public:
     ///@}
 
     /// @brief Checks whether a name is forbidden in the current semantics.
+    /// @param decl The declaration to check.
+    /// @return true if the name is forbidden, false otherwise.
     virtual bool isForbiddenName(Declaration *decl) = 0;
 
     /// @name General support methods.
     /// @{
 
+    /// @brief Gets the context precision for the given object.
+    /// @param o The object to get precision for.
+    /// @return The range representing the precision.
     Range *getContextPrecision(Object *o);
 
     /// @brief Returns true when semantics type of slice must be rebased.
+    /// @return true if slice type must be rebased.
     virtual bool isSliceTypeRebased() = 0;
 
     /// @brief Returns true when syntactic type must be rebased.
+    /// @return true if syntactic type must be rebased.
     virtual bool isSyntacticTypeRebased() = 0;
 
     /// @}
@@ -455,42 +475,75 @@ public:
     virtual void addStandardPackages(System *s);
 
     /// @brief Return True if the given library is native for the semantics.
-    virtual bool isNativeLibrary(const std::string &n, const bool hifFormat = false) = 0;
+    /// @param n The library name.
+    /// @param hifFormat If true, return in HIF format.
+    /// @return True if the library is native.
+    virtual bool isNativeLibrary(const std::string &n, bool hifFormat = false) = 0;
 
     /// @brief Map an input symbol into the corresponding output one.
+    /// @param decl The declaration.
+    /// @param key The key symbol.
+    /// @param value The value symbol.
+    /// @param srcSem The source semantics.
     /// @return True if map succeed.
     virtual MapCases
     mapStandardSymbol(Declaration *decl, KeySymbol &key, ValueSymbol &value, ILanguageSemantics *srcSem) = 0;
 
     /// @brief Map a library name in the correspondent header file name.
+    /// @param n The library name.
+    /// @return The corresponding header file name.
     std::string mapStandardFilename(const std::string &n);
 
     /// @brief Returns the mapped symbol w.r.t. the current semantics.
+    /// @param key The key symbol.
+    /// @param s The object.
+    /// @return The simplified symbol object.
     virtual Object *getSimplifiedSymbol(KeySymbol &key, Object *s) = 0;
 
     /// @brief Returns true if no namespaces is needed for given library name.
-    virtual bool isStandardInclusion(const std::string &n, const bool isLibInclusion);
+    /// @param n The library name.
+    /// @param isLibInclusion Whether it's a library inclusion.
+    /// @return true if no namespaces needed.
+    virtual bool isStandardInclusion(const std::string &n, bool isLibInclusion);
 
     /// @brief Creates a copy of the declaration renaming it adding
     /// the given suffix, and return the fresh new declaration.
+    /// @tparam T The type of the declaration.
+    /// @param decl The declaration to copy.
+    /// @param suffix The suffix to add.
+    /// @return The new suffixed declaration.
     template <typename T> T *getSuffixedCopy(T *decl, const std::string &suffix);
 
     /// @brief Returns the actual library filename (which could be different
     /// from the library name set).
+    /// @param n The library name.
+    /// @return The actual library filename.
     virtual std::string getStandardFilename(const std::string &n);
 
     /// @brief Returns the event method name w.r.t. current semantics.
-    virtual std::string getEventMethodName(const bool hifFormat = false) = 0;
+    /// @param hifFormat If true, return in HIF format.
+    /// @return The event method name.
+    virtual std::string getEventMethodName(bool hifFormat = false) = 0;
 
     /// @brief Returns <tt>true</tt> if the given call is an event call w.r.t.
     /// the current semantics, <tt>false</tt> otherwise.
+    /// @param call The function call to check.
+    /// @return true if it's an event call, false otherwise.
     virtual bool isEventCall(FunctionCall *call) = 0;
 
     /// @}
 
+    /// @brief Returns whether native semantics are being used.
+    /// @return true if native semantics are used, false otherwise.
     bool useNativeSemantics() const;
-    void setUseNativeSemantics(const bool b);
 
+    /// @brief Sets whether to use native semantics.
+    /// @param b true to use native semantics, false otherwise.
+    void setUseNativeSemantics(bool b);
+
+    /// @brief Creates a HIF-compatible name from the given name.
+    /// @param reqName The requested name.
+    /// @return The HIF-compatible name.
     std::string makeHifName(const std::string &reqName) const;
 
 protected:
@@ -518,21 +571,45 @@ protected:
     /// @{
 
     /// @brief Wrapper for a string with possibility to add a prefix "hif_"
-    std::string _makeHifName(const std::string &reqName, const bool hifFormat) const;
+    /// @param reqName The requested name.
+    /// @param hifFormat If true, add "hif_" prefix.
+    /// @return The name with optional prefix.
+    std::string _makeHifName(const std::string &reqName, bool hifFormat) const;
 
     /// @brief Wrapper for Enum creation with possibility to add a prefix "hif_".
-    TypeDef *_makeEnum(const char *enumName, const char *values[], size_t size, const bool hifFormat);
+    /// @param enumName The enum name.
+    /// @param values The enum values.
+    /// @param size The number of values.
+    /// @param hifFormat If true, add "hif_" prefix.
+    /// @return The created TypeDef.
+    TypeDef *_makeEnum(const char *enumName, const char *values[], size_t size, bool hifFormat);
 
     /// @brief Create a SubProgram with at most one parameter.
+    /// @param n The name.
+    /// @param retType The return type.
+    /// @param paramType The parameter type.
+    /// @param paramValue The parameter value.
+    /// @param unsupported Whether unsupported.
+    /// @param hifFormat Whether to use HIF format.
+    /// @return The created SubProgram.
     SubProgram *_makeAttribute(
         const std::string &n,
         Type *retType,
         Type *paramType,
         Value *paramValue,
-        const bool unsupported,
-        const bool hifFormat);
+        bool unsupported,
+        bool hifFormat);
 
     /// @brief Create a SubProgram with two parameters.
+    /// @param n The name.
+    /// @param retType The return type.
+    /// @param param1Type The first parameter type.
+    /// @param param1Value The first parameter value.
+    /// @param param2Type The second parameter type.
+    /// @param param2Value The second parameter value.
+    /// @param unsupported Whether unsupported.
+    /// @param hifFormat Whether to use HIF format.
+    /// @return The created SubProgram.
     SubProgram *_makeBinaryAttribute(
         const std::string &n,
         Type *retType,
@@ -540,10 +617,21 @@ protected:
         Value *param1Value,
         Type *param2Type,
         Value *param2Value,
-        const bool unsupported,
-        const bool hifFormat);
+        bool unsupported,
+        bool hifFormat);
 
-    /// @brief Create a SubProgram with two parameters.
+    /// @brief Create a SubProgram with three parameters.
+    /// @param n The name.
+    /// @param retType The return type.
+    /// @param param1Type The first parameter type.
+    /// @param param1Value The first parameter value.
+    /// @param param2Type The second parameter type.
+    /// @param param2Value The second parameter value.
+    /// @param param3Type The third parameter type.
+    /// @param param3Value The third parameter value.
+    /// @param unsupported Whether unsupported.
+    /// @param hifFormat Whether to use HIF format.
+    /// @return The created SubProgram.
     SubProgram *_makeTernaryAttribute(
         const std::string &n,
         Type *retType,
@@ -553,18 +641,29 @@ protected:
         Value *param2Value,
         Type *param3Type,
         Value *param3Value,
-        const bool unsupported,
-        const bool hifFormat);
+        bool unsupported,
+        bool hifFormat);
 
     /// @brief Create a SubProgram parameter.
+    /// @param scope The scope.
+    /// @param paramType The parameter type.
+    /// @param paramValue The parameter value.
+    /// @param paramIndex The parameter index.
+    /// @param hifFormat Whether to use HIF format.
     void _makeAttributeParameter(
         SubProgram *scope,
         Type *paramType,
         Value *paramValue,
         const std::string &paramIndex,
-        const bool hifFormat);
-    void
-    _addMultiparamFunction(LibraryDef *ld, const char *name, hif::HifFactory &factory, const bool hifFormat, Type *ret);
+        bool hifFormat);
+
+    /// @brief Adds a multiparameter function.
+    /// @param ld The library definition.
+    /// @param name The function name.
+    /// @param factory The factory.
+    /// @param hifFormat Whether to use HIF format.
+    /// @param ret The return type.
+    void _addMultiparamFunction(LibraryDef *ld, const char *name, hif::HifFactory &factory, bool hifFormat, Type *ret);
 
     /// @brief Make an array of type @p t with span <tt>left downto right</tt>.
     /// @param index The suffix for left and right.
@@ -573,18 +672,38 @@ protected:
     Array *_makeTemplateArray(const std::string &index, Type *t);
 
     /// @brief Check whether the given name is 'hif_' prefixed.
+    /// @param n The name to check.
+    /// @param unprefixed The unprefixed name output.
+    /// @return true if prefixed.
     bool _isHifPrefixed(const std::string &n, std::string &unprefixed);
 
     /// @brief Create a StandardSymbols key.
+    /// @param library The library name.
+    /// @param symbol The symbol name.
+    /// @return The key symbol.
     ILanguageSemantics::KeySymbol _makeKey(const char *library, const char *symbol);
 
     /// @brief Create a StandardSymbols value.
+    /// @param library The library array.
+    /// @param size The size of the library array.
+    /// @param symbol The symbol name.
+    /// @param action The map action.
+    /// @return The value symbol.
     ILanguageSemantics::ValueSymbol
     _makeValue(const char *library[], unsigned int size, const char *symbol, ILanguageSemantics::MapCases action);
 
     /// @name Methods used by canRemoveCastOnOperands.
     /// @{
 
+    /// @brief Checks concatenation casts for removal.
+    /// @param e The expression.
+    /// @param castT1 Cast type 1.
+    /// @param castT2 Cast type 2.
+    /// @param subT1 Sub type 1.
+    /// @param subT2 Sub type 2.
+    /// @param exprInfo Expression info.
+    /// @param info Info.
+    /// @return true if casts can be removed.
     virtual bool _checkConcatCasts(
         Expression *e,
         Type *castT1,
@@ -594,6 +713,16 @@ protected:
         ExpressionTypeInfo &exprInfo,
         ExpressionTypeInfo &info);
 
+    /// @brief Checks shift casts for removal.
+    /// @param e The expression.
+    /// @param castT1 Cast type 1.
+    /// @param castT2 Cast type 2.
+    /// @param subT1 Sub type 1.
+    /// @param subT2 Sub type 2.
+    /// @param exprInfo Expression info.
+    /// @param info Info.
+    /// @param canRemoveOnShift Whether shift cast can be removed.
+    /// @return true if casts can be removed.
     virtual bool _checkShiftCasts(
         Expression *e,
         Type *castT1,
@@ -604,6 +733,15 @@ protected:
         ExpressionTypeInfo &info,
         bool &canRemoveOnShift);
 
+    /// @brief Checks arithmetic casts for removal.
+    /// @param e The expression.
+    /// @param castT1 Cast type 1.
+    /// @param castT2 Cast type 2.
+    /// @param subT1 Sub type 1.
+    /// @param subT2 Sub type 2.
+    /// @param origInfo Original info.
+    /// @param simplifiedInfo Simplified info.
+    /// @return true if casts can be removed.
     virtual bool _checkArithmeticCasts(
         Expression *e,
         Type *castT1,
@@ -613,6 +751,15 @@ protected:
         ExpressionTypeInfo &origInfo,
         ExpressionTypeInfo &simplifiedInfo);
 
+    /// @brief Checks relational casts for removal.
+    /// @param e The expression.
+    /// @param castT1 Cast type 1.
+    /// @param castT2 Cast type 2.
+    /// @param subT1 Sub type 1.
+    /// @param subT2 Sub type 2.
+    /// @param origInfo Original info.
+    /// @param simplifiedInfo Simplified info.
+    /// @return true if casts can be removed.
     virtual bool _checkRelationalCasts(
         Expression *e,
         Type *castT1,
@@ -622,6 +769,15 @@ protected:
         ExpressionTypeInfo &origInfo,
         ExpressionTypeInfo &simplifiedInfo);
 
+    /// @brief Checks bitwise casts for removal.
+    /// @param e The expression.
+    /// @param castT1 Cast type 1.
+    /// @param castT2 Cast type 2.
+    /// @param subT1 Sub type 1.
+    /// @param subT2 Sub type 2.
+    /// @param origInfo Original info.
+    /// @param simplifiedInfo Simplified info.
+    /// @return true if casts can be removed.
     virtual bool _checkBitwiseCasts(
         Expression *e,
         Type *castT1,
@@ -631,6 +787,17 @@ protected:
         ExpressionTypeInfo &origInfo,
         ExpressionTypeInfo &simplifiedInfo);
 
+    /// @brief Checks generic casts for removal.
+    /// @param e The expression.
+    /// @param castT1 Cast type 1.
+    /// @param castT2 Cast type 2.
+    /// @param subT1 Sub type 1.
+    /// @param subT2 Sub type 2.
+    /// @param origInfo Original info.
+    /// @param simplifiedInfo Simplified info.
+    /// @param precOpt Precision options.
+    /// @param retOpt Return options.
+    /// @return true if casts can be removed.
     virtual bool _checkGenericCasts(
         Expression *e,
         Type *castT1,
@@ -662,4 +829,8 @@ private:
 } // namespace semantics
 } // namespace hif
 
+/// @brief Outputs the ILanguageSemantics object to an ostream.
+/// @param o The output stream.
+/// @param s The ILanguageSemantics object to output.
+/// @return The output stream.
 std::ostream &operator<<(std::ostream &o, const hif::semantics::ILanguageSemantics &s);

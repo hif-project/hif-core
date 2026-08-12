@@ -1,8 +1,9 @@
 /// @file SubProgram.cpp
 /// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #include "hif/classes/Parameter.hpp"
 
@@ -36,7 +37,7 @@ void SubProgram::setKind(Kind k) { _kind = k; }
 
 bool SubProgram::isStandard() const { return _isStandard; }
 
-void SubProgram::setStandard(const bool standard) { _isStandard = standard; }
+void SubProgram::setStandard(bool standard) { _isStandard = standard; }
 
 std::string SubProgram::kindToString(const Kind t)
 {

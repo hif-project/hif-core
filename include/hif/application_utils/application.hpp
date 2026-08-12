@@ -1,8 +1,9 @@
 /// @file application.hpp
 /// @brief Defines the Application class for managing HIF applications.
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #pragma once
 
@@ -34,7 +35,7 @@ public:
 
     Application(const Application &other)                      = delete;
     Application(Application &&other)                           = delete;
-    auto operator=(const Application &other) -> Application &  = delete;
+    auto operator=(const Application &other) -> Application  & = delete;
     auto operator=(const Application &&other) -> Application & = delete;
 
 private:

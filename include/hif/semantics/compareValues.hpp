@@ -1,8 +1,9 @@
 /// @file compareValues.hpp
 /// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #pragma once
 
@@ -34,7 +35,7 @@ enum class CompareResult : unsigned char {
 /// performing comparison.
 /// @return The comparison result between the two values.
 
-CompareResult compareValues(Value *v1, Value *v2, hif::semantics::ILanguageSemantics *refSem, const bool simplify);
+CompareResult compareValues(Value *v1, Value *v2, hif::semantics::ILanguageSemantics *refSem, bool simplify);
 
 /// @}
 

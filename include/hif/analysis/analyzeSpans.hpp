@@ -1,8 +1,9 @@
 /// @file analyzeSpans.hpp
 /// @brief Defines structures and functions for analyzing spans of indices.
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #pragma once
 
@@ -23,21 +24,6 @@ namespace analysis
 /// range of indices, or a slice of indices. It supports comparisons to
 /// facilitate its use in ordered containers.
 struct IndexInfo {
-    /// @brief Constructor.
-    IndexInfo();
-
-    /// @brief Destructor.
-    ~IndexInfo();
-
-    /// @brief Copy constructor.
-    /// @param other The other instance to copy.
-    IndexInfo(const IndexInfo &other);
-
-    /// @brief Assignment operator.
-    /// @param other The other instance to copy.
-    /// @return a reference to this instance.
-    auto operator=(const IndexInfo &other) -> IndexInfo &;
-
     /// @brief Comparison operator for ordered containers.
     /// @param other The other instance to compare against.
     /// @return true if this index is lower than other.
@@ -45,9 +31,11 @@ struct IndexInfo {
 
     /// @brief To be set only for single indices.
     Value *expression;
+
     /// @brief To be set to represent a range of indices, holding the same
     /// value.
     Range *range;
+
     /// @brief To be set for a span whose value is a span. Each index in the
     /// span will get the value at the matching index.
     Range *slice;
@@ -77,22 +65,31 @@ struct AnalyzeSpansResult {
         ValueIndex();
 
         /// @brief Destructor.
-        ~ValueIndex();
+        virtual ~ValueIndex() = default;
 
         /// @brief Copy constructor.
         /// @param other The other instance to copy.
-        ValueIndex(const ValueIndex &other);
+        ValueIndex(const ValueIndex &other) = default;
 
-        /// @brief Assignment operator.
+        /// @brief Copy assignment operator.
         /// @param other The other instance to copy.
         /// @return a reference to this instance.
-        auto operator=(ValueIndex other) -> ValueIndex &;
+        auto operator=(const ValueIndex &other) -> ValueIndex & = default;
+
+        /// @brief Move constructor.
+        /// @param other The other instance to move.
+        ValueIndex(ValueIndex &&other) noexcept = default;
+
+        /// @brief Move assignment operator.
+        /// @param other The other instance to move.
+        /// @return a reference to this instance.
+        auto operator=(ValueIndex &&other) noexcept -> ValueIndex & = default;
 
         /// @brief Constructor with kind and range.
         /// @param kind The kind of the index.
         /// @param min The minimum bound of the range.
         /// @param max The maximum bound of the range.
-        ValueIndex(IndexKind kind, unsigned long long min, unsigned long long max);
+        ValueIndex(IndexKind kind, std::uint64_t min, std::uint64_t max);
 
         /// @brief Swaps the contents of two ValueIndex objects.
         /// @param other The other instance to swap.
@@ -109,51 +106,60 @@ struct AnalyzeSpansResult {
 
         /// @brief Gets the maximum bound of the range or slice.
         /// @return the maximum bound of the range or slice.
-        auto getMax() const -> unsigned long long;
+        auto getMax() const -> std::uint64_t;
 
         /// @brief Gets the minimum bound of the range or slice.
         /// @return the minimum bound of the range or slice.
-        auto getMin() const -> unsigned long long;
+        auto getMin() const -> std::uint64_t;
 
         /// @brief Gets the size of the range or slice.
         /// @return the size of the range or slice.
-        auto getSize() const -> unsigned long long;
+        auto getSize() const -> std::uint64_t;
 
     private:
-        IndexKind _kind;                   ///< Kind of the index.
-        unsigned long long _index;         ///< Index value.
-        unsigned long long _minRangeIndex; ///< Minimum bound for ranges.
-        unsigned long long _maxRangeIndex; ///< Maximum bound for ranges.
-        unsigned long long _minSliceIndex; ///< Minimum bound for slices.
-        unsigned long long _maxSliceIndex; ///< Maximum bound for slices.
+        IndexKind _kind;              ///< Kind of the index.
+        std::uint64_t _index;         ///< Index value.
+        std::uint64_t _minRangeIndex; ///< Minimum bound for ranges.
+        std::uint64_t _maxRangeIndex; ///< Maximum bound for ranges.
+        std::uint64_t _minSliceIndex; ///< Minimum bound for slices.
+        std::uint64_t _maxSliceIndex; ///< Maximum bound for slices.
     };
 
     /// @brief The map storing indices and their associated values.
     using ValueMap = std::map<ValueIndex, Value *>;
 
     /// @brief Constructor.
-    AnalyzeSpansResult();
+    AnalyzeSpansResult() = default;
 
     /// @brief Destructor.
     ~AnalyzeSpansResult();
 
     /// @brief Copy constructor.
     /// @param other The other instance to copy.
-    AnalyzeSpansResult(const AnalyzeSpansResult &other);
+    AnalyzeSpansResult(const AnalyzeSpansResult &other) = delete;
 
     /// @brief Assignment operator.
     /// @param other The other instance to copy.
     /// @return a reference to this instance.
-    auto operator=(AnalyzeSpansResult other) -> AnalyzeSpansResult &;
+    auto operator=(const AnalyzeSpansResult &other) -> AnalyzeSpansResult & = delete;
+
+    /// @brief Move constructor.
+    /// @param other The other instance to move.
+    AnalyzeSpansResult(AnalyzeSpansResult &&other) noexcept;
+
+    /// @brief Move assignment operator.
+    /// @param other The other instance to move.
+    /// @return a reference to this instance.
+    auto operator=(AnalyzeSpansResult &&other) noexcept -> AnalyzeSpansResult &;
 
     /// @brief Swaps the contents of two AnalyzeSpansResult objects.
     /// @param other The other instance to swap with.
     void swap(AnalyzeSpansResult &other) noexcept;
 
-    ValueMap resultMap;          ///< The result map from indices to values.
-    unsigned long long maxBound; ///< The maximum bound shifted to zero.
-    bool allSpecified;           ///< True if indices fully cover the original span.
-    bool allOthers;              ///< True if all index values match a given default.
+    ValueMap resultMap;             ///< The result map from indices to values.
+    std::uint64_t maxBound = 0;     ///< The maximum bound shifted to zero.
+    bool allSpecified      = false; ///< True if indices fully cover the original span.
+    bool allOthers         = false; ///< True if all index values match a given default.
 };
 
 /// @brief Analyzes a set of indices to unroll and pack their values.
@@ -166,7 +172,6 @@ struct AnalyzeSpansResult {
 /// @param others Optional value for indices not present in `indexMap`.
 /// @param result The object to store the analysis result.
 /// @return False if an error occurs during analysis, true otherwise.
-
 auto analyzeSpans(
     Type *spanType,
     const IndexMap &indexMap,

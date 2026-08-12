@@ -1,8 +1,9 @@
 /// @file compareValues.cpp
 /// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #include "hif/semantics/compareValues.hpp"
 
@@ -20,7 +21,7 @@ namespace /*anon*/
 
 } // namespace
 
-CompareResult compareValues(Value *v1, Value *v2, hif::semantics::ILanguageSemantics *refSem, const bool simplify)
+CompareResult compareValues(Value *v1, Value *v2, hif::semantics::ILanguageSemantics *refSem, bool simplify)
 {
     hif::manipulation::SimplifyOptions opt;
     opt.replace_result = false;

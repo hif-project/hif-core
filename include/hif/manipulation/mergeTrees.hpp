@@ -1,8 +1,9 @@
 /// @file mergeTrees.hpp
 /// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #pragma once
 
@@ -14,12 +15,6 @@ namespace manipulation
 {
 /// @brief Options for mergeTrees().
 struct MergeTreesOptions {
-    MergeTreesOptions();
-    ~MergeTreesOptions();
-
-    MergeTreesOptions(const MergeTreesOptions &o);
-    MergeTreesOptions &operator=(const MergeTreesOptions &o);
-
     /// @brief Identify if print addictional infos. Default is false.
     bool printInfos;
 

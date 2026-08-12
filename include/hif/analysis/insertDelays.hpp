@@ -1,8 +1,9 @@
 /// @file insertDelays.hpp
 /// @brief Defines utilities for inserting delays into design units.
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #pragma once
 
@@ -20,59 +21,26 @@ namespace analysis
 /// the port to inject, the number of clock or delta cycles, and whether it
 /// represents a half-clock delay.
 struct DelayProperties {
-    using Size = std::size_t; ///< Alias for the size type used for delay values.
-
-    /// @brief Constructor.
-    DelayProperties();
-
-    /// @brief Destructor.
-    ~DelayProperties();
-
-    /// @brief Copy constructor.
-    /// @param other The other instance to copy.
-    DelayProperties(const DelayProperties &other);
-
-    /// @brief Assignment operator.
-    /// @param other The other instance to copy.
-    /// @return a reference to this instance.
-    auto operator=(const DelayProperties &other) -> DelayProperties &;
-
-    Port *port;       ///< The port where the delay will be injected.
-    Size clockCycles; ///< Number of clock cycles of delay.
-    Size deltas;      ///< Number of delta cycles of delay.
-    bool halfClock;   ///< Indicates if this is a half-clock delay.
+    Port *port              = nullptr; ///< The port where the delay will be injected.
+    std::size_t clockCycles = 0;       ///< Number of clock cycles of delay.
+    std::size_t deltas      = 0;       ///< Number of delta cycles of delay.
+    bool halfClock          = false;   ///< Indicates if this is a half-clock delay.
 };
 
 /// @brief Stores delay information associated with a specific design unit.
 /// @details This structure contains the details of delays to be injected into a
 /// design unit, including the reference clock, reset, and working edges.
 struct DelayInfos {
-    using Size        = DelayProperties::Size;             ///< Alias for the size type.
     using DelayMap    = std::map<Port *, DelayProperties>; ///< Map of ports to delay properties.
     using WorkingEdge = ProcessInfos::WorkingEdge;         ///< Alias for the working edge type.
     using ResetPhase  = ProcessInfos::ResetPhase;          ///< Alias for the reset phase type.
 
-    /// @brief Constructor.
-    DelayInfos();
-
-    /// @brief Destructor.
-    ~DelayInfos();
-
-    /// @brief Copy constructor.
-    /// @param other The other instance to copy.
-    DelayInfos(const DelayInfos &other);
-
-    /// @brief Assignment operator.
-    /// @param other The other instance to copy.
-    /// @return a reference to this instance.
-    auto operator=(const DelayInfos &other) -> DelayInfos &;
-
-    View *view;               ///< The view to be injected with delays.
-    Port *clock;              ///< The reference clock for the delays.
-    Port *reset;              ///< The reference reset for the delays.
-    WorkingEdge workingEdge;  ///< The clock's working edge.
-    ResetPhase resetPhase;    ///< The reset phase.
-    DelayMap delayProperties; ///< Map of delays to be injected.
+    View *view              = nullptr;                ///< The view to be injected with delays.
+    Port *clock             = nullptr;                ///< The reference clock for the delays.
+    Port *reset             = nullptr;                ///< The reference reset for the delays.
+    WorkingEdge workingEdge = ProcessInfos::NO_EDGE;  ///< The clock's working edge.
+    ResetPhase resetPhase   = ProcessInfos::NO_PHASE; ///< The reset phase.
+    DelayMap delayProperties;                         ///< Map of delays to be injected.
 };
 
 /// @brief List of delay information to be applied to design units.

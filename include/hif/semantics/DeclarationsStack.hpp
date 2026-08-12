@@ -1,8 +1,9 @@
 /// @file DeclarationsStack.hpp
-/// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// @brief Stack data structure for managing HIF declarations.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #pragma once
 
@@ -19,8 +20,13 @@ namespace semantics
 class DeclarationsStack
 {
 public:
+    /// @brief Type definition for symbols in the declarations stack.
     typedef Object Symbol;
+
+    /// @brief Type definition for a map of symbols to declarations.
     typedef std::map<Symbol *, Declaration *> DeclarationsMap;
+
+    /// @brief Type definition for a stack of declaration maps.
     typedef std::list<DeclarationsMap> Stack;
 
     /// @brief Constructor.

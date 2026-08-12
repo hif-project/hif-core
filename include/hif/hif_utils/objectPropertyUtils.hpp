@@ -1,8 +1,9 @@
 /// @file objectPropertyUtils.hpp
 /// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #pragma once
 
@@ -15,7 +16,7 @@ namespace hif
 /// @param obj The object on which to operate.
 /// @param n The new name to set.
 ///
-void objectSetName(Object *obj, const std::string& n);
+void objectSetName(Object *obj, const std::string &n);
 
 /// @brief Returns the name of a generic object.
 /// @param obj The object on which to operate.
@@ -54,6 +55,7 @@ Type *objectSetType(Object *obj, Type *t);
 ///
 
 BList<TPAssign> *objectGetTemplateAssignList(Object *obj);
+
 /// @brief Return the list of template parameters (if any).
 ///
 /// @param obj The object on which to operate.
@@ -61,6 +63,7 @@ BList<TPAssign> *objectGetTemplateAssignList(Object *obj);
 ///
 
 BList<Declaration> *objectGetTemplateParameterList(Object *obj);
+
 /// @brief Returns the list of parameters (if any).
 ///
 /// @param obj The object on which to operate.
@@ -68,6 +71,7 @@ BList<Declaration> *objectGetTemplateParameterList(Object *obj);
 ///
 
 BList<Parameter> *objectGetParameterList(Object *obj);
+
 /// @brief Returns the list of declarations (if any).
 ///
 /// @param obj The object on which to operate.
@@ -75,6 +79,7 @@ BList<Parameter> *objectGetParameterList(Object *obj);
 ///
 
 BList<Declaration> *objectGetDeclarationList(Object *obj);
+
 /// @brief Returns the list of libraries (if any).
 ///
 /// @param obj The object on which to operate.
@@ -82,6 +87,7 @@ BList<Declaration> *objectGetDeclarationList(Object *obj);
 ///
 
 BList<Library> *objectGetLibraryList(Object *obj);
+
 /// @brief Returns the specified language in the object if present,
 /// otherwise the language specified in the nearest parent having one.
 /// @param obj The object on which to operate.
@@ -93,11 +99,12 @@ hif::LanguageID objectGetLanguage(Object *obj);
 /// @brief Returns the specified process flavour in the object if present,
 /// otherwise the process flavour specified in the nearest parent having one.
 /// @param obj The object on which to operate.
-/// @param The output specified process flavour in the object, or in the nearest parent having one.
+/// @param flavour The output specified process flavour in the object, or in the nearest parent having one.
 /// @return true if found.
 ///
 
 bool objectGetProcessFlavour(Object *obj, ProcessFlavour &flavour);
+
 /// @brief Sets the language ID of an object if any.
 ///
 /// @param obj The object on which the language ID is to be set.
@@ -105,7 +112,7 @@ bool objectGetProcessFlavour(Object *obj, ProcessFlavour &flavour);
 /// @param recursive If recoursive in parents.
 ///
 
-void objectSetLanguage(Object *obj, const hif::LanguageID id, const bool recursive = false);
+void objectSetLanguage(Object *obj, const hif::LanguageID id, bool recursive = false);
 
 /// @brief Sets an object <tt>instance</tt> field.
 /// @note If instance can be set and <tt>obj</tt> already has an instance,
@@ -115,6 +122,7 @@ void objectSetLanguage(Object *obj, const hif::LanguageID id, const bool recursi
 /// @return <tt>true</tt> if instance is set, <tt>false</tt> otherwise.
 
 bool objectSetInstance(Object *obj, Object *instance);
+
 /// @brief Gets an object <tt>instance</tt> field.
 /// @param obj The object on which to operate.
 /// @return The <tt>instance</tt> field of the object.
@@ -125,12 +133,20 @@ Object *objectGetInstance(Object *obj);
 struct ObjectSensitivityOptions {
     ObjectSensitivityOptions();
     ~ObjectSensitivityOptions();
+
+    /// @brief Copy constructor.
+    /// @param other The object to copy from.
     ObjectSensitivityOptions(const ObjectSensitivityOptions &other);
+
+    /// @brief Assignment operator.
+    /// @param other The object to assign from.
+    /// @return Reference to this object.
     ObjectSensitivityOptions &operator=(const ObjectSensitivityOptions &other);
 
     /// @brief Check all objects with sensitivity (e.g. Wait). Default is false.
     bool checkAll;
-    // Check only in case of direct parent. Default is false.
+
+    /// @brief Check only in case of direct parent. Default is false.
     bool directParent;
     /// Considers function calls as valid if appears into sensitivity lists. Default is true.
     bool considerFunctionCalls;
@@ -142,12 +158,14 @@ struct ObjectSensitivityOptions {
 /// @return <tt>true</tt> if the object belongs to a sensitivity list, <tt>false</tt> otherwise.
 
 bool objectIsInSensitivityList(Object *obj, const ObjectSensitivityOptions &opts = ObjectSensitivityOptions());
+
 /// @brief Returns the nearest parent sensitivity of an object.
 /// @param obj The object to be checked.
 /// @param opts The options.
 /// @return The sensitivity list if the object belongs to a sensitivity list, nullptr otherwise.
 
 BList<Value> *objectGetSensitivityList(Object *obj, const ObjectSensitivityOptions &opts = ObjectSensitivityOptions());
+
 /// @brief Returns true of given object is a process.
 /// In case of StateTables and Assigns without parent, returns true.
 ///
@@ -166,7 +184,7 @@ bool objectIsProcess(Object *o);
 /// @return True if given object is into process.
 ///
 
-bool objectIsInProcess(Object *o, const bool matchAssigns = true, const bool matchStarting = true);
+bool objectIsInProcess(Object *o, bool matchAssigns = true, bool matchStarting = true);
 
 /// @brief Returns the wrapping process.
 /// In case of StateTables and Assigns without parent, returns them.
@@ -177,7 +195,8 @@ bool objectIsInProcess(Object *o, const bool matchAssigns = true, const bool mat
 /// @return True if given object is into process.
 ///
 
-Object *objectGetProcess(Object *o, const bool matchAssigns = true, const bool matchStarting = true);
+Object *objectGetProcess(Object *o, bool matchAssigns = true, bool matchStarting = true);
+
 /// @brief Returns true if given object is standard.
 /// In case of has no standard flag it returns false.
 ///
@@ -194,7 +213,7 @@ bool objectIsStandard(Object *o);
 /// @param isStandard The new value.
 ///
 
-void objectSetStandard(Object *o, const bool isStandard);
+void objectSetStandard(Object *o, bool isStandard);
 
 /// @brief Returns true if given object is external.
 /// In case of has no external flag it returns false.
@@ -212,14 +231,17 @@ bool objectIsExternal(Object *o);
 /// @param isExternal The new value.
 ///
 
-void objectSetExternal(Object *o, const bool isExternal);
+void objectSetExternal(Object *o, bool isExternal);
+
 /// @brief Checks whether given object is a nullptr pointer.
 ///
 /// @param o The object to be checked.
+/// @param sem The language semantics.
 /// @return True when it is a nullptr pointer representation.
 ///
 
 bool objectIsNUllPointer(Object *o, semantics::ILanguageSemantics *sem);
+
 /// @brief Return the object port direction field.
 /// If no direction field is present, dir_none is returned.
 /// @param o The object.

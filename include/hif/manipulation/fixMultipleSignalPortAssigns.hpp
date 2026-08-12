@@ -1,16 +1,17 @@
 /// @file fixMultipleSignalPortAssigns.hpp
 /// @brief Handles issues related to multiple writes on signals or ports.
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #pragma once
 
 #include "hif/classes/classes.hpp"
 
 #ifdef __clang__
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdocumentation"
+#    pragma clang diagnostic push
+#    pragma clang diagnostic ignored "-Wdocumentation"
 #endif
 
 namespace hif
@@ -53,14 +54,19 @@ struct FixMultipleSignalPortAssignsOptions {
 /// @code
 /// // declarations
 /// sc_signal<sc_bv<8> > sig;
+
 /// sc_bv<4> sig1;
+
 /// sc_bv<4> sig2;
+
 ///
 /// // processes
 /// void module::process1 () {
 ///     sig.range(3, 0) = sig1;
+
 ///     if (sig.read().range(7, 4) == "0000")
 ///         sig = "11111111";
+
 /// }
 /// @endcode
 ///
@@ -74,8 +80,11 @@ struct FixMultipleSignalPortAssignsOptions {
 /// @code
 /// // declarations
 /// sc_signal<sc_bv<8> > sig;
+
 /// sc_bv<4> sig1;
+
 /// sc_bv<4> sig2;
+
 ///
 /// // processes
 /// void module::process1 () {
@@ -102,15 +111,20 @@ struct FixMultipleSignalPortAssignsOptions {
 /// @code
 /// // declarations
 /// sc_signal<sc_bv<8> > sig;
+
 /// sc_bv<4> sig1;
+
 /// sc_bv<4> sig2;
+
 ///
 /// // processes
 /// void module::process1 () {
 ///     sig.range(3, 0) = sig1;
+
 /// }
 /// void module::process2 () {
 ///     sig.range(7, 4) = sig2;
+
 /// }
 /// @endcode
 ///
@@ -119,8 +133,11 @@ struct FixMultipleSignalPortAssignsOptions {
 /// @code
 /// // declarations
 /// sc_signal<sc_bv<8> > sig;
+
 /// sc_bv<4> sig1;
+
 /// sc_bv<4> sig2;
+
 ///
 /// // processes
 /// void module::process1 () {
@@ -147,8 +164,11 @@ struct FixMultipleSignalPortAssignsOptions {
 /// @code
 /// // declarations
 /// sc_signal<sc_bv<8> > sig;
+
 /// sc_bv<4> sig1;
+
 /// sc_bv<4> sig2;
+
 /// sc_bit sig_mspw[8];             // new array of signals
 ///
 /// // processes
@@ -156,18 +176,23 @@ struct FixMultipleSignalPortAssignsOptions {
 ///     // support function in hif_utils.hpp
 //      // it represents sig_mspw.range(3, 0) = sig1
 ///     hif_array_slice_assign(sig_mspw, sig1, 3, 0, 4);
+
 /// }
 /// void module::process2 () {
 ///     // support function in hif_utils.hpp
 //      // it represents sig_mspw.range(7, 4) = sig2
 ///     hif_array_slice_assign(sig_mspw, sig2, 7, 4, 4);
+
 /// }
 /// // sensible to all the signals of sig_mspw
 /// void module::sig_assign () {
 ///     sc_bv<8> sig_var;
+
 ///     for (int i = 0; i < 8; ++i)
 ///         sig_var[i] = sig_mspw[i];
+
 ///     sig = sig_var;
+
 /// @endcode
 ///
 /// In this way we have an unique process that updates the whole signal,
@@ -186,5 +211,5 @@ bool fixMultipleSignalPortAssigns(
 } // namespace hif
 
 #ifdef __clang__
-#pragma clang diagnostic pop
+#    pragma clang diagnostic pop
 #endif

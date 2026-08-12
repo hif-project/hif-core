@@ -1,8 +1,9 @@
 /// @file terminalPrefixUtils.cpp
 /// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #include "hif/hif_utils/terminalPrefixUtils.hpp"
 
@@ -13,43 +14,6 @@
 namespace hif
 {
 
-namespace /*anon*/
-{
-
-} // namespace
-TerminalPrefixOptions::TerminalPrefixOptions()
-    : recurseIntoFieldRefs(true)
-    , recurseIntoMembers(true)
-    , recurseIntoSlices(true)
-    , recurseIntoDerefExpressions(false)
-{
-    // ntd
-}
-
-TerminalPrefixOptions::~TerminalPrefixOptions()
-{
-    // ntd
-}
-
-TerminalPrefixOptions::TerminalPrefixOptions(const TerminalPrefixOptions &other)
-    : recurseIntoFieldRefs(other.recurseIntoFieldRefs)
-    , recurseIntoMembers(other.recurseIntoMembers)
-    , recurseIntoSlices(other.recurseIntoSlices)
-    , recurseIntoDerefExpressions(other.recurseIntoDerefExpressions)
-{
-    // ntd
-}
-
-TerminalPrefixOptions &TerminalPrefixOptions::operator=(const TerminalPrefixOptions &other)
-{
-    if (&other == this)
-        return *this;
-    recurseIntoFieldRefs        = other.recurseIntoFieldRefs;
-    recurseIntoMembers          = other.recurseIntoMembers;
-    recurseIntoSlices           = other.recurseIntoSlices;
-    recurseIntoDerefExpressions = other.recurseIntoDerefExpressions;
-    return *this;
-}
 Value *getTerminalPrefix(Value *obj, const TerminalPrefixOptions &opt)
 {
     if (obj == nullptr)

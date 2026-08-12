@@ -1,8 +1,9 @@
 /// @file propagateSymbols.hpp
 /// @brief Provides utilities for propagating symbols in a hierarchical design.
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #pragma once
 
@@ -19,10 +20,10 @@ struct PropagationOptions {
     /// @name Traits
     /// @{
 
-    typedef std::list<Object *> DeclarationTargets; ///< List of objects to propagate.
-    typedef std::set<Object *> ObjectSet;           ///< Set of unique objects.
-    typedef std::set<hif::View *> ViewSet;          ///< Set of unique views.
-    typedef std::map<hif::View *, ViewSet> ViewMap; ///< Map tracking view dependencies.
+    using DeclarationTargets = std::list<Object *>;            ///< List of objects to propagate.
+    using ObjectSet          = std::set<Object *>;             ///< Set of unique objects.
+    using ViewSet            = std::set<hif::View *>;          ///< Set of unique views.
+    using ViewMap            = std::map<hif::View *, ViewSet>; ///< Map tracking view dependencies.
 
     /// @}
     /// @name Configuration options

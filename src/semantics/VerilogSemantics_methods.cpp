@@ -1,8 +1,9 @@
 /// @file VerilogSemantics_methods.cpp
 /// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #include <cmath>
 #include <iostream>
@@ -17,7 +18,7 @@ namespace hif
 {
 namespace semantics
 {
-LibraryDef *VerilogSemantics::getStandardPackage(const bool hifFormat)
+LibraryDef *VerilogSemantics::getStandardPackage(bool hifFormat)
 {
     LibraryDef *ld = new LibraryDef();
     ld->setName(_makeHifName("standard", hifFormat));
@@ -27,8 +28,8 @@ LibraryDef *VerilogSemantics::getStandardPackage(const bool hifFormat)
     if (hifFormat)
         factory.setSemantics(HIFSemantics::getInstance());
 
-    Bitvector *templateBV = factory.bitvector(
-        factory.range(new Identifier("left"), dir_downto, new Identifier("right")));
+    Bitvector *templateBV =
+        factory.bitvector(factory.range(new Identifier("left"), dir_downto, new Identifier("right")));
 
     Type *integerUnsBV = nullptr;
     Type *integerBV    = nullptr;
@@ -402,7 +403,7 @@ LibraryDef *VerilogSemantics::getStandardPackage(const bool hifFormat)
     return ld;
 }
 
-LibraryDef *VerilogSemantics::getVAMSStandardPackage(const bool hifFormat)
+LibraryDef *VerilogSemantics::getVAMSStandardPackage(bool hifFormat)
 {
     LibraryDef *ld = new LibraryDef();
     ld->setName(_makeHifName("vams_standard", hifFormat));
@@ -475,8 +476,7 @@ LibraryDef *VerilogSemantics::getVAMSStandardPackage(const bool hifFormat)
             factory.array(
                 new Range(
                     new IntValue(0),
-                    factory.expression(
-                        new Identifier("left1"), hif::op_minus, new Identifier("right1")),
+                    factory.expression(new Identifier("left1"), hif::op_minus, new Identifier("right1")),
                     hif::dir_upto),
                 factory.typeRef("T")),
             _makeHifName("vams_branch", hifFormat).c_str(),
@@ -491,8 +491,7 @@ LibraryDef *VerilogSemantics::getVAMSStandardPackage(const bool hifFormat)
             factory.array(
                 new Range(
                     new IntValue(0),
-                    factory.expression(
-                        new Identifier("left1"), hif::op_minus, new Identifier("right1")),
+                    factory.expression(new Identifier("left1"), hif::op_minus, new Identifier("right1")),
                     hif::dir_upto),
                 factory.typeRef("T")),
             _makeHifName("vams_branch", hifFormat).c_str(),
@@ -505,8 +504,7 @@ LibraryDef *VerilogSemantics::getVAMSStandardPackage(const bool hifFormat)
             factory.array(
                 new Range(
                     new IntValue(0),
-                    factory.expression(
-                        new Identifier("left2"), hif::op_minus, new Identifier("right2")),
+                    factory.expression(new Identifier("left2"), hif::op_minus, new Identifier("right2")),
                     hif::dir_upto),
                 factory.typeRef("T")),
             _makeHifName("vams_branch", hifFormat).c_str(),
@@ -701,14 +699,10 @@ LibraryDef *VerilogSemantics::getVAMSStandardPackage(const bool hifFormat)
          factory.templateValueParameter(hif::copy(integerBV), "right2")),
         (factory.parameter(factory.real(), "param1", factory.realval(0.0)),
          factory.parameter(
-             factory.array(
-                 new Range(new Identifier("left1"), new Identifier("right1"), dir_downto),
-                 factory.real()),
+             factory.array(new Range(new Identifier("left1"), new Identifier("right1"), dir_downto), factory.real()),
              "param2", factory.aggregate(nullptr, factory.aggregatealt(factory.intval(0), factory.realval(0.0)))),
          factory.parameter(
-             factory.array(
-                 new Range(new Identifier("left2"), new Identifier("right2"), dir_downto),
-                 factory.real()),
+             factory.array(new Range(new Identifier("left2"), new Identifier("right2"), dir_downto), factory.real()),
              "param3", factory.aggregate(nullptr, factory.aggregatealt(factory.intval(0), factory.realval(0.0)))),
          factory.parameter(factory.real(), "param4", factory.realval(0.0)))));
     //laplace_zd
@@ -720,14 +714,10 @@ LibraryDef *VerilogSemantics::getVAMSStandardPackage(const bool hifFormat)
          factory.templateValueParameter(hif::copy(integerBV), "right2")),
         (factory.parameter(factory.real(), "param1", factory.realval(0.0)),
          factory.parameter(
-             factory.array(
-                 new Range(new Identifier("left1"), new Identifier("right1"), dir_downto),
-                 factory.real()),
+             factory.array(new Range(new Identifier("left1"), new Identifier("right1"), dir_downto), factory.real()),
              "param2", factory.aggregate(nullptr, factory.aggregatealt(factory.intval(0), factory.realval(0.0)))),
          factory.parameter(
-             factory.array(
-                 new Range(new Identifier("left2"), new Identifier("right2"), dir_downto),
-                 factory.real()),
+             factory.array(new Range(new Identifier("left2"), new Identifier("right2"), dir_downto), factory.real()),
              "param3", factory.aggregate(nullptr, factory.aggregatealt(factory.intval(0), factory.realval(0.0)))),
          factory.parameter(factory.real(), "param4", factory.realval(0.0)))));
     //laplace_np
@@ -739,14 +729,10 @@ LibraryDef *VerilogSemantics::getVAMSStandardPackage(const bool hifFormat)
          factory.templateValueParameter(hif::copy(integerBV), "right2")),
         (factory.parameter(factory.real(), "param1", factory.realval(0.0)),
          factory.parameter(
-             factory.array(
-                 new Range(new Identifier("left1"), new Identifier("right1"), dir_downto),
-                 factory.real()),
+             factory.array(new Range(new Identifier("left1"), new Identifier("right1"), dir_downto), factory.real()),
              "param2", factory.aggregate(nullptr, factory.aggregatealt(factory.intval(0), factory.realval(0.0)))),
          factory.parameter(
-             factory.array(
-                 new Range(new Identifier("left2"), new Identifier("right2"), dir_downto),
-                 factory.real()),
+             factory.array(new Range(new Identifier("left2"), new Identifier("right2"), dir_downto), factory.real()),
              "param3", factory.aggregate(nullptr, factory.aggregatealt(factory.intval(0), factory.realval(0.0)))),
          factory.parameter(factory.real(), "param4", factory.realval(0.0)))));
     //laplace_nd
@@ -758,14 +744,10 @@ LibraryDef *VerilogSemantics::getVAMSStandardPackage(const bool hifFormat)
          factory.templateValueParameter(hif::copy(integerBV), "right2")),
         (factory.parameter(factory.real(), "param1", factory.realval(0.0)),
          factory.parameter(
-             factory.array(
-                 new Range(new Identifier("left1"), new Identifier("right1"), dir_downto),
-                 factory.real()),
+             factory.array(new Range(new Identifier("left1"), new Identifier("right1"), dir_downto), factory.real()),
              "param2", factory.aggregate(nullptr, factory.aggregatealt(factory.intval(0), factory.realval(0.0)))),
          factory.parameter(
-             factory.array(
-                 new Range(new Identifier("left2"), new Identifier("right2"), dir_downto),
-                 factory.real()),
+             factory.array(new Range(new Identifier("left2"), new Identifier("right2"), dir_downto), factory.real()),
              "param3", factory.aggregate(nullptr, factory.aggregatealt(factory.intval(0), factory.realval(0.0)))),
          factory.parameter(factory.real(), "param4", factory.realval(0.0)))));
     //zi_zp
@@ -777,14 +759,10 @@ LibraryDef *VerilogSemantics::getVAMSStandardPackage(const bool hifFormat)
          factory.templateValueParameter(hif::copy(integerBV), "right2")),
         (factory.parameter(factory.real(), "param1", factory.realval(0.0)),
          factory.parameter(
-             factory.array(
-                 new Range(new Identifier("left1"), new Identifier("right1"), dir_downto),
-                 factory.real()),
+             factory.array(new Range(new Identifier("left1"), new Identifier("right1"), dir_downto), factory.real()),
              "param2", factory.aggregate(nullptr, factory.aggregatealt(factory.intval(0), factory.realval(0.0)))),
          factory.parameter(
-             factory.array(
-                 new Range(new Identifier("left2"), new Identifier("right2"), dir_downto),
-                 factory.real()),
+             factory.array(new Range(new Identifier("left2"), new Identifier("right2"), dir_downto), factory.real()),
              "param3", factory.aggregate(nullptr, factory.aggregatealt(factory.intval(0), factory.realval(0.0)))),
          factory.parameter(factory.real(), "param4", factory.realval(0.0)))));
     //zi_zd
@@ -796,14 +774,10 @@ LibraryDef *VerilogSemantics::getVAMSStandardPackage(const bool hifFormat)
          factory.templateValueParameter(hif::copy(integerBV), "right2")),
         (factory.parameter(factory.real(), "param1", factory.realval(0.0)),
          factory.parameter(
-             factory.array(
-                 new Range(new Identifier("left1"), new Identifier("right1"), dir_downto),
-                 factory.real()),
+             factory.array(new Range(new Identifier("left1"), new Identifier("right1"), dir_downto), factory.real()),
              "param2", factory.aggregate(nullptr, factory.aggregatealt(factory.intval(0), factory.realval(0.0)))),
          factory.parameter(
-             factory.array(
-                 new Range(new Identifier("left2"), new Identifier("right2"), dir_downto),
-                 factory.real()),
+             factory.array(new Range(new Identifier("left2"), new Identifier("right2"), dir_downto), factory.real()),
              "param3", factory.aggregate(nullptr, factory.aggregatealt(factory.intval(0), factory.realval(0.0)))),
          factory.parameter(factory.real(), "param4", factory.realval(0.0)))));
     //zi_np
@@ -815,14 +789,10 @@ LibraryDef *VerilogSemantics::getVAMSStandardPackage(const bool hifFormat)
          factory.templateValueParameter(hif::copy(integerBV), "right2")),
         (factory.parameter(factory.real(), "param1", factory.realval(0.0)),
          factory.parameter(
-             factory.array(
-                 new Range(new Identifier("left1"), new Identifier("right1"), dir_downto),
-                 factory.real()),
+             factory.array(new Range(new Identifier("left1"), new Identifier("right1"), dir_downto), factory.real()),
              "param2", factory.aggregate(nullptr, factory.aggregatealt(factory.intval(0), factory.realval(0.0)))),
          factory.parameter(
-             factory.array(
-                 new Range(new Identifier("left2"), new Identifier("right2"), dir_downto),
-                 factory.real()),
+             factory.array(new Range(new Identifier("left2"), new Identifier("right2"), dir_downto), factory.real()),
              "param3", factory.aggregate(nullptr, factory.aggregatealt(factory.intval(0), factory.realval(0.0)))),
          factory.parameter(factory.real(), "param4", factory.realval(0.0)))));
     //zi_nd
@@ -834,14 +804,10 @@ LibraryDef *VerilogSemantics::getVAMSStandardPackage(const bool hifFormat)
          factory.templateValueParameter(hif::copy(integerBV), "right2")),
         (factory.parameter(factory.real(), "param1", factory.realval(0.0)),
          factory.parameter(
-             factory.array(
-                 new Range(new Identifier("left1"), new Identifier("right1"), dir_downto),
-                 factory.real()),
+             factory.array(new Range(new Identifier("left1"), new Identifier("right1"), dir_downto), factory.real()),
              "param2", factory.aggregate(nullptr, factory.aggregatealt(factory.intval(0), factory.realval(0.0)))),
          factory.parameter(
-             factory.array(
-                 new Range(new Identifier("left2"), new Identifier("right2"), dir_downto),
-                 factory.real()),
+             factory.array(new Range(new Identifier("left2"), new Identifier("right2"), dir_downto), factory.real()),
              "param3", factory.aggregate(nullptr, factory.aggregatealt(factory.intval(0), factory.realval(0.0)))),
          factory.parameter(factory.real(), "param4", factory.realval(0.0)))));
 
@@ -1231,7 +1197,7 @@ LibraryDef *VerilogSemantics::getVAMSStandardPackage(const bool hifFormat)
     return ld;
 }
 
-LibraryDef *VerilogSemantics::getVAMSConstantsPackage(const bool hifFormat)
+LibraryDef *VerilogSemantics::getVAMSConstantsPackage(bool hifFormat)
 {
     LibraryDef *ld = new LibraryDef();
     ld->setName(_makeHifName("vams_constants", hifFormat));
@@ -1305,7 +1271,7 @@ LibraryDef *VerilogSemantics::getVAMSConstantsPackage(const bool hifFormat)
     return ld;
 }
 
-LibraryDef *VerilogSemantics::getVAMSDisciplinesPackage(const bool hifFormat)
+LibraryDef *VerilogSemantics::getVAMSDisciplinesPackage(bool hifFormat)
 {
     LibraryDef *ld = new LibraryDef();
     ld->setName(_makeHifName("vams_disciplines", hifFormat));
@@ -1763,7 +1729,7 @@ LibraryDef *VerilogSemantics::getVAMSDisciplinesPackage(const bool hifFormat)
     return ld;
 }
 
-LibraryDef *VerilogSemantics::getVAMSDriverAccessPackage(const bool hifFormat)
+LibraryDef *VerilogSemantics::getVAMSDriverAccessPackage(bool hifFormat)
 {
     LibraryDef *ld = new LibraryDef();
     ld->setName(_makeHifName("vams_driver_access", hifFormat));
@@ -1837,7 +1803,7 @@ LibraryDef *VerilogSemantics::getVAMSDriverAccessPackage(const bool hifFormat)
     return ld;
 }
 
-LibraryDef *VerilogSemantics::getStandardLibrary(const std::string& n)
+LibraryDef *VerilogSemantics::getStandardLibrary(const std::string &n)
 {
     if (n == "standard") {
         static LibraryDef *lStandard = nullptr;
@@ -1869,11 +1835,10 @@ LibraryDef *VerilogSemantics::getStandardLibrary(const std::string& n)
     return nullptr;
 }
 
-bool VerilogSemantics::isNativeLibrary(const std::string& n, bool hifFormat)
+bool VerilogSemantics::isNativeLibrary(const std::string &n, bool hifFormat)
 {
     if (n == _makeHifName("standard", hifFormat) || n == _makeHifName("vams_standard", hifFormat) ||
-        n == _makeHifName("vams_constants", hifFormat) ||
-        n == _makeHifName("vams_discipline", hifFormat) ||
+        n == _makeHifName("vams_constants", hifFormat) || n == _makeHifName("vams_discipline", hifFormat) ||
         n == _makeHifName("vams_driver_access", hifFormat))
         return true;
 
@@ -1901,18 +1866,18 @@ VerilogSemantics::MapCases VerilogSemantics::mapStandardSymbol(
     ILanguageSemantics * /*srcSem*/)
 {
     std::string libName;
-    const bool isMine = _isHifPrefixed(key.first, libName);
+    bool isMine = _isHifPrefixed(key.first, libName);
     // messageAssert(isMine, "Asked name not prefixed with 'hif_': " + unprefixed, nullptr, nullptr);
     if (isMine) {
         std::string symName;
-        const bool ok = _isHifPrefixed(key.second, symName);
+        bool ok = _isHifPrefixed(key.second, symName);
         messageAssert(ok, "Found not prefixed symbol in prefixed library", decl, this);
 
         value.libraries.clear();
         value.libraries.push_back(libName);
         value.mappedSymbol   = symName;
         // Libraries are always replaced, therefore internal symbols must be kept
-        const bool isLibrary = (libName == symName);
+        bool isLibrary = (libName == symName);
         value.mapAction      = isLibrary ? MAP_DELETE : MAP_KEEP;
         return value.mapAction;
     }
@@ -1930,7 +1895,7 @@ Object *VerilogSemantics::getSimplifiedSymbol(KeySymbol & /*key*/, Object *s)
     messageError("Not implemented yet", s, this);
 }
 
-bool VerilogSemantics::isStandardInclusion(const std::string& n, const bool /*isLibInclusion*/)
+bool VerilogSemantics::isStandardInclusion(const std::string &n, bool /*isLibInclusion*/)
 {
     if (n == "standard")
         return true;
@@ -1938,7 +1903,7 @@ bool VerilogSemantics::isStandardInclusion(const std::string& n, const bool /*is
     return false;
 }
 
-std::string VerilogSemantics::getEventMethodName(const bool /*hifFormat*/)
+std::string VerilogSemantics::getEventMethodName(bool /*hifFormat*/)
 {
     // has no event method
     return NameTable::getInstance()->none();

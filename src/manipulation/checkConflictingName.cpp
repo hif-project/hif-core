@@ -1,8 +1,9 @@
 /// @file checkConflictingName.cpp
 /// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #include "hif/manipulation/checkConflictingName.hpp"
 
@@ -74,9 +75,9 @@ ConflictChecker::~ConflictChecker()
 }
 
 #if (defined _MSC_VER)
-#pragma warning(push)
+#    pragma warning(push)
 // disabling unreferenced params under Windows
-#pragma warning(disable : 4805)
+#    pragma warning(disable : 4805)
 #endif
 int ConflictChecker::visitContents(hif::Contents &o)
 {
@@ -221,7 +222,7 @@ int ConflictChecker::visitSubProgram(hif::SubProgram &o)
     return ret;
 }
 #if defined(_MSC_VER) && !(defined __GNUC__)
-#pragma warning(pop)
+#    pragma warning(pop)
 #endif
 
 } // namespace

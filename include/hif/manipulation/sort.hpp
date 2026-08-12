@@ -1,8 +1,9 @@
 /// @file sort.hpp
 /// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #pragma once
 
@@ -21,10 +22,12 @@ struct SortOptions {
     /// @brief Indicates whether to recursively proceed with the visit
     /// on children nodes. Default is true.
     bool sortChildren;
+
     /// @brief <tt>true</tt> if parameters sorting methods must be called to sort
     /// PortAssigns, ParameterAssigns, etc. Default is false.
     bool sortParameters;
 };
+
 /// @brief Sorts the given object according with passed options.
 ///
 /// @param obj The object to be sorted.

@@ -1,8 +1,9 @@
 /// @file INamedObject.cpp
 /// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #include "hif/features/INamedObject.hpp"
 #include "hif/NameTable.hpp"
@@ -15,7 +16,6 @@ namespace features
 
 void INamedObject::setName(const std::string &name)
 {
-    messageAssert(!name.empty(), "setName() called with nullptr pointer to name.", nullptr, nullptr);
     _name = name;
 }
 

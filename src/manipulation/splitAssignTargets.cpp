@@ -1,8 +1,9 @@
 /// @file splitAssignTargets.cpp
 /// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #include "hif/manipulation/splitAssignTargets.hpp"
 
@@ -14,18 +15,19 @@
 #include "hif/trash.hpp"
 
 #ifdef __clang__
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+#    pragma clang diagnostic push
+#    pragma clang diagnostic ignored "-Wdeprecated-declarations"
 #endif
 #ifdef __GNUC__
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#    pragma GCC diagnostic push
+#    pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 #endif
 #ifdef _MSC_VER
-#pragma warning(disable : 4996)
+#    pragma warning(disable : 4996)
 #endif
 
 // Upper bound to choose whether simplify or not assignments.
+/// @brief Threshold for assign unrolling.
 #define ASSIGN_UNROLL_THRESHOLD 1000
 namespace hif
 {
@@ -70,9 +72,9 @@ private:
     _createRange(Value *targetId, Type *originalTargetType, Value *assignSource, RangeDirection dir, Value *&minBound);
     bool _splitRecordValue(Assign *o);
     Slice *_fixSlice(Slice *inner, Slice *sl);
-    Range *_makeRange(const RangeDirection dir, unsigned long long minIndex, unsigned long long maxIndex, Value *v);
-    Value *_makeBound(unsigned long long index, Value *v);
-    Value *_makeElement(Value *val, Type *sourceType, Type *targetType, Value *min, unsigned long long i);
+    Range *_makeRange(const RangeDirection dir, std::uint64_t minIndex, std::uint64_t maxIndex, Value *v);
+    Value *_makeBound(std::uint64_t index, Value *v);
+    Value *_makeElement(Value *val, Type *sourceType, Type *targetType, Value *min, std::uint64_t i);
 
     SplitConcats(const SplitConcats &);
     SplitConcats &operator=(const SplitConcats &);
@@ -130,7 +132,7 @@ int SplitConcats::visitProcedureCall(ProcedureCall &o)
 
 int SplitConcats::visitLibraryDef(LibraryDef &o)
 {
-    if (_opt.skipStandardDeclarations && o.isStandard())
+    if (_opt.skip_standard_declarations && o.isStandard())
         return 0;
     return GuideVisitor::visitLibraryDef(o);
 }
@@ -150,7 +152,7 @@ int SplitConcats::visitPortAssign(PortAssign &o)
 
 int SplitConcats::visitView(View &o)
 {
-    if (_opt.skipStandardDeclarations && o.isStandard())
+    if (_opt.skip_standard_declarations && o.isStandard())
         return 0;
     return GuideVisitor::visitView(o);
 }
@@ -282,11 +284,11 @@ bool SplitConcats::_splitNonArrayType(Assign *o)
         return false;
 
     Range *span           = hif::typeGetSpan(baseType, _sem);
-    unsigned long long bw = hif::semantics::spanGetBitwidth(span, _sem);
+    std::uint64_t bw = hif::semantics::spanGetBitwidth(span, _sem);
     if (bw == 0 || bw <= _opt.maxBitwidth)
         return false;
 
-    unsigned long long replicates = bw / _opt.maxBitwidth;
+    std::uint64_t replicates = bw / _opt.maxBitwidth;
     if (bw % _opt.maxBitwidth != 0) {
         ++replicates;
         messageError("TODO: Unsupported case of non-multiple bitwidth", nullptr, nullptr);
@@ -296,7 +298,7 @@ bool SplitConcats::_splitNonArrayType(Assign *o)
     Value *minBound               = hif::rangeGetMinBound(span);
     const hif::RangeDirection dir = span->getDirection();
     Type *sourceType              = hif::semantics::getSemanticType(o->getRightHandSide(), _sem);
-    const bool needCast           = !hif::equals(targetType, sourceType);
+    bool needCast           = !hif::equals(targetType, sourceType);
     Value *target                 = o->getLeftHandSide();
     Value *source                 = o->getRightHandSide();
     Slice *leftSlice              = dynamic_cast<Slice *>(target);
@@ -312,7 +314,7 @@ bool SplitConcats::_splitNonArrayType(Assign *o)
     // b_128[63:0][63:0] = expr[63:0]
     BList<Object>::iterator it(o);
 
-    for (unsigned long long i = 0; i < replicates; ++i) {
+    for (std::uint64_t i = 0; i < replicates; ++i) {
         Assign *as = new Assign();
 
         Slice *left = _factory.slice(
@@ -352,7 +354,7 @@ bool SplitConcats::_splitArrayType(Assign *o)
         return false;
 
     Range *targetSpan     = hif::typeGetSpan(baseType, _sem);
-    unsigned long long bw = hif::semantics::spanGetBitwidth(targetSpan, _sem);
+    std::uint64_t bw = hif::semantics::spanGetBitwidth(targetSpan, _sem);
     if (bw == 0)
         return false;
     if (bw > _opt.unrollingUpperBound && _opt.unrollingUpperBound > 0)
@@ -367,12 +369,12 @@ bool SplitConcats::_splitArrayType(Assign *o)
     Type *sourceBaseType    = hif::semantics::getBaseType(source, false, _sem);
     Type *targetElementType = hif::semantics::getVectorElementType(baseType, _sem);
     Type *sourceElementType = hif::semantics::getVectorElementType(sourceBaseType, _sem);
-    const bool needCast     = !hif::equals(targetElementType, sourceElementType);
+    bool needCast     = !hif::equals(targetElementType, sourceElementType);
 
     BList<Object>::iterator it(o);
     hif::CopyOptions opt;
     opt.copySemanticsTypes = true;
-    for (unsigned long long i = 0; i < bw; ++i) {
+    for (std::uint64_t i = 0; i < bw; ++i) {
         Assign *ass = new Assign();
         ass->setLeftHandSide(_factory.member(hif::copy(target), _makeBound(i, min)));
 
@@ -470,10 +472,10 @@ bool SplitConcats::_fixArrayParameters(Object *o)
         if (dynamic_cast<Signal *>(decl) == nullptr && dynamic_cast<Port *>(decl) == nullptr)
             continue;
 
-        const std::string n = std::string(id->getName()) + "_supp";
-        std::string varName = hif::NameTable::getInstance()->getFreshName(n.c_str());
-        Variable *var       = _factory.variable(hif::copy(type), varName);
-        StateTable *st      = hif::getNearestParent<StateTable>(o);
+        const std::string &n = std::string(id->getName()) + "_supp";
+        std::string varName  = hif::NameTable::getInstance()->getFreshName(n.c_str());
+        Variable *var        = _factory.variable(hif::copy(type), varName);
+        StateTable *st       = hif::getNearestParent<StateTable>(o);
         messageAssert(st != nullptr, "Cannot find enclosing scope State Table", o, _sem);
 
         Assign *ass         = hif::getNearestParent<Assign>(o);
@@ -596,7 +598,7 @@ Slice *SplitConcats::_fixSlice(Slice *inner, Slice *sl)
 }
 
 Range *
-SplitConcats::_makeRange(const RangeDirection dir, unsigned long long minIndex, unsigned long long maxIndex, Value *v)
+SplitConcats::_makeRange(const RangeDirection dir, std::uint64_t minIndex, std::uint64_t maxIndex, Value *v)
 {
     Range *ret = new Range();
     ret->setDirection(dir);
@@ -607,9 +609,9 @@ SplitConcats::_makeRange(const RangeDirection dir, unsigned long long minIndex, 
     return ret;
 }
 
-Value *SplitConcats::_makeBound(unsigned long long index, Value *v)
+Value *SplitConcats::_makeBound(std::uint64_t index, Value *v)
 {
-    const bool isZero =
+    bool isZero =
         (v == nullptr) || (dynamic_cast<IntValue *>(v) != nullptr && static_cast<IntValue *>(v)->getValue() == 0);
 
     Value *ret = nullptr;
@@ -623,12 +625,12 @@ Value *SplitConcats::_makeBound(unsigned long long index, Value *v)
     return ret;
 }
 
-Value *SplitConcats::_makeElement(Value *val, Type *sourceType, Type *targetType, Value *min, unsigned long long i)
+Value *SplitConcats::_makeElement(Value *val, Type *sourceType, Type *targetType, Value *min, std::uint64_t i)
 {
     Value *ret                    = nullptr;
-    long long ill                 = static_cast<long long>(i);
-    const bool isSourceVectorType = hif::semantics::isVectorType(sourceType, _sem);
-    const bool isTargetArray      = (dynamic_cast<Array *>(targetType) != nullptr);
+    std::int64_t ill                 = static_cast<std::int64_t>(i);
+    bool isSourceVectorType = hif::semantics::isVectorType(sourceType, _sem);
+    bool isTargetArray      = (dynamic_cast<Array *>(targetType) != nullptr);
 
     if (isSourceVectorType && isTargetArray) {
         Type *nested = hif::typeGetNestedType(targetType, _sem, 1);
@@ -678,7 +680,7 @@ Value *SplitConcats::_makeElement(Value *val, Type *sourceType, Type *targetType
 // SplitAssignTargetOptions
 // /////////////////////////////////////////////////////////////////////////////
 SplitAssignTargetOptions::SplitAssignTargetOptions()
-    : skipStandardDeclarations(true)
+    : skip_standard_declarations(true)
     , splitConcats(false)
     , splitVectors(false)
     , splitIntegers(false)
@@ -699,7 +701,7 @@ SplitAssignTargetOptions::~SplitAssignTargetOptions()
 }
 
 SplitAssignTargetOptions::SplitAssignTargetOptions(const SplitAssignTargetOptions &other)
-    : skipStandardDeclarations(other.skipStandardDeclarations)
+    : skip_standard_declarations(other.skip_standard_declarations)
     , splitConcats(other.splitConcats)
     , splitVectors(other.splitVectors)
     , splitIntegers(other.splitIntegers)
@@ -722,7 +724,7 @@ SplitAssignTargetOptions &SplitAssignTargetOptions::operator=(SplitAssignTargetO
 
 void SplitAssignTargetOptions::swap(SplitAssignTargetOptions &other)
 {
-    std::swap(skipStandardDeclarations, other.skipStandardDeclarations);
+    std::swap(skip_standard_declarations, other.skip_standard_declarations);
     std::swap(splitConcats, other.splitConcats);
     std::swap(splitVectors, other.splitVectors);
     std::swap(splitIntegers, other.splitIntegers);

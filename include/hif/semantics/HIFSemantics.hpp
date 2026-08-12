@@ -1,8 +1,9 @@
 /// @file HIFSemantics.hpp
-/// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// @brief Core semantics and rules for HIF language constructs.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #pragma once
 
@@ -22,6 +23,7 @@ public:
     /// @brief Returns the name of the semantics.
     /// @return The name of the semantics.
     virtual std::string getName() const;
+
     /// @brief This function returns a struct containing informations about
     /// cast to be applied to the operands, in order to make the given
     /// operation HIF compliant.
@@ -52,6 +54,7 @@ public:
     /// @return Value pointer to the type default value.
     ///
     virtual Value *getTypeDefaultValue(Type *t, Declaration *d);
+
     /// @brief Function that given a Type returns a Type pointer to
     ///   the correspondent HIF type (if exists) according HIF language.
     ///
@@ -60,6 +63,7 @@ public:
     ///
     virtual Type *getMapForType(Type *t);
     virtual Operator getMapForOperator(Operator srcOperation, Type *srcT1, Type *srcT2, Type *dstT1, Type *dstT2);
+
     /// @brief Function that given a type and an operation to do with
     /// operators of that type returns a pointer to a Type
     /// representing the type that operands have to be cast into to
@@ -74,8 +78,7 @@ public:
     /// @return Type pointer to the suggested type to obtain
     /// a valid operation in current semantics  (if possible).
     ///
-    virtual Type *
-    getSuggestedTypeForOp(Type *t, Operator operation, Type *opType, Object *startingObject, const bool isOp1);
+    virtual Type *getSuggestedTypeForOp(Type *t, Operator operation, Type *opType, Object *startingObject, bool isOp1);
     ///
     /// @brief Function that given a ConstValue returns a Type
     /// pointer representing the type to associate to the constant according
@@ -121,12 +124,13 @@ public:
     /// @return Value pointer to the explicit cast.
     ///
     virtual Value *explicitCast(Value *valueToCast, Type *castType, Type *srcType);
+
     /// @brief Function that given a real value returns the correspondent
     /// int value according to semantics rules (e.g., VHDL rounds while
     /// SystemC truncates).
     /// @param v The value to convert.
     /// @return The converted value.
-    virtual long long transformRealToInt(const double v);
+    virtual std::int64_t transformRealToInt(const double v);
     /// @name Semantic checks methods
     ///@{
 
@@ -211,6 +215,7 @@ public:
     /// @return True if is allowed.
     ///
     virtual bool isTemplateAllowedType(Type *t);
+
     /// @brief Return the mapped of given type that is allowed as type
     /// in template parameter w.r.t. semantics.
     /// @param t The type to map.
@@ -223,13 +228,20 @@ public:
     /// Singleton stuff.
     ///
     /// @brief Function thats return an instance to VHDLSemantic class.
-    ///
+    /// @return The instance of HIFSemantics.
     static HIFSemantics *getInstance();
+
     /// @brief Checks whether a name is forbidden in the current semantics.
+    /// @param decl The declaration to check.
+    /// @return true if the name is forbidden, false otherwise.
     virtual bool isForbiddenName(Declaration *decl);
 
+    /// @brief Returns true when semantics type of slice must be rebased.
+    /// @return true if slice type must be rebased.
     virtual bool isSliceTypeRebased();
 
+    /// @brief Returns true when syntactic type must be rebased.
+    /// @return true if syntactic type must be rebased.
     virtual bool isSyntacticTypeRebased();
 
     virtual Type *getMemberSemanticType(Member *m);
@@ -237,28 +249,45 @@ public:
     /// @name Standard packages
     /// @{
 
+    /// @brief Gets the standard package.
+    /// @return The standard package LibraryDef.
     LibraryDef *getStandardPackage();
 
     /// @brief Get the eventual LibraryDef matching the given name.
-    /// @param n The name.
+    /// @param name The name.
     /// @return The LibraryDef or nullptr.
-    virtual LibraryDef *getStandardLibrary(const std::string & name);
+    virtual LibraryDef *getStandardLibrary(const std::string &name);
 
     /// @brief Return True if the given library is native for the semantics.
-    virtual bool isNativeLibrary(const std::string & name, const bool hifFormat = false);
+    /// @param name The library name.
+    /// @param hifFormat Whether to use HIF format.
+    /// @return True if the library is native, false otherwise.
+    virtual bool isNativeLibrary(const std::string &name, bool hifFormat = false);
 
     /// @brief Map an input symbol into the corresponding output one.
+    /// @param decl The declaration.
+    /// @param key The key symbol.
+    /// @param value The value symbol.
+    /// @param srcSem The source semantics.
+    /// @return The mapping case.
     virtual MapCases
     mapStandardSymbol(Declaration *decl, KeySymbol &key, ValueSymbol &value, ILanguageSemantics *srcSem);
 
     /// @brief Returns the mapped symbol w.r.t. the current semantics.
+    /// @param key The key symbol.
+    /// @param s The object.
+    /// @return The simplified symbol.
     virtual Object *getSimplifiedSymbol(KeySymbol &key, Object *s);
 
     /// @brief Returns the event method name w.r.t. current semantics.
-    virtual std::string getEventMethodName(const bool hifFormat = false);
+    /// @param hifFormat True if HIF format.
+    /// @return The event method name.
+    virtual std::string getEventMethodName(bool hifFormat = false);
 
     /// @brief Returns <tt>true</tt> if the given call is an event call w.r.t.
     /// the current semantics, <tt>false</tt> otherwise.
+    /// @param call The function call to check.
+    /// @return True if event call, false otherwise.
     virtual bool isEventCall(FunctionCall *call);
 
     /// @}
@@ -305,10 +334,10 @@ private:
     _getSimplifiedSymbol_withVerilogIntegers(Object *s, bool intReturnedType, const std::vector<int> &intParamIndexes);
 
     /// Splitting cases.
-    LibraryDef *_getVHDLStandardLibrary(const std::string & name);
-    LibraryDef *_getVerilogStandardLibrary(const std::string & name);
-    LibraryDef *_getSystemCStandardLibrary(const std::string & name);
-    LibraryDef *_getHIFStandardLibrary(const std::string & name);
+    LibraryDef *_getVHDLStandardLibrary(const std::string &name);
+    LibraryDef *_getVerilogStandardLibrary(const std::string &name);
+    LibraryDef *_getSystemCStandardLibrary(const std::string &name);
+    LibraryDef *_getHIFStandardLibrary(const std::string &name);
 
     typedef std::list<hif::SubProgram *> SubList;
     typedef std::map<std::string, SubList> DeclarationMap;

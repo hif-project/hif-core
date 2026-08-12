@@ -1,8 +1,9 @@
 /// @file typePropertyUtils.hpp
 /// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #pragma once
 
@@ -31,7 +32,7 @@ bool typeIsConstexpr(Type *t, hif::semantics::ILanguageSemantics *refLang);
 /// @return True if signed flag is true, false otherwise.
 ///
 
-bool typeIsSigned(Type *to, hif::semantics::ILanguageSemantics *refLang, const bool skip = false);
+bool typeIsSigned(Type *to, hif::semantics::ILanguageSemantics *refLang, bool skip = false);
 
 /// @brief Return if the generic type has flag logic set to true.
 /// @param to The typeObject from which take logic flag.
@@ -59,7 +60,7 @@ bool typeIsResolved(Type *to, hif::semantics::ILanguageSemantics *refLang);
 /// @return the Range provided by to, nullptr otherwise.
 ///
 
-Range *typeGetSpan(Type *to, hif::semantics::ILanguageSemantics *sem, const bool manageStrings = false);
+Range *typeGetSpan(Type *to, hif::semantics::ILanguageSemantics *sem, bool manageStrings = false);
 
 /// @brief Set constexpr flag of type if the type has this flag.
 /// @param type The typeObject.
@@ -68,7 +69,7 @@ Range *typeGetSpan(Type *to, hif::semantics::ILanguageSemantics *sem, const bool
 /// <tt>false</tt> otherwise.
 ///
 
-bool typeSetConstexpr(Type *type, const bool v);
+bool typeSetConstexpr(Type *type, bool v);
 
 /// @brief Set sign flag of type if the type has this flag.
 /// @param type The typeObject.
@@ -78,7 +79,7 @@ bool typeSetConstexpr(Type *type, const bool v);
 /// <tt>false</tt> otherwise.
 ///
 
-bool typeSetSigned(Type *type, const bool sign, hif::semantics::ILanguageSemantics *refLang);
+bool typeSetSigned(Type *type, bool sign, hif::semantics::ILanguageSemantics *refLang);
 
 /// @brief Set logic flag of type if the type has this flag.
 /// @param type The typeObject.
@@ -88,7 +89,7 @@ bool typeSetSigned(Type *type, const bool sign, hif::semantics::ILanguageSemanti
 /// <tt>false</tt> otherwise.
 ///
 
-bool typeSetLogic(Type *type, const bool logic, hif::semantics::ILanguageSemantics *refLang);
+bool typeSetLogic(Type *type, bool logic, hif::semantics::ILanguageSemantics *refLang);
 
 /// @brief Set resolved flag of type if the type has this flag.
 /// @param type The typeObject.
@@ -98,7 +99,8 @@ bool typeSetLogic(Type *type, const bool logic, hif::semantics::ILanguageSemanti
 /// <tt>false</tt> otherwise.
 ///
 
-bool typeSetResolved(Type *type, const bool resolved, hif::semantics::ILanguageSemantics *refLang);
+bool typeSetResolved(Type *type, bool resolved, hif::semantics::ILanguageSemantics *refLang);
+
 /// @brief Function that set range given as parameter to type,
 ///	if type allowed range specification.
 ///	@param to type to set the range
@@ -115,8 +117,8 @@ bool typeSetSpan(
     Type *to,
     Range *ro,
     hif::semantics::ILanguageSemantics *refLang,
-    const bool deleteIfNotSet = false,
-    const bool manageStrings  = false);
+    bool deleteIfNotSet = false,
+    bool manageStrings  = false);
 
 /// @brief Function that first find base type of <tt>to</tt>
 /// and in a second time find the cardinality of the canonicalized <tt>t</tt>.
@@ -132,7 +134,7 @@ bool typeSetSpan(
 ///
 
 unsigned int
-typeGetCardinality(Type *type, hif::semantics::ILanguageSemantics *refLang, const bool considerOnlyBits = true);
+typeGetCardinality(Type *type, hif::semantics::ILanguageSemantics *refLang, bool considerOnlyBits = true);
 
 /// @brief Returns the inner type of mono/multi-dimensional composite type.
 ///
@@ -142,7 +144,7 @@ typeGetCardinality(Type *type, hif::semantics::ILanguageSemantics *refLang, cons
 /// @return The inner type of in case of composite, nullptr otherwise.
 ///
 
-Type *typeGetNestedType(Type *t, hif::semantics::ILanguageSemantics *refLang, long long depth = -1);
+Type *typeGetNestedType(Type *t, hif::semantics::ILanguageSemantics *refLang, std::int64_t depth = -1);
 
 /// @brief Checks whether givent type has symbols referring to templates.
 ///

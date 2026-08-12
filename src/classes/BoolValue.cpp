@@ -1,8 +1,9 @@
 /// @file BoolValue.cpp
 /// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #include "hif/classes/BoolValue.hpp"
 #include "hif/HifVisitor.hpp"
@@ -16,7 +17,7 @@ BoolValue::BoolValue()
     // ntd
 }
 
-BoolValue::BoolValue(const bool b)
+BoolValue::BoolValue(bool b)
     : _value(b)
 {
     // ntd
@@ -35,6 +36,6 @@ void BoolValue::_calculateFields() { ConstValue::_calculateFields(); }
 
 bool BoolValue::getValue() const { return _value; }
 
-void BoolValue::setValue(const bool x) { _value = x; }
+void BoolValue::setValue(bool x) { _value = x; }
 
 } // namespace hif

@@ -1,8 +1,9 @@
 /// @file transformSpanToRange.cpp
 /// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #include <cmath>
 
@@ -22,7 +23,7 @@ namespace /*anon*/
 
 } // namespace
 
-Range *transformSpanToRange(Range *r, hif::semantics::ILanguageSemantics *refLang, const bool isSigned)
+Range *transformSpanToRange(Range *r, hif::semantics::ILanguageSemantics *refLang, bool isSigned)
 {
     messageDebugAssert(r != nullptr, "Unexpected nullptr range", nullptr, refLang);
 
@@ -34,10 +35,10 @@ Range *transformSpanToRange(Range *r, hif::semantics::ILanguageSemantics *refLan
         IntValue *i = static_cast<IntValue *>(spanDimension);
         if (isSigned) {
             range->setRightBound(
-                new IntValue(static_cast<long long>(pow(2, static_cast<double>(i->getValue()) - 1) - 1)));
-            range->setLeftBound(new IntValue(static_cast<long long>(-pow(2, static_cast<double>(i->getValue()) - 1))));
+                new IntValue(static_cast<std::int64_t>(pow(2, static_cast<double>(i->getValue()) - 1) - 1)));
+            range->setLeftBound(new IntValue(static_cast<std::int64_t>(-pow(2, static_cast<double>(i->getValue()) - 1))));
         } else {
-            range->setRightBound(new IntValue(static_cast<long long>(pow(2, static_cast<double>(i->getValue())) - 1)));
+            range->setRightBound(new IntValue(static_cast<std::int64_t>(pow(2, static_cast<double>(i->getValue())) - 1)));
             range->setLeftBound(new IntValue(0));
         }
     } else {

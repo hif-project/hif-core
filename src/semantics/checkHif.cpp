@@ -1,8 +1,9 @@
 /// @file checkHif.cpp
 /// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #include "hif/semantics/checkHif.hpp"
 
@@ -14,11 +15,11 @@
 #include "hif/semantics/semantics.hpp"
 
 #ifdef __clang__
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wunused-member-function"
+#    pragma clang diagnostic push
+#    pragma clang diagnostic ignored "-Wunused-member-function"
 #elif defined __GNUC__
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-function"
+#    pragma GCC diagnostic push
+#    pragma GCC diagnostic ignored "-Wunused-function"
 #endif
 
 namespace hif
@@ -68,8 +69,7 @@ private:
     hif::semantics::DeclarationOptions _dopt;
     ObjectList *_wrongSymbols;
 
-    template <typename T>
-    bool _checkSemanticsSymbolDeclaration(T *symbol);
+    template <typename T> bool _checkSemanticsSymbolDeclaration(T *symbol);
 
     // disabled
     CheckSemanticsType(const CheckSemanticsType &);
@@ -101,8 +101,7 @@ bool CheckSemanticsType::checkSemanticsType(Type *semType, ObjectList &symbolLis
     return _wrongSymbols->empty();
 }
 
-template <typename T>
-bool CheckSemanticsType::_checkSemanticsSymbolDeclaration(T *symbol)
+template <typename T> bool CheckSemanticsType::_checkSemanticsSymbolDeclaration(T *symbol)
 {
     typename T::DeclarationType *decl = getDeclaration(symbol, _sem, _dopt);
     if (decl == nullptr)
@@ -315,7 +314,7 @@ private:
     void _printMessage(bool is_warning, std::string object, std::string message, Object &o);
 
     /// @brief Check whether initial value is required.
-    bool _checkDeclRequiredInitialVal(DataDeclaration *o, const bool checkFlag);
+    bool _checkDeclRequiredInitialVal(DataDeclaration *o, bool checkFlag);
 
     /// @brief Check if initial value of a declaration object can be assigned
     /// to declaration with Hif semantic.
@@ -326,15 +325,13 @@ private:
     bool _checkSyntacticType(ConstValue &o);
 
     /// @brief Checks if given logic values are allowed.
-    bool _checkLogicValues(Object *o, const std::string &s, const bool isLogic);
+    bool _checkLogicValues(Object *o, const std::string &s, bool isLogic);
 
     /// @brief Check existence of declaration and its support.
-    template <typename T>
-    bool _checkDeclaration(T *o);
+    template <typename T> bool _checkDeclaration(T *o);
 
     /// @brief Check the result of instantiate call on given symbol.
-    template <typename T>
-    bool _checkInstantiate(T *o);
+    template <typename T> bool _checkInstantiate(T *o);
 
     /// @brief Check The semantics type correctness.
     bool _checkSemanticsType(TypedObject *o);
@@ -451,7 +448,7 @@ int CheckHifDescription::visitPort(Port &o)
         }
     }
 
-    const bool check = (o.getDirection() == dir_out || o.getDirection() == dir_inout) && _semOpt.port_outInitialValue;
+    bool check = (o.getDirection() == dir_out || o.getDirection() == dir_inout) && _semOpt.port_outInitialValue;
     if (!_checkDeclRequiredInitialVal(&o, check)) {
         return 1;
     }
@@ -823,7 +820,7 @@ int CheckHifDescription::visitBitValue(BitValue &o)
     if (!_checkSyntacticType(o))
         return 1;
 
-    const bool isLogic = o.getType() != nullptr || hif::typeIsLogic(o.getType(), _sem);
+    bool isLogic = o.getType() != nullptr || hif::typeIsLogic(o.getType(), _sem);
     if (!_checkLogicValues(&o, o.toString(), isLogic))
         return 1;
 
@@ -842,7 +839,7 @@ int CheckHifDescription::visitBitvectorValue(BitvectorValue &o)
     if (!_checkSyntacticType(o))
         return 1;
 
-    const bool isLogic = o.getType() != nullptr || hif::typeIsLogic(o.getType(), _sem);
+    bool isLogic = o.getType() != nullptr || hif::typeIsLogic(o.getType(), _sem);
     if (!_checkLogicValues(&o, o.getValue(), isLogic))
         return 1;
 
@@ -947,7 +944,7 @@ int CheckHifDescription::visitRecordValue(RecordValue &o)
 
         Type *bt                  = hif::semantics::getBaseType(p->getType(), false, _sem);
         Record *r                 = dynamic_cast<Record *>(bt);
-        const bool initValAllowed = (r != nullptr && r->fields.empty());
+        bool initValAllowed = (r != nullptr && r->fields.empty());
 
         if (!initValAllowed) {
             _printError("empty alts list. (2)", o);
@@ -1183,9 +1180,9 @@ int CheckHifDescription::visitExpression(Expression &o)
 {
     int ret = GuideVisitor::visitExpression(o);
 
-    const bool unExpr = o.getValue2() == nullptr;
-    const bool binOp  = hif::operatorIsBinary(o.getOperator());
-    const bool unOp   = hif::operatorIsUnary(o.getOperator());
+    bool unExpr = o.getValue2() == nullptr;
+    bool binOp  = hif::operatorIsBinary(o.getOperator());
+    bool unOp   = hif::operatorIsUnary(o.getOperator());
     if ((unExpr && !unOp) || (!unExpr && !binOp)) {
         _printError("Mismatch between operator arity and operands number.", o);
         return 1;
@@ -1584,7 +1581,7 @@ int CheckHifDescription::visitSlice(Slice &o)
     }
 
     if (dynamic_cast<Bool *>(prefixBaseType) != nullptr) {
-        unsigned long long bw = hif::semantics::spanGetBitwidth(o.getSpan(), _sem);
+        std::uint64_t bw = hif::semantics::spanGetBitwidth(o.getSpan(), _sem);
         if (bw != 1 && bw != 0) {
             _printError("Invalid slice on single bit type", o);
             return 1;
@@ -1642,7 +1639,7 @@ int CheckHifDescription::visitRange(Range &o)
         return 1;
     }
 
-    const bool isString = dynamic_cast<String *>(o.getParent()) != nullptr;
+    bool isString = dynamic_cast<String *>(o.getParent()) != nullptr;
     if (isString) {
         if (o.getLeftBound() == nullptr && o.getRightBound() != nullptr) {
             if (o.getDirection() != dir_downto) {
@@ -2138,7 +2135,7 @@ int CheckHifDescription::visitWait(Wait &o)
         Type *ti = _sem->getMapForType(&ii);
         hif::EqualsOptions opt;
         opt.checkOnlyTypes     = true;
-        const bool eqClassName = hif::equals(ti, tc, opt);
+        bool eqClassName = hif::equals(ti, tc, opt);
         delete ti;
         if (!eqClassName) {
             _printError("Repetition type is not valid.", o);
@@ -2154,7 +2151,7 @@ int CheckHifDescription::visitWait(Wait &o)
 
         ProcessFlavour flavour;
         const auto found = hif::objectGetProcessFlavour(&o, flavour);
-        const bool isRtl = !found || flavour != pf_analog;
+        bool isRtl = !found || flavour != pf_analog;
         if (isRtl) {
             _printError("Actions inside wait are not valid for RTL processes.", o);
             return 1;
@@ -2442,7 +2439,7 @@ bool CheckHifDescription::_checkDeclInitialValAssign(DataDeclaration &o)
 }
 bool CheckHifDescription::_checkSyntacticType(ConstValue &o)
 {
-    const bool needed = hif::manipulation::needSyntacticType(&o);
+    bool needed = hif::manipulation::needSyntacticType(&o);
     if (needed && o.getType() == nullptr) {
         _printError("Syntactic type not present.", o);
         return false;
@@ -2466,7 +2463,7 @@ bool CheckHifDescription::_checkSyntacticType(ConstValue &o)
     return true;
 }
 
-bool CheckHifDescription::_checkLogicValues(Object *o, const std::string &s, const bool isLogic)
+bool CheckHifDescription::_checkLogicValues(Object *o, const std::string &s, bool isLogic)
 {
     for (std::string::const_iterator i = s.begin(); i != s.end(); ++i) {
         switch (*i) {
@@ -2528,8 +2525,7 @@ bool CheckHifDescription::_checkSemanticsType(TypedObject *o)
     return true;
 }
 
-template <typename T>
-bool CheckHifDescription::_checkDeclaration(T *o)
+template <typename T> bool CheckHifDescription::_checkDeclaration(T *o)
 {
     typename T::DeclarationType *decl = getDeclaration(o, _sem);
     if (decl == nullptr) {
@@ -2547,7 +2543,7 @@ bool CheckHifDescription::_checkDeclaration(T *o)
         return false;
     }
 
-    const bool unsupported = decl->checkProperty(PROPERTY_UNSUPPORTED);
+    bool unsupported = decl->checkProperty(PROPERTY_UNSUPPORTED);
     if (unsupported) {
         _printError("Declaration not supported.", *o);
         return false;
@@ -2556,8 +2552,7 @@ bool CheckHifDescription::_checkDeclaration(T *o)
     return true;
 }
 
-template <typename T>
-bool CheckHifDescription::_checkInstantiate(T *o)
+template <typename T> bool CheckHifDescription::_checkInstantiate(T *o)
 {
     if (!_opt.checkInstantiate)
         return true;
@@ -2576,7 +2571,7 @@ void CheckHifDescription::_printError(const std::string &message, Object &o)
     if (_opt.exitOnErrors) {
         messageError(message, &o, _sem);
     } else {
-        const std::string msg("CHECK HIF - ERROR! " + message);
+        const std::string &msg("CHECK HIF - ERROR! " + message);
         messageDebug(msg, &o, _sem);
     }
 }
@@ -2596,12 +2591,12 @@ void CheckHifDescription::_printError(
     }
 
     messageWarning(msg, &o, _sem);
-    long long index = 1;
+    std::int64_t index = 1;
     for (ObjectList::const_iterator i = list.begin(); i != list.end(); ++i, ++index) {
         Object *involved = *i;
         std::stringstream ss;
         ss << index;
-        const std::string listMessageIndex(listMessage + " #" + ss.str());
+        std::string listMessageIndex(listMessage + " #" + ss.str());
         messageWarning(listMessageIndex, involved, _sem);
     }
 
@@ -2611,13 +2606,13 @@ void CheckHifDescription::_printError(
     }
 }
 
-bool CheckHifDescription::_checkDeclRequiredInitialVal(DataDeclaration *o, const bool checkFlag)
+bool CheckHifDescription::_checkDeclRequiredInitialVal(DataDeclaration *o, bool checkFlag)
 {
     // Initial value is required unless type is viewref.
     // When introducing constructors, remember to enable this check.
     Type *t         = getBaseType(o->getType(), false, _sem, true);
     Type *innerType = hif::typeGetNestedType(t, _sem);
-    const bool checkInitVal =
+    bool checkInitVal =
         (dynamic_cast<ViewReference *>(innerType) == nullptr) && (dynamic_cast<Event *>(innerType) == nullptr);
 
     if (checkInitVal && checkFlag && o->getValue() == nullptr) {
@@ -2660,8 +2655,8 @@ int CheckHifDescription::_checkDontCares(Value &o)
 
     SwitchAlt *sa   = dynamic_cast<SwitchAlt *>(parent);
     WithAlt *wa     = dynamic_cast<WithAlt *>(parent);
-    const bool inSw = sa != nullptr && hif::isSubNode(&o, sa->conditions);
-    const bool inWa = wa != nullptr && hif::isSubNode(&o, wa->conditions);
+    bool inSw = sa != nullptr && hif::isSubNode(&o, sa->conditions);
+    bool inWa = wa != nullptr && hif::isSubNode(&o, wa->conditions);
     if (inSw || inWa) {
         return 0; // OK!
     }
@@ -2783,7 +2778,7 @@ CheckOptions &CheckOptions::operator=(const CheckOptions &o)
 int checkHif(Object *o, ILanguageSemantics *sem, const CheckOptions &opt)
 {
     Object *tree          = o;
-    const bool canReplace = (o->getParent() != nullptr);
+    bool canReplace = (o->getParent() != nullptr);
     if (opt.checkOnCopy) {
         hif::CopyOptions copyOpt;
         copyOpt.copySemanticsTypes = true;
@@ -2845,9 +2840,9 @@ int checkNativeHif(Object *o, ILanguageSemantics *sem, const CheckOptions &opt)
 {
     CheckOptions options(opt);
     options.checkStandardLibraryDefs = false;
-    const bool restore               = sem->useNativeSemantics();
+    bool restore               = sem->useNativeSemantics();
     sem->setUseNativeSemantics(true);
-    const int ret = checkHif(o, sem, options);
+    int ret = checkHif(o, sem, options);
     sem->setUseNativeSemantics(restore);
     return ret;
 }

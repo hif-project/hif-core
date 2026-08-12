@@ -1,8 +1,9 @@
 /// @file simplify.hpp
 /// @brief Provides functionality to simplify HIF object trees.
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #pragma once
 
@@ -15,87 +16,73 @@ namespace manipulation
 {
 
 /// @brief Maps types to their simplified counterparts.
-template <class T>
-struct SimplifiedType {
+template <class T> struct SimplifiedType {
     typedef Object type; ///< Default simplification type is `Object`.
 };
 
 /// @brief Specialization for `Value`. Simplifies to `Value`.
-template <>
-struct SimplifiedType<Value> {
-    typedef Value type;
+template <> struct SimplifiedType<Value> {
+    typedef Value type; ///< The simplified type is `Value`.
 };
 
 /// @brief Specialization for `Cast`. Simplifies to `Value`.
-template <>
-struct SimplifiedType<Cast> {
-    typedef Value type;
+template <> struct SimplifiedType<Cast> {
+    typedef Value type; ///< The simplified type is `Value`.
 };
 
 /// @brief Specialization for `Expression`. Simplifies to `Value`.
-template <>
-struct SimplifiedType<Expression> {
-    typedef Value type;
+template <> struct SimplifiedType<Expression> {
+    typedef Value type; ///< The simplified type is `Value`.
 };
 
 /// @brief Specialization for `When`. Simplifies to `Value`.
-template <>
-struct SimplifiedType<When> {
-    typedef Value type;
+template <> struct SimplifiedType<When> {
+    typedef Value type; ///< The simplified type is `Value`.
 };
 
 /// @brief Specialization for `With`. Simplifies to `Value`.
-template <>
-struct SimplifiedType<With> {
-    typedef Value type;
+template <> struct SimplifiedType<With> {
+    typedef Value type; ///< The simplified type is `Value`.
 };
 
 /// @brief Specialization for `Range`. Simplifies to `Range`.
-template <>
-struct SimplifiedType<Range> {
-    typedef Range type;
+template <> struct SimplifiedType<Range> {
+    typedef Range type; ///< The simplified type is `Range`.
 };
 
 /// @brief Specialization for `If`. Simplifies to `Action`.
-template <>
-struct SimplifiedType<If> {
-    typedef Action type;
+template <> struct SimplifiedType<If> {
+    typedef Action type; ///< The simplified type is `Action`.
 };
 
 /// @brief Specialization for `Switch`. Simplifies to `Action`.
-template <>
-struct SimplifiedType<Switch> {
-    typedef Action type;
+template <> struct SimplifiedType<Switch> {
+    typedef Action type; ///< The simplified type is `Action`.
 };
 
 /// @brief Specialization for `For`. Simplifies to `Action`.
-template <>
-struct SimplifiedType<For> {
-    typedef Action type;
+template <> struct SimplifiedType<For> {
+    typedef Action type; ///< The simplified type is `Action`.
 };
 
-/// @brief Specialization for `IfGenerate`. Simplifies to `Declaration`.
-template <>
-struct SimplifiedType<IfGenerate> {
-    typedef Declaration type;
+/// @brief Specialization for `IfGenerate`. Simplifies to `Action`.
+template <> struct SimplifiedType<IfGenerate> {
+    typedef Action type; ///< The simplified type is `Action`.
 };
 
 /// @brief Specialization for `ForGenerate`. Simplifies to `Declaration`.
-template <>
-struct SimplifiedType<ForGenerate> {
-    typedef Declaration type;
+template <> struct SimplifiedType<ForGenerate> {
+    typedef Declaration type; ///< The simplified type is `Declaration`.
 };
 
 /// @brief Specialization for `FieldReference`. Simplifies to `Value`.
-template <>
-struct SimplifiedType<FieldReference> {
-    typedef Value type;
+template <> struct SimplifiedType<FieldReference> {
+    typedef Value type; ///< The simplified type is `Value`.
 };
 
 /// @brief Specialization for `Type`. Simplifies to `Type`.
-template <>
-struct SimplifiedType<Type> {
-    typedef Type type;
+template <> struct SimplifiedType<Type> {
+    typedef Type type; ///< The simplified type is `Type`.
 };
 
 /// @brief Simplifies a single object.

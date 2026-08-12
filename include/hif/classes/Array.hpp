@@ -1,8 +1,9 @@
 /// @file Array.hpp
-/// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// @brief Array type definition for HIF composite data structures.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #pragma once
 
@@ -46,7 +47,7 @@ public:
 
     /// @brief Sets the <tt>signed</tt> attribute.
     /// @param sign The <tt>signed</tt> attribute.
-    void setSigned(const bool sign);
+    void setSigned(bool sign);
 
     /// @brief Returns the <tt>signed</tt> attribute.
     /// @return The <tt>signed</tt> attribute.

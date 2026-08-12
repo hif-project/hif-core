@@ -1,8 +1,9 @@
 /// @file resetTypes.cpp
 /// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #include "hif/semantics/resetTypes.hpp"
 
@@ -30,7 +31,7 @@ namespace /*anon*/
 class ResetTypeVisitor : public GuideVisitor
 {
 public:
-    ResetTypeVisitor(const bool recursive);
+    ResetTypeVisitor(bool recursive);
 
     /// @brief Destructor
     virtual ~ResetTypeVisitor();
@@ -68,16 +69,15 @@ public:
 
 private:
     void _resetType(TypedObject &);
-    template <typename T>
-    void _resetBaseTypes(T &);
-    const bool _recursive;
+    template <typename T> void _resetBaseTypes(T &);
+    bool _recursive;
 
     ResetTypeVisitor(const ResetTypeVisitor &);
     ResetTypeVisitor operator=(const ResetTypeVisitor &);
 };
 
 // Constructor
-ResetTypeVisitor::ResetTypeVisitor(const bool recursive)
+ResetTypeVisitor::ResetTypeVisitor(bool recursive)
     : GuideVisitor()
     , _recursive(recursive)
 {
@@ -95,8 +95,7 @@ void ResetTypeVisitor::_resetType(TypedObject &o)
     delete o.setSemanticType(nullptr);
 }
 
-template <typename T>
-void ResetTypeVisitor::_resetBaseTypes(T &o)
+template <typename T> void ResetTypeVisitor::_resetBaseTypes(T &o)
 {
     delete o.setBaseType(nullptr, false);
     delete o.setBaseType(nullptr, true);
@@ -324,7 +323,7 @@ int ResetTypeVisitor::visitWith(With &o)
 // Public methods
 // ///////////////////////////////////////////////////////////////////
 
-void resetTypes(Object *root, const bool recursive)
+void resetTypes(Object *root, bool recursive)
 {
     messageDebugAssert(root != nullptr, "Passed null root", nullptr, nullptr);
     if (root == nullptr)
@@ -333,21 +332,21 @@ void resetTypes(Object *root, const bool recursive)
     ResetTypeVisitor rtv(recursive);
     root->acceptVisitor(rtv);
 }
-void resetTypes(BList<Object> &root, const bool recursive)
+void resetTypes(BList<Object> &root, bool recursive)
 {
     for (BList<Object>::iterator i = root.begin(); i != root.end(); ++i) {
         resetTypes(*i, recursive);
     }
 }
 
-template <typename T>
-void resetTypes(BList<T> &root, const bool recursive)
+template <typename T> void resetTypes(BList<T> &root, bool recursive)
 {
     BList<Object> *tmp = reinterpret_cast<BList<Object> *>(&root);
     resetTypes(*tmp, recursive);
 }
 
-#define HIF_TEMPLATE_METHOD(T) void resetTypes<T>(BList<T> &, const bool)
+/// @brief Macro for template method instantiation.
+#define HIF_TEMPLATE_METHOD(T) void resetTypes<T>(BList<T> &, bool)
 
 HIF_INSTANTIATE_METHOD()
 #undef HIF_TEMPLATE_METHOD

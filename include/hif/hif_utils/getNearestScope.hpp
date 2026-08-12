@@ -1,8 +1,9 @@
 /// @file getNearestScope.hpp
-/// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// @brief Find the nearest scope for a given HIF object.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #pragma once
 
@@ -22,6 +23,6 @@ namespace hif
 /// @return The wanted Hif object or nullptr if it has not been found.
 ///
 
-Scope *getNearestScope(Object *o, const bool needDeclarationList, const bool needLibraryList, const bool needTemplates);
+Scope *getNearestScope(Object *o, bool needDeclarationList, bool needLibraryList, bool needTemplates);
 
 } // namespace hif

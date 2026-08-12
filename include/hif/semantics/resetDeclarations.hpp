@@ -1,8 +1,9 @@
 /// @file resetDeclarations.hpp
 /// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #pragma once
 
@@ -17,8 +18,18 @@ namespace semantics
 struct ResetDeclarationsOptions {
     ResetDeclarationsOptions();
     virtual ~ResetDeclarationsOptions();
+
+    /// @brief Copy constructor.
+    /// @param other The object to copy from.
     ResetDeclarationsOptions(const ResetDeclarationsOptions &other);
+
+    /// @brief Assignment operator.
+    /// @param other The object to assign from.
+    /// @return Reference to this object.
     ResetDeclarationsOptions &operator=(ResetDeclarationsOptions other);
+
+    /// @brief Swaps the contents of this object with another.
+    /// @param other The object to swap with.
     void swap(ResetDeclarationsOptions &other);
 
     /// @brief Resets declarations only of current symbol.
@@ -39,6 +50,7 @@ struct ResetDeclarationsOptions {
     /// Default is HIF.
     ILanguageSemantics *sem;
 };
+
 /// @brief Resets the declaration member of objects that have it
 /// starting from @p o.
 /// Declaration members will be set to nullptr.

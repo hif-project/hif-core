@@ -1,8 +1,9 @@
 /// @file ILanguageSemantics.cpp
 /// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #include <set>
 
@@ -14,8 +15,8 @@
 #include "hif/semantics/standardization.hpp"
 
 #if defined __GNUC__
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-function"
+#    pragma GCC diagnostic push
+#    pragma GCC diagnostic ignored "-Wunused-function"
 #endif
 
 namespace hif
@@ -463,90 +464,9 @@ ILanguageSemantics::ExpressionTypeInfo &ILanguageSemantics::ExpressionTypeInfo::
     return *this;
 }
 
-ILanguageSemantics::SemanticOptions::SemanticOptions()
-    : port_inNoInitialValue(false)
-    , port_outInitialValue(false)
-    , dataDeclaration_initialValue(false)
-    , scopedType_insideTypedef(false)
-    , int_bitfields(false)
-    , designUnit_uniqueView(false)
-    , for_implictIndex(false)
-    , for_conditionType(RANGE_AND_EXPRESSION)
-    , generates_isNoAllowed(false)
-    , after_isNoAllowed(false)
-    , with_isNoAllowed(false)
-    , globact_isNoAllowed(false)
-    , valueStatement_isNoAllowed(false)
-    , case_isOnlyLiteral(false)
-    , lang_signPortNoBitAccess(false)
-    , lang_hasDontCare(false)
-    , lang_has9logic(false)
-    , waitWithActions(false)
-    , lang_sortKind(hif::manipulation::SortMissingKind::NOTHING)
-{
-    // ntd
-}
-
-ILanguageSemantics::SemanticOptions::~SemanticOptions()
-{
-    // ntd
-}
-
-ILanguageSemantics::SemanticOptions::SemanticOptions(const SemanticOptions &o)
-    : port_inNoInitialValue(o.port_inNoInitialValue)
-    , port_outInitialValue(o.port_outInitialValue)
-    , dataDeclaration_initialValue(o.dataDeclaration_initialValue)
-    , scopedType_insideTypedef(o.scopedType_insideTypedef)
-    , int_bitfields(o.int_bitfields)
-    , designUnit_uniqueView(o.designUnit_uniqueView)
-    , for_implictIndex(o.for_implictIndex)
-    , for_conditionType(o.for_conditionType)
-    , generates_isNoAllowed(o.generates_isNoAllowed)
-    , after_isNoAllowed(o.after_isNoAllowed)
-    , with_isNoAllowed(o.with_isNoAllowed)
-    , globact_isNoAllowed(o.globact_isNoAllowed)
-    , valueStatement_isNoAllowed(o.valueStatement_isNoAllowed)
-    , case_isOnlyLiteral(o.case_isOnlyLiteral)
-    , lang_signPortNoBitAccess(o.lang_signPortNoBitAccess)
-    , lang_hasDontCare(o.lang_hasDontCare)
-    , lang_has9logic(o.lang_has9logic)
-    , waitWithActions(o.waitWithActions)
-    , lang_sortKind(o.lang_sortKind)
-{
-    // ntd
-}
-
-ILanguageSemantics::SemanticOptions &ILanguageSemantics::SemanticOptions::operator=(const SemanticOptions &o)
-{
-    if (this == &o)
-        return *this;
-
-    port_inNoInitialValue        = o.port_inNoInitialValue;
-    port_outInitialValue         = o.port_outInitialValue;
-    dataDeclaration_initialValue = o.dataDeclaration_initialValue;
-    scopedType_insideTypedef     = o.scopedType_insideTypedef;
-    int_bitfields                = o.int_bitfields;
-    designUnit_uniqueView        = o.designUnit_uniqueView;
-    for_implictIndex             = o.for_implictIndex;
-    for_conditionType            = o.for_conditionType;
-    generates_isNoAllowed        = o.generates_isNoAllowed;
-    after_isNoAllowed            = o.after_isNoAllowed;
-    with_isNoAllowed             = o.with_isNoAllowed;
-    globact_isNoAllowed          = o.globact_isNoAllowed;
-    valueStatement_isNoAllowed   = o.valueStatement_isNoAllowed;
-    case_isOnlyLiteral           = o.case_isOnlyLiteral;
-    lang_signPortNoBitAccess     = o.lang_signPortNoBitAccess;
-    lang_hasDontCare             = o.lang_hasDontCare;
-    lang_has9logic               = o.lang_has9logic;
-    waitWithActions              = o.waitWithActions;
-    lang_sortKind                = o.lang_sortKind;
-
-    return *this;
-}
-
 const ILanguageSemantics::SemanticOptions &ILanguageSemantics::getSemanticsOptions() const { return _semanticOptions; }
 
-void ILanguageSemantics::setStrictTypeChecks(const bool v) { _strictChecking = v; }
+void ILanguageSemantics::setStrictTypeChecks(bool v) { _strictChecking = v; }
 
 bool ILanguageSemantics::getStrictTypeChecks() const { return _strictChecking; }
 
@@ -676,7 +596,7 @@ bool ILanguageSemantics::canRemoveCastOnOperands(
     return isSafe;
 }
 
-bool ILanguageSemantics::hasBitwiseOperationsOnBits(const bool /*isLogic*/) const { return true; }
+bool ILanguageSemantics::hasBitwiseOperationsOnBits(bool /*isLogic*/) const { return true; }
 
 ILanguageSemantics *ILanguageSemantics::getInstance(SupportedLanguages lang)
 {
@@ -721,7 +641,7 @@ Range *ILanguageSemantics::getContextPrecision(Object *o)
     hif::manipulation::simplify(current, this);
     return current;
 }
-std::string ILanguageSemantics::getStandardFilename(const std::string& n)
+std::string ILanguageSemantics::getStandardFilename(const std::string &n)
 {
     std::string ret = _standardFilenames[n];
     return ret;
@@ -729,11 +649,10 @@ std::string ILanguageSemantics::getStandardFilename(const std::string& n)
 
 bool ILanguageSemantics::useNativeSemantics() const { return _useNativeSemantics; }
 
-void ILanguageSemantics::setUseNativeSemantics(const bool b) { _useNativeSemantics = b; }
+void ILanguageSemantics::setUseNativeSemantics(bool b) { _useNativeSemantics = b; }
 
 std::string ILanguageSemantics::makeHifName(const std::string &reqName) const { return _makeHifName(reqName, true); }
-template <typename T>
-T *ILanguageSemantics::getSuffixedCopy(T *obj, const std::string &suffix)
+template <typename T> T *ILanguageSemantics::getSuffixedCopy(T *obj, const std::string &suffix)
 {
     Declaration *decl = dynamic_cast<Declaration *>(obj);
     messageAssert(decl != nullptr, "Expected declaration", obj, this);
@@ -755,7 +674,7 @@ bool ILanguageSemantics::_checkConcatCasts(
     hif::EqualsOptions retOpt;
     retOpt.checkConstexprFlag = false;
 
-    const bool equalType = hif::equals(exprInfo.returnedType, info.returnedType, retOpt);
+    bool equalType = hif::equals(exprInfo.returnedType, info.returnedType, retOpt);
     if (!equalType)
         return false;
 
@@ -793,9 +712,9 @@ bool ILanguageSemantics::_checkShiftCasts(
     hif::EqualsOptions retOpt;
     retOpt.checkConstexprFlag = false;
 
-    const bool equalType = hif::equals(exprInfo.returnedType, info.returnedType, retOpt);
+    bool equalType = hif::equals(exprInfo.returnedType, info.returnedType, retOpt);
 
-    const bool equalPrecision = hif::equals(exprInfo.operationPrecision, info.operationPrecision, retOpt);
+    bool equalPrecision = hif::equals(exprInfo.operationPrecision, info.operationPrecision, retOpt);
 
     const hif::semantics::precision_type_t rhsPrec = hif::semantics::comparePrecision(castT2, subT2, this);
 
@@ -875,20 +794,20 @@ bool ILanguageSemantics::_checkRelationalCasts(
     precOpt.checkTypeVariantField = false;
 
     // ref. design:vhdl/custom/test_library_equality
-    const bool equalPrec = hif::equals(origInfo.operationPrecision, simplifiedInfo.operationPrecision, precOpt);
-    const bool equalType = hif::equals(origInfo.returnedType, simplifiedInfo.returnedType, retOpt);
+    bool equalPrec = hif::equals(origInfo.operationPrecision, simplifiedInfo.operationPrecision, precOpt);
+    bool equalType = hif::equals(origInfo.returnedType, simplifiedInfo.returnedType, retOpt);
 
     // In case of bit vs bool, we assume that anything is fine for all semantics.
     // Ref. design: b03 vhdl2hif2vhdl.
     // Ref design: mios_MainControlUnit_verilog2hif for unsimplified whenalt
-    const bool newSingleBit =
+    bool newSingleBit =
         (hif::semantics::isSingleBitType(simplifiedInfo.operationPrecision, this) &&
          hif::semantics::isSingleBitType(simplifiedInfo.returnedType, this));
-    const bool origSingleBit =
+    bool origSingleBit =
         (hif::semantics::isSingleBitType(origInfo.operationPrecision, this) &&
          hif::semantics::isSingleBitType(origInfo.returnedType, this));
     // Cannot remove cast, not equivalent expression.
-    const bool isLogicArithOrNumStd =
+    bool isLogicArithOrNumStd =
         (dynamic_cast<Signed *>(origInfo.operationPrecision) != nullptr ||
          dynamic_cast<Unsigned *>(origInfo.operationPrecision) != nullptr);
     if (isLogicArithOrNumStd && !(equalPrec && equalType) && !(newSingleBit && origSingleBit))
@@ -899,8 +818,8 @@ bool ILanguageSemantics::_checkRelationalCasts(
     // (uint)1 < (uint)-1 --> true
     // ref. design agility_complex
     if (!hif::operatorIsEquality(e->getOperator())) {
-        const bool origSigned  = hif::typeIsSigned(origInfo.operationPrecision, this);
-        const bool simplSigned = hif::typeIsSigned(simplifiedInfo.operationPrecision, this);
+        bool origSigned  = hif::typeIsSigned(origInfo.operationPrecision, this);
+        bool simplSigned = hif::typeIsSigned(simplifiedInfo.operationPrecision, this);
         if (origSigned != simplSigned)
             return false;
     }
@@ -952,16 +871,16 @@ bool ILanguageSemantics::_checkGenericCasts(
     const hif::EqualsOptions &precOpt,
     const hif::EqualsOptions &retOpt)
 {
-    const bool equalPrec = hif::equals(origInfo.operationPrecision, simplifiedInfo.operationPrecision, precOpt);
-    const bool equalType = hif::equals(origInfo.returnedType, simplifiedInfo.returnedType, retOpt);
+    bool equalPrec = hif::equals(origInfo.operationPrecision, simplifiedInfo.operationPrecision, precOpt);
+    bool equalType = hif::equals(origInfo.returnedType, simplifiedInfo.returnedType, retOpt);
 
     // In case of bit vs bool, we assume that anything is fine for all semantics.
     // Ref. design: b03 vhdl2hif2vhdl.
     // Ref design: mios_MainControlUnit_verilog2hif for unsimplified whenalt
-    const bool newSingleBit  = ( //hif::semantics::isSingleBitType(simplifiedInfo.operationPrecision, this)
+    bool newSingleBit  = ( //hif::semantics::isSingleBitType(simplifiedInfo.operationPrecision, this)
         //&&
         hif::semantics::isSingleBitType(simplifiedInfo.returnedType, this));
-    const bool origSingleBit = ( //hif::semantics::isSingleBitType(origInfo.operationPrecision, this)
+    bool origSingleBit = ( //hif::semantics::isSingleBitType(origInfo.operationPrecision, this)
         //&&
         hif::semantics::isSingleBitType(origInfo.returnedType, this));
 
@@ -970,8 +889,8 @@ bool ILanguageSemantics::_checkGenericCasts(
         return false;
 
     // Removing cast may alter operation precision?
-    const bool canRemove1 = canRemoveInternalCast(origInfo.operationPrecision, castT1, subT1, this, e);
-    bool canRemove2       = true;
+    bool canRemove1 = canRemoveInternalCast(origInfo.operationPrecision, castT1, subT1, this, e);
+    bool canRemove2 = true;
     if (castT2 != nullptr && subT2 != nullptr)
         canRemove2 = canRemoveInternalCast(origInfo.operationPrecision, castT2, subT2, this, e);
 
@@ -994,9 +913,23 @@ std::ostream &operator<<(std::ostream &o, const hif::semantics::ILanguageSemanti
 }
 // Explicit instantiation for getSuffixedCopy() method
 
+/// @brief Explicit instantiation for SubProgram.
+/// @param obj The declaration to copy.
+/// @param suffix The suffix to add.
+/// @return The new suffixed declaration.
 template hif::SubProgram *
 hif::semantics::ILanguageSemantics::getSuffixedCopy<hif::SubProgram>(SubProgram *obj, const std::string &suffix);
+
+/// @brief Explicit instantiation for Function.
+/// @param obj The declaration to copy.
+/// @param suffix The suffix to add.
+/// @return The new suffixed declaration.
 template hif::Function *
 hif::semantics::ILanguageSemantics::getSuffixedCopy<hif::Function>(Function *obj, const std::string &suffix);
+
+/// @brief Explicit instantiation for Procedure.
+/// @param obj The declaration to copy.
+/// @param suffix The suffix to add.
+/// @return The new suffixed declaration.
 template hif::Procedure *
 hif::semantics::ILanguageSemantics::getSuffixedCopy<hif::Procedure>(Procedure *obj, const std::string &suffix);

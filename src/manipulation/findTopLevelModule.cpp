@@ -1,8 +1,9 @@
 /// @file findTopLevelModule.cpp
 /// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #include "hif/manipulation/findTopLevelModule.hpp"
 
@@ -19,10 +20,10 @@ namespace manipulation
 namespace /*anon*/
 {
 
-typedef std::map<View *, unsigned int> ScoreMap;
+typedef std::map<View *, std::size_t> ScoreMap;
 
 #ifdef NDEBUG
-#define _printCandidates(...)
+#    define _printCandidates(...)
 #else
 void _printCandidates(const ViewSet &candidates)
 {
@@ -37,9 +38,9 @@ void _printCandidates(const ViewSet &candidates)
 }
 #endif
 
-unsigned int _getChildInstances(View *v, View *c, semantics::ILanguageSemantics *sem)
+std::size_t _getChildInstances(View *v, View *c, semantics::ILanguageSemantics *sem)
 {
-    unsigned int ret = 0;
+    std::size_t ret = 0;
 
     for (BList<Instance>::iterator i = v->getContents()->instances.begin(); i != v->getContents()->instances.end();
          ++i) {
@@ -95,7 +96,7 @@ bool _isComponent(View *view)
     CopyOptions opt;
     opt.copyChildObjects    = false;
     Contents *emptyContents = hif::copy(viewContent, opt);
-    const bool ret          = hif::equals(viewContent, emptyContents);
+    bool ret          = hif::equals(viewContent, emptyContents);
     delete emptyContents;
     return ret;
 }
@@ -142,11 +143,11 @@ ViewSet _mostComplexHeuristic(
     ViewDependenciesSet checked;
 
     ViewSet localCandidates;
-    unsigned int maxScore = 0;
+    std::size_t maxScore = 0;
     for (ViewSet::const_iterator i = candidatesList.begin(); i != candidatesList.end(); ++i) {
         View *v = *i;
         _calculateScore(v, scoreMap, checked, *opt.smm, sem);
-        unsigned int currentScore = scoreMap[v];
+        std::size_t currentScore = scoreMap[v];
         if (currentScore > maxScore) {
             localCandidates.clear();
             maxScore = currentScore;
@@ -211,7 +212,7 @@ _findByTopLevelName(System *root, hif::semantics::ILanguageSemantics *sem, FindT
             messageError("Unexpected unrelated view", view, sem);
         }
 
-        const std::string duName(parent->getName());
+        const std::string &duName(parent->getName());
         if (duName != opt.topLevelName)
             continue;
 
@@ -282,8 +283,7 @@ ViewSet _searchTopCandidates(System *root, hif::semantics::ILanguageSemantics *s
         // heuristic works return unique candiate
         View *found = *h1Result.begin();
         if (opt.verbose) {
-            messageWarning(
-                "Assuming top level design unit is " + std::string(found->getName()), nullptr, nullptr);
+            messageWarning("Assuming top level design unit is " + std::string(found->getName()), nullptr, nullptr);
         }
         return h1Result;
     }
@@ -293,15 +293,14 @@ ViewSet _searchTopCandidates(System *root, hif::semantics::ILanguageSemantics *s
         // heuristic works return unique candiate
         View *found = *h1Result.begin();
         if (opt.verbose) {
-            messageWarning(
-                "Assuming top level design unit is " + std::string(found->getName()), nullptr, nullptr);
+            messageWarning("Assuming top level design unit is " + std::string(found->getName()), nullptr, nullptr);
         }
         return h2Result;
     }
 
     // Both heuristics does not resolve candidates.
-    const bool allMore  = h1Result.size() > 1 && h2Result.size() > 1;
-    const bool allEmpty = h1Result.empty() && h2Result.empty();
+    bool allMore  = h1Result.size() > 1 && h2Result.size() > 1;
+    bool allEmpty = h1Result.empty() && h2Result.empty();
     if (allMore && opt.checkAtMostOne) {
         _printCandidates(candidatesList);
         messageError("Found more the one top-level design unit.", nullptr, nullptr);

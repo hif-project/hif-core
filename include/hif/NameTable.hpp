@@ -1,8 +1,9 @@
 /// @file NameTable.hpp
-/// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// @brief Name table management for symbol lookup and storage in HIF.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #pragma once
 
@@ -27,11 +28,15 @@ namespace hif
 class NameTable
 {
 public:
+    /// @brief Type alias for a set of strings representing names.
     using NameMap        = std::set<std::string>;
+
+    /// @brief Type alias for a set of strings representing forbidden names.
     using ForbiddenNames = std::set<std::string>;
 
     /// Singleton stuff.
     /// @brief Function thats return an instance to NameTable class.
+    /// @return The instance of NameTable.
     static NameTable *getInstance();
 
     /// @brief Sets the List of reserved names, that should not be converted in uppercase or lowercase
@@ -39,13 +44,14 @@ public:
     ///		one name for lines (whitout spaces)
     /// @param append boolean that indicates if append.
     /// @returns a boolean indicating if the file was correctly loaded into nametable.
-    bool setForbiddenListFromFile(std::string file_name, bool append = false);
+    bool setForbiddenListFromFile(const std::string &file_name, bool append = false);
 
     /// @brief Print the NameTable content
     void printNameTable();
 
     /// @brief Return the name associated to a given string.
     /// @param name the string whose name is sought.
+    /// @return True if the name exists, false otherwise.
     bool nameExists(const std::string &name);
 
     /// @brief Return a fresh name.
@@ -61,30 +67,30 @@ public:
 
     /// @brief Return a fresh name.
     /// A name is fresh if it does not occur in the file.
-    /// @param n The old name.
+    /// @param name The old name.
     /// @param suffix [optional] the string prefix to be used to generate a fresh name
     /// @return The fresh name.
     std::string getFreshName(const std::string &name, const std::string &suffix);
 
     /// @brief Return a fresh name.
     /// A name is fresh if it does not occur in the file.
-    /// @param n The old name.
+    /// @param name The old name.
     /// @param suffix the string suffix to be used to generate a fresh name
     /// @return The fresh name.
-    std::string getFreshName(const std::string &name, unsigned long long suffix);
+    std::string getFreshName(const std::string &name, std::uint64_t suffix);
 
     /// @brief Return the name associated to a given string.
     /// This one creates the name if it is not in the table yet.
-    /// @param s the string whose name is sought.
+    /// @param name the string whose name is sought.
     /// @return The name.
     std::string registerName(const std::string &name);
 
     /// @brief Return the name associated to a given string.
     /// This one creates the name if it is not in the table yet.
-    /// @param s the string whose name is sought.
+    /// @param name the string whose name is sought.
     /// @param index The index to concat at the end of @p s.
     /// @return The name.
-    std::string registerName(const std::string &name, const int index);
+    std::string registerName(const std::string &name, int index);
 
     /// @brief Return the special "none" name.
     /// @return return m_none value.
@@ -114,6 +120,9 @@ public:
     /// @return The string.
     static std::string hifDestructor();
 
+    /// @brief Checks if the given name is a default value.
+    /// @param name The name to check.
+    /// @return True if the name is a default value, false otherwise.
     static bool isDefaultValue(const std::string &name) { return name == none(); }
 
 private:

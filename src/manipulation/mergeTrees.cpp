@@ -1,8 +1,9 @@
 /// @file mergeTrees.cpp
 /// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #include "hif/hif.hpp"
 
@@ -260,8 +261,8 @@ void Bach::_mergeFields(Object *o1, Object **f1, Object **f2)
         o1->setChild(*f1, tmp);
     } else //if (*f1 != nullptr && *f2 != nullptr)
     {
-        const bool areSpecialRecords = hif::equals(*f1, *f2, _recordSpecialCases);
-        const bool areEquals         = hif::equals(*f1, *f2, _skipChildrenOpt);
+        bool areSpecialRecords = hif::equals(*f1, *f2, _recordSpecialCases);
+        bool areEquals         = hif::equals(*f1, *f2, _skipChildrenOpt);
         if (areSpecialRecords && !areEquals) {
             // Special case: typedef.
             TypeDef *td1 = dynamic_cast<TypeDef *>(*f1);
@@ -287,7 +288,7 @@ void Bach::_mergeFields(Object *o1, Object **f1, Object **f2)
             return;
         }
 
-        const bool areSpecialMethods = hif::equals(*f1, *f2, _manageSpecialCasesOpt);
+        bool areSpecialMethods = hif::equals(*f1, *f2, _manageSpecialCasesOpt);
         if (areSpecialMethods && !areEquals) {
             // Fixing eventual special names in methods:
             _currentSource = *f2;
@@ -315,7 +316,7 @@ void Bach::_mergeBLists(BList<Object> *l1, BList<Object> *l2)
         Object *found                   = nullptr;
         hif::features::INamedObject *n2 = dynamic_cast<hif::features::INamedObject *>(*jt);
 
-        const bool isView = (dynamic_cast<View *>(*jt) != nullptr);
+        bool isView      = (dynamic_cast<View *>(*jt) != nullptr);
         bool isStdLibDef = (dynamic_cast<LibraryDef *>(*jt) != nullptr && static_cast<LibraryDef *>(*jt)->isStandard());
         if (n2 != nullptr) {
             // Named object.
@@ -343,9 +344,9 @@ void Bach::_mergeBLists(BList<Object> *l1, BList<Object> *l2)
                 found = *it;
 
                 if (isView) {
-                    auto v1          = dynamic_cast<View *>(*it);
-                    auto v2          = dynamic_cast<View *>(*jt);
-                    const bool isStd = v1->isStandard() && v2->isStandard();
+                    auto v1    = dynamic_cast<View *>(*it);
+                    auto v2    = dynamic_cast<View *>(*jt);
+                    bool isStd = v1->isStandard() && v2->isStandard();
                     v1->setStandard(isStd);
                     v2->setStandard(isStd);
                 }
@@ -361,7 +362,7 @@ void Bach::_mergeBLists(BList<Object> *l1, BList<Object> *l2)
             // Unnamed object (e.g. Action).
             // Must be equals (e.g. Assign) or a special case (e.g. Switch, IfAlt).
             for (BList<Object>::iterator it = l1->begin(); it != l1->end(); ++it) {
-                const bool isManaged = _mergeBranches(found, *it, *jt);
+                bool isManaged = _mergeBranches(found, *it, *jt);
                 if (isManaged) {
                     if (found != nullptr)
                         break;
@@ -417,7 +418,7 @@ void Bach::_mergeBLists(BList<Object> *l1, BList<Object> *l2)
 
 void Bach::_fixNames(Declaration *decl)
 {
-    const bool isView = (dynamic_cast<View *>(decl) != nullptr);
+    bool isView = (dynamic_cast<View *>(decl) != nullptr);
 
     const Object::BLists &blists1 = decl->getBLists();
     const Object::BLists &blists2 = _currentSource->getBLists();
@@ -472,11 +473,11 @@ void Bach::_fixNames(Declaration *decl)
         messageAssert(view1->getLanguageID() == view2->getLanguageID(), "Unexpected language ID", nullptr, nullptr);
         view1->setStandard(view1->isStandard() && view2->isStandard());
 
-        const bool view1IsComponent = (view1->getContents() == nullptr);
-        const bool view2IsComponent = (view2->getContents() == nullptr);
+        bool view1IsComponent = (view1->getContents() == nullptr);
+        bool view2IsComponent = (view2->getContents() == nullptr);
 
-        View *toMerge = nullptr;
-        std::string toBeSet  = nullptr;
+        View *toMerge       = nullptr;
+        std::string toBeSet = nullptr;
         if (view1IsComponent && !view2IsComponent) {
             toMerge = view1;
             toBeSet = view2->getName();
@@ -607,7 +608,7 @@ bool Bach::_mergeBranches(Object *&found, Object *o1, Object *o2)
 void _printStep(Object *tree, unsigned int stepNumber, Object *merged)
 {
     std::string stepName = "MERGED_";
-    std::string name            = hif::objectGetName(merged);
+    std::string name     = hif::objectGetName(merged);
     if (name == nullptr)
         stepName += "unamed_object";
     else
@@ -627,39 +628,6 @@ void _printStep(Object *tree, unsigned int stepNumber, Object *merged)
 #endif
 
 } // namespace
-
-MergeTreesOptions::MergeTreesOptions()
-    : printInfos(false)
-    , isIpxact(false)
-    , mergeBranches(false)
-{
-    // ntd
-}
-
-MergeTreesOptions::~MergeTreesOptions()
-{
-    // ntd
-}
-
-MergeTreesOptions::MergeTreesOptions(const MergeTreesOptions &o)
-    : printInfos(o.printInfos)
-    , isIpxact(o.isIpxact)
-    , mergeBranches(o.mergeBranches)
-{
-    // ntd
-}
-
-MergeTreesOptions &MergeTreesOptions::operator=(const MergeTreesOptions &o)
-{
-    if (this == &o)
-        return *this;
-
-    printInfos    = o.printInfos;
-    isIpxact      = o.isIpxact;
-    mergeBranches = o.mergeBranches;
-
-    return *this;
-}
 
 // //////////////////////////////////////
 // Defines
@@ -689,8 +657,8 @@ Object *mergeTrees(std::list<Object *> &partialTrees, semantics::ILanguageSemant
     // search all references
     RefMap refMap;
     hif::semantics::GetReferencesOptions options;
-    //options.skipStandardDeclarations = true;
-    options.includeUnreferenced = true;
+    //options.skip_standard_declarations = true;
+    options.include_unreferenced = true;
     hif::semantics::getAllReferences(refMap, sem, tree, options);
     cv.setRefrenceMap(refMap);
 

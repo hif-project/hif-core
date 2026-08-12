@@ -1,8 +1,9 @@
 /// @file getNearestParent.cpp
 /// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #include "hif/hif_utils/getNearestParent.hpp"
 
@@ -18,28 +19,30 @@ namespace /*anon*/
 
 } // namespace
 
-template <typename T>
-T *getNearestParent(Object *o, const bool matchStarting)
+template <typename T> T *getNearestParent(Object *object, bool matchStarting)
 {
-    if (o == nullptr) {
+    if (object == nullptr) {
         assert(false);
         return nullptr;
     }
 
-    Object *object = o;
-    if (!matchStarting)
-        object = o->getParent();
-    while (object != nullptr) {
-        if (dynamic_cast<T *>(object))
-            break;
-        object = object->getParent();
+    auto current = object;
+
+    if (!matchStarting) {
+        current = object->getParent();
     }
 
-    return static_cast<T *>(object);
+    while (current) {
+        if (dynamic_cast<T *>(current))
+            break;
+        current = current->getParent();
+    }
+
+    return static_cast<T *>(current);
 }
 
 /// @brief Defines a template method for retrieving the nearest parent object of a specific type.
-#define HIF_TEMPLATE_METHOD(T) T *getNearestParent<T>(Object *, const bool)
+#define HIF_TEMPLATE_METHOD(T) T *getNearestParent<T>(Object *, bool)
 
 HIF_INSTANTIATE_METHOD()
 

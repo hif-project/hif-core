@@ -1,12 +1,16 @@
 /// @file referencesUtils.hpp
 /// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #pragma once
 
 #include "hif/classes/classes.hpp"
+
+#include <functional>
+#include <set>
 
 namespace hif
 {
@@ -16,39 +20,30 @@ namespace semantics
 /// @name References management.
 /// @{
 
+struct GetReferencesOptions;
+
 /// @brief Set for getAllreferences().
-typedef std::set<Object *> ReferencesSet;
+using ReferencesSet = std::set<Object *>;
+
 /// @brief Map for getAllReferences().
-typedef std::map<Declaration *, ReferencesSet> ReferencesMap;
+using ReferencesMap = std::map<Declaration *, ReferencesSet>;
 
 /// @brief Options of method getAllReferences() / getReferences().
 struct GetReferencesOptions {
-    typedef bool (*CollectObjectMethod)(Object *, ILanguageSemantics *, const GetReferencesOptions &);
+    /// @brief If true unreferenced declarations are also collected.
+    bool include_unreferenced = false;
 
-    /// @brief If <tt>true</tt> unreferenced declarations
-    /// are also collected. default = false
-    bool includeUnreferenced;
+    /// @brief If true it raises an error when declarations are not found.
+    bool error = true;
 
-    /// @brief If <tt>true</tt> it raises an error when declarations are
-    /// not found. default = true
-    bool error;
+    /// @brief If true skip standard declarations and declarations inside standard LibraryDefs.
+    bool skip_standard_declarations = false;
 
-    /// @brief If <tt>true</tt> skip standard declarations and declarations
-    /// inside standard LibraryDefs. default = false
-    bool skipStandardDeclarations;
-
-    /// @brief If <tt>true</tt> returns only first found reference.
-    /// Default is false.
-    bool onlyFirst;
+    /// @brief If true returns only first found reference.
+    bool only_first = false;
 
     /// @brief If set, object is collected only if the method returns true.
-    CollectObjectMethod collectObjectMethod;
-
-    GetReferencesOptions();
-    GetReferencesOptions(const bool iu, const bool e, const bool ssd);
-    ~GetReferencesOptions();
-    GetReferencesOptions(const GetReferencesOptions &other);
-    GetReferencesOptions &operator=(const GetReferencesOptions &other);
+    std::function<bool(Object *, ILanguageSemantics *, const GetReferencesOptions &)> check_object_method = nullptr;
 };
 
 /// @brief Returns all references to declaration @p decl starting from the
@@ -63,8 +58,6 @@ struct GetReferencesOptions {
 /// @param refSem The reference semantics.
 /// @param root The starting root object.
 /// @param opt The given options.
-///
-
 void getReferences(
     Declaration *decl,
     ReferencesSet &list,
@@ -84,8 +77,6 @@ void getReferences(
 /// @param refSem The reference semantics.
 /// @param root The starting root object.
 /// @param opt The given options.
-///
-
 void getReferences(
     Declaration *decl,
     ReferencesSet &list,
@@ -105,7 +96,6 @@ void getReferences(
 /// @param refSem The reference semantics.
 /// @param root The starting root object.
 /// @param opt The given options.
-///
 template <typename T>
 void getReferences(
     Declaration *decl,
@@ -125,8 +115,6 @@ void getReferences(
 /// @param refSem The reference semantics.
 /// @param root The starting root object.
 /// @param opt The given options.
-///
-
 void getAllReferences(
     ReferencesMap &refMap,
     ILanguageSemantics *refSem,
@@ -144,8 +132,6 @@ void getAllReferences(
 /// @param refSem The reference semantics.
 /// @param root The starting root object.
 /// @param opt The given options.
-///
-
 void getAllReferences(
     ReferencesMap &refMap,
     ILanguageSemantics *refSem,
@@ -163,7 +149,6 @@ void getAllReferences(
 /// @param refSem The reference semantics.
 /// @param root The starting root object.
 /// @param opt The given options.
-///
 template <typename T>
 void getAllReferences(
     ReferencesMap &refMap,

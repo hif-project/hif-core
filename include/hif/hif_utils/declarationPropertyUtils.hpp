@@ -4,9 +4,10 @@
 /// Provides functionality to check declaration properties such as standard
 /// compliance, instance status, and parameter dependencies. Includes
 /// customizable options for flexibility.
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #pragma once
 
@@ -26,39 +27,44 @@ struct DeclarationIsPartOfStandardOptions {
     ~DeclarationIsPartOfStandardOptions();
 
     /// @brief Copy constructor.
+    /// @param other The object to copy from.
     DeclarationIsPartOfStandardOptions(const DeclarationIsPartOfStandardOptions &other);
 
     /// @brief Assignment operator.
+    /// @param other The object to assign from.
+    /// @return Reference to this object.
     DeclarationIsPartOfStandardOptions &operator=(DeclarationIsPartOfStandardOptions other);
 
     /// @brief Swaps the contents with another options object.
+    /// @param other The object to swap with.
     void swap(DeclarationIsPartOfStandardOptions &other);
 
     /// @brief Resets all flags to defaults (all disabled).
     void reset();
 
     /// @brief Checks if all allow flags are enabled.
+    /// @return True if all allow flags are set, false otherwise.
     bool areAllAllowFlagsSet() const;
 
     /// @brief Enables or disables C/C++ language checks.
     /// @param enable Flag to enable or disable.
-    void enableCppFamily(const bool enable);
+    void enableCppFamily(bool enable);
 
     /// @brief Enables or disables SystemC RTL/TLM checks.
     /// @param enable Flag to enable or disable.
-    void enableSystemCFamily(const bool enable);
+    void enableSystemCFamily(bool enable);
 
     /// @brief Enables or disables SystemC RTL/TLM/AMS checks.
     /// @param enable Flag to enable or disable.
-    void enableSystemCAMSFamily(const bool enable);
+    void enableSystemCAMSFamily(bool enable);
 
     /// @brief Enables or disables VHDL language checks.
     /// @param enable Flag to enable or disable.
-    void enableVhdlFamily(const bool enable);
+    void enableVhdlFamily(bool enable);
 
     /// @brief Enables or disables Verilog language checks.
     /// @param enable Flag to enable or disable.
-    void enableVerilogFamily(const bool enable);
+    void enableVerilogFamily(bool enable);
 
     /// Flags for language and library checks.
     bool dontCheckStandardViews; ///< Do not check standard views. Default: false.

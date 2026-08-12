@@ -1,8 +1,9 @@
 /// @file HIFSemantics_methods.cpp
 /// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #include <cfloat>
 #include <cmath>
@@ -418,7 +419,7 @@ LibraryDef *HIFSemantics::getStandardLibrary(const std::string &name)
     return nullptr;
 }
 
-bool HIFSemantics::isNativeLibrary(const std::string &name, const bool /*hifFormat*/)
+bool HIFSemantics::isNativeLibrary(const std::string &name, bool /*hifFormat*/)
 {
     if (SystemCSemantics::getInstance()->isNativeLibrary(name, true))
         return true;
@@ -433,7 +434,7 @@ bool HIFSemantics::isNativeLibrary(const std::string &name, const bool /*hifForm
 HIFSemantics::MapCases
 HIFSemantics::mapStandardSymbol(Declaration *decl, KeySymbol &key, ValueSymbol &value, ILanguageSemantics *srcSem)
 {
-    const bool askingLib = (key.first == key.second);
+    bool askingLib = (key.first == key.second);
 
     auto lib = std::string("hif_") + srcSem->getName() + "_" + key.first;
     auto sym = std::string("hif_") + srcSem->getName() + "_" + key.second;
@@ -524,7 +525,7 @@ Object *HIFSemantics::getSimplifiedSymbol(KeySymbol &key, Object *s)
     return ret;
 }
 
-std::string HIFSemantics::getEventMethodName(const bool /*hifFormat*/)
+std::string HIFSemantics::getEventMethodName(bool /*hifFormat*/)
 {
     messageError("unexpected call to getEventMethodName in HIF semantics", nullptr, nullptr);
 }

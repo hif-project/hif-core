@@ -1,8 +1,9 @@
 /// @file Declaration.hpp
 /// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #pragma once
 
@@ -19,6 +20,7 @@ namespace hif
 class Declaration : public Object, public features::INamedObject
 {
 public:
+    /// @brief A list of keywords.
     typedef std::vector<std::string> KeywordList;
 
     /// @brief Constructor.
@@ -55,7 +57,12 @@ public:
     /// @brief Clears all the keywords from the Declaration
     void clearAdditionalKeywords();
 
+    /// @brief Returns an iterator to the beginning of the additional keywords list.
+    /// @return Iterator to the beginning.
     KeywordList::iterator getAdditionalKeywordsBeginIterator();
+
+    /// @brief Returns an iterator to the end of the additional keywords list.
+    /// @return Iterator to the end.
     KeywordList::iterator getAdditionalKeywordsEndIterator();
 
     //@}

@@ -1,8 +1,9 @@
 /// @file insertDelays.cpp
 /// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #include <sstream>
 
@@ -22,11 +23,8 @@ using RefSet    = std::set<Object *>;
 using RefMap    = std::map<Declaration *, RefSet>;
 using Processes = std::list<StateTable *>;
 
-auto _makeName(
-    const std::string &prefix,
-    const DelayProperties::Size clocks,
-    const DelayProperties::Size deltas,
-    const bool halfClock) -> std::string
+auto _makeName(const std::string &prefix, const std::size_t clocks, const std::size_t deltas, bool halfClock)
+    -> std::string
 {
     std::stringstream ss;
     ss << prefix << clocks;
@@ -38,7 +36,7 @@ auto _makeName(
     return ss.str();
 }
 
-void _fixOutputReset(Processes &newProcesses, Signal *prev, DataDeclaration *reset, const bool isInput)
+void _fixOutputReset(Processes &newProcesses, Signal *prev, DataDeclaration *reset, bool isInput)
 {
     if (isInput || reset == nullptr) {
         return;
@@ -57,9 +55,9 @@ void _fixOutputReset(Processes &newProcesses, Signal *prev, DataDeclaration *res
 auto _makeSignal(
     DataDeclaration *ref,
     View *view,
-    const DelayProperties::Size deltas,
-    const DelayProperties::Size clocks,
-    const bool halfClock,
+    const std::size_t deltas,
+    const std::size_t clocks,
+    bool halfClock,
     hif::semantics::ILanguageSemantics *sem) -> Signal *
 {
     std::string name(_makeName("_ds_", clocks, deltas, halfClock));
@@ -125,11 +123,11 @@ auto _makeDeltaProcess(
     View *view,
     DataDeclaration *reset,
     Value *resetValue,
-    const DelayProperties::Size deltas,
-    const DelayProperties::Size clockCycles,
-    const bool halfClock,
+    const std::size_t deltas,
+    const std::size_t clockCycles,
+    bool halfClock,
     hif::semantics::ILanguageSemantics *sem,
-    const bool isInput) -> Signal *
+    bool isInput) -> Signal *
 {
     if (prev == nullptr) {
         prev = ref;
@@ -180,11 +178,11 @@ auto _makeClockProcess(
     View *view,
     DataDeclaration *reset,
     Value *resetValue,
-    const DelayProperties::Size deltas,
-    const DelayProperties::Size clockCycles,
-    const bool halfClock,
+    const std::size_t deltas,
+    const std::size_t clockCycles,
+    bool halfClock,
     hif::semantics::ILanguageSemantics *sem,
-    const bool isInput) -> Signal *
+    bool isInput) -> Signal *
 {
     messageAssert(clock != nullptr, "Clock not found.", nullptr, nullptr);
 
@@ -212,7 +210,7 @@ auto _makeClockProcess(
         messageError("Unexpected clock edge (2).", clock, sem);
     }
     Signal *s = nullptr;
-    for (DelayProperties::Size i = 0; i <= clockCycles; ++i) {
+    for (std::size_t i = 0; i <= clockCycles; ++i) {
         s = _makeSignal(ref, view, deltas, i, false, sem);
 
         Assign *ass = nullptr;
@@ -252,10 +250,10 @@ auto _makeHalfClockProcess(
     View *view,
     DataDeclaration *reset,
     Value *resetValue,
-    const DelayProperties::Size deltas,
-    const DelayProperties::Size clockCycles,
+    const std::size_t deltas,
+    const std::size_t clockCycles,
     hif::semantics::ILanguageSemantics *sem,
-    const bool isInput) -> Signal *
+    bool isInput) -> Signal *
 {
     messageAssert(clock != nullptr, "Clock not found.", nullptr, nullptr);
 
@@ -319,7 +317,7 @@ void _insertTrueDelay(
     RefSet &refs,
     DelayProperties &delay,
     hif::semantics::ILanguageSemantics *sem,
-    const bool isInput)
+    bool isInput)
 {
     // Creating support reset value.
     Value *rv = nullptr;
@@ -361,7 +359,7 @@ void _insertTrueDelay(
             newProcesses, delay.port, prev, delayInfos.clock, delayInfos.workingEdge, delayInfos.view, delayInfos.reset,
             rv, 0, delay.clockCycles, sem, isInput);
     }
-    for (DelayProperties::Size i = 0; i < delay.deltas; ++i) {
+    for (std::size_t i = 0; i < delay.deltas; ++i) {
         prev = _makeDeltaProcess(
             newProcesses, delay.port, prev, delayInfos.view, delayInfos.reset, rv, i, delay.clockCycles,
             delay.halfClock, sem, isInput);
@@ -385,7 +383,7 @@ void _insertNoDelay(
     DelayInfos &delayInfos,
     RefSet &refs,
     hif::semantics::ILanguageSemantics *sem,
-    const bool isInput)
+    bool isInput)
 {
     DelayProperties delay;
     delay.port = p;
@@ -458,89 +456,6 @@ auto _insertDelay(DelayInfos &delayInfos, hif::semantics::ILanguageSemantics *se
     return true;
 }
 } // namespace
-// /////////////////////////////////////
-// DelayProperties
-// /////////////////////////////////////
-
-DelayProperties::DelayProperties()
-    : port(nullptr)
-    , clockCycles(0)
-    , deltas(0)
-    , halfClock(false)
-{
-    // ntd
-}
-DelayProperties::~DelayProperties()
-{
-    // ntd
-}
-DelayProperties::DelayProperties(const DelayProperties &other)
-    : port(other.port)
-    , clockCycles(other.clockCycles)
-    , deltas(other.deltas)
-    , halfClock(other.halfClock)
-{
-    // ntd
-}
-
-auto DelayProperties::operator=(const DelayProperties &other) -> DelayProperties &
-{
-    if (this == &other) {
-        return *this;
-    }
-    port        = other.port;
-    clockCycles = other.clockCycles;
-    deltas      = other.deltas;
-    halfClock   = other.halfClock;
-
-    return *this;
-}
-// /////////////////////////////////////
-// DelayInfos
-// /////////////////////////////////////
-
-DelayInfos::DelayInfos()
-    : view(nullptr)
-    , clock(nullptr)
-    , reset(nullptr)
-    , workingEdge(ProcessInfos::NO_EDGE)
-    , resetPhase(ProcessInfos::NO_PHASE)
-
-{
-    // ntd
-}
-DelayInfos::~DelayInfos()
-{
-    // ntd
-}
-DelayInfos::DelayInfos(const DelayInfos &other)
-    : view(other.view)
-    , clock(other.clock)
-    , reset(other.reset)
-    , workingEdge(other.workingEdge)
-    , resetPhase(other.resetPhase)
-    , delayProperties(other.delayProperties)
-{
-    // ntd
-}
-
-auto DelayInfos::operator=(const DelayInfos &other) -> DelayInfos &
-{
-    if (this == &other) {
-        return *this;
-    }
-    view            = other.view;
-    clock           = other.clock;
-    reset           = other.reset;
-    workingEdge     = other.workingEdge;
-    resetPhase      = other.resetPhase;
-    delayProperties = other.delayProperties;
-
-    return *this;
-}
-// /////////////////////////////////////
-// insertDelay()
-// /////////////////////////////////////
 
 auto insertDelays(DelayList &delays, hif::semantics::ILanguageSemantics *sem) -> bool
 {

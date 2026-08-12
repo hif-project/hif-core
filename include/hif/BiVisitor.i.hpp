@@ -1,8 +1,9 @@
 /// @file BiVisitor.i.hpp
 /// @brief Implements MonoVisitor and BiVisitor for object traversal.
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #pragma once
 
@@ -18,20 +19,17 @@ namespace hif
 // ///////////////////////////////////////////////////////////////////
 // MonoVisitor
 // ///////////////////////////////////////////////////////////////////
-template <class Child>
-MonoVisitor<Child>::MonoVisitor()
+template <class Child> MonoVisitor<Child>::MonoVisitor()
 {
     // ntd
 }
 
-template <class Child>
-MonoVisitor<Child>::~MonoVisitor()
+template <class Child> MonoVisitor<Child>::~MonoVisitor()
 {
     // ntd
 }
 
-template <class Child>
-void MonoVisitor<Child>::callMap(Object *o1)
+template <class Child> void MonoVisitor<Child>::callMap(Object *o1)
 {
     switch (o1->getClassId()) {
     case CLASSID_AGGREGATEALT:
@@ -314,14 +312,12 @@ BiVisitor<Child>::BiVisitor()
     // ntd
 }
 
-template <class Child>
-BiVisitor<Child>::~BiVisitor()
+template <class Child> BiVisitor<Child>::~BiVisitor()
 {
     // ntd
 }
 
-template <class Child>
-void BiVisitor<Child>::callMap(Object *o1, Object *o2)
+template <class Child> void BiVisitor<Child>::callMap(Object *o1, Object *o2)
 {
     switch (o1->getClassId()) {
     case CLASSID_AGGREGATEALT:
@@ -594,9 +590,7 @@ void BiVisitor<Child>::callMap(Object *o1, Object *o2)
     }
 }
 
-template <class Child>
-template <typename T>
-void BiVisitor<Child>::_rebind(T *o1, Object *o2)
+template <class Child> template <typename T> void BiVisitor<Child>::_rebind(T *o1, Object *o2)
 {
     switch (o2->getClassId()) {
     case CLASSID_AGGREGATEALT:

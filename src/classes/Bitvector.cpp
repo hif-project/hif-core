@@ -1,8 +1,9 @@
 /// @file Bitvector.cpp
 /// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #include "hif/classes/Bitvector.hpp"
 #include "hif/HifVisitor.hpp"
@@ -45,15 +46,15 @@ Range *Bitvector::setSpan(Range *x) { return setChild(_span, x); }
 
 bool Bitvector::isLogic() const { return _isLogic; }
 
-void Bitvector::setLogic(const bool logic) { _isLogic = logic; }
+void Bitvector::setLogic(bool logic) { _isLogic = logic; }
 
 bool Bitvector::isResolved() const { return _isResolved; }
 
-void Bitvector::setResolved(const bool resolved) { _isResolved = resolved; }
+void Bitvector::setResolved(bool resolved) { _isResolved = resolved; }
 
 bool Bitvector::isSigned() const { return _isSigned; }
 
-void Bitvector::setSigned(const bool sign) { _isSigned = sign; }
+void Bitvector::setSigned(bool sign) { _isSigned = sign; }
 
 Object *Bitvector::toObject() { return this; }
 

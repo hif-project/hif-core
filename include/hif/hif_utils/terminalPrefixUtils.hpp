@@ -1,8 +1,9 @@
 /// @file terminalPrefixUtils.hpp
 /// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #pragma once
 
@@ -16,12 +17,6 @@ namespace hif
 /// e.g. with recurseIntoFieldRefs = false:
 /// struct.field[index] -> return field, otherwise return struct.
 struct TerminalPrefixOptions {
-    TerminalPrefixOptions();
-    ~TerminalPrefixOptions();
-
-    TerminalPrefixOptions(const TerminalPrefixOptions &other);
-    TerminalPrefixOptions &operator=(const TerminalPrefixOptions &other);
-
     /// Recurse within field references. Default is true.
     bool recurseIntoFieldRefs;
     /// Recurse within member objects. Default is true.
@@ -41,6 +36,7 @@ struct TerminalPrefixOptions {
 ///
 
 Value *getTerminalPrefix(Value *obj, const TerminalPrefixOptions &opt = TerminalPrefixOptions());
+
 /// @brief This function sets the new prefix of a value.
 /// @param obj The object on which a new prefix is to be set.
 /// @param newPrefix The new prefix.

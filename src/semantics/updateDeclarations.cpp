@@ -1,8 +1,9 @@
 /// @file updateDeclarations.cpp
 /// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #include "hif/semantics/updateDeclarations.hpp"
 
@@ -47,10 +48,9 @@ private:
     ILanguageSemantics *_sem;
     const UpdateDeclarationOptions &_opt;
 
-    void checkFound(Declaration *decl, Object &obj, const bool mustBe = true);
+    void checkFound(Declaration *decl, Object &obj, bool mustBe = true);
 
-    template <typename T>
-    typename T::DeclarationType *_getDeclaration(T *obj);
+    template <typename T> typename T::DeclarationType *_getDeclaration(T *obj);
 
     // K: disabled
     UpdateDeclarationsVisitor(const UpdateDeclarationsVisitor &);
@@ -70,7 +70,7 @@ UpdateDeclarationsVisitor::~UpdateDeclarationsVisitor()
     // ntd
 }
 
-void UpdateDeclarationsVisitor::checkFound(Declaration *decl, Object &obj, const bool mustBe)
+void UpdateDeclarationsVisitor::checkFound(Declaration *decl, Object &obj, bool mustBe)
 {
     if (!_opt.error)
         return;
@@ -85,8 +85,7 @@ void UpdateDeclarationsVisitor::checkFound(Declaration *decl, Object &obj, const
     }
 }
 
-template <typename T>
-typename T::DeclarationType *UpdateDeclarationsVisitor::_getDeclaration(T *obj)
+template <typename T> typename T::DeclarationType *UpdateDeclarationsVisitor::_getDeclaration(T *obj)
 {
     typename T::DeclarationType *oldDecl = nullptr;
     if (_opt.onlyVisible) {
@@ -163,7 +162,7 @@ int UpdateDeclarationsVisitor::visitInstance(Instance &o)
     if (_opt.onlyVisible && o.GetDeclaration() == nullptr) {
         hif::semantics::setDeclaration(&o, s);
     }
-    const bool mustBe = dynamic_cast<Library *>(o.getReferencedType()) == nullptr;
+    bool mustBe = dynamic_cast<Library *>(o.getReferencedType()) == nullptr;
     checkFound(_getDeclaration(&o), o, mustBe);
     return 0;
 }

@@ -3,9 +3,10 @@
 /// @details Provides utility functions to traverse and apply user-defined operations
 /// on all objects in a subtree or a list of subtrees in a HIF (Hardware Intermediate Format)
 /// system description. These functions support custom operations via function pointers.
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #pragma once
 
@@ -33,9 +34,15 @@ namespace hif
 namespace apply
 {
 
+/// @brief A visitor that applies a function to objects in the hierarchy.
+/// @tparam Function The type of the function to apply.
+/// @tparam Data The type of the data to pass to the function.
 template <typename Function, typename Data> class ApplyVisitor : public GuideVisitor
 {
 public:
+    /// @brief Constructs an ApplyVisitor with a function and data.
+    /// @param function The function to apply to each object.
+    /// @param data User-defined data to pass to the function.
     ApplyVisitor(Function function, Data data)
         : GuideVisitor()
         , _function(function)
@@ -49,6 +56,9 @@ public:
     ApplyVisitor(const ApplyVisitor &)      = delete;
     ApplyVisitor &operator=(ApplyVisitor &) = delete;
 
+    /// @brief Called before visiting an object.
+    /// @param o The object being visited.
+    /// @return True if the function returns false (to stop traversal), false otherwise.
     bool BeforeVisit(Object &o) { return !_function(&o, _data); }
 
 private:

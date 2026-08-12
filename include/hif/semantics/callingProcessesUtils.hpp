@@ -1,8 +1,9 @@
 /// @file callingProcessesUtils.hpp
 /// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #pragma once
 
@@ -16,6 +17,7 @@ namespace semantics
 
 /// @brief The set of calling objects (processes and global actions).
 typedef std::set<Object *> CallerSet;
+
 /// @brief The map from sub programs to calling objects.
 typedef std::map<SubProgram *, CallerSet> CallerMap;
 

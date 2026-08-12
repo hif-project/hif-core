@@ -1,8 +1,9 @@
 /// @file standardizeHif.cpp
 /// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #include <cstdlib>
 #include <iostream>
@@ -25,11 +26,11 @@
 // /////////////////////////////////////////////////////////////////////
 
 #ifdef __clang__
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wunused-member-function"
+#    pragma clang diagnostic push
+#    pragma clang diagnostic ignored "-Wunused-member-function"
 #elif defined __GNUC__
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-function"
+#    pragma GCC diagnostic push
+#    pragma GCC diagnostic ignored "-Wunused-function"
 #endif
 
 namespace hif
@@ -253,8 +254,7 @@ protected:
     /// @param v The object of source tree.
     /// @return true if the operation was successful.
     ///
-    template <typename T>
-    bool _dstCopyObject(T *v);
+    template <typename T> bool _dstCopyObject(T *v);
 
     /// @brief Delete the corresponding object into map.
     /// and remove the original entry of the map.
@@ -296,8 +296,7 @@ protected:
     /// @param v The object of source tree.
     /// @return The corresponding object into map.
     ///
-    template <typename T>
-    T *_mapTypedGet(T *v);
+    template <typename T> T *_mapTypedGet(T *v);
 
     ///@}
 
@@ -312,8 +311,10 @@ protected:
     /// @param o The data declaration.
     ///
     void _assureInitialValue(DataDeclaration *o);
+
     /// @brief Assure that PPAssigns have set correctly the direction field.
     void _fixPPAssignSrcDirection(PPAssign *o);
+
     /// @brief Create the declaration of the corresponding object
     /// into map. This is done getting the declaration of the source
     /// object and mapping in destination semantics calling the
@@ -492,8 +493,7 @@ protected:
     ///
     /// @param o The referenced assign object.
     ///
-    template <typename T>
-    void _mapReferencedAssign(T *o, const hif::Operator op);
+    template <typename T> void _mapReferencedAssign(T *o, const hif::Operator op);
 
     /// @brief Manage referenced assign list of Type TP and Value TP.
     /// For each ValueTPAssign it call _mapReferencedAssign function.
@@ -667,13 +667,12 @@ System *HifStdVisitor::getResult(System *o) { return _mapTypedGet(o); }
 // StdVisitor support methods
 // //////////////////////////////////////////////////
 
-template <typename T>
-bool HifStdVisitor::_dstCopyObject(T *v)
+template <typename T> bool HifStdVisitor::_dstCopyObject(T *v)
 {
     Object *o = _mapGet(v);
 
     // Setting expand mode for declarations.
-    hif::manipulation::MatchedInsertType::type type;
+    hif::manipulation::MatchedInsertType type;
     if (dynamic_cast<Declaration *>(v) != nullptr) {
         type = hif::manipulation::MatchedInsertType::TYPE_EXPAND;
     } else {
@@ -689,8 +688,8 @@ bool HifStdVisitor::_dstCopyObject(T *v)
             return false;
         if (isSemanticsType(dynamic_cast<Type *>(v)))
             return false;
-        Object *oParent   = _mapGet(v->getParent());
-        const bool result = hif::manipulation::matchedInsert(o, oParent, v, v->getParent(), type);
+        Object *oParent = _mapGet(v->getParent());
+        bool result     = hif::manipulation::matchedInsert(o, oParent, v, v->getParent(), type);
 
         messageDebugIfFails(result, "o = ", o, _dstSem);
         messageDebugIfFails(result, "oParent = ", oParent, _dstSem);
@@ -742,7 +741,7 @@ bool HifStdVisitor::_dstCopyObject(T *v)
     }
     if (isSemanticsType(dynamic_cast<Type *>(v)))
         return true;
-    const bool result = hif::manipulation::matchedInsert(dstObj, newParent, v, v->getParent(), type);
+    bool result = hif::manipulation::matchedInsert(dstObj, newParent, v, v->getParent(), type);
 
     messageAssert(result, "Matched insert fails (2).", v, _srcSem);
     return true;
@@ -813,11 +812,7 @@ void HifStdVisitor::_mapSet(Object *k, Object *v)
     _mapCheck(k, v);
     _treeMap[k] = v;
 }
-template <typename T>
-T *HifStdVisitor::_mapTypedGet(T *v)
-{
-    return dynamic_cast<T *>(_mapGet(v));
-}
+template <typename T> T *HifStdVisitor::_mapTypedGet(T *v) { return dynamic_cast<T *>(_mapGet(v)); }
 void HifStdVisitor::_assureInitialValue(DataDeclaration *o)
 {
     if (o->getValue() != nullptr)
@@ -845,8 +840,8 @@ void HifStdVisitor::_dstGetDeclaration(Object *obj)
     Object *dstObj = _mapGet(obj);
     messageAssert(dstObj != nullptr, "Object not found in map", obj, _dstSem);
 
-    Declaration *decl        = getDeclaration(obj, _srcSem);
-    const bool declIsInCache = hif::manipulation::isInCache(decl);
+    Declaration *decl  = getDeclaration(obj, _srcSem);
+    bool declIsInCache = hif::manipulation::isInCache(decl);
 
     if (dynamic_cast<Instance *>(obj) != nullptr) {
         Instance *ii      = static_cast<Instance *>(obj);
@@ -896,8 +891,8 @@ Type *HifStdVisitor::_dstGetType(Type *o, bool /*fresh*/)
 {
     Type *t = nullptr;
 
-    const bool restore = _canRebaseTypes;
-    _canRebaseTypes    = false;
+    bool restore    = _canRebaseTypes;
+    _canRebaseTypes = false;
 
     t = _mapTypedGet(o);
     if (t != nullptr)
@@ -1456,8 +1451,7 @@ void HifStdVisitor::_mapInitialValue(DataDeclaration *o)
     //opt.copySemanticsTypes = true;
     _dstReplaceWithCast(o->getValue(), dstObj->getValue(), hif::copy(declType, opt));
 }
-template <typename T>
-void HifStdVisitor::_mapReferencedAssign(T *o, const Operator op)
+template <typename T> void HifStdVisitor::_mapReferencedAssign(T *o, const Operator op)
 {
     T *dstObj = _mapTypedGet(o);
     messageAssert(dstObj != nullptr, "Object not found in map", o, _dstSem);
@@ -1625,11 +1619,11 @@ void HifStdVisitor::_mapSlice(Slice *o) { _mapSliceSpan(o); }
 
 void HifStdVisitor::_mapSliceSpan(Slice *o)
 {
-    const bool srcTr = _srcSem->isSyntacticTypeRebased();
-    const bool srcSr = _srcSem->isSliceTypeRebased();
+    bool srcTr = _srcSem->isSyntacticTypeRebased();
+    bool srcSr = _srcSem->isSliceTypeRebased();
 
-    const bool dstTr = _dstSem->isSyntacticTypeRebased();
-    const bool dstSr = _dstSem->isSliceTypeRebased();
+    bool dstTr = _dstSem->isSyntacticTypeRebased();
+    bool dstSr = _dstSem->isSliceTypeRebased();
 
     // skip cases where fix is not necessary
     if (srcTr == dstTr && srcSr == dstSr)
@@ -1706,11 +1700,11 @@ void HifStdVisitor::_mapMember(Member *o) { _mapMemberIndex(o); }
 
 void HifStdVisitor::_mapMemberIndex(Member *o)
 {
-    const bool srcTr = _srcSem->isSyntacticTypeRebased();
-    const bool srcSr = _srcSem->isSliceTypeRebased();
+    bool srcTr = _srcSem->isSyntacticTypeRebased();
+    bool srcSr = _srcSem->isSliceTypeRebased();
 
-    const bool dstTr = _dstSem->isSyntacticTypeRebased();
-    const bool dstSr = _dstSem->isSliceTypeRebased();
+    bool dstTr = _dstSem->isSyntacticTypeRebased();
+    bool dstSr = _dstSem->isSliceTypeRebased();
 
     // skip cases where fix is not necessary
     if (srcTr == dstTr && srcSr == dstSr)
@@ -2027,12 +2021,12 @@ void HifStdVisitor::_performSemanticsAlgorithm(
                 messageDebug("Suggested type 1", dstSuggestedType1, _dstSem);
                 messageDebug("Suggested type 2", dstSuggestedType2, _dstSem);
 
-#if 0
+#    if 0
                 _dstSem->getSuggestedTypeForOp(
                             dstOperandCast, operation, dstT1, dstStarting, true );
                 _dstSem->getSuggestedTypeForOp(
                             dstOperandCast, operation, dstT2, dstStarting, true );
-#endif
+#    endif
             }
 #endif
             messageAssert(
@@ -2132,7 +2126,7 @@ void HifStdVisitor::_handleLength(Type *source, Type *dest, Type *resultType, An
     Value *sourceSpanSize = spanGetSize(sourceSpan, _dstSem);
     Value *destSpanSize   = spanGetSize(destSpan, _dstSem);
 
-    const bool equalSpans = hif::equals(sourceSpanSize, destSpanSize);
+    bool equalSpans = hif::equals(sourceSpanSize, destSpanSize);
     delete sourceSpanSize;
     delete destSpanSize;
 
@@ -2189,7 +2183,7 @@ bool HifStdVisitor::_isTypedRange(Range *tSpan, hif::semantics::ILanguageSemanti
     Identifier *rb = dynamic_cast<Identifier *>(tSpan->getRightBound());
     ValueTP *lbDec = dynamic_cast<ValueTP *>(hif::semantics::getDeclaration(lb, sem));
     ValueTP *rbDec = dynamic_cast<ValueTP *>(hif::semantics::getDeclaration(rb, sem));
-    const bool isTyped =
+    bool isTyped =
         (lb != nullptr && rb != nullptr && lbDec != nullptr && rbDec != nullptr && lbDec->isInBList() &&
          rbDec->isInBList() && lbDec->getBList() == rbDec->getBList());
 
@@ -2562,9 +2556,9 @@ int HifStdVisitor::visitFunctionCall(FunctionCall &o)
 
     FunctionCall::DeclarationType *treeDecl = hif::semantics::getDeclaration(&o, _srcSem);
 
-    const hif::manipulation::SortMissingKind::type kind = hif::declarationIsPartOfStandard(treeDecl)
-                                                              ? hif::manipulation::SortMissingKind::NOTHING
-                                                              : _dstSem->getSemanticsOptions().lang_sortKind;
+    hif::manipulation::SortMissingKind kind = hif::declarationIsPartOfStandard(treeDecl)
+                                                  ? hif::manipulation::SortMissingKind::NOTHING
+                                                  : _dstSem->getSemanticsOptions().lang_sortKind;
 
     hif::manipulation::sortParameters(o.parameterAssigns, decl->parameters, true, kind, _srcSem);
     hif::manipulation::sortParameters(o.templateParameterAssigns, decl->templateParameters, true, kind, _srcSem);
@@ -2903,9 +2897,9 @@ int HifStdVisitor::visitProcedureCall(ProcedureCall &o)
 
     ProcedureCall::DeclarationType *treeDecl = hif::semantics::getDeclaration(&o, _srcSem);
 
-    const hif::manipulation::SortMissingKind::type kind = hif::declarationIsPartOfStandard(treeDecl)
-                                                              ? hif::manipulation::SortMissingKind::NOTHING
-                                                              : _dstSem->getSemanticsOptions().lang_sortKind;
+    hif::manipulation::SortMissingKind kind = hif::declarationIsPartOfStandard(treeDecl)
+                                                  ? hif::manipulation::SortMissingKind::NOTHING
+                                                  : _dstSem->getSemanticsOptions().lang_sortKind;
 
     hif::manipulation::sortParameters(o.parameterAssigns, decl->parameters, true, kind, _srcSem);
     hif::manipulation::sortParameters(o.templateParameterAssigns, decl->templateParameters, true, kind, _srcSem);
@@ -3188,9 +3182,9 @@ int HifStdVisitor::visitTypeReference(TypeReference &o)
 
         TypeReference::DeclarationType *treeDecl = hif::semantics::getDeclaration(&o, _srcSem);
 
-        const hif::manipulation::SortMissingKind::type kind = hif::declarationIsPartOfStandard(treeDecl)
-                                                                  ? hif::manipulation::SortMissingKind::NOTHING
-                                                                  : _dstSem->getSemanticsOptions().lang_sortKind;
+        hif::manipulation::SortMissingKind kind = hif::declarationIsPartOfStandard(treeDecl)
+                                                      ? hif::manipulation::SortMissingKind::NOTHING
+                                                      : _dstSem->getSemanticsOptions().lang_sortKind;
 
         hif::manipulation::sortParameters(o.templateParameterAssigns, td->templateParameters, true, kind, _srcSem);
     }
@@ -3308,9 +3302,9 @@ int HifStdVisitor::visitViewReference(ViewReference &o)
     if (decl != nullptr) {
         ViewReference::DeclarationType *treeDecl = hif::semantics::getDeclaration(&o, _srcSem);
 
-        const hif::manipulation::SortMissingKind::type kind = hif::declarationIsPartOfStandard(treeDecl)
-                                                                  ? hif::manipulation::SortMissingKind::NOTHING
-                                                                  : _dstSem->getSemanticsOptions().lang_sortKind;
+        hif::manipulation::SortMissingKind kind = hif::declarationIsPartOfStandard(treeDecl)
+                                                      ? hif::manipulation::SortMissingKind::NOTHING
+                                                      : _dstSem->getSemanticsOptions().lang_sortKind;
 
         hif::manipulation::sortParameters(o.templateParameterAssigns, decl->templateParameters, true, kind, _srcSem);
     }

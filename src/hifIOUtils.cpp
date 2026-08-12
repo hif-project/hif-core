@@ -1,8 +1,9 @@
 /// @file hifIOUtils.cpp
 /// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #include <cstdlib>
 #include <cstring>
@@ -12,9 +13,9 @@
 #include <time.h>
 
 #if (defined __GNUC__)
-#include <sys/time.h>
+#    include <sys/time.h>
 #else
-#include <windows.h>
+#    include <windows.h>
 #endif
 
 #include "hif/application_utils/Log.hpp"
@@ -38,7 +39,7 @@ struct timezone {
 };
 
 /// @brief Difference between Windows epoch and Unix epoch in microseconds.
-#define DELTA_EPOCH_IN_MICROSECS 11644473600000000ULL
+#    define DELTA_EPOCH_IN_MICROSECS 11644473600000000ULL
 
 /// @brief Replacement for `gettimeofday` on non-GNU platforms (e.g., Windows).
 /// @details Retrieves the current time and timezone information.
@@ -96,8 +97,7 @@ namespace
 { // anon namespace
 
 /// Hack to quickly convert an object of type \p T to a string.
-template <typename T>
-std::string toStr(T const &t)
+template <typename T> std::string toStr(T const &t)
 {
     std::ostringstream i;
     i << t;
@@ -228,6 +228,7 @@ void writeFile(std::ostream &outstream, Object *obj, bool xml_format, const Prin
         printHif(*obj, outstream, opt);
     }
 }
+
 void writeUniqueFile(
     const std::string &filename,
     Object *obj,

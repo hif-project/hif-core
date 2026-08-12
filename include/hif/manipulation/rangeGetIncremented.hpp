@@ -1,8 +1,9 @@
 /// @file rangeGetIncremented.hpp
 /// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #pragma once
 
@@ -24,7 +25,7 @@ namespace manipulation
 /// @return The new span with the upper bound incremented by one.
 ///
 
-Range *rangeGetIncremented(Range *range, hif::semantics::ILanguageSemantics *refLang, long long increment = 1);
+Range *rangeGetIncremented(Range *range, hif::semantics::ILanguageSemantics *refLang, std::int64_t increment = 1);
 
 } // namespace manipulation
 } // namespace hif

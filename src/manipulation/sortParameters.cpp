@@ -1,8 +1,9 @@
 /// @file sortParameters.cpp
 /// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #include "hif/manipulation/sortParameters.hpp"
 
@@ -12,12 +13,12 @@
 #include "hif/semantics/semantics.hpp"
 
 #ifdef __clang__
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wmissing-noreturn"
+#    pragma clang diagnostic push
+#    pragma clang diagnostic ignored "-Wmissing-noreturn"
 #elif defined __GNUC__
-#if __GNUC__ >= 5
-#pragma GCC diagnostic ignored "-Wduplicated-cond"
-#endif
+#    if __GNUC__ >= 5
+#        pragma GCC diagnostic ignored "-Wduplicated-cond"
+#    endif
 #endif
 namespace hif
 {
@@ -61,7 +62,7 @@ TPAssign *_getExplicitValueParameter(
     Declaration *formal,
     T *fcall,
     hif::semantics::ILanguageSemantics *refSem,
-    const bool /*hasCandidate*/)
+    bool /*hasCandidate*/)
 {
     for (BList<TPAssign>::iterator it = fcall->templateParameterAssigns.begin();
          it != fcall->templateParameterAssigns.end(); ++it) {
@@ -77,7 +78,7 @@ TPAssign *_getImplicitValueParameter(
     Declaration *formal,
     T *fcall,
     hif::semantics::ILanguageSemantics *refSem,
-    const bool hasCandidate)
+    bool hasCandidate)
 {
     SubProgram *sub = dynamic_cast<SubProgram *>(formal->getParent());
     messageAssert(sub != nullptr, "Unexpected parent", formal->getParent(), refSem);
@@ -228,7 +229,7 @@ TPAssign *_getDefaultValueParameter(
     T * /*fcall*/,
     BList<TPAssign> &actualParams,
     hif::semantics::ILanguageSemantics *refSem,
-    const bool /*hasCandidate*/)
+    bool /*hasCandidate*/)
 {
     TypeTP *typeTP   = dynamic_cast<TypeTP *>(formal);
     ValueTP *valueTP = dynamic_cast<ValueTP *>(formal);
@@ -266,7 +267,7 @@ TPAssign *_getCallTPAssign(
     T *fcall,
     BList<TPAssign> &actualParams,
     hif::semantics::ILanguageSemantics *refSem,
-    const bool hasCandidate)
+    bool hasCandidate)
 {
     // search the name in the template parameter assigns of the fcall
     TPAssign *ret = nullptr;
@@ -333,7 +334,7 @@ TPAssign *_make_parameter(
     Object *call,
     BList<TPAssign> &actualParams,
     hif::semantics::ILanguageSemantics *refSem,
-    const bool hasCandidate)
+    bool hasCandidate)
 {
     TPAssign *r          = nullptr;
     FunctionCall *fcall  = dynamic_cast<FunctionCall *>(call);
@@ -414,7 +415,7 @@ PortAssign *_make_parameter(
     Object * /*call*/,
     BList<PortAssign> & /*actualParams*/,
     hif::semantics::ILanguageSemantics *refSem,
-    const bool /*hasCandidate*/)
+    bool /*hasCandidate*/)
 {
     if (formal->getValue() == nullptr)
         return nullptr;
@@ -432,7 +433,7 @@ ParameterAssign *_make_parameter(
     Object * /*call*/,
     BList<ParameterAssign> & /*actualParams*/,
     hif::semantics::ILanguageSemantics *refSem,
-    const bool /*hasCandidate*/)
+    bool /*hasCandidate*/)
 {
     if (formal->getValue() == nullptr)
         return nullptr;
@@ -450,10 +451,10 @@ bool _sortParameters(
     Object *call,
     BList<Actual> &actualParams,
     BList<Formal> &formalParams,
-    const bool set_names,
-    const SortMissingKind::type missingType,
+    bool set_names,
+    SortMissingKind missingType,
     hif::semantics::ILanguageSemantics *refSem,
-    const bool hasCandidate = false)
+    bool hasCandidate = false)
 {
     messageDebugIfFails(
         formalParams.size() >= actualParams.size() || hasCandidate, "Actuals:", formalParams.getParent(), refSem);
@@ -545,7 +546,7 @@ Object *getImplicitTemplate(
     Object *formalParameterType,
     Object *actualParameterType,
     hif::semantics::ILanguageSemantics *sem,
-    const bool hasCandidate)
+    bool hasCandidate)
 {
     hif::semantics::ReferencesSet refs;
     hif::semantics::getReferences(tp, refs, sem, formalParameterType);
@@ -577,13 +578,13 @@ Object *getImplicitTemplate(
 bool sortParameters(
     BList<ParameterAssign> &actualParams,
     BList<Parameter> &formalParams,
-    const bool set_formal_names,
-    const SortMissingKind::type missingType,
+    bool set_formal_names,
+    SortMissingKind missingType,
     hif::semantics::ILanguageSemantics *refSem,
-    const bool hasCandidate)
+    bool hasCandidate)
 {
     hif::application_utils::initializeLogHeader("HIF", "sortParameters");
-    const bool ret = _sortParameters(
+    bool ret = _sortParameters(
         actualParams.getParent(), actualParams, formalParams, set_formal_names, missingType, refSem, hasCandidate);
     hif::application_utils::restoreLogHeader();
     return ret;
@@ -591,13 +592,13 @@ bool sortParameters(
 bool sortParameters(
     BList<TPAssign> &actualParams,
     BList<Declaration> &formalParams,
-    const bool set_formal_names,
-    const SortMissingKind::type missingType,
+    bool set_formal_names,
+    SortMissingKind missingType,
     hif::semantics::ILanguageSemantics *refSem,
-    const bool hasCandidate)
+    bool hasCandidate)
 {
     hif::application_utils::initializeLogHeader("HIF", "sortParameters");
-    const bool ret = _sortParameters(
+    bool ret = _sortParameters(
         actualParams.getParent(), actualParams, formalParams, set_formal_names, missingType, refSem, hasCandidate);
     hif::application_utils::restoreLogHeader();
     return ret;
@@ -605,12 +606,12 @@ bool sortParameters(
 bool sortParameters(
     BList<PortAssign> &actualParams,
     BList<Port> &formalParams,
-    const bool set_formal_names,
-    const SortMissingKind::type missingType,
+    bool set_formal_names,
+    SortMissingKind missingType,
     hif::semantics::ILanguageSemantics *refSem)
 {
     hif::application_utils::initializeLogHeader("HIF", "sortParameters");
-    const bool ret = _sortParameters(nullptr, actualParams, formalParams, set_formal_names, missingType, refSem);
+    bool ret = _sortParameters(nullptr, actualParams, formalParams, set_formal_names, missingType, refSem);
     hif::application_utils::restoreLogHeader();
     return ret;
 }

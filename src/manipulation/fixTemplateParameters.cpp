@@ -1,8 +1,9 @@
 /// @file fixTemplateParameters.cpp
 /// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #include <algorithm>
 #include <cstdlib>
@@ -18,15 +19,15 @@
 #include "hif/trash.hpp"
 
 #ifdef __clang__
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wunused-member-function"
-#pragma clang diagnostic ignored "-Wmissing-noreturn"
+#    pragma clang diagnostic push
+#    pragma clang diagnostic ignored "-Wunused-member-function"
+#    pragma clang diagnostic ignored "-Wmissing-noreturn"
 #elif defined __GNUC__
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-function"
-#if __GNUC__ >= 5
-#pragma GCC diagnostic ignored "-Wduplicated-cond"
-#endif
+#    pragma GCC diagnostic push
+#    pragma GCC diagnostic ignored "-Wunused-function"
+#    if __GNUC__ >= 5
+#        pragma GCC diagnostic ignored "-Wduplicated-cond"
+#    endif
 #endif
 
 //#define DEBUG_INSERTIONS
@@ -106,6 +107,7 @@ GoodTypeMap goodTypeMap;
 /// @brief Map that store the new names assign to Const that should be moved to
 /// define. Needed for temporal dependency between visitors.
 DefinesMap definesMap;
+
 /// @brief If not already set, add a property to field concatenating record name
 /// with "_" and fieldName.
 /// @param f The field.
@@ -118,8 +120,8 @@ std::string _setNewFieldName(Field *f, Declaration *decl)
     if (propValue != nullptr)
         return static_cast<Identifier *>(propValue)->getName();
 
-    std::string n = hif::NameTable::getInstance()->getFreshName(
-        (std::string(decl->getName()) + "_" + f->getName()).c_str());
+    std::string n =
+        hif::NameTable::getInstance()->getFreshName((std::string(decl->getName()) + "_" + f->getName()).c_str());
     f->addProperty(PROPERTY_NEW_NAME, new Identifier(n));
     return n;
 }
@@ -206,7 +208,7 @@ std::string _addStringEnumEntry(Object *o, std::string n, hif::semantics::ILangu
 /// @param decl The declaration.
 /// @return True if is already a template.
 ///
-bool _checkIsAlreadyTemplate(Declaration *decl, const bool fixCompileTimeConstant)
+bool _checkIsAlreadyTemplate(Declaration *decl, bool fixCompileTimeConstant)
 {
     if (dynamic_cast<ValueTP *>(decl) != nullptr) {
         ValueTP *vtp = static_cast<ValueTP *>(decl);
@@ -300,7 +302,7 @@ Value *TypeConverterVisitor::_transformTimeValueToRecordValue(Value * /*o*/)
                           _getTimeUnitString(tv->getUnit())));
     rv->alts.push_back(rvaUnit);
 
-    if (tv->getValue() > static_cast<long long>(tv->getValue()))
+    if (tv->getValue() > static_cast<std::int64_t>(tv->getValue()))
     {
         // TODO: multiply the value to avoid integer truncation
         messageWarning( "Time value will be truncated since is "
@@ -480,8 +482,7 @@ protected:
     /// (if returned) setting the new _recursionPosition pointer.
     /// @param o The object to manage.
     ///
-    template <typename T>
-    void _manageReference(T *o);
+    template <typename T> void _manageReference(T *o);
 
     /// @brief Print eventual warning when try to move as constant (template
     /// parameter o define a variable.
@@ -618,8 +619,7 @@ ValueTP *MoveVisitor::_makeValueTP(DataDeclaration *c, BList<Declaration> &decla
                 it.insert_after(vtp);
                 _paramPosition = vtp;
 #ifdef DEBUG_INSERTIONS
-                clog << "INSERT: " << hif::objectGetName(vtp) << " AFTER: " << hif::objectGetName(*it)
-                     << endl;
+                clog << "INSERT: " << hif::objectGetName(vtp) << " AFTER: " << hif::objectGetName(*it) << endl;
 #endif
             }
         } else {
@@ -636,8 +636,7 @@ ValueTP *MoveVisitor::_makeValueTP(DataDeclaration *c, BList<Declaration> &decla
         it.insert_before(vtp);
 
 #ifdef DEBUG_INSERTIONS
-        clog << "INSERT: " << hif::objectGetName(vtp) << " BEFORE: " << hif::objectGetName(*it)
-             << endl;
+        clog << "INSERT: " << hif::objectGetName(vtp) << " BEFORE: " << hif::objectGetName(*it) << endl;
 #endif
     }
 
@@ -682,7 +681,7 @@ bool MoveVisitor::_isAlredyTemplate(Declaration *decl)
         return true;
     }
 
-    const bool isInTrash = _trash.contains(decl);
+    bool isInTrash = _trash.contains(decl);
     return isInTrash;
 }
 
@@ -737,8 +736,7 @@ DataDeclaration *MoveVisitor::_moveToTemplate(DataDeclaration *decl)
     return ret;
 }
 
-template <typename T>
-void MoveVisitor::_manageReference(T *o)
+template <typename T> void MoveVisitor::_manageReference(T *o)
 {
     if (!_isInBadScope)
         return;
@@ -914,7 +912,7 @@ bool MoveVisitor::_isSystemCStandardLibrary(LibraryDef *o)
     if (!o->isStandard())
         return false;
     std::string s(o->getName());
-    const std::string prefix("hif_systemc_");
+    std::string prefix("hif_systemc_");
     if (s.substr(0, prefix.size()) != prefix)
         return false;
     s = s.substr(prefix.size());
@@ -989,7 +987,7 @@ int MoveVisitor::visitParameterAssign(ParameterAssign &o)
         messageAssert(param != nullptr, "Declaration not found", &o, _sem);
 
         if (_standardConstDecls.find(param) != _standardConstDecls.end()) {
-            const bool restore = _isInBadScope;
+            bool restore = _isInBadScope;
             _isInBadScope      = true;
             GuideVisitor::visitParameterAssign(o);
             _isInBadScope = restore;
@@ -1244,8 +1242,7 @@ protected:
 
     void _renameEventualDefine(Identifier *ref);
 
-    template <typename T>
-    void _fixReference(T *ref, typename T::DeclarationType *decl);
+    template <typename T> void _fixReference(T *ref, typename T::DeclarationType *decl);
 
     void _fixBadGeneralRef(ValueTPAssign *ref, Type *badType, Type *goodType);
     void _fixBadGeneralRef(Identifier *ref, Type *badType, Type *goodType);
@@ -1334,8 +1331,7 @@ void FixReferencesVisitor::_renameEventualDefine(Identifier *ref)
     ref->setName(definesMap[c]);
 }
 
-template <typename T>
-void FixReferencesVisitor::_fixReference(T *ref, typename T::DeclarationType *decl)
+template <typename T> void FixReferencesVisitor::_fixReference(T *ref, typename T::DeclarationType *decl)
 {
     if (!_checkIsAlreadyTemplate(decl, false))
         return;
@@ -1357,7 +1353,7 @@ void FixReferencesVisitor::_fixReference(T *ref, typename T::DeclarationType *de
     }
 
     Const *constDecl         = dynamic_cast<Const *>(ddecl);
-    const bool isConstDefine = (constDecl != nullptr && constDecl->isDefine());
+    bool isConstDefine = (constDecl != nullptr && constDecl->isDefine());
 
     // If declaration type is good there is nothing to do.
     if (_opt.checkSem->isTemplateAllowedType(badType) && !isConstDefine) {
@@ -1592,7 +1588,7 @@ void FixReferencesVisitor::_fixBadRecordRef(ValueTPAssign *ref, Record * /*badTy
 
     for (BList<Field>::iterator i = goodType->fields.begin(); i != goodType->fields.end(); ++i) {
         ValueTPAssign *vtpa = new ValueTPAssign();
-        std::string n              = _setNewFieldName(*i, decl);
+        std::string n       = _setNewFieldName(*i, decl);
         vtpa->setName(n);
         FieldReference *fr = new FieldReference();
         fr->setName((*i)->getName());
@@ -1653,7 +1649,7 @@ void FixReferencesVisitor::_fixBadRecordRef(ParameterAssign *ref, Record * /*bad
 
     for (BList<Field>::iterator i = goodType->fields.begin(); i != goodType->fields.end(); ++i) {
         ParameterAssign *pa = new ParameterAssign();
-        std::string n              = _setNewFieldName(*i, decl);
+        std::string n       = _setNewFieldName(*i, decl);
         pa->setName(n);
         FieldReference *fr = new FieldReference();
         fr->setName((*i)->getName());
@@ -1691,7 +1687,7 @@ void FixReferencesVisitor::_fixBadTimeRef(ValueTPAssign *ref, Time * /*badType*/
 
     for (BList<Field>::iterator i = goodType->fields.begin(); i != goodType->fields.end(); ++i) {
         ValueTPAssign *vtpa = new ValueTPAssign();
-        std::string n              = _setNewFieldName(*i, decl);
+        std::string n       = _setNewFieldName(*i, decl);
         vtpa->setName(n);
         FieldReference *fr = new FieldReference();
         fr->setName((*i)->getName());
@@ -1929,7 +1925,7 @@ void _checkConstexprFunction(Function *originalDecl, hif::semantics::ILanguageSe
     opt.simplify_statements = true;
     hif::manipulation::simplify(originalDecl, sem, opt);
 
-    const BList<Action>::size_t ss = stOriginal->states.front()->actions.size();
+    const std::size_t ss = stOriginal->states.front()->actions.size();
     if (ss != 1) {
         messageError(
             "Found function which must be a constexpr, but currently is not supported. (2)", originalDecl, sem);
@@ -1975,7 +1971,7 @@ void _fixBadStringDecl(
     if (initVal != nullptr) {
         // Initial value must be a text. In this case add a new
         // enum value entry into global enums.
-        std::string n              = _addStringEnumEntry(dataDecl, initVal->getValue(), sem);
+        std::string n       = _addStringEnumEntry(dataDecl, initVal->getValue(), sem);
         // Set initial value with an identifier to created enum value.
         Identifier *enumRef = new Identifier(n);
         delete dataDecl->setValue(enumRef);
@@ -2071,7 +2067,7 @@ void _fixBadTimeDecl(
         // Fixing initial value:
         if (tv != nullptr) {
             IntValue *v = new IntValue();
-            v->setValue(static_cast<long long>(tv->getValue()));
+            v->setValue(static_cast<std::int64_t>(tv->getValue()));
             v->setType(hif::copy(nf->getType()));
             nf->setValue(v);
         }
@@ -2362,7 +2358,7 @@ void _fixAssignments(System *o, hif::semantics::ILanguageSemantics *sem)
     // {
     //    module M1
     //    {
-    //        const int c = 5;
+    //        int c = 5;
     //    }
     //
     //    typedef sc_lv<M1::c> TD;

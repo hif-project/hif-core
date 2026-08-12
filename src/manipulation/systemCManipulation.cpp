@@ -1,8 +1,9 @@
 /// @file systemCManipulation.cpp
 /// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #include "hif/manipulation/systemCManipulation.hpp"
 
@@ -24,7 +25,7 @@ typedef std::map<Identifier::DeclarationType *, std::vector<std::string>> Declar
 // ///////////////////////////////////////////////////////////////////
 // Last value fix part
 // ///////////////////////////////////////////////////////////////////
-FunctionCall *_mapRisingFalling(Object *o, Object *root, hif::semantics::ILanguageSemantics *sem, const bool isRising)
+FunctionCall *_mapRisingFalling(Object *o, Object *root, hif::semantics::ILanguageSemantics *sem, bool isRising)
 {
     FunctionCall *call = dynamic_cast<FunctionCall *>(o);
     messageAssert(call != nullptr && call->parameterAssigns.size() == 1, "Unexpected rising/falling reference", o, sem);
@@ -76,7 +77,7 @@ bool _fixLastValueAsLibrary(
     FunctionCall *o,
     DeclarationsMap &declarations,
     hif::semantics::ILanguageSemantics *sem,
-    const bool isInline)
+    bool isInline)
 {
     Identifier *id = dynamic_cast<Identifier *>(hif::getTerminalPrefix(hif::getChildSkippingCasts(o->getInstance())));
     messageAssert(id != nullptr, "Unexpeceted instance", o, sem);
@@ -284,8 +285,9 @@ bool mapLastValueToSystemC(Object *root, const LastValueOptions &opts)
     typedef std::set<Object *> SymbolSet;
     typedef std::map<Declaration *, SymbolSet> RefMap;
     RefMap refMap;
-    hif::semantics::GetReferencesOptions opt(false, false, false);
-    hif::semantics::getAllReferences(refMap, sem, s, opt);
+    hif::semantics::GetReferencesOptions get_refs_opts;
+    get_refs_opts.error = false;
+    hif::semantics::getAllReferences(refMap, sem, s, get_refs_opts);
 
     SymbolSet &lastValueRefs = refMap[lastValue];
 
@@ -327,7 +329,7 @@ bool mapLastValueToSystemC(Object *root, const LastValueOptions &opts)
             "Found last value inside unexpected scope", f, sem);
 
         // Actual fix
-        const bool firstFixInScope = _fixLastValueAsLibrary(f, declarations, sem, opts.inlineLastValue);
+        bool firstFixInScope = _fixLastValueAsLibrary(f, declarations, sem, opts.inlineLastValue);
         ret |= firstFixInScope;
 
         if (!firstFixInScope | opts.inlineLastValue)

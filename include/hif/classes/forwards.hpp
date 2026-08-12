@@ -1,8 +1,9 @@
 /// @file forwards.hpp
 /// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #pragma once
 
@@ -17,8 +18,7 @@ class Alias;
 class Alt;
 class Array;
 class Assign;
-template <class T>
-class BList;
+template <class T> class BList;
 class BListHost;
 class BaseContents;
 class Bit;

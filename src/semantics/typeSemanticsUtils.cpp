@@ -1,8 +1,9 @@
 /// @file typeSemanticsUtils.cpp
 /// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #include "hif/semantics/typeSemanticUtils.hpp"
 
@@ -98,7 +99,7 @@ bool isLogicVectorType(Type *type, ILanguageSemantics *refLang)
 
     return false;
 }
-bool isSubType(Type *t1, Type *t2, ILanguageSemantics *refLang, const bool compareSpan, const bool considerOpacity)
+bool isSubType(Type *t1, Type *t2, ILanguageSemantics *refLang, bool compareSpan, bool considerOpacity)
 {
     if (t1 == nullptr && t2 == nullptr)
         return true;
@@ -174,13 +175,13 @@ bool isSingleBitType(Type *type, ILanguageSemantics *sem)
 
     return false;
 }
-bool isSemanticsType(Type *t)
+bool isSemanticsType(const Type *t)
 {
     if (t == nullptr)
         return false;
     if (t->getParent() == nullptr)
         return false;
-    TypedObject *to = dynamic_cast<TypedObject *>(t->getParent());
+    auto to = dynamic_cast<TypedObject *>(t->getParent());
     if (to == nullptr)
         return false;
     return (to->getSemanticType() == t);

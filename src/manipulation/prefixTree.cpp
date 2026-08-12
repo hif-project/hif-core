@@ -1,8 +1,9 @@
 /// @file prefixTree.cpp
 /// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #include "hif/manipulation/prefixTree.hpp"
 
@@ -23,7 +24,7 @@ namespace /*anon*/
 // ///////////////////////////////////////////////////////////////////
 // Utility methods
 // ///////////////////////////////////////////////////////////////////
-Object *_getParent(Object *o, unsigned int times, const bool checkError)
+Object *_getParent(Object *o, unsigned int times, bool checkError)
 {
     Object *parent = o;
     unsigned int t = 0;
@@ -140,7 +141,7 @@ void PrefixVisitor::_prefixSymbol(Object *symbol)
         isSpecialCase = true;
     }
 
-    const bool sameScope = (symScope == declScope && _opt.skipPrefixingIfSameScope);
+    bool sameScope = (symScope == declScope && _opt.skipPrefixingIfSameScope);
     if (sameScope && !isSpecialCase)
         return;
 

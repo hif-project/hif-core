@@ -1,8 +1,9 @@
 /// @file assureSyntacticType.hpp
-/// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// @brief Ensure syntactic type correctness for HIF objects.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #pragma once
 
@@ -20,10 +21,13 @@ namespace manipulation
 /// not have a parent.
 
 bool needSyntacticType(Value *v);
+
 /// @brief Checks whether the passed value is a ConstValue, and in that
 /// case it sets the syntactic type, with this priority:
 /// * if already present, do nothing;
+
 /// * if passed as @p suggestedType, set it;
+
 /// * otherwise, retrieve the type from semantics @p sem.
 /// @param v The value to be checked.
 /// @param sem The reference semantics.

@@ -1,8 +1,9 @@
 /// @file isInTree.cpp
 /// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #include "hif/hif_utils/isInTree.hpp"
 
@@ -18,16 +19,16 @@ namespace /*anon*/
 
 } // namespace
 
-bool isInTree(Object *obj)
+bool isInTree(const Object *obj)
 {
-    if (obj == nullptr)
-        return false;
-    Object *current = obj;
-    while (current->getParent() != nullptr) {
-        current = current->getParent();
+    if (obj) {
+        auto current = obj;
+        while (current->getParent()) {
+            current = current->getParent();
+        }
+        return (dynamic_cast<const System *>(current) != nullptr);
     }
-
-    return (dynamic_cast<System *>(current) != nullptr);
+    return false;
 }
 
 } // namespace hif

@@ -1,8 +1,9 @@
 /// @file addDeclarationInContext.hpp
 /// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #pragma once
 
@@ -19,7 +20,7 @@ namespace manipulation
 /// @param before If <tt>true</tt> add declaration before, after otherwise.
 /// @return <tt>true</tt> if added, <tt>false</tt> otherwise.
 
-bool addDeclarationInContext(Declaration *newDecl, Declaration *context, const bool before = false);
+bool addDeclarationInContext(Declaration *newDecl, Declaration *context, bool before = false);
 
 } // namespace manipulation
 } // namespace hif

@@ -1,8 +1,9 @@
 /// @file narrowToCardinality.cpp
 /// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #include "hif/manipulation/narrowToCardinality.hpp"
 
@@ -22,7 +23,7 @@ namespace /*anon*/
 } // namespace
 
 Value *
-narrowToCardinality(Value *v, unsigned int c, hif::semantics::ILanguageSemantics *sem, const bool considerOnlyBits)
+narrowToCardinality(Value *v, unsigned int c, hif::semantics::ILanguageSemantics *sem, bool considerOnlyBits)
 {
     Value *current = v;
     for (;;) // while(true)
@@ -38,7 +39,7 @@ narrowToCardinality(Value *v, unsigned int c, hif::semantics::ILanguageSemantics
             current = static_cast<Member *>(current)->getPrefix();
         } else if (dynamic_cast<Slice *>(current) != nullptr) {
             Slice *s                     = static_cast<Slice *>(current);
-            unsigned long long sliceSize = hif::semantics::spanGetBitwidth(s->getSpan(), sem);
+            std::uint64_t sliceSize = hif::semantics::spanGetBitwidth(s->getSpan(), sem);
             if (sliceSize == 1ull) // acts as Member
             {
                 // typeGetCardinality does not distinguish between N-span Slice and 1-span Slice

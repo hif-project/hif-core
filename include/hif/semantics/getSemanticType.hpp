@@ -1,8 +1,9 @@
 /// @file getSemanticType.hpp
 /// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #pragma once
 
@@ -31,7 +32,7 @@ namespace semantics
 ///
 
 Type *
-getSemanticType(TypedObject *v, ILanguageSemantics *ref_sem = HIFSemantics::getInstance(), const bool error = false);
+getSemanticType(TypedObject *v, ILanguageSemantics *ref_sem = HIFSemantics::getInstance(), bool error = false);
 
 /// @brief Starting from given <tt>root</tt> node, type all object that has
 /// semantics type. If option <tt>error</tt> is true, rise error if can not type
@@ -42,7 +43,7 @@ getSemanticType(TypedObject *v, ILanguageSemantics *ref_sem = HIFSemantics::getI
 /// @param error If true, rise error if can not type a typed object.
 ///
 
-void typeTree(Object *root, ILanguageSemantics *ref_sem = HIFSemantics::getInstance(), const bool error = false);
+void typeTree(Object *root, ILanguageSemantics *ref_sem = HIFSemantics::getInstance(), bool error = false);
 
 /// @brief Starting from given <tt>root</tt> node, type all object that has
 /// semantics type. If option <tt>error</tt> is true, rise error if can not type
@@ -53,7 +54,7 @@ void typeTree(Object *root, ILanguageSemantics *ref_sem = HIFSemantics::getInsta
 /// @param error If true, rise error if can not type a typed object.
 ///
 
-void typeTree(BList<Object> &root, ILanguageSemantics *ref_sem = HIFSemantics::getInstance(), const bool error = false);
+void typeTree(BList<Object> &root, ILanguageSemantics *ref_sem = HIFSemantics::getInstance(), bool error = false);
 
 /// @brief Starting from given <tt>root</tt> node, type all object that has
 /// semantics type. If option <tt>error</tt> is true, rise error if can not type
@@ -64,7 +65,7 @@ void typeTree(BList<Object> &root, ILanguageSemantics *ref_sem = HIFSemantics::g
 /// @param error If true, rise error if can not type a typed object.
 ///
 template <typename T>
-void typeTree(BList<T> &root, ILanguageSemantics *ref_sem = HIFSemantics::getInstance(), const bool error = false);
+void typeTree(BList<T> &root, ILanguageSemantics *ref_sem = HIFSemantics::getInstance(), bool error = false);
 
 /// @brief Flushes the cache of semantic types.
 

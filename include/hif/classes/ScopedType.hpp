@@ -1,8 +1,9 @@
 /// @file ScopedType.hpp
 /// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #pragma once
 
@@ -28,7 +29,7 @@ public:
 
     /// @brief Sets the <tt>constexpr</tt> attribute.
     /// @param v The <tt>constexpr</tt> attribute to be set.
-    void setConstexpr(const bool v);
+    void setConstexpr(bool v);
 
     /// @brief Destructor.
     virtual ~ScopedType();

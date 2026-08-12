@@ -1,12 +1,14 @@
 /// @file Range.hpp
 /// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #pragma once
 
 #include "hif/application_utils/portability.hpp"
+#include "hif/classes/IntValue.hpp"
 #include "hif/classes/Value.hpp"
 #include "hif/hifEnums.hpp"
 
@@ -23,13 +25,28 @@ public:
     /// @brief Default constructor.
     Range();
 
-    /// @brief Default constructor.
+    /// @brief Constructor.
+    /// @param lbound The left bound of the range.
+    /// @param rbound The right bound of the range.
+    /// @param dir The direction of the range.
     Range(Value *lbound, Value *rbound, const RangeDirection dir);
 
     /// @brief Constructor.
     /// @param lbound The left integer bound of the range.
     /// @param rbound The right integer bound of the range.
-    Range(long long lbound, long long rbound);
+    template <
+        typename T1,
+        typename T2,
+        typename std::enable_if<std::is_integral<T1>::value && !std::is_same<T1, bool>::value, int>::type = 0,
+        typename std::enable_if<std::is_integral<T2>::value && !std::is_same<T2, bool>::value, int>::type = 0>
+    Range(T1 lbound, T2 rbound)
+        : Range(
+              new IntValue(lbound),
+              new IntValue(rbound),
+              static_cast<std::int64_t>(lbound) >= static_cast<std::int64_t>(rbound) ? dir_downto : dir_upto)
+    {
+        // Nothing to do here.
+    }
 
     /// @brief Destructor.
     virtual ~Range();
@@ -97,6 +114,8 @@ protected:
     virtual void _calculateFields();
 
     /// @brief Returns the name of given child w.r.t. this.
+    /// @param child The child object.
+    /// @return The name of the child.
     virtual std::string _getFieldName(const Object *child) const;
 
 private:

@@ -1,8 +1,9 @@
 /// @file ITypeSpan.hpp
-/// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// @brief Interface for type span objects in HIF.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #pragma once
 
@@ -40,8 +41,13 @@ public:
 protected:
     ITypeSpan();
 
+    /// @brief Copy constructor.
+    /// @param other The ITypeSpan to copy from.
     ITypeSpan(const ITypeSpan &other);
 
+    /// @brief Copy assignment operator.
+    /// @param other The ITypeSpan to assign from.
+    /// @return Reference to this ITypeSpan.
     ITypeSpan &operator=(const ITypeSpan &other);
 
     /// The span of the type.

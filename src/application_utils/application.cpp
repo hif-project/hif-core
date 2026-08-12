@@ -1,8 +1,9 @@
 /// @file application.cpp
 /// @brief Implements the Application class for managing HIF applications.
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #include <cassert>
 #include <csignal>
@@ -11,14 +12,14 @@
 
 #include "hif/application_utils/application.hpp"
 
-static inline void segfaultHandler(const int /*signal*/)
+static inline void segfaultHandler(int /*signal*/)
 {
     std::cerr << "-- FATAL_ERROR (SF): detected unexpected statement inside the design.\n"
               << "   Please contact the HIF support team.\n\n";
     std::exit(EXIT_FAILURE);
 }
 
-static inline void fpeHandler(const int /*signal*/)
+static inline void fpeHandler(int /*signal*/)
 {
     std::cerr << "-- FATAL_ERROR (FP): detected unexpected expression inside the design.\n"
               << "   Please contact the HIF support team.\n\n";

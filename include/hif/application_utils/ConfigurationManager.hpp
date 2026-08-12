@@ -5,9 +5,10 @@
 /// configuration files with sections, directives, variables, and comments. It
 /// supports reading and writing configuration files, modifying their contents
 /// programmatically, and performing validation checks.
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #pragma once
 
@@ -45,6 +46,7 @@ public:
 
     /// @brief Map for storing directives within a section.
     using Directives = std::map<std::string, KeyValues>;
+
     /// @brief Map for storing variables within a section.
     using Variables  = std::map<std::string, KeyValues>;
 
@@ -57,6 +59,7 @@ public:
 
     /// @brief Map for storing sections in the configuration file.
     using Sections        = std::map<std::string, SectionData>;
+
     /// @brief List for maintaining the order of sections as they appear in the file.
     using OrderedSections = std::list<std::string>;
 
@@ -127,24 +130,26 @@ public:
     /// @param isDirective True if the identifier is a directive, false otherwise.
     /// @return The last value associated with the identifier.
     /// @throw std::out_of_range If the section or identifier does not exist.
-    auto getValue(const std::string &section, const std::string &id, bool isDirective = false) const -> const std::string &;
-
-    /// @brief Retrieves all values associated with an identifier in a section.
-    /// @param section The section name.
-    /// @param id The identifier.
-    /// @param isDirective True if the identifier is a directive, false otherwise.
-    /// @return A list of values associated with the identifier.
-    /// @throw std::out_of_range If the section or identifier does not exist.
-    auto getValues(const std::string &section, const std::string &id, bool isDirective = false) -> std::vector<std::string> &;
-
-    /// @brief Retrieves all values associated with an identifier in a section.
-    /// @param section The section name.
-    /// @param id The identifier.
-    /// @param isDirective True if the identifier is a directive, false otherwise.
-    /// @return A list of values associated with the identifier.
-    /// @throw std::out_of_range If the section or identifier does not exist.
     auto
-    getValues(const std::string &section, const std::string &id, bool isDirective = false) const -> const std::vector<std::string> &;
+    getValue(const std::string &section, const std::string &id, bool isDirective = false) const -> const std::string &;
+
+    /// @brief Retrieves all values associated with an identifier in a section.
+    /// @param section The section name.
+    /// @param id The identifier.
+    /// @param isDirective True if the identifier is a directive, false otherwise.
+    /// @return A list of values associated with the identifier.
+    /// @throw std::out_of_range If the section or identifier does not exist.
+    auto getValues(const std::string &section, const std::string &id, bool isDirective = false)
+        -> std::vector<std::string> &;
+
+    /// @brief Retrieves all values associated with an identifier in a section.
+    /// @param section The section name.
+    /// @param id The identifier.
+    /// @param isDirective True if the identifier is a directive, false otherwise.
+    /// @return A list of values associated with the identifier.
+    /// @throw std::out_of_range If the section or identifier does not exist.
+    auto getValues(const std::string &section, const std::string &id, bool isDirective = false) const
+        -> const std::vector<std::string> &;
 
     /// @brief Checks if a section exists.
     /// @param section The section name.
@@ -220,22 +225,36 @@ protected:
     /// @{
 
     /// @brief Parses a single line of the configuration file.
+    /// @param line The line to parse.
+    /// @return False on error.
     auto _parseLine(const std::string &line) -> bool;
 
     /// @brief Parses a comment line.
+    /// @param s The comment line.
+    /// @return False on error.
     static auto _parseComment(const std::string &s) -> bool;
 
     /// @brief Parses a section header.
+    /// @param s The section header.
+    /// @return False on error.
     auto _parseSection(const std::string &s) -> bool;
 
     /// @brief Parses a directive line.
+    /// @param s The directive line.
+    /// @return False on error.
     auto _parseDirective(const std::string &s) -> bool;
 
     /// @brief Parses a variable line.
+    /// @param s The variable line.
+    /// @return False on error.
     auto _parseVariable(const std::string &s) -> bool;
 
     /// @brief Parses values associated with a key.
+    /// @param key The key to associate the values with.
+    /// @param s The string containing the values.
+    /// @param isDirective True if the key is a directive, false otherwise.
     void _parseValues(const std::string &key, const std::string &s, bool isDirective);
+
     /// @}
 
     Sections _sections;               ///< Map of sections in the configuration.

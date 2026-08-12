@@ -1,8 +1,9 @@
 /// @file Identifier.hpp
 /// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #pragma once
 
@@ -33,7 +34,7 @@ public:
 
     /// @brief Constructor.
     /// @param name The name to be assigned.
-    Identifier(const std::string & name);
+    Identifier(const std::string &name);
 
     /// @brief Returns a string representing the class name.
     /// @return The string representing the class name.

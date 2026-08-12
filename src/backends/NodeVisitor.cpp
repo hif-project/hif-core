@@ -1,8 +1,9 @@
 /// @file NodeVisitor.cpp
 /// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #include <cstdlib>
 #include <cstring>
@@ -453,7 +454,7 @@ int CCheckDirVisitor::visitCNode(CNode &rN)
                     if (!(fCDir.make_dirs())) {
                         nRet = 1;
                     }
-                    // Create CSession::Suffix_T sub-directories
+                    // Create CSession::Suffix sub-directories
                     for (int nSuff = CSession::SRC; nSuff <= CSession::DOC; nSuff++) {
                         application_utils::FileStructure fSDir(fCDir, std::string(CSession::CSuffix[nSuff]));
                         if (!(fSDir.make_dirs())) {
@@ -559,6 +560,7 @@ int CDateVisitor::visitList(std::list<CNode *> &rL)
 
 //
 // VisitCNode(CNode & rN)
+/// @brief Maximum buffer size for CNode visitor.
 #define BUFF_MAX 32
 int CDateVisitor::visitCNode(CNode &rN)
 {

@@ -1,8 +1,9 @@
 /// @file removeUnusedDeclarations.cpp
 /// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #include "hif/manipulation/removeUnusedDeclarations.hpp"
 
@@ -48,7 +49,7 @@ protected:
     int visitView(View &o);
 
 private:
-    void _remove(Declaration *o, const bool removeFlag);
+    void _remove(Declaration *o, bool removeFlag);
 
     const RemoveUnusedDeclarationOptions &_options;
     hif::semantics::ILanguageSemantics *_sem;
@@ -78,8 +79,8 @@ RemoveVisitor::~RemoveVisitor()
     for (DeclarationSet::iterator i = _trash.begin(); i != _trash.end(); ++i) {
         bool insert = true;
         for (DeclarationList::iterator j(trashList.begin()); j != trashList.end();) {
-            const bool iSubNode = hif::isSubNode(*i, *j);
-            const bool jSubNode = hif::isSubNode(*j, *i);
+            bool iSubNode = hif::isSubNode(*i, *j);
+            bool jSubNode = hif::isSubNode(*j, *i);
 
             if (!iSubNode && !jSubNode) {
                 ++j;
@@ -114,7 +115,7 @@ RemoveVisitor::~RemoveVisitor()
 
 bool RemoveVisitor::collect(Declaration *decl)
 {
-    const bool yet = _trash.find(decl) != _trash.end();
+    bool yet = _trash.find(decl) != _trash.end();
     decl->acceptVisitor(*this);
     return (!yet && _trash.find(decl) != _trash.end());
 }
@@ -215,7 +216,7 @@ int RemoveVisitor::visitStateTable(StateTable &o)
     return 0;
 }
 
-void RemoveVisitor::_remove(Declaration *o, const bool removeFlag)
+void RemoveVisitor::_remove(Declaration *o, bool removeFlag)
 {
     if (!_options.removeAll && !removeFlag)
         return;
@@ -257,7 +258,7 @@ void _removeDeclarationSubtree(
     if (isSubNode(options.top, d))
         return;
 
-    const bool collected = rv.collect(d);
+    bool collected = rv.collect(d);
     if (!collected)
         return;
 
@@ -383,12 +384,12 @@ bool removeUnusedDeclarations(
         return true;
     }
 
-    const bool calculateRefMap = (localOptions.allReferencesMap == nullptr);
+    bool calculateRefMap = (localOptions.allReferencesMap == nullptr);
     if (calculateRefMap) {
         localOptions.allReferencesMap = new RemoveUnusedDeclarationOptions::ReferencesMap();
 
         hif::semantics::GetReferencesOptions opt;
-        opt.includeUnreferenced = true;
+        opt.include_unreferenced = true;
         hif::semantics::getAllReferences(*localOptions.allReferencesMap, sem, root, opt);
     }
 

@@ -1,8 +1,9 @@
 /// @file StringValue.hpp
 /// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #pragma once
 
@@ -46,7 +47,7 @@ public:
 
     /// @brief Sets the <tt>plain</tt> attribute.
     /// @param plain The <tt>plain</tt> attribute.
-    void setPlain(const bool plain);
+    void setPlain(bool plain);
 
     /// @brief Returns the <tt>plain</tt> attribute.
     /// @return The <tt>plain</tt> attribute.

@@ -1,8 +1,9 @@
 /// @file buildHierarchicalSymbol.cpp
 /// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #include "hif/manipulation/buildHierarchicalSymbol.hpp"
 
@@ -140,7 +141,7 @@ void BuildHierarchyVisitor::map(Variable *o) { _startConcatenation(o, o->getName
 
 void BuildHierarchyVisitor::map(View *o)
 {
-    const std::string previous = (_symbol.empty()) ? "" : "." + _symbol;
+    std::string previous = (_symbol.empty()) ? "" : "." + _symbol;
 
     if (_style == DefinitionStyle::HIF || _style == DefinitionStyle::VHDL) {
         _symbol = std::string("(") + o->getName() + ")" + previous;
@@ -157,8 +158,8 @@ std::string BuildHierarchyVisitor::getResult() const { return _symbol; }
 
 void BuildHierarchyVisitor::_dotConcatenation(Object *o, const std::string &objName)
 {
-    const std::string previous = (_symbol.empty()) ? "" : "." + _symbol;
-    _symbol                    = objName + previous;
+    std::string previous = (_symbol.empty()) ? "" : "." + _symbol;
+    _symbol              = objName + previous;
 
     map(o);
 }

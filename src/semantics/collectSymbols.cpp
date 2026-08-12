@@ -1,8 +1,9 @@
 /// @file collectSymbols.cpp
 /// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #include "hif/semantics/collectSymbols.hpp"
 
@@ -13,10 +14,10 @@
 #include "hif/semantics/semantics.hpp"
 
 #ifdef __clang__
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wunused-private-field"
+#    pragma clang diagnostic push
+#    pragma clang diagnostic ignored "-Wunused-private-field"
 #elif __GNUC__
-#pragma GCC diagnostic ignored "-Weffc++"
+#    pragma GCC diagnostic ignored "-Weffc++"
 #endif
 namespace hif
 {
@@ -32,7 +33,7 @@ namespace /*anon*/
 class CollectSymbolsVisitor : public GuideVisitor
 {
 public:
-    CollectSymbolsVisitor(std::list<Object *> &list, ILanguageSemantics *sem, const bool skipStandardDeclarations);
+    CollectSymbolsVisitor(std::list<Object *> &list, ILanguageSemantics *sem, bool skip_standard_declarations);
     ~CollectSymbolsVisitor();
 
     virtual int visitIdentifier(Identifier &);
@@ -52,7 +53,7 @@ public:
 private:
     std::list<Object *> &_list;
     ILanguageSemantics *_sem;
-    const bool _skipStandardDeclarations;
+    bool _skipStandardDeclarations;
 
     template <typename T>
 
@@ -64,11 +65,11 @@ private:
 CollectSymbolsVisitor::CollectSymbolsVisitor(
     std::list<Object *> &list,
     ILanguageSemantics *sem,
-    const bool skipStandardDeclarations)
+    bool skip_standard_declarations)
     : GuideVisitor()
     , _list(list)
     , _sem(sem)
-    , _skipStandardDeclarations(skipStandardDeclarations)
+    , _skipStandardDeclarations(skip_standard_declarations)
 {
     // ntd
 }
@@ -163,14 +164,14 @@ int CollectSymbolsVisitor::visitViewReference(ViewReference &o)
 }
 } // namespace
 
-void collectSymbols(SymbolList &list, Object *root, ILanguageSemantics *sem, const bool skipStandardDeclarations)
+void collectSymbols(SymbolList &list, Object *root, ILanguageSemantics *sem, bool skip_standard_declarations)
 {
     hif::application_utils::initializeLogHeader("HIF", "collectSymbols");
 
     if (root == nullptr)
         return;
 
-    CollectSymbolsVisitor csv(list, sem, skipStandardDeclarations);
+    CollectSymbolsVisitor csv(list, sem, skip_standard_declarations);
     root->acceptVisitor(csv);
 
     hif::application_utils::restoreLogHeader();

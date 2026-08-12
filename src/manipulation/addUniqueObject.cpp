@@ -1,8 +1,9 @@
 /// @file addUniqueObject.cpp
 /// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #include "hif/manipulation/addUniqueObject.hpp"
 
@@ -111,8 +112,7 @@ bool addUniqueObject(Object *obj, BList<Object> &list, const AddUniqueObjectOpti
     return (res == RES_INSERTED);
 }
 
-template <typename T>
-bool addUniqueObject(Object *obj, BList<T> &list, const AddUniqueObjectOptions &opt)
+template <typename T> bool addUniqueObject(Object *obj, BList<T> &list, const AddUniqueObjectOptions &opt)
 {
     return addUniqueObject(obj, list.template toOtherBList<Object>(), opt);
 }

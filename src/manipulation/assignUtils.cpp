@@ -1,8 +1,9 @@
 /// @file assignUtils.cpp
 /// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #include "hif/manipulation/assignUtils.hpp"
 
@@ -13,12 +14,12 @@
 #include "hif/semantics/semantics.hpp"
 
 #ifdef __clang__
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wunused-member-function"
-#pragma clang diagnostic ignored "-Wmissing-noreturn"
+#    pragma clang diagnostic push
+#    pragma clang diagnostic ignored "-Wunused-member-function"
+#    pragma clang diagnostic ignored "-Wmissing-noreturn"
 #elif defined __GNUC__
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-function"
+#    pragma GCC diagnostic push
+#    pragma GCC diagnostic ignored "-Wunused-function"
 #endif
 
 namespace hif
@@ -71,10 +72,13 @@ public:
 private:
     /// @brief The last object visited.
     Object *_caller;
+
     /// @brief The result of elaboration.
     bool _isAssignTarget;
+
     /// @brief Reference to the assign target.
     Value *_target;
+
     /// @brief The options
     const LeftHandSideOptions &_opt;
 
@@ -318,6 +322,9 @@ bool isInLeftHandSide(Object *obj, const LeftHandSideOptions &opt)
     return atv.isAssignTarget();
 }
 
+/// @brief Gets the left-hand side value of an assignment.
+/// @param obj The value object.
+/// @return The left-hand side value.
 Value *getLeftHandSide(Value *obj)
 {
     if (!isInLeftHandSide(obj)) {

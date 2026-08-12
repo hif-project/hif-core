@@ -1,8 +1,9 @@
 /// @file When.cpp
 /// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #include "hif/classes/WhenAlt.hpp"
 
@@ -28,7 +29,7 @@ Value *When::setDefault(Value *x) { return setChild(_defaultvalue, x); }
 
 bool When::isLogicTernary() const { return _logicTernary; }
 
-void When::setLogicTernary(const bool logicTernary) { _logicTernary = logicTernary; }
+void When::setLogicTernary(bool logicTernary) { _logicTernary = logicTernary; }
 
 ClassId When::getClassId() const { return CLASSID_WHEN; }
 

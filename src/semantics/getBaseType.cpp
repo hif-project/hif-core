@@ -1,8 +1,9 @@
 /// @file getBaseType.cpp
 /// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #include "hif/semantics/getBaseType.hpp"
 
@@ -20,7 +21,7 @@ namespace /*anon*/
 
 } // namespace
 
-Type *getBaseType(Type *type, const bool consider_opacity, ILanguageSemantics *sem, const bool compositeRecurse)
+Type *getBaseType(Type *type, bool consider_opacity, ILanguageSemantics *sem, bool compositeRecurse)
 {
     Type *ret = nullptr;
 
@@ -67,7 +68,7 @@ Type *getBaseType(Type *type, const bool consider_opacity, ILanguageSemantics *s
             return rec->getBaseType(consider_opacity);
 
         Record *recn          = hif::copy(rec);
-        const bool canReplace = (rec->getParent() != nullptr);
+        bool canReplace = (rec->getParent() != nullptr);
         if (canReplace)
             rec->replace(recn);
         for (BList<Field>::iterator i = recn->fields.begin(); i != recn->fields.end(); ++i) {
@@ -89,10 +90,10 @@ Type *getBaseType(Type *type, const bool consider_opacity, ILanguageSemantics *s
 
 Type *getBaseType(
     TypedObject *v,
-    const bool considerOpacity,
+    bool considerOpacity,
     ILanguageSemantics *refSem,
-    const bool compositeRecurse,
-    const bool error)
+    bool compositeRecurse,
+    bool error)
 {
     if (v == nullptr)
         return nullptr;

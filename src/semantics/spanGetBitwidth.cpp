@@ -1,8 +1,9 @@
 /// @file spanGetBitwidth.cpp
 /// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #include "hif/semantics/spanGetBitwidth.hpp"
 
@@ -21,8 +22,8 @@ namespace /*anon*/
 
 } // namespace
 
-unsigned long long
-spanGetBitwidth(Range *r, ILanguageSemantics *sem, const bool simplify, const manipulation::SimplifyOptions &opts)
+std::uint64_t
+spanGetBitwidth(Range *r, ILanguageSemantics *sem, bool simplify, const manipulation::SimplifyOptions &opts)
 {
     if (r == nullptr)
         return 0;
@@ -36,11 +37,11 @@ spanGetBitwidth(Range *r, ILanguageSemantics *sem, const bool simplify, const ma
     }
     IntValue *ivoRes = dynamic_cast<IntValue *>(cvRes);
     if (ivoRes != nullptr) {
-        long long resInt = ivoRes->getValue();
+        std::int64_t resInt = ivoRes->getValue();
         if (resInt < 0)
             resInt = 0;
         delete ivoRes;
-        return static_cast<unsigned long long>(resInt);
+        return static_cast<std::uint64_t>(resInt);
     }
 
     Int it1;
@@ -50,21 +51,21 @@ spanGetBitwidth(Range *r, ILanguageSemantics *sem, const bool simplify, const ma
 
     ivoRes = dynamic_cast<IntValue *>(hif::manipulation::transformConstant(cvRes, &it1, sem));
     if (ivoRes != nullptr) {
-        long long resInt = ivoRes->getValue();
+        std::int64_t resInt = ivoRes->getValue();
         if (resInt < 0)
             resInt = 0;
         delete ivoRes;
-        return static_cast<unsigned long long>(resInt);
+        return static_cast<std::uint64_t>(resInt);
     }
 
     delete cvRes;
     return 0;
 }
 
-unsigned long long typeGetSpanBitwidth(
+std::uint64_t typeGetSpanBitwidth(
     Type *type,
     ILanguageSemantics *sem,
-    const bool simplify,
+    bool simplify,
     const hif::manipulation::SimplifyOptions &opts)
 {
     Range *span = hif::typeGetSpan(type, sem);

@@ -3,9 +3,10 @@
 /// @details
 /// Provides a mechanism to process declarations before their associated symbols
 /// and manage references. Includes extensive options for customization during traversal.
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #pragma once
 
@@ -38,8 +39,18 @@ struct DeclarationVisitorOptions {
 
     DeclarationVisitorOptions();
     ~DeclarationVisitorOptions();
+
+    /// @brief Copy constructor.
+    /// @param o The object to copy.
     DeclarationVisitorOptions(const DeclarationVisitorOptions &o);
+
+    /// @brief Copy assignment operator.
+    /// @param o The object to assign.
+    /// @return Reference to this object.
     DeclarationVisitorOptions &operator=(DeclarationVisitorOptions o);
+
+    /// @brief Swaps the contents with another object.
+    /// @param o The object to swap with.
     void swap(DeclarationVisitorOptions &o);
 };
 

@@ -1,8 +1,9 @@
 /// @file canRemoveInternalCast.cpp
 /// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #include "hif/semantics/canRemoveInternalCast.hpp"
 #include "hif/classes/Type.hpp"
@@ -21,7 +22,7 @@ bool canRemoveInternalCast(
     Type *t3,
     ILanguageSemantics *sem,
     Object *o,
-    const bool conservativeBehavior)
+    bool conservativeBehavior)
 {
     // First, ask semantics if a direct cast is allowed
     if (!sem->isCastAllowed(t1, t3))
@@ -58,9 +59,9 @@ bool canRemoveInternalCast(
          * T1 = T2 ? T3 : extension depends on T3: remove if sign(t2)=sign(t3)
          * T1 = T2 = T3 : always remove
         */
-    //const bool sign1 = hif::typeIsSigned( t1, _sem ); // unused
-    const bool sign2 = hif::typeIsSigned(t2, sem);
-    const bool sign3 = hif::typeIsSigned(t3, sem);
+    //bool sign1 = hif::typeIsSigned( t1, _sem ); // unused
+    bool sign2 = hif::typeIsSigned(t2, sem);
+    bool sign3 = hif::typeIsSigned(t3, sem);
 
     if (t1_t2 == hif::semantics::GREATER_PRECISION && t2_t3 == hif::semantics::LESS_PRECISION) {
         // T1 > T2 < T3 : keep

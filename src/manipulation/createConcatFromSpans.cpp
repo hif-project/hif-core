@@ -1,8 +1,9 @@
 /// @file createConcatFromSpans.cpp
 /// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #include "hif/manipulation/createConcatFromSpans.hpp"
 #include "hif/application_utils/application_utils.hpp"
@@ -23,7 +24,7 @@ Value *_makeConcat(
     Value *resultValue,
     Value *value,
     const hif::RangeDirection spanDirection,
-    const bool copy,
+    bool copy,
     hif::semantics::ILanguageSemantics *sem)
 {
     HifFactory factory(sem);
@@ -50,7 +51,7 @@ Value *createConcatFromSpans(
     Value *others)
 {
     AnalyzeSpansResult res;
-    const bool ret = hif::analysis::analyzeSpans(spanType, indexMap, sem, others, res);
+    bool ret = hif::analysis::analyzeSpans(spanType, indexMap, sem, others, res);
     if (!ret)
         return nullptr;
     if (!res.allSpecified && others == nullptr)
@@ -73,7 +74,7 @@ Value *createConcatFromSpans(
             break;
         }
         case AnalyzeSpansResult::INDEX_RANGE: {
-            for (unsigned long long j = index.getMin(); j <= index.getMax(); ++j) {
+            for (std::uint64_t j = index.getMin(); j <= index.getMax(); ++j) {
                 resultValue = _makeConcat(resultValue, value, spanDirection, true, sem);
             }
             delete value;
@@ -91,11 +92,11 @@ Value *createConcatFromSpans(
     HifFactory factory(sem);
     Type *ct   = hif::copy(spanType);
     Range *rr  = hif::typeGetSpan(ct, sem);
-    Value *min = hif::rangeSetMinBound(rr, new IntValue(0ll));
+    Value *min = hif::rangeSetMinBound(rr, new IntValue(0));
     Value *max = hif::rangeGetMaxBound(rr);
     max->replace(nullptr);
     Value *diff = factory.expression(max, hif::op_minus, min);
-    diff        = factory.expression(diff, hif::op_minus, factory.intval(static_cast<long long>(res.maxBound + 1)));
+    diff        = factory.expression(diff, hif::op_minus, factory.intval(static_cast<std::int64_t>(res.maxBound + 1)));
     hif::rangeSetMaxBound(rr, diff);
 
     Aggregate *agg = new Aggregate();

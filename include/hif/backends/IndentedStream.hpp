@@ -1,8 +1,9 @@
 /// @file IndentedStream.hpp
-/// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// @brief Output stream wrapper supporting indentation for formatted backend output.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #pragma once
 
@@ -102,7 +103,7 @@ public:
 
     /// @brief Goes to a new line.
     /// @param n The number of new lines.
-    void newLine(const int n = 1);
+    void newLine(int n = 1);
 
     /// @brief Indents by one.
     void indent();
@@ -179,9 +180,11 @@ public:
     const String &getWrappingChars() const;
 
     /// @brief Sets whether wrap text with double quotes.
-    void setStringMode(const bool isString);
+    /// @param isString True if text must be wrapped.
+    void setStringMode(bool isString);
 
     /// @brief Tells whether text is wrapped with double quotes.
+    /// @return True if text is wrapped.
     bool isStringMode() const;
 
     /// @}
@@ -207,6 +210,7 @@ public:
     void closeBlock();
 
     /// @brief Checks if a block is active.
+    /// @return True if a block is active.
     Bool isBlockActive();
 
     /// @brief Initializes a top common block.
@@ -224,6 +228,7 @@ public:
     void closeCommonBottomBlock();
 
     /// @brief Checks if a common block is active.
+    /// @return True if a common block is active.
     Bool isCommonBlockActive();
 
     /// @}
@@ -236,65 +241,77 @@ private:
 /// @name Manipulators.
 ///@{
 
-/// @brief Indents the stream by one.
-/// If the output stream is not an indented stream, it does nothing.
+/// @brief Indents the stream by one. If the output stream is not an indented
+/// stream, it does nothing.
+/// @param out The output stream.
+/// @return The output stream.
+IndentedStream::OutStream &indent(IndentedStream::OutStream &out);
 
-IndentedStream::OutStream &indent(IndentedStream::OutStream &);
+/// @brief Un-indents the stream by one. If the output stream is not an indented
+/// stream, it does nothing.
+/// @param out The output stream.
+/// @return The output stream.
+IndentedStream::OutStream &unindent(IndentedStream::OutStream &out);
 
-/// @brief Un-indents the stream by one.
-/// If the output stream is not an indented stream, it does nothing.
+/// @brief Sets indent when wrapping. If the output stream is not an indented
+/// stream, it does nothing.
+/// @param out The output stream.
+/// @return The output stream.
+IndentedStream::OutStream &indentWhenWrapping(IndentedStream::OutStream &out);
 
-IndentedStream::OutStream &unindent(IndentedStream::OutStream &);
+/// @brief Sets to not indent when wrapping. If the output stream is not an
+/// indented stream, it does nothing.
+/// @param out The output stream.
+/// @return The output stream.
+IndentedStream::OutStream &noIndentWhenWrapping(IndentedStream::OutStream &out);
 
-/// @brief Sets indent when wrapping.
-/// If the output stream is not an indented stream, it does nothing.
+/// @brief Inits a block. If the output stream is not an indented stream, it
+/// does nothing.
+/// @param out The output stream.
+/// @return The output stream.
+IndentedStream::OutStream &openBlock(IndentedStream::OutStream &out);
 
-IndentedStream::OutStream &indentWhenWrapping(IndentedStream::OutStream &);
+/// @brief Closes a block. If the output stream is not an indented stream, it
+/// does nothing.
+/// @param out The output stream.
+/// @return The output stream.
+IndentedStream::OutStream &closeBlock(IndentedStream::OutStream &out);
 
-/// @brief Sets to not indent when wrapping.
-/// If the output stream is not an indented stream, it does nothing.
+/// @brief Inits a common block. If the output stream is not an indented stream,
+/// it does nothing.
+/// @param out The output stream.
+/// @return The output stream.
+IndentedStream::OutStream &openCommonBlock(IndentedStream::OutStream &out);
 
-IndentedStream::OutStream &noIndentWhenWrapping(IndentedStream::OutStream &);
+/// @brief Closes a common block. If the output stream is not an indented
+/// stream, it does nothing.
+/// @param out The output stream.
+/// @return The output stream.
+IndentedStream::OutStream &closeCommonBlock(IndentedStream::OutStream &out);
 
-/// @brief Inits a block.
-/// If the output stream is not an indented stream, it does nothing.
+/// @brief Inits a common block. If the output stream is not an indented stream,
+/// it does nothing.
+/// @param out The output stream.
+/// @return The output stream.
+IndentedStream::OutStream &openComment(IndentedStream::OutStream &out);
 
-IndentedStream::OutStream &openBlock(IndentedStream::OutStream &);
+/// @brief Closes a common block. If the output stream is not an indented
+/// stream, it does nothing.
+/// @param out The output stream.
+/// @return The output stream.
+IndentedStream::OutStream &closeComment(IndentedStream::OutStream &out);
 
-/// @brief Closes a block.
-/// If the output stream is not an indented stream, it does nothing.
+/// @brief Inits a string mode. If the output stream is not an indented stream,
+/// it does nothing.
+/// @param out The output stream.
+/// @return The output stream.
+IndentedStream::OutStream &openString(IndentedStream::OutStream &out);
 
-IndentedStream::OutStream &closeBlock(IndentedStream::OutStream &);
-
-/// @brief Inits a common block.
-/// If the output stream is not an indented stream, it does nothing.
-
-IndentedStream::OutStream &openCommonBlock(IndentedStream::OutStream &);
-
-/// @brief Closes a common block.
-/// If the output stream is not an indented stream, it does nothing.
-
-IndentedStream::OutStream &closeCommonBlock(IndentedStream::OutStream &);
-
-/// @brief Inits a common block.
-/// If the output stream is not an indented stream, it does nothing.
-
-IndentedStream::OutStream &openComment(IndentedStream::OutStream &);
-
-/// @brief Closes a common block.
-/// If the output stream is not an indented stream, it does nothing.
-
-IndentedStream::OutStream &closeComment(IndentedStream::OutStream &);
-
-/// @brief Inits a string mode.
-/// If the output stream is not an indented stream, it does nothing.
-
-IndentedStream::OutStream &openString(IndentedStream::OutStream &);
-
-/// @brief Closes a string mode.
-/// If the output stream is not an indented stream, it does nothing.
-
-IndentedStream::OutStream &closeString(IndentedStream::OutStream &);
+/// @brief Closes a string mode. If the output stream is not an indented stream,
+/// it does nothing.
+/// @param out The output stream.
+/// @return The output stream.
+IndentedStream::OutStream &closeString(IndentedStream::OutStream &out);
 
 ///@}
 

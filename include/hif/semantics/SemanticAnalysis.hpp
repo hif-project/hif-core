@@ -1,8 +1,9 @@
 /// @file SemanticAnalysis.hpp
 /// @brief File containing the declaration of the class used to analyze the type of the operands involved in current operation.
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #pragma once
 
@@ -29,6 +30,8 @@ public:
 
     /// @brief Main function used to analyze the type of the operands involved
     /// in current operation.
+    /// @param op1Type The type of the first operand.
+    /// @param op2Type The type of the second operand.
     virtual void analyzeOperands(Type *op1Type, Type *op2Type);
 
     /// @brief Function used to get the result of the analysis.
@@ -63,15 +66,10 @@ protected:
     /// @param base The base type to use for restoration.
     void _restoreTypeReference(TypeReference *tr, Type *base);
 
-    /// @name Common unary mapping functions
-    /// @{
     /// @brief Maps a type reference for unary operations.
     /// @param op The operand's type reference.
     void _map(TypeReference *op);
-    /// @}
 
-    /// @name Common binary mapping functions
-    /// @{
     /// @brief Maps a type reference and a type for binary operations.
     /// @param op1 The first operand's type reference.
     /// @param op2 The second operand's type.
@@ -86,8 +84,7 @@ protected:
     /// @param op1 The first operand's type reference.
     /// @param op2 The second operand's type reference.
     /// @param checkOpacity Whether to check for opacity.
-    void _map(TypeReference *op1, TypeReference *op2, const bool checkOpacity);
-    /// @}
+    void _map(TypeReference *op1, TypeReference *op2, bool checkOpacity);
 };
 
 } // namespace semantics

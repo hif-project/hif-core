@@ -2,9 +2,10 @@
 /// @brief Enumerations and utility functions for HIF data structures.
 /// @details Provides enums for range directions, port directions, bit constants,
 /// and operators, along with helper functions to convert between enums and strings.
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #pragma once
 
@@ -132,6 +133,7 @@ enum Operator : unsigned char {
 /// @return String representation of the operator.
 
 std::string operatorToString(const Operator t);
+
 /// @brief Return the string representation of an operator.
 /// @details Converts an operator enum to a plain string representation,
 /// optionally adding a prefix or suffix. For example, `op_and` becomes `"op_and"`,
@@ -226,6 +228,7 @@ enum PropertyId : unsigned char {
     PROPERTY_TEMPORARY_OBJECT,           ///< Marks the object as temporary.
     PROPERTY_ORIGINAL_BITWIDTH           ///< Original bitwidth of a type before manipulations.
 };
+
 /// @brief Get the string name of a property.
 /// @details Maps a `PropertyId` to its corresponding string representation.
 /// Useful for debugging or reporting purposes.

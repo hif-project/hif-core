@@ -4,9 +4,10 @@
 /// Provides functionality to create deep or shallow copies of HIF objects and
 /// lists of objects. Copy behavior can be customized through the `CopyOptions`
 /// struct.
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #pragma once
 
@@ -22,6 +23,7 @@ namespace hif
 /// info, and semantic types should be copied. It also allows specifying a
 /// user-defined function to process objects during the copy.
 struct CopyOptions {
+    /// @brief Function pointer type for user-defined copy processing.
     typedef Object *(*UserFunction)(Object *, Object *, void *);
 
     /// @brief If true, copies the semantic type of `TypedObject`s. Default is `false`.
@@ -83,8 +85,7 @@ Object *copy(const Object *obj, const CopyOptions &opt = CopyOptions());
 /// @param obj The object to copy.
 /// @param opt The copy options.
 /// @return A pointer to the copied object of type `T`.
-template <typename T>
-T *copy(const T *obj, const CopyOptions &opt = CopyOptions())
+template <typename T> T *copy(const T *obj, const CopyOptions &opt = CopyOptions())
 {
     return static_cast<T *>(copy(static_cast<const Object *>(obj), opt));
 }
@@ -109,8 +110,7 @@ void copy(const BList<Object> &src, BList<Object> &dest, const CopyOptions &opt 
 /// @param src The source list of objects to copy.
 /// @param dest The destination list to populate with copies.
 /// @param opt The copy options.
-template <class T>
-void copy(const BList<T> &src, BList<T> &dest, const CopyOptions &opt = CopyOptions())
+template <class T> void copy(const BList<T> &src, BList<T> &dest, const CopyOptions &opt = CopyOptions())
 {
     const BList<Object> *s = reinterpret_cast<const BList<Object> *>(&src);
     BList<Object> *d       = reinterpret_cast<BList<Object> *>(&dest);

@@ -1,8 +1,9 @@
 /// @file addUniqueObject.hpp
-/// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// @brief Add unique objects to HIF containers, avoiding duplicates.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #pragma once
 
@@ -19,17 +20,29 @@ struct AddUniqueObjectOptions {
     AddUniqueObjectOptions();
     ~AddUniqueObjectOptions();
 
+    /// @brief Copy constructor.
+    /// @param other The object to copy from.
     AddUniqueObjectOptions(const AddUniqueObjectOptions &other);
+
+    /// @brief Assignment operator.
+    /// @param other The object to assign from.
+    /// @return Reference to this object.
     AddUniqueObjectOptions &operator=(AddUniqueObjectOptions other);
+
+    /// @brief Swaps the contents of this object with another.
+    /// @param other The object to swap with.
     void swap(AddUniqueObjectOptions &other);
 
     /// @brief If set, the object is inserted in the desired position.
     /// Otherwise, the object is inserted at the end of the list.
     unsigned int position;
+
     /// @brief If <tt>true</tt> copy the object when inserted.
     bool copyIfUnique;
+
     /// @brief If <tt>true</tt> delete the object when not inserted.
     bool deleteIfNotAdded;
+
     /// @brief The options used to check whether the object is already present.
     EqualsOptions equalsOptions;
 };

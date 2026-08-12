@@ -1,8 +1,9 @@
 /// @file fixInstanceBindings.cpp
 /// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #include "hif/manipulation/fixInstanceBindings.hpp"
 
@@ -143,7 +144,7 @@ bool _addAssignInsideProcess(
         }
 
         // Rebinding
-        const bool check = _rebindPortAssign(portAssigns, sig);
+        bool check = _rebindPortAssign(portAssigns, sig);
         messageAssert(check, "Rebind failed", portAssigns, sem);
 
     } else {
@@ -281,9 +282,9 @@ bool _isName2NameBinding(
         Signed *cSig   = dynamic_cast<Signed *>(castType);
         Unsigned *cUns = dynamic_cast<Unsigned *>(castType);
 
-        const bool vIsV = (vBv != nullptr && vBv->isLogic()) || vSig != nullptr || vUns != nullptr;
-        const bool cIsV = (cBv != nullptr && cBv->isLogic()) || cSig != nullptr || cUns != nullptr;
-        const bool isVectorCast =
+        bool vIsV = (vBv != nullptr && vBv->isLogic()) || vSig != nullptr || vUns != nullptr;
+        bool cIsV = (cBv != nullptr && cBv->isLogic()) || cSig != nullptr || cUns != nullptr;
+        bool isVectorCast =
             vIsV && cIsV && hif::equals(hif::typeGetSpan(valueType, sem), hif::typeGetSpan(castType, sem));
         if (isVectorCast)
             boundValue = c->getValue();
@@ -292,11 +293,11 @@ bool _isName2NameBinding(
     if (dynamic_cast<Identifier *>(boundValue) != nullptr)
         return true;
 
-    const bool isCast   = (dynamic_cast<Cast *>(boundValue) != nullptr);
-    const bool isMember = (dynamic_cast<Member *>(boundValue) != nullptr);
-    const bool isSlice  = (dynamic_cast<Slice *>(boundValue) != nullptr);
-    const bool isConst  = (dynamic_cast<ConstValue *>(boundValue) != nullptr);
-    const bool isOther  = !isCast && !isMember && !isSlice;
+    bool isCast   = (dynamic_cast<Cast *>(boundValue) != nullptr);
+    bool isMember = (dynamic_cast<Member *>(boundValue) != nullptr);
+    bool isSlice  = (dynamic_cast<Slice *>(boundValue) != nullptr);
+    bool isConst  = (dynamic_cast<ConstValue *>(boundValue) != nullptr);
+    bool isOther  = !isCast && !isMember && !isSlice;
 
     if (!opt.fixCasts && isCast)
         return true;
@@ -500,7 +501,7 @@ bool _addSignalForPortassign(
     }
     // 3- Change the value of the PortAssign with the new signal name and add
     //    the signal to the contents (including Generates) declarations.
-    const bool ret = _rebindPortAssign(portassign, signal);
+    bool ret = _rebindPortAssign(portassign, signal);
     return ret;
 }
 
@@ -570,7 +571,7 @@ bool _fixInstanceBindings(Instance *instance, hif::semantics::ILanguageSemantics
 
     // if at least one port need fix, do it on all port assign. This is a
     // workaround for avoid eventual deltacycle errors.
-    const bool needConstFix = (hasConstantInput || hasConstantOutput) && opt.fixConstants;
+    bool needConstFix = (hasConstantInput || hasConstantOutput) && opt.fixConstants;
     if (!input_need_fix && !output_need_fix && !needConstFix) {
         return false;
     }
@@ -587,8 +588,8 @@ bool _fixInstanceBindings(Instance *instance, hif::semantics::ILanguageSemantics
         for (BList<PortAssign>::iterator j = instance->portAssigns.begin(); j != instance->portAssigns.end(); ++j) {
             if ((*i)->getName() != (*j)->getName())
                 continue;
-            const bool isInput  = (*i)->getDirection() == dir_in || (*i)->getDirection() == dir_inout;
-            const bool isOutput = (*i)->getDirection() == dir_out || (*i)->getDirection() == dir_inout;
+            bool isInput  = (*i)->getDirection() == dir_in || (*i)->getDirection() == dir_inout;
+            bool isOutput = (*i)->getDirection() == dir_out || (*i)->getDirection() == dir_inout;
             if (isInput && !input_need_fix && !hasConstantInput)
                 continue;
             if (isOutput && !output_need_fix && !hasConstantOutput)
@@ -648,7 +649,7 @@ bool _fixInstanceBindings(Instance *instance, hif::semantics::ILanguageSemantics
 
     return true;
 }
-bool collectObjectMethod(Object *o, const HifQueryBase *)
+bool check_object_method(Object *o, const HifQueryBase *)
 {
     if (dynamic_cast<Instance *>(o) == nullptr) {
         return false;
@@ -664,55 +665,10 @@ bool collectObjectMethod(Object *o, const HifQueryBase *)
 
 } // namespace
 
-FixBindingOptions::FixBindingOptions()
-    : fixCasts(true)
-    , fixVectorCasts(false)
-    , fixMembers(true)
-    , fixSlices(true)
-    , fixConstants(true)
-    , fixOthers(true)
-    , allowOnlySignalPorts(false)
-{
-    // ntd
-}
-
-FixBindingOptions::~FixBindingOptions()
-{
-    // ntd
-}
-
-FixBindingOptions::FixBindingOptions(const FixBindingOptions &o)
-    : fixCasts(o.fixCasts)
-    , fixVectorCasts(o.fixVectorCasts)
-    , fixMembers(o.fixMembers)
-    , fixSlices(o.fixSlices)
-    , fixConstants(o.fixConstants)
-    , fixOthers(o.fixOthers)
-    , allowOnlySignalPorts(o.allowOnlySignalPorts)
-{
-    // ntd
-}
-
-FixBindingOptions &FixBindingOptions::operator=(const FixBindingOptions &o)
-{
-    if (this == &o)
-        return *this;
-
-    fixCasts             = o.fixCasts;
-    fixVectorCasts       = o.fixVectorCasts;
-    fixMembers           = o.fixMembers;
-    fixSlices            = o.fixSlices;
-    fixConstants         = o.fixConstants;
-    fixOthers            = o.fixOthers;
-    allowOnlySignalPorts = o.allowOnlySignalPorts;
-
-    return *this;
-}
-
 bool fixInstanceBindings(Object *root, hif::semantics::ILanguageSemantics *sem, const FixBindingOptions &opt)
 {
     hif::HifTypedQuery<Instance> q;
-    q.collectObjectMethod = &collectObjectMethod;
+    q.check_object_method = &check_object_method;
     std::list<Instance *> list;
     hif::search(list, root, q);
 
@@ -723,7 +679,7 @@ bool fixInstanceBindings(Object *root, hif::semantics::ILanguageSemantics *sem, 
         if (dynamic_cast<BaseContents *>(inst->getParent()) == nullptr)
             continue;
 
-        const bool done = _fixInstanceBindings(inst, sem, opt);
+        bool done = _fixInstanceBindings(inst, sem, opt);
         if (done) {
             DesignUnit *du = hif::getNearestParent<DesignUnit>(inst);
             std::string duName("Unknown");

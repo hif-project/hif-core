@@ -1,8 +1,9 @@
 /// @file mapToNative.cpp
 /// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #include <cstdlib>
 #include <iostream>
@@ -75,8 +76,8 @@ void MapToNativeVisitor::_performConstMapping(ConstValue &o)
 
     Type *mapped = _checkSem->getTemplateAllowedType(t);
 
-    long long unsigned int cvBw     = hif::semantics::spanGetBitwidth(hif::typeGetSpan(o.getType(), _sem), _sem);
-    long long unsigned int mappedBw = hif::semantics::spanGetBitwidth(hif::typeGetSpan(mapped, _sem), _sem);
+    auto cvBw     = hif::semantics::spanGetBitwidth(hif::typeGetSpan(o.getType(), _sem), _sem);
+    auto mappedBw = hif::semantics::spanGetBitwidth(hif::typeGetSpan(mapped, _sem), _sem);
     if (mappedBw < cvBw) {
         raiseUniqueWarning("Found at least a ConstValue that must be cast to native type "
                            "resulting in loss of precision.");
@@ -155,8 +156,8 @@ int MapToNativeVisitor::visitAggregate(Aggregate &o)
             if (dynamic_cast<ConstValue *>(ind) != nullptr)
                 continue;
             if (dynamic_cast<Range *>(ind) != nullptr) {
-                Range *r              = static_cast<Range *>(ind);
-                unsigned long long ss = hif::semantics::spanGetBitwidth(r, _sem);
+                Range *r         = static_cast<Range *>(ind);
+                std::uint64_t ss = hif::semantics::spanGetBitwidth(r, _sem);
                 if (ss != 0)
                     continue;
             }

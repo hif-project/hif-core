@@ -1,8 +1,9 @@
 /// @file Signal.cpp
 /// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #include "hif/classes/Signal.hpp"
 #include "hif/HifVisitor.hpp"
@@ -30,10 +31,10 @@ void Signal::_calculateFields() { DataDeclaration::_calculateFields(); }
 
 bool Signal::isStandard() const { return _isStandard; }
 
-void Signal::setStandard(const bool standard) { _isStandard = standard; }
+void Signal::setStandard(bool standard) { _isStandard = standard; }
 
 bool Signal::isWrapper() const { return _isWrapper; }
 
-void Signal::setWrapper(const bool wrapper) { _isWrapper = wrapper; }
+void Signal::setWrapper(bool wrapper) { _isWrapper = wrapper; }
 
 } // namespace hif

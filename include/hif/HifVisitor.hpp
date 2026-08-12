@@ -1,8 +1,9 @@
 /// @file HifVisitor.hpp
 /// @brief Defines the HifVisitor class for traversing and processing HIF object trees.
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #pragma once
 
@@ -35,8 +36,7 @@ public:
     /// @tparam T The type of the objects in the list.
     /// @param l Reference to the list of objects to visit.
     /// @return The result of the visit operation.
-    template <class T>
-    int visitList(BList<T> &l);
+    template <class T> int visitList(BList<T> &l);
 
     /// @brief Method for visiting a list of generic objects.
     /// @param l Reference to the list of objects to visit.

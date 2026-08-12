@@ -1,8 +1,9 @@
 /// @file CHifDirStruct.cpp
 /// @brief
-/// @copyright (c) 2024-2025 Electronic Systems Design (ESD) Lab @ UniVR This
-/// file is distributed under the BSD 2-Clause License. See LICENSE.md for
-/// details.
+/// Copyright (c) 2024-2025, Electronic Systems Design (ESD) Group,
+/// Univeristy of Verona.
+/// This file is distributed under the BSD 2-Clause License.
+/// See LICENSE.md for details.
 
 #include <cstdlib>
 #include <fstream>
@@ -43,7 +44,7 @@ const char *const CHifDirStruct::DateFiles     = ".DateFiles";
 
 //
 // ReturnSuffix
-std::string CHifDirStruct::ReturnSuffix(Suffix_T eSuff)
+std::string CHifDirStruct::ReturnSuffix(Suffix eSuff)
 {
     std::string sRet(CSession::CSuffix[eSuff]);
     return sRet;
@@ -135,9 +136,7 @@ CHifDirStruct::~CHifDirStruct()
         delete m_psSystem;
 }
 
-//
-// Check()
-CHifDirStruct::DStatus_T CHifDirStruct::Check()
+CHifDirStruct::DirectoryStatus CHifDirStruct::Check()
 {
     hif::application_utils::FileStructure fTmpOut(HifTmp);
     hif::application_utils::FileStructure fPDir(".");
@@ -187,13 +186,13 @@ CHifDirStruct::DStatus_T CHifDirStruct::Check()
         return m_eStatus;
     }
 
-    //m_eStatus = (DStatus_T )(cvVisit.GetErrorCode());
+    //m_eStatus = (DirectoryStatus )(cvVisit.GetErrorCode());
     return m_eStatus;
 }
 
 //
 // Check(System & rsoTop)
-CHifDirStruct::DStatus_T CHifDirStruct::Check(System &)
+CHifDirStruct::DirectoryStatus CHifDirStruct::Check(System &)
 {
 #ifdef HIFDIR_DBG
     cout << INDENT << METHOD << "CHifDirStruct Check(System & rsoTop)" << endl;
@@ -211,7 +210,7 @@ CHifDirStruct::DStatus_T CHifDirStruct::Check(System &)
 
 //
 // UpdateDates()
-CHifDirStruct::DStatus_T CHifDirStruct::UpdateDates()
+CHifDirStruct::DirectoryStatus CHifDirStruct::UpdateDates()
 {
     m_eStatus = DST_OK;
 
@@ -322,7 +321,7 @@ hif::application_utils::FileStructure *CHifDirStruct::GetHifTmp()
 
 //
 // GetDir(LibraryDef & rlTgt)
-hif::application_utils::FileStructure *CHifDirStruct::GetDir(Object & /*rlTgt*/, Suffix_T rSuff)
+hif::application_utils::FileStructure *CHifDirStruct::GetDir(Object & /*rlTgt*/, Suffix rSuff)
 {
 #ifdef HIFDIR_DBG
     cout << INDENT << METHOD << "CHifDirStruct GetDir(Object & rduTgt)" << endl;
@@ -369,7 +368,7 @@ CHifDirStruct::GetDir(hif::application_utils::FileStructure &fTgt, hif::applicat
 
 //
 // Apply(const char * pcLine)
-CHifDirStruct::DStatus_T CHifDirStruct::Apply(const char *pcLine)
+CHifDirStruct::DirectoryStatus CHifDirStruct::Apply(const char *pcLine)
 {
 #ifdef HIFDIR_DBG
     cout << INDENT << METHOD << "CHifDirStruct Apply(const char * pcLine)" << endl;
@@ -401,11 +400,11 @@ CHifDirStruct::DStatus_T CHifDirStruct::Apply(const char *pcLine)
 }
 
 //
-// Apply(DesignUnit & rduTgt, const char * pcLine, Suffix_T rSuff = SRC)
-CHifDirStruct::DStatus_T CHifDirStruct::Apply(DesignUnit &rduTgt, const char *pcLine, Suffix_T rSuff)
+// Apply(DesignUnit & rduTgt, const char * pcLine, Suffix rSuff = SRC)
+CHifDirStruct::DirectoryStatus CHifDirStruct::Apply(DesignUnit &rduTgt, const char *pcLine, Suffix rSuff)
 {
 #ifdef HIFDIR_DBG
-    cout << INDENT << METHOD << "CHifDirStruct Apply(DesignUnit & rduTgt, const char * pcLine, Suffix_T rSuff = SRC)"
+    cout << INDENT << METHOD << "CHifDirStruct Apply(DesignUnit & rduTgt, const char * pcLine, Suffix rSuff = SRC)"
          << endl;
 #endif // HIFDIR_DBG
     hif::application_utils::FileStructure *fRx6Out;
@@ -422,7 +421,7 @@ CHifDirStruct::DStatus_T CHifDirStruct::Apply(DesignUnit &rduTgt, const char *pc
         return m_eStatus;
     }
 
-    m_eStatus = static_cast<DStatus_T>(m_psSystem->Apply(rduTgt, pcLine, CSession::CSuffix[rSuff]));
+    m_eStatus = static_cast<DirectoryStatus>(m_psSystem->Apply(rduTgt, pcLine, CSession::CSuffix[rSuff]));
 
     if (!(fPADir.chdir())) {
         m_eStatus = DST_CNT_CHANGE;
@@ -433,11 +432,11 @@ CHifDirStruct::DStatus_T CHifDirStruct::Apply(DesignUnit &rduTgt, const char *pc
 }
 
 //
-// Apply(View & rduTgt, const char * pcLine, Suffix_T rSuff = SRC)
-CHifDirStruct::DStatus_T CHifDirStruct::Apply(View &rvTgt, const char *pcLine, Suffix_T rSuff)
+// Apply(View & rduTgt, const char * pcLine, Suffix rSuff = SRC)
+CHifDirStruct::DirectoryStatus CHifDirStruct::Apply(View &rvTgt, const char *pcLine, Suffix rSuff)
 {
 #ifdef HIFDIR_DBG
-    std::cout << INDENT << METHOD << "CHifDirStruct Apply(View & rvTgt, const char * pcLine, Suffix_T rSuff = SRC)"
+    std::cout << INDENT << METHOD << "CHifDirStruct Apply(View & rvTgt, const char * pcLine, Suffix rSuff = SRC)"
               << std::endl;
 #endif // HIFDIR_DBG
     hif::application_utils::FileStructure *fRx6Out;
@@ -454,7 +453,7 @@ CHifDirStruct::DStatus_T CHifDirStruct::Apply(View &rvTgt, const char *pcLine, S
         return m_eStatus;
     }
 
-    m_eStatus = static_cast<DStatus_T>(m_psSystem->Apply(rvTgt, pcLine, CSession::CSuffix[rSuff]));
+    m_eStatus = static_cast<DirectoryStatus>(m_psSystem->Apply(rvTgt, pcLine, CSession::CSuffix[rSuff]));
 
     if (!(fPADir.chdir())) {
         m_eStatus = DST_CNT_CHANGE;
@@ -465,11 +464,11 @@ CHifDirStruct::DStatus_T CHifDirStruct::Apply(View &rvTgt, const char *pcLine, S
 }
 
 //
-// Apply(Instance & rduTgt, const char * pcLine, Suffix_T rSuff = SRC)
-CHifDirStruct::DStatus_T CHifDirStruct::Apply(Instance &riTgt, const char *pcLine, Suffix_T rSuff)
+// Apply(Instance & rduTgt, const char * pcLine, Suffix rSuff = SRC)
+CHifDirStruct::DirectoryStatus CHifDirStruct::Apply(Instance &riTgt, const char *pcLine, Suffix rSuff)
 {
 #ifdef HIFDIR_DBG
-    std::cout << INDENT << METHOD << "CHifDirStruct Apply(Instance & riTgt, const char * pcLine, Suffix_T rSuff = SRC)"
+    std::cout << INDENT << METHOD << "CHifDirStruct Apply(Instance & riTgt, const char * pcLine, Suffix rSuff = SRC)"
               << std::endl;
 #endif // HIFDIR_DBG
     hif::application_utils::FileStructure *fRx6Out;
@@ -486,7 +485,7 @@ CHifDirStruct::DStatus_T CHifDirStruct::Apply(Instance &riTgt, const char *pcLin
         return m_eStatus;
     }
 
-    m_eStatus = static_cast<DStatus_T>(m_psSystem->Apply(riTgt, pcLine, CSession::CSuffix[rSuff]));
+    m_eStatus = static_cast<DirectoryStatus>(m_psSystem->Apply(riTgt, pcLine, CSession::CSuffix[rSuff]));
 
     if (!(fPADir.chdir())) {
         m_eStatus = DST_CNT_CHANGE;
@@ -497,12 +496,12 @@ CHifDirStruct::DStatus_T CHifDirStruct::Apply(Instance &riTgt, const char *pcLin
 }
 
 //
-// Apply(LibraryDef & rlTgt, const char * pcLine, Suffix_T rSuff = SRC)
-CHifDirStruct::DStatus_T CHifDirStruct::Apply(LibraryDef &rlTgt, const char *pcLine, Suffix_T rSuff)
+// Apply(LibraryDef & rlTgt, const char * pcLine, Suffix rSuff = SRC)
+CHifDirStruct::DirectoryStatus CHifDirStruct::Apply(LibraryDef &rlTgt, const char *pcLine, Suffix rSuff)
 {
 #ifdef HIFDIR_DBG
-    std::cout << INDENT << METHOD
-              << "CHifDirStruct Apply(LibraryDef & rlTgt, const char * pcLine, Suffix_T rSuff = SRC)" << std::endl;
+    std::cout << INDENT << METHOD << "CHifDirStruct Apply(LibraryDef & rlTgt, const char * pcLine, Suffix rSuff = SRC)"
+              << std::endl;
 #endif // HIFDIR_DBG
     hif::application_utils::FileStructure *fRx6Out;
     hif::application_utils::FileStructure fPDir(".");
@@ -518,7 +517,7 @@ CHifDirStruct::DStatus_T CHifDirStruct::Apply(LibraryDef &rlTgt, const char *pcL
         return m_eStatus;
     }
 
-    m_eStatus = static_cast<DStatus_T>(m_psSystem->Apply(rlTgt, pcLine, CSession::CSuffix[rSuff]));
+    m_eStatus = static_cast<DirectoryStatus>(m_psSystem->Apply(rlTgt, pcLine, CSession::CSuffix[rSuff]));
 
     if (!(fPADir.chdir())) {
         m_eStatus = DST_CNT_CHANGE;
@@ -529,12 +528,12 @@ CHifDirStruct::DStatus_T CHifDirStruct::Apply(LibraryDef &rlTgt, const char *pcL
 }
 
 //
-// ApplyBase(DesignUnit & rduTgt, const char * pcLine, Suffix_T rSuff = SRC)
-CHifDirStruct::DStatus_T CHifDirStruct::ApplyBase(DesignUnit &rduTgt, const char *, Suffix_T)
+// ApplyBase(DesignUnit & rduTgt, const char * pcLine, Suffix rSuff = SRC)
+CHifDirStruct::DirectoryStatus CHifDirStruct::ApplyBase(DesignUnit &rduTgt, const char *, Suffix)
 {
 #ifdef HIFDIR_DBG
     std::cout << INDENT << METHOD
-              << "CHifDirStruct ApplyBase(DesignUnit & rduTgt, const char * pcLine, Suffix_T rSuff = SRC)" << std::endl;
+              << "CHifDirStruct ApplyBase(DesignUnit & rduTgt, const char * pcLine, Suffix rSuff = SRC)" << std::endl;
 #endif // HIFDIR_DBG
     hif::application_utils::FileStructure *fRx6Out;
     hif::application_utils::FileStructure fPDir(".");
@@ -623,11 +622,11 @@ bool CHifDirStruct::IsModified(hif::application_utils::FileStructure &rF, const 
 }
 
 //
-// IsModified(DesignUnit & rDU, const char * cFile, Suffix_T rSuff = SRC)
-bool CHifDirStruct::IsModified(DesignUnit &rDU, const char *cFile, Suffix_T rSuff)
+// IsModified(DesignUnit & rDU, const char * cFile, Suffix rSuff = SRC)
+bool CHifDirStruct::IsModified(DesignUnit &rDU, const char *cFile, Suffix rSuff)
 {
 #ifdef HIFDIR_DBG
-    std::cout << INDENT << METHOD << "CHifDirStruct IsModified(DesignUnit & rDU, char * cFile, Suffix_T rSuff = SRC)"
+    std::cout << INDENT << METHOD << "CHifDirStruct IsModified(DesignUnit & rDU, char * cFile, Suffix rSuff = SRC)"
               << std::endl;
 #endif // HIFDIR_DBG
     hif::application_utils::FileStructure *fDir = GetDir(rDU, rSuff);
@@ -637,12 +636,11 @@ bool CHifDirStruct::IsModified(DesignUnit &rDU, const char *cFile, Suffix_T rSuf
 }
 
 //
-// IsModified(Instance & rInst, const char * cFile, Suffix_T rSuff = SRC)
-bool CHifDirStruct::IsModified(Instance &rInst, const char *cFile, Suffix_T rSuff)
+// IsModified(Instance & rInst, const char * cFile, Suffix rSuff = SRC)
+bool CHifDirStruct::IsModified(Instance &rInst, const char *cFile, Suffix rSuff)
 {
 #ifdef HIFDIR_DBG
-    cout << INDENT << METHOD << "CHifDirStruct IsModified(Instance & rInst, char * cFile, Suffix_T rSuff = SRC)"
-         << endl;
+    cout << INDENT << METHOD << "CHifDirStruct IsModified(Instance & rInst, char * cFile, Suffix rSuff = SRC)" << endl;
 #endif // HIFDIR_DBG
     hif::application_utils::FileStructure *fDir = GetDir(rInst, rSuff);
     if (!fDir)
@@ -651,11 +649,11 @@ bool CHifDirStruct::IsModified(Instance &rInst, const char *cFile, Suffix_T rSuf
 }
 
 //
-// IsModified(LibraryDef & rLd, const char * cFile, Suffix_T rSuff = SRC)
-bool CHifDirStruct::IsModified(LibraryDef &rLd, const char *cFile, Suffix_T rSuff)
+// IsModified(LibraryDef & rLd, const char * cFile, Suffix rSuff = SRC)
+bool CHifDirStruct::IsModified(LibraryDef &rLd, const char *cFile, Suffix rSuff)
 {
 #ifdef HIFDIR_DBG
-    std::cout << INDENT << METHOD << "CHifDirStruct IsModified(LibraryDef & rLd, char * cFile, Suffix_T rSuff = SRC)"
+    std::cout << INDENT << METHOD << "CHifDirStruct IsModified(LibraryDef & rLd, char * cFile, Suffix rSuff = SRC)"
               << std::endl;
 #endif // HIFDIR_DBG
     hif::application_utils::FileStructure *fDir = GetDir(rLd, rSuff);
@@ -665,12 +663,12 @@ bool CHifDirStruct::IsModified(LibraryDef &rLd, const char *cFile, Suffix_T rSuf
 }
 
 //
-// IsModifiedBase(DesignUnit & rDU, const char * cFile, Suffix_T rSuff = SRC)
-bool CHifDirStruct::IsModifiedBase(DesignUnit &rDU, const char *cFile, Suffix_T rSuff)
+// IsModifiedBase(DesignUnit & rDU, const char * cFile, Suffix rSuff = SRC)
+bool CHifDirStruct::IsModifiedBase(DesignUnit &rDU, const char *cFile, Suffix rSuff)
 {
 #ifdef HIFDIR_DBG
-    std::cout << INDENT << METHOD
-              << "CHifDirStruct IsModifiedBase(DesignUnit & rDU, char * cFile, Suffix_T rSuff = SRC)" << std::endl;
+    std::cout << INDENT << METHOD << "CHifDirStruct IsModifiedBase(DesignUnit & rDU, char * cFile, Suffix rSuff = SRC)"
+              << std::endl;
 #endif // HIFDIR_DBG
     //hif::application_utils::FileStructure * fDir = GetDirBase(rDU,rSuff);
     hif::application_utils::FileStructure *fDir = GetDir(rDU, rSuff);
@@ -678,7 +676,7 @@ bool CHifDirStruct::IsModifiedBase(DesignUnit &rDU, const char *cFile, Suffix_T 
         return false;
     return IsModified(*fDir, cFile);
 }
-void CHifDirStruct::printError(DStatus_T eStatus)
+void CHifDirStruct::printError(DirectoryStatus eStatus)
 {
     switch (eStatus) {
     case hif::backends::CHifDirStruct::DST_CNT_REM:

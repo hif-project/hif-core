@@ -2,11 +2,8 @@
 
 **hif-core** is the shared C++ AST/IR library for the HIF toolchain: it defines the HDL-Independent Format (HIF) data model that every other repo in the toolchain reads, writes, or transforms. It leverages modern C++17 features and integrates with the [Poco](https://pocoproject.org/) libraries for Foundation, Util, and XML support.
 
-Part of the HIF toolchain for HDL-independent-format compilation:
-- **hif-core** (this repo) — shared AST/IR library
-- [hif-frontend](https://github.com/hif-project/hif-frontend) — Verilog/VHDL → HIF
-- [hif-backend](https://github.com/hif-project/hif-backend) — HIF → Verilog/VHDL(/SystemC)
-- [hif-muffin](https://github.com/hif-project/hif-muffin) — RTL fault injection, built on the above
+Part of the HIF project. See https://github.com/hif-project for the
+complete list of repositories and tools.
 
 ![CI](https://github.com/hif-project/hif-core/actions/workflows/ci.yml/badge.svg?branch=develop)
 

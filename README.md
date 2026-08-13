@@ -4,11 +4,11 @@
 
 Part of the HIF toolchain for HDL-independent-format compilation:
 - **hif-core** (this repo) — shared AST/IR library
-- [hif-frontend](https://github.com/esd-univr/hif-frontend) — Verilog/VHDL → HIF
-- [hif-backend](https://github.com/esd-univr/hif-backend) — HIF → Verilog/VHDL(/SystemC)
-- [hif-muffin](https://github.com/esd-univr/hif-muffin) — RTL fault injection, built on the above
+- [hif-frontend](https://github.com/hif-project/hif-frontend) — Verilog/VHDL → HIF
+- [hif-backend](https://github.com/hif-project/hif-backend) — HIF → Verilog/VHDL(/SystemC)
+- [hif-muffin](https://github.com/hif-project/hif-muffin) — RTL fault injection, built on the above
 
-![CI](https://github.com/esd-univr/hif-core/actions/workflows/ci.yml/badge.svg?branch=develop)
+![CI](https://github.com/hif-project/hif-core/actions/workflows/ci.yml/badge.svg?branch=develop)
 
 ## Features
 

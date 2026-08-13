@@ -12,3 +12,23 @@ add_test(
     NAME code_info_source_line
     COMMAND code_info_source_line_test ${CMAKE_CURRENT_SOURCE_DIR}/fixtures/and2_known_good.hif.xml
 )
+
+# Regression: VerilogAnalysis has no map(Int*, Int*) overload, so any binary
+# expression combining two Int-typed operands under Verilog semantics
+# silently fails to type. See verilog_analysis_int_int_test.cpp.
+add_executable(verilog_analysis_int_int_test ${CMAKE_CURRENT_SOURCE_DIR}/verilog_analysis_int_int_test.cpp)
+target_include_directories(verilog_analysis_int_int_test PRIVATE ${PROJECT_SOURCE_DIR}/include)
+target_link_libraries(verilog_analysis_int_int_test PRIVATE hif::hif)
+target_compile_features(verilog_analysis_int_int_test PRIVATE cxx_std_17)
+
+add_test(NAME verilog_analysis_int_int COMMAND verilog_analysis_int_int_test)
+
+# Regression: $clog2 was never registered in Verilog's standard library
+# (only a `//$clog2` comment marker), unlike $time/$stime/$random. See
+# verilog_clog2_registration_test.cpp.
+add_executable(verilog_clog2_registration_test ${CMAKE_CURRENT_SOURCE_DIR}/verilog_clog2_registration_test.cpp)
+target_include_directories(verilog_clog2_registration_test PRIVATE ${PROJECT_SOURCE_DIR}/include)
+target_link_libraries(verilog_clog2_registration_test PRIVATE hif::hif)
+target_compile_features(verilog_clog2_registration_test PRIVATE cxx_std_17)
+
+add_test(NAME verilog_clog2_registration COMMAND verilog_clog2_registration_test)

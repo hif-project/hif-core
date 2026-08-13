@@ -76,6 +76,9 @@ public:
     void map(Bitvector *array, Bit *bit);
     void map(Real *real, Bit *b);
 
+    // Maps to Int
+    void map(Int *op1, Int *op2);
+
     // Maps to Real
     void map(Real *real1, Real *real2);
     void map(Array *array, Real *real);
@@ -933,6 +936,46 @@ void VerilogAnalysis::map(Bitvector *array, Bit *bit)
     delete other;
 }
 void VerilogAnalysis::map(Bit *bit, Bitvector *array) { map(array, bit); }
+
+void VerilogAnalysis::map(Int *op1, Int *op2)
+{
+    Range *range1 = op1->getSpan();
+    Range *range2 = op2->getSpan();
+    if (range1 == nullptr || range2 == nullptr)
+        // failed to get the ranges
+        return;
+
+    // get the maximum between the two ranges (no op_concat special case:
+    // concatenating two plain Verilog integers is not a meaningful/observed
+    // construct, unlike for Bitvector).
+    Range *result_range = rangeGetMax(range1, range2, VerilogSemantics::getInstance());
+
+    // if the range cannot be established error
+    if (result_range == nullptr)
+        return;
+
+    // build the Int with the maximum range
+    Int *int_result = new Int();
+    int_result->setSpan(result_range);
+    int_result->setConstexpr(op1->isConstexpr() && op2->isConstexpr());
+
+    // check the signed attribute. If both are signed, the output
+    // is signed, otherwise is unsigned (IEEE 1364 5.5.1: if any operand
+    // is unsigned, the result is unsigned).
+    int_result->setSigned(op1->isSigned() && op2->isSigned());
+
+    // determine the return type
+    if (_isRelational(_currOperator) || _isLogical(_currOperator))
+        // if the operation is relational the return type is a bit
+        _result.returnedType = _makeVerilogBitType();
+    else
+        // the returned type is the maximum of the two sizes
+        _result.returnedType = hif::copy(int_result);
+
+    // set the operation precision
+    _result.operationPrecision = int_result;
+}
+
 void VerilogAnalysis::map(Real *real1, Real *real2)
 {
     // check the ranges

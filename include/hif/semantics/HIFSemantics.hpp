@@ -338,8 +338,11 @@ private:
     Object *_getSimplifiedSymbol_stable(Object *s);
     Object *_getSimplifiedSymbol_ascending(Object *s);
     Object *_getSimplifiedSymbol_iteratedConcat(KeySymbol &key, Object *s);
-    Object *
-    _getSimplifiedSymbol_withVerilogIntegers(Object *s, bool intReturnedType, const std::vector<int> &intParamIndexes);
+    Object *_getSimplifiedSymbol_withVerilogIntegers(
+        KeySymbol &key,
+        Object *s,
+        bool intReturnedType,
+        const std::vector<int> &intParamIndexes);
 
     /// @brief Returns the registered destination mapping of a standard symbol.
     ///

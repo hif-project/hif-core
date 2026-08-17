@@ -97,12 +97,26 @@ Range *_getSpanFromSpanOperatingFunctions(FunctionCall *f, ILanguageSemantics *s
     return typeR;
 }
 
+/// @brief Copies @p call into destination form: canonical name, canonical
+/// referenced library, integer casts on the parameters that need them.
+///
+/// @p mappedName and @p mappedLibrary come from the standard-symbol registry,
+/// never from prefix arithmetic on the current spelling, so the canonical form
+/// is produced exactly once whatever domain the input happens to be in. That
+/// matters because the input is not always a tree symbol whose library the
+/// enclosing map step has already renamed: a call reached through a copied
+/// semantic type is still entirely source-form.
 template <typename T>
-T *_fixCallIntegerParameters(T *call, const std::vector<int> &intParamIndexes, ILanguageSemantics *sem)
+T *_fixCallIntegerParameters(
+    T *call,
+    const std::string &mappedName,
+    const std::string &mappedLibrary,
+    const std::vector<int> &intParamIndexes,
+    ILanguageSemantics *sem)
 {
     hif::HifFactory f(sem);
     T *callCopy = hif::copy(call);
-    callCopy->setName("hif_verilog_" + callCopy->getName());
+    callCopy->setName(mappedName);
 
     for (std::vector<int>::const_iterator i = intParamIndexes.begin(); i != intParamIndexes.end(); ++i) {
         if (*i >= static_cast<int>(call->parameterAssigns.size()))
@@ -118,6 +132,8 @@ T *_fixCallIntegerParameters(T *call, const std::vector<int> &intParamIndexes, I
     messageAssert(inst != nullptr, "Expected instance.", call, sem);
     Library *lib = dynamic_cast<Library *>(inst->getReferencedType());
     messageAssert(lib != nullptr, "Expected library instance.", call, sem);
+
+    lib->setName(mappedLibrary);
 
     hif::semantics::ResetDeclarationsOptions ropt;
     ropt.onlySignatures = true;
@@ -791,48 +807,48 @@ Object *HIFSemantics::_getSimplifiedSymbolStandard(KeySymbol &key, Object *s)
     } else if (key.second == "foreign") {
         messageError("Unsupported mapping", s, this);
     } else if (key.second == "iterated_concat") {
-        return _getSimplifiedSymbol_iteratedConcat(s);
+        return _getSimplifiedSymbol_iteratedConcat(key, s);
     } else if (key.second == "_system_fclose") {
         std::vector<int> v;
         v.push_back(0);
-        return _getSimplifiedSymbol_withVerilogIntegers(s, false, v);
+        return _getSimplifiedSymbol_withVerilogIntegers(key, s, false, v);
     } else if (key.second == "_system_fflush") {
         std::vector<int> v;
         v.push_back(0);
-        return _getSimplifiedSymbol_withVerilogIntegers(s, false, v);
+        return _getSimplifiedSymbol_withVerilogIntegers(key, s, false, v);
     } else if (key.second == "_system_fopen") {
         std::vector<int> v; // only ret type!
-        return _getSimplifiedSymbol_withVerilogIntegers(s, true, v);
+        return _getSimplifiedSymbol_withVerilogIntegers(key, s, true, v);
     } else if (key.second == "_system_random") {
         std::vector<int> v;
         v.push_back(0);
-        return _getSimplifiedSymbol_withVerilogIntegers(s, true, v);
+        return _getSimplifiedSymbol_withVerilogIntegers(key, s, true, v);
     } else if (key.second == "_system_clog2") {
         std::vector<int> v;
         v.push_back(0);
-        return _getSimplifiedSymbol_withVerilogIntegers(s, true, v);
+        return _getSimplifiedSymbol_withVerilogIntegers(key, s, true, v);
     } else if (key.second == "_system_readmemb") {
         std::vector<int> v;
         v.push_back(2);
         v.push_back(3);
         v.push_back(4);
         v.push_back(5);
-        return _getSimplifiedSymbol_withVerilogIntegers(s, false, v);
+        return _getSimplifiedSymbol_withVerilogIntegers(key, s, false, v);
     } else if (key.second == "_system_readmemh") {
         std::vector<int> v;
         v.push_back(2);
         v.push_back(3);
         v.push_back(4);
         v.push_back(5);
-        return _getSimplifiedSymbol_withVerilogIntegers(s, false, v);
+        return _getSimplifiedSymbol_withVerilogIntegers(key, s, false, v);
     } else if (key.second == "_system_feof") {
         std::vector<int> v;
         v.push_back(0);
-        return _getSimplifiedSymbol_withVerilogIntegers(s, true, v);
+        return _getSimplifiedSymbol_withVerilogIntegers(key, s, true, v);
     } else if (key.second == "_system_fscanf") {
         std::vector<int> v;
         v.push_back(0);
-        return _getSimplifiedSymbol_withVerilogIntegers(s, false, v);
+        return _getSimplifiedSymbol_withVerilogIntegers(key, s, false, v);
     }
 
     assert(false);
@@ -844,30 +860,30 @@ Object *HIFSemantics::_getSimplifiedSymbolVamsStandard(KeySymbol &key, Object *s
     if (key.second == "cross") {
         std::vector<int> v;
         v.push_back(1);
-        return _getSimplifiedSymbol_withVerilogIntegers(s, false, v);
+        return _getSimplifiedSymbol_withVerilogIntegers(key, s, false, v);
     } else if (key.second == "_system_driver_count") {
         std::vector<int> v;
-        return _getSimplifiedSymbol_withVerilogIntegers(s, true, v);
+        return _getSimplifiedSymbol_withVerilogIntegers(key, s, true, v);
     } else if (key.second == "_system_driver_state") {
         std::vector<int> v;
         v.push_back(1);
-        return _getSimplifiedSymbol_withVerilogIntegers(s, false, v);
+        return _getSimplifiedSymbol_withVerilogIntegers(key, s, false, v);
     } else if (key.second == "_system_driver_strength") {
         std::vector<int> v;
         v.push_back(1);
-        return _getSimplifiedSymbol_withVerilogIntegers(s, false, v);
+        return _getSimplifiedSymbol_withVerilogIntegers(key, s, false, v);
     } else if (key.second == "_system_driver_next_state") {
         std::vector<int> v;
         v.push_back(1);
-        return _getSimplifiedSymbol_withVerilogIntegers(s, false, v);
+        return _getSimplifiedSymbol_withVerilogIntegers(key, s, false, v);
     } else if (key.second == "_system_driver_next_strength") {
         std::vector<int> v;
         v.push_back(1);
-        return _getSimplifiedSymbol_withVerilogIntegers(s, true, v);
+        return _getSimplifiedSymbol_withVerilogIntegers(key, s, true, v);
     } else if (key.second == "_system_driver_type") {
         std::vector<int> v;
         v.push_back(1);
-        return _getSimplifiedSymbol_withVerilogIntegers(s, true, v);
+        return _getSimplifiedSymbol_withVerilogIntegers(key, s, true, v);
     }
 
     assert(false);
@@ -957,13 +973,79 @@ Object *HIFSemantics::_getSimplifiedSymbol_ascending(Object *s)
 
     return _factory.boolval(typeR->getDirection() == dir_upto);
 }
-Object *HIFSemantics::_getSimplifiedSymbol_iteratedConcat(Object *s)
+const HIFSemantics::ValueSymbol &HIFSemantics::_getStandardSymbolMapping(KeySymbol &key, Object *s)
+{
+    StandardSymbols::iterator entry(_standardSymbols.find(key));
+    messageAssert(entry != _standardSymbols.end(), "Unregistered standard symbol mapping", s, this);
+    messageAssert(
+        entry->second.libraries.size() == 1, "Expected exactly one destination library for a mapped symbol", s, this);
+    return entry->second;
+}
+
+void HIFSemantics::_canonicalizeNestedStandardSymbols(Object *subtree, const std::string &sourceLibrary)
+{
+    // One rewrite per pass: replacing a call destroys its subtree, which may
+    // hold other already-collected pointers, so the collection is rebuilt each
+    // time. Every pass strictly reduces the number of source-form standard
+    // calls (a mapped name is never itself a registry key), so this terminates.
+    for (bool changed = true; changed;) {
+        changed = false;
+
+        std::list<Object *> symbols;
+        hif::semantics::collectSymbols(symbols, subtree);
+
+        for (std::list<Object *>::iterator i(symbols.begin()); i != symbols.end(); ++i) {
+            Object *sym = *i;
+            if (sym == subtree)
+                continue;
+            if (dynamic_cast<FunctionCall *>(sym) == nullptr && dynamic_cast<ProcedureCall *>(sym) == nullptr)
+                continue;
+
+            // Only calls reached through a library prefix can be standard
+            // symbols: a user-defined call never carries one.
+            Instance *inst = dynamic_cast<Instance *>(hif::objectGetInstance(sym));
+            if (inst == nullptr)
+                continue;
+            Library *lib = dynamic_cast<Library *>(inst->getReferencedType());
+            if (lib == nullptr)
+                continue;
+
+            KeySymbol key(sourceLibrary, hif::objectGetName(sym));
+            StandardSymbols::iterator entry(_standardSymbols.find(key));
+            // Not a known source spelling: either already canonical - mapped
+            // names are never registry keys, which is what makes this
+            // idempotent - or not a symbol this semantics maps.
+            if (entry == _standardSymbols.end())
+                continue;
+            if (entry->second.mapAction != SIMPLIFIED)
+                continue;
+            // Source library names are shared across languages ("standard" is
+            // both VHDL's and Verilog's), so a name match alone is ambiguous.
+            // Only accept an entry whose destination library is exactly the one
+            // this call already refers to.
+            if (entry->second.libraries.size() != 1 || entry->second.libraries.front() != lib->getName())
+                continue;
+
+            Object *mapped = getSimplifiedSymbol(key, sym);
+            messageAssert(mapped != nullptr, "Unable to canonicalize a nested standard symbol", sym, this);
+
+            sym->replace(mapped);
+            delete sym;
+            changed = true;
+            break;
+        }
+    }
+}
+
+Object *HIFSemantics::_getSimplifiedSymbol_iteratedConcat(KeySymbol &key, Object *s)
 {
     FunctionCall *f = dynamic_cast<FunctionCall *>(s);
     messageAssert((f != nullptr), "Expected FunctionCall", s, this);
 
+    const ValueSymbol &mapping = _getStandardSymbolMapping(key, s);
+
     FunctionCall *ret = hif::copy(f);
-    ret->setName("hif_verilog_iterated_concat");
+    ret->setName(mapping.mappedSymbol);
     for (BList<TPAssign>::iterator i = ret->templateParameterAssigns.begin(); i != ret->templateParameterAssigns.end();
          ++i) {
         ValueTPAssign *vtpa = dynamic_cast<ValueTPAssign *>(*i);
@@ -979,12 +1061,22 @@ Object *HIFSemantics::_getSimplifiedSymbol_iteratedConcat(Object *s)
     Library *lib = dynamic_cast<Library *>(inst->getReferencedType());
     messageAssert(lib != nullptr, "Expected library instance.", s, this);
 
-    lib->setName("hif_verilog_standard");
+    lib->setName(mapping.libraries.front());
+
+    // The copy carries the whole user replication count over verbatim, so it
+    // can still hold source-form standard calls - `{$clog2(DEPTH){1'b1}}` keeps
+    // a `_system_clog2` under a library the enclosing map step has already
+    // renamed to `hif_verilog_standard`. Canonicalize them before resetting
+    // declarations, otherwise the reset re-resolves names that no destination
+    // library declares.
+    _canonicalizeNestedStandardSymbols(ret, key.first);
+
     hif::semantics::resetDeclarations(ret);
 
     return ret;
 }
 Object *HIFSemantics::_getSimplifiedSymbol_withVerilogIntegers(
+    KeySymbol &key,
     Object *s,
     bool /*intReturnedType*/,
     const std::vector<int> &intParamIndexes)
@@ -993,11 +1085,14 @@ Object *HIFSemantics::_getSimplifiedSymbol_withVerilogIntegers(
     ProcedureCall *pc = dynamic_cast<ProcedureCall *>(s);
     messageAssert(fc != nullptr || pc != nullptr, "Unexpected symbol", s, this);
 
+    const ValueSymbol &mapping = _getStandardSymbolMapping(key, s);
+
     if (pc != nullptr) {
-        return _fixCallIntegerParameters(pc, intParamIndexes, this);
+        return _fixCallIntegerParameters(pc, mapping.mappedSymbol, mapping.libraries.front(), intParamIndexes, this);
     } else {
-        FunctionCall *fcopy = _fixCallIntegerParameters(fc, intParamIndexes, this);
-        Object *ret         = fcopy;
+        FunctionCall *fcopy =
+            _fixCallIntegerParameters(fc, mapping.mappedSymbol, mapping.libraries.front(), intParamIndexes, this);
+        Object *ret = fcopy;
         //        if (intReturnedType)
         //        {
         //            ret = _factory.cast(

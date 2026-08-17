@@ -274,8 +274,16 @@ public:
     mapStandardSymbol(Declaration *decl, KeySymbol &key, ValueSymbol &value, ILanguageSemantics *srcSem);
 
     /// @brief Returns the mapped symbol w.r.t. the current semantics.
+    ///
+    /// The returned subtree is closed under this (destination) semantics: every
+    /// standard symbol it contains, not just the outermost one, is spelled in
+    /// destination form and resolvable against a destination standard library.
+    /// Implementations that copy their input must therefore canonicalize the
+    /// nested standard symbols they carry over - see
+    /// _canonicalizeNestedStandardSymbols().
+    ///
     /// @param key The key symbol.
-    /// @param s The object.
+    /// @param s The object. It is never modified; the result is a fresh subtree.
     /// @return The simplified symbol.
     virtual Object *getSimplifiedSymbol(KeySymbol &key, Object *s);
 
@@ -329,9 +337,55 @@ private:
     Object *_getSimplifiedSymbol_length(Object *s);
     Object *_getSimplifiedSymbol_stable(Object *s);
     Object *_getSimplifiedSymbol_ascending(Object *s);
-    Object *_getSimplifiedSymbol_iteratedConcat(Object *s);
-    Object *
-    _getSimplifiedSymbol_withVerilogIntegers(Object *s, bool intReturnedType, const std::vector<int> &intParamIndexes);
+    Object *_getSimplifiedSymbol_iteratedConcat(KeySymbol &key, Object *s);
+    Object *_getSimplifiedSymbol_withVerilogIntegers(
+        KeySymbol &key,
+        Object *s,
+        bool intReturnedType,
+        const std::vector<int> &intParamIndexes);
+
+    /// @brief Returns the registered destination mapping of a standard symbol.
+    ///
+    /// Canonical destination spellings - both the symbol name and its library -
+    /// are read from this registry rather than derived by prefixing the current
+    /// name, so they are produced exactly once and are independent of the domain
+    /// the input happens to be in.
+    ///
+    /// @param key The source-domain key of the symbol.
+    /// @param s The object being mapped, for diagnostics.
+    /// @return The registered mapping. Fails if @p key is not registered or does
+    /// not name exactly one destination library.
+    const ValueSymbol &_getStandardSymbolMapping(KeySymbol &key, Object *s);
+
+    /// @brief Rewrites every nested source-form standard symbol of a copied
+    /// subtree into its canonical destination spelling, so that a
+    /// getSimplifiedSymbol() implementation which copies its input still
+    /// returns a subtree closed under destination semantics.
+    ///
+    /// This is deliberately a local, non-reentrant mechanism: it must not be
+    /// confused with the whole-tree mapStandardSymbols(), which owns shared
+    /// traversal state, assumes an enclosing System and would be re-entered
+    /// while its own symbol traversal is still active.
+    ///
+    /// Preconditions:
+    /// - @p subtree is a caller-owned copy. The original source subtree is
+    ///   never reachable from it, so it is never modified.
+    /// - @p sourceLibrary is the source-domain library name of the symbol being
+    ///   simplified, i.e. KeySymbol::first at the dispatch site.
+    ///
+    /// Postconditions:
+    /// - no descendant call of @p subtree is still a source-form symbol of
+    ///   @p sourceLibrary that this semantics knows how to simplify;
+    /// - canonical names and libraries are taken from the standard-symbol
+    ///   registry rather than built by prefix concatenation, so they appear
+    ///   exactly once and re-running the method is a no-op;
+    /// - CodeInfo, symbolic expressions and every non-standard node are left
+    ///   untouched; no declaration is resolved, no type evaluated, no constant
+    ///   folded.
+    ///
+    /// @param subtree The caller-owned copy to canonicalize in place.
+    /// @param sourceLibrary The source-domain library name of the mapped symbol.
+    void _canonicalizeNestedStandardSymbols(Object *subtree, const std::string &sourceLibrary);
 
     /// Splitting cases.
     LibraryDef *_getVHDLStandardLibrary(const std::string &name);

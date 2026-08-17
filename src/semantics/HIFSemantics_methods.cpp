@@ -791,7 +791,7 @@ Object *HIFSemantics::_getSimplifiedSymbolStandard(KeySymbol &key, Object *s)
     } else if (key.second == "foreign") {
         messageError("Unsupported mapping", s, this);
     } else if (key.second == "iterated_concat") {
-        return _getSimplifiedSymbol_iteratedConcat(s);
+        return _getSimplifiedSymbol_iteratedConcat(key, s);
     } else if (key.second == "_system_fclose") {
         std::vector<int> v;
         v.push_back(0);
@@ -957,13 +957,79 @@ Object *HIFSemantics::_getSimplifiedSymbol_ascending(Object *s)
 
     return _factory.boolval(typeR->getDirection() == dir_upto);
 }
-Object *HIFSemantics::_getSimplifiedSymbol_iteratedConcat(Object *s)
+const HIFSemantics::ValueSymbol &HIFSemantics::_getStandardSymbolMapping(KeySymbol &key, Object *s)
+{
+    StandardSymbols::iterator entry(_standardSymbols.find(key));
+    messageAssert(entry != _standardSymbols.end(), "Unregistered standard symbol mapping", s, this);
+    messageAssert(
+        entry->second.libraries.size() == 1, "Expected exactly one destination library for a mapped symbol", s, this);
+    return entry->second;
+}
+
+void HIFSemantics::_canonicalizeNestedStandardSymbols(Object *subtree, const std::string &sourceLibrary)
+{
+    // One rewrite per pass: replacing a call destroys its subtree, which may
+    // hold other already-collected pointers, so the collection is rebuilt each
+    // time. Every pass strictly reduces the number of source-form standard
+    // calls (a mapped name is never itself a registry key), so this terminates.
+    for (bool changed = true; changed;) {
+        changed = false;
+
+        std::list<Object *> symbols;
+        hif::semantics::collectSymbols(symbols, subtree);
+
+        for (std::list<Object *>::iterator i(symbols.begin()); i != symbols.end(); ++i) {
+            Object *sym = *i;
+            if (sym == subtree)
+                continue;
+            if (dynamic_cast<FunctionCall *>(sym) == nullptr && dynamic_cast<ProcedureCall *>(sym) == nullptr)
+                continue;
+
+            // Only calls reached through a library prefix can be standard
+            // symbols: a user-defined call never carries one.
+            Instance *inst = dynamic_cast<Instance *>(hif::objectGetInstance(sym));
+            if (inst == nullptr)
+                continue;
+            Library *lib = dynamic_cast<Library *>(inst->getReferencedType());
+            if (lib == nullptr)
+                continue;
+
+            KeySymbol key(sourceLibrary, hif::objectGetName(sym));
+            StandardSymbols::iterator entry(_standardSymbols.find(key));
+            // Not a known source spelling: either already canonical - mapped
+            // names are never registry keys, which is what makes this
+            // idempotent - or not a symbol this semantics maps.
+            if (entry == _standardSymbols.end())
+                continue;
+            if (entry->second.mapAction != SIMPLIFIED)
+                continue;
+            // Source library names are shared across languages ("standard" is
+            // both VHDL's and Verilog's), so a name match alone is ambiguous.
+            // Only accept an entry whose destination library is exactly the one
+            // this call already refers to.
+            if (entry->second.libraries.size() != 1 || entry->second.libraries.front() != lib->getName())
+                continue;
+
+            Object *mapped = getSimplifiedSymbol(key, sym);
+            messageAssert(mapped != nullptr, "Unable to canonicalize a nested standard symbol", sym, this);
+
+            sym->replace(mapped);
+            delete sym;
+            changed = true;
+            break;
+        }
+    }
+}
+
+Object *HIFSemantics::_getSimplifiedSymbol_iteratedConcat(KeySymbol &key, Object *s)
 {
     FunctionCall *f = dynamic_cast<FunctionCall *>(s);
     messageAssert((f != nullptr), "Expected FunctionCall", s, this);
 
+    const ValueSymbol &mapping = _getStandardSymbolMapping(key, s);
+
     FunctionCall *ret = hif::copy(f);
-    ret->setName("hif_verilog_iterated_concat");
+    ret->setName(mapping.mappedSymbol);
     for (BList<TPAssign>::iterator i = ret->templateParameterAssigns.begin(); i != ret->templateParameterAssigns.end();
          ++i) {
         ValueTPAssign *vtpa = dynamic_cast<ValueTPAssign *>(*i);
@@ -979,7 +1045,16 @@ Object *HIFSemantics::_getSimplifiedSymbol_iteratedConcat(Object *s)
     Library *lib = dynamic_cast<Library *>(inst->getReferencedType());
     messageAssert(lib != nullptr, "Expected library instance.", s, this);
 
-    lib->setName("hif_verilog_standard");
+    lib->setName(mapping.libraries.front());
+
+    // The copy carries the whole user replication count over verbatim, so it
+    // can still hold source-form standard calls - `{$clog2(DEPTH){1'b1}}` keeps
+    // a `_system_clog2` under a library the enclosing map step has already
+    // renamed to `hif_verilog_standard`. Canonicalize them before resetting
+    // declarations, otherwise the reset re-resolves names that no destination
+    // library declares.
+    _canonicalizeNestedStandardSymbols(ret, key.first);
+
     hif::semantics::resetDeclarations(ret);
 
     return ret;
@@ -997,7 +1072,7 @@ Object *HIFSemantics::_getSimplifiedSymbol_withVerilogIntegers(
         return _fixCallIntegerParameters(pc, intParamIndexes, this);
     } else {
         FunctionCall *fcopy = _fixCallIntegerParameters(fc, intParamIndexes, this);
-        Object *ret         = fcopy;
+        Object *ret = fcopy;
         //        if (intReturnedType)
         //        {
         //            ret = _factory.cast(

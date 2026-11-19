@@ -126,3 +126,16 @@ add_test(
     NAME integer_generic
     COMMAND integer_generic_test ${CMAKE_CURRENT_SOURCE_DIR}/fixtures/verilog_parameter.hif.xml
 )
+
+# Regression (hif-backend#94): a Verilog shift by a vector amount regenerated as
+# invalid VHDL - to_integer(to_unsigned(a)) sll to_integer(to_unsigned(n)) -
+# because the vector-to-integer cast called to_unsigned, the shifted operand was
+# given the count's integer type, and VHDLAnalysis accepted a shift by a vector.
+# See vhdl_shift_and_to_integer_test.cpp.
+add_executable(vhdl_shift_and_to_integer_test
+    ${CMAKE_CURRENT_SOURCE_DIR}/vhdl_shift_and_to_integer_test.cpp)
+target_include_directories(vhdl_shift_and_to_integer_test PRIVATE ${PROJECT_SOURCE_DIR}/include)
+target_link_libraries(vhdl_shift_and_to_integer_test PRIVATE hif::hif)
+target_compile_features(vhdl_shift_and_to_integer_test PRIVATE cxx_std_17)
+
+add_test(NAME vhdl_shift_and_to_integer COMMAND vhdl_shift_and_to_integer_test)

@@ -72,6 +72,8 @@ void HIFSemantics::_initStandardSymbols()
         _makeValue(hif_vhdl_ieee_numeric_std, 1, "hif_vhdl_rotate_right", SIMPLIFIED);
     _standardSymbols[_makeKey("ieee_numeric_std", "resize")] =
         _makeValue(hif_vhdl_ieee_numeric_std, 1, "hif_vhdl_resize", SIMPLIFIED);
+    _standardSymbols[_makeKey("ieee_numeric_std", "to_integer")] =
+        _makeValue(hif_vhdl_ieee_numeric_std, 1, "hif_vhdl_to_integer", SIMPLIFIED);
     _standardSymbols[_makeKey("ieee_numeric_std", "to_signed")] =
         _makeValue(hif_vhdl_ieee_numeric_std, 1, "hif_vhdl_to_signed", SIMPLIFIED);
     _standardSymbols[_makeKey("ieee_numeric_std", "to_std_logic_vector")] =

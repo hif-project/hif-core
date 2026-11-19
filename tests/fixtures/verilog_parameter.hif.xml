@@ -1,0 +1,267 @@
+<SYSTEM formatVersion="5.0" generationDate="11:2:49:29343" languageId="RTL" name="system" release="1.0.0" tool="VERILOG2HIF">
+	<LIBRARYDEFS>
+		<LIBRARYDEF clinkage="false" languageId="RTL" name="hif_verilog_standard" standard="true"/>
+	</LIBRARYDEFS>
+	<DESIGNUNITS>
+		<DESIGNUNIT name="v2vhdl_parameter_generic">
+			<VIEW filename="" languageId="RTL" name="behav" standard="false">
+				<TEMPLATE_PARAMETERS>
+					<VALUETP compileTimeConstant="true" name="W">
+						<TYPE>
+							<BITVECTOR constexpr="true" logic="true" resolved="true" signed="true" typeVariant="NATIVE_TYPE">
+								<RANGE direction="DOWNTO">
+									<LEFTBOUND>
+										<INTVAL value="31"/>
+									</LEFTBOUND>
+									<RIGHTBOUND>
+										<INTVAL value="0"/>
+									</RIGHTBOUND>
+								</RANGE>
+							</BITVECTOR>
+						</TYPE>
+						<VALUE>
+							<BITVECTORVAL VALUE="00000000000000000000000000000101">
+								<TYPE>
+									<BITVECTOR constexpr="true" logic="true" resolved="true" signed="true" typeVariant="NATIVE_TYPE">
+										<RANGE direction="DOWNTO">
+											<LEFTBOUND>
+												<INTVAL value="31"/>
+											</LEFTBOUND>
+											<RIGHTBOUND>
+												<INTVAL value="0"/>
+											</RIGHTBOUND>
+										</RANGE>
+									</BITVECTOR>
+								</TYPE>
+							</BITVECTORVAL>
+						</VALUE>
+					</VALUETP>
+				</TEMPLATE_PARAMETERS>
+				<ENTITY name="Entity">
+					<PORT direction="IN" name="a" wrapper="false">
+						<TYPE>
+							<BITVECTOR constexpr="false" logic="true" resolved="true" signed="false" typeVariant="NATIVE_TYPE">
+								<RANGE direction="DOWNTO">
+									<LEFTBOUND>
+										<CAST>
+											<VALUE>
+												<EXPRESSION operator="-">
+													<VALUE1>
+														<IDENTIFIER name="W">
+														</IDENTIFIER>
+													</VALUE1>
+													<VALUE2>
+														<BITVECTORVAL VALUE="00000000000000000000000000000001">
+															<TYPE>
+																<BITVECTOR constexpr="true" logic="true" resolved="true" signed="true" typeVariant="NATIVE_TYPE">
+																	<RANGE direction="DOWNTO">
+																		<LEFTBOUND>
+																			<INTVAL value="31"/>
+																		</LEFTBOUND>
+																		<RIGHTBOUND>
+																			<INTVAL value="0"/>
+																		</RIGHTBOUND>
+																	</RANGE>
+																</BITVECTOR>
+															</TYPE>
+														</BITVECTORVAL>
+													</VALUE2>
+												</EXPRESSION>
+											</VALUE>
+											<TYPE>
+												<INTEGER constexpr="true" signed="false" typeVariant="NATIVE_TYPE">
+													<SPAN direction="DOWNTO">
+														<LEFTBOUND>
+															<INTVAL value="31"/>
+														</LEFTBOUND>
+														<RIGHTBOUND>
+															<INTVAL value="0"/>
+														</RIGHTBOUND>
+													</SPAN>
+												</INTEGER>
+											</TYPE>
+										</CAST>
+									</LEFTBOUND>
+									<RIGHTBOUND>
+										<INTVAL value="0"/>
+									</RIGHTBOUND>
+								</RANGE>
+							</BITVECTOR>
+						</TYPE>
+					</PORT>
+					<PORT direction="OUT" name="y" wrapper="false">
+						<VALUE>
+							<AGGREGATE>
+								<OTHERS>
+									<BITVAL value="Z">
+										<TYPE>
+											<BIT constexpr="true" logic="true" resolved="true" typeVariant="NATIVE_TYPE"/>
+										</TYPE>
+									</BITVAL>
+								</OTHERS>
+							</AGGREGATE>
+						</VALUE>
+						<TYPE>
+							<BITVECTOR constexpr="false" logic="true" resolved="true" signed="false" typeVariant="NATIVE_TYPE">
+								<RANGE direction="DOWNTO">
+									<LEFTBOUND>
+										<CAST>
+											<VALUE>
+												<EXPRESSION operator="-">
+													<VALUE1>
+														<IDENTIFIER name="W">
+														</IDENTIFIER>
+													</VALUE1>
+													<VALUE2>
+														<BITVECTORVAL VALUE="00000000000000000000000000000001">
+															<TYPE>
+																<BITVECTOR constexpr="true" logic="true" resolved="true" signed="true" typeVariant="NATIVE_TYPE">
+																	<RANGE direction="DOWNTO">
+																		<LEFTBOUND>
+																			<INTVAL value="31"/>
+																		</LEFTBOUND>
+																		<RIGHTBOUND>
+																			<INTVAL value="0"/>
+																		</RIGHTBOUND>
+																	</RANGE>
+																</BITVECTOR>
+															</TYPE>
+														</BITVECTORVAL>
+													</VALUE2>
+												</EXPRESSION>
+											</VALUE>
+											<TYPE>
+												<INTEGER constexpr="true" signed="false" typeVariant="NATIVE_TYPE">
+													<SPAN direction="DOWNTO">
+														<LEFTBOUND>
+															<INTVAL value="31"/>
+														</LEFTBOUND>
+														<RIGHTBOUND>
+															<INTVAL value="0"/>
+														</RIGHTBOUND>
+													</SPAN>
+												</INTEGER>
+											</TYPE>
+										</CAST>
+									</LEFTBOUND>
+									<RIGHTBOUND>
+										<INTVAL value="0"/>
+									</RIGHTBOUND>
+								</RANGE>
+							</BITVECTOR>
+						</TYPE>
+					</PORT>
+					<PORT direction="OUT" name="top" wrapper="false">
+						<VALUE>
+							<BITVAL value="Z">
+								<TYPE>
+									<BIT constexpr="true" logic="true" resolved="true" typeVariant="NATIVE_TYPE"/>
+								</TYPE>
+							</BITVAL>
+						</VALUE>
+						<TYPE>
+							<BIT constexpr="false" logic="true" resolved="true" typeVariant="NATIVE_TYPE"/>
+						</TYPE>
+					</PORT>
+				</ENTITY>
+				<CONTENTS name="Architecture">
+					<STATETABLES>
+						<STATETABLE dontinitialize="false" entryStateName="" flavour="HDL" name="globact_process_0" standard="false">
+							<SENSITIVITY>
+								<IDENTIFIER name="a">
+								</IDENTIFIER>
+							</SENSITIVITY>
+							<STATES>
+								<STATE atomic="false" name="state_0" priority="0">
+									<ACTIONS>
+										<ASSIGN>
+											<LEFTHANDSIDE>
+												<IDENTIFIER name="y">
+												</IDENTIFIER>
+											</LEFTHANDSIDE>
+											<RIGHTHANDSIDE>
+												<EXPRESSION operator="~">
+													<VALUE1>
+														<IDENTIFIER name="a">
+														</IDENTIFIER>
+													</VALUE1>
+												</EXPRESSION>
+											</RIGHTHANDSIDE>
+										</ASSIGN>
+									</ACTIONS>
+								</STATE>
+							</STATES>
+						</STATETABLE>
+						<STATETABLE dontinitialize="false" entryStateName="" flavour="HDL" name="globact_process_1" standard="false">
+							<SENSITIVITY>
+								<IDENTIFIER name="a">
+								</IDENTIFIER>
+							</SENSITIVITY>
+							<STATES>
+								<STATE atomic="false" name="state_1" priority="0">
+									<ACTIONS>
+										<ASSIGN>
+											<LEFTHANDSIDE>
+												<IDENTIFIER name="top">
+												</IDENTIFIER>
+											</LEFTHANDSIDE>
+											<RIGHTHANDSIDE>
+												<MEMBER>
+													<PREFIX>
+														<IDENTIFIER name="a">
+														</IDENTIFIER>
+													</PREFIX>
+													<INDEX>
+														<CAST>
+															<VALUE>
+																<EXPRESSION operator="-">
+																	<VALUE1>
+																		<IDENTIFIER name="W">
+																		</IDENTIFIER>
+																	</VALUE1>
+																	<VALUE2>
+																		<BITVECTORVAL VALUE="00000000000000000000000000000001">
+																			<TYPE>
+																				<BITVECTOR constexpr="true" logic="true" resolved="true" signed="true" typeVariant="NATIVE_TYPE">
+																					<RANGE direction="DOWNTO">
+																						<LEFTBOUND>
+																							<INTVAL value="31"/>
+																						</LEFTBOUND>
+																						<RIGHTBOUND>
+																							<INTVAL value="0"/>
+																						</RIGHTBOUND>
+																					</RANGE>
+																				</BITVECTOR>
+																			</TYPE>
+																		</BITVECTORVAL>
+																	</VALUE2>
+																</EXPRESSION>
+															</VALUE>
+															<TYPE>
+																<INTEGER constexpr="true" signed="false" typeVariant="NATIVE_TYPE">
+																	<SPAN direction="DOWNTO">
+																		<LEFTBOUND>
+																			<INTVAL value="31"/>
+																		</LEFTBOUND>
+																		<RIGHTBOUND>
+																			<INTVAL value="0"/>
+																		</RIGHTBOUND>
+																	</SPAN>
+																</INTEGER>
+															</TYPE>
+														</CAST>
+													</INDEX>
+												</MEMBER>
+											</RIGHTHANDSIDE>
+										</ASSIGN>
+									</ACTIONS>
+								</STATE>
+							</STATES>
+						</STATETABLE>
+					</STATETABLES>
+					<GLOBALACTION/>
+				</CONTENTS>
+			</VIEW>
+		</DESIGNUNIT>
+	</DESIGNUNITS>
+</SYSTEM>

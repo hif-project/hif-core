@@ -112,3 +112,17 @@ target_link_libraries(terminal_prefix_options_defaults_test PRIVATE hif::hif)
 target_compile_features(terminal_prefix_options_defaults_test PRIVATE cxx_std_17)
 
 add_test(NAME terminal_prefix_options_defaults COMMAND terminal_prefix_options_defaults_test)
+
+# Regression (hif-backend#93): a Verilog parameter was standardized toward VHDL
+# as a signed(31 downto 0) generic, so every bound that used it became
+# to_integer(W - "000...1") and the round trip aborted. See
+# integer_generic_test.cpp.
+add_executable(integer_generic_test ${CMAKE_CURRENT_SOURCE_DIR}/integer_generic_test.cpp)
+target_include_directories(integer_generic_test PRIVATE ${PROJECT_SOURCE_DIR}/include)
+target_link_libraries(integer_generic_test PRIVATE hif::hif)
+target_compile_features(integer_generic_test PRIVATE cxx_std_17)
+
+add_test(
+    NAME integer_generic
+    COMMAND integer_generic_test ${CMAKE_CURRENT_SOURCE_DIR}/fixtures/verilog_parameter.hif.xml
+)

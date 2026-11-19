@@ -185,6 +185,48 @@ auto checkShiftCountMustBeInteger() -> bool
     return ok;
 }
 
+/// 4. Under Verilog semantics a shift is as signed as the shifted operand alone.
+auto checkVerilogShiftSignedness() -> bool
+{
+    auto *sem = VerilogSemantics::getInstance();
+    Expression dummy;
+
+    auto makeVector = [](std::int64_t msb, bool isSigned) {
+        auto *t = new Bitvector();
+        t->setSpan(new Range(msb, 0));
+        t->setSigned(isSigned);
+        t->setLogic(true);
+        t->setResolved(true);
+        return t;
+    };
+
+    Bitvector *signedValue   = makeVector(7, true);
+    Bitvector *unsignedCount = makeVector(2, false);
+
+    // s >>> n: the count does not take part, so the operation is signed.
+    auto shift = sem->getExprType(signedValue, unsignedCount, op_sra, &dummy);
+    bool ok    = expect(shift.operationPrecision != nullptr, "no precision for a shift");
+    if (shift.operationPrecision != nullptr) {
+        auto *precision = dynamic_cast<Bitvector *>(shift.operationPrecision);
+        ok = expect(precision != nullptr && precision->isSigned(), "a signed value shifted by an unsigned count is "
+                                                                   "not a signed operation (the operand was cast to "
+                                                                   "unsigned, and shifted logically)") &&
+             ok;
+    }
+
+    // s + n: any unsigned operand makes the whole thing unsigned. Unchanged.
+    auto sum = sem->getExprType(signedValue, unsignedCount, op_plus, &dummy);
+    ok       = expect(sum.operationPrecision != nullptr, "no precision for a sum") && ok;
+    if (sum.operationPrecision != nullptr) {
+        auto *precision = dynamic_cast<Bitvector *>(sum.operationPrecision);
+        ok = expect(precision != nullptr && !precision->isSigned(), "signed + unsigned is not unsigned") && ok;
+    }
+
+    delete signedValue;
+    delete unsignedCount;
+    return ok;
+}
+
 } // namespace
 
 auto main() -> int
@@ -193,6 +235,7 @@ auto main() -> int
     ok      = checkVectorToIntegerCast() && ok;
     ok      = checkShiftedOperandSuggestion() && ok;
     ok      = checkShiftCountMustBeInteger() && ok;
+    ok      = checkVerilogShiftSignedness() && ok;
     if (!ok) {
         return 1;
     }

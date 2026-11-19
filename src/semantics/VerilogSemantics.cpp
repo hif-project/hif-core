@@ -858,8 +858,17 @@ void VerilogAnalysis::map(Bitvector *array1, Bitvector *array2)
     bv_result->setConstexpr(array1->isConstexpr() && array2->isConstexpr());
 
     // check the signed attribute. If both are signed, the output
-    // is signed, otherwise is unsigned.
-    bv_result->setSigned(array1->isSigned() && array2->isSigned());
+    // is signed, otherwise is unsigned. A shift is the exception: its count is
+    // self-determined and never takes part (IEEE 1364 5.5.1), so the result
+    // is as signed as the shifted operand alone. Mixing the count in made
+    // `s >>> n`, with a signed s and an unsigned n, an unsigned operation, and
+    // the operand was cast to unsigned before the shift: a logical shift of a
+    // value the source shifts arithmetically (hif-backend#94).
+    if (hif::operatorIsShift(_currOperator)) {
+        bv_result->setSigned(array1->isSigned());
+    } else {
+        bv_result->setSigned(array1->isSigned() && array2->isSigned());
+    }
 
     // determine the return type
     if (_isRelational(_currOperator) || _isLogical(_currOperator))

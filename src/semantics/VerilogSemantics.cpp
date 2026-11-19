@@ -35,6 +35,10 @@ public:
     /// operation.
     virtual void analyzeOperands(Type *op1Type, Type *op2Type);
 
+    /// Whether the expression being analyzed is an operand of another operation, and so
+    /// takes its signedness from a context larger than itself.
+    bool _isOperandOfAnotherOperation() const;
+
     /// @name Unary operators
     /// @{
 
@@ -828,6 +832,21 @@ void VerilogAnalysis::map(Array *array1, Array *array2)
     // set the operation precision
     _result.operationPrecision = array_result;
 }
+bool VerilogAnalysis::_isOperandOfAnotherOperation() const
+{
+    Object *node = _srcObj;
+    // Look through the casts the standardization has already put around it.
+    while (node != nullptr && node->getParent() != nullptr && dynamic_cast<Cast *>(node->getParent()) != nullptr) {
+        node = node->getParent();
+    }
+    if (node == nullptr) {
+        return false;
+    }
+    Object *parent = node->getParent();
+    return dynamic_cast<Expression *>(parent) != nullptr || dynamic_cast<WhenAlt *>(parent) != nullptr ||
+           dynamic_cast<When *>(parent) != nullptr;
+}
+
 void VerilogAnalysis::map(Bitvector *array1, Bitvector *array2)
 {
     Range *range1 = array1->getSpan();
@@ -858,13 +877,19 @@ void VerilogAnalysis::map(Bitvector *array1, Bitvector *array2)
     bv_result->setConstexpr(array1->isConstexpr() && array2->isConstexpr());
 
     // check the signed attribute. If both are signed, the output
-    // is signed, otherwise is unsigned. A shift is the exception: its count is
-    // self-determined and never takes part (IEEE 1364 5.5.1), so the result
-    // is as signed as the shifted operand alone. Mixing the count in made
-    // `s >>> n`, with a signed s and an unsigned n, an unsigned operation, and
-    // the operand was cast to unsigned before the shift: a logical shift of a
-    // value the source shifts arithmetically (hif-backend#94).
-    if (hif::operatorIsShift(_currOperator)) {
+    // is signed, otherwise is unsigned. A shift's count is self-determined and
+    // never takes part (IEEE 1364 5.5.1), so a shift that is a whole expression
+    // by itself is as signed as the shifted operand alone. Mixing the count in made
+    // `s >>> n`, a signed s and an unsigned n, an unsigned operation: the operand
+    // was cast to unsigned before the shift, and the HIF held a logical shift of
+    // a value the source shifts arithmetically (hif-backend#94).
+    //
+    // Only when it is a whole expression. A shift that is an operand of another
+    // operation takes its signedness from that whole expression, which an analysis
+    // of two operand types cannot see, and keeps the typing it always had: typing it
+    // by its shifted operand alone turned `(s >>> n) + a`, with an unsigned a, into
+    // an arithmetic shift where Verilog's unsigned expression shifts logically.
+    if (hif::operatorIsShift(_currOperator) && !_isOperandOfAnotherOperation()) {
         bv_result->setSigned(array1->isSigned());
     } else {
         bv_result->setSigned(array1->isSigned() && array2->isSigned());

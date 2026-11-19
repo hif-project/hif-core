@@ -214,6 +214,23 @@ auto checkVerilogShiftSignedness() -> bool
              ok;
     }
 
+    // The same shift as an operand of a sum takes its signedness from the whole sum, which
+    // this analysis cannot see, and keeps the typing it always had (`(s >>> n) + a` with an
+    // unsigned a is a logical shift): both operands signed, or not.
+    {
+        auto *shiftExpression = new Expression(op_sra, new Identifier("s"), new Identifier("n"));
+        Expression sumExpression(op_plus, shiftExpression, new Identifier("a"));
+        auto nested = sem->getExprType(signedValue, unsignedCount, op_sra, shiftExpression);
+        ok          = expect(nested.operationPrecision != nullptr, "no precision for a nested shift") && ok;
+        if (nested.operationPrecision != nullptr) {
+            auto *precision = dynamic_cast<Bitvector *>(nested.operationPrecision);
+            ok              = expect(precision != nullptr && !precision->isSigned(),
+                                     "a shift that is an operand of another operation is typed by its first operand "
+                                     "alone (it must keep the typing it had)") &&
+                 ok;
+        }
+    }
+
     // s + n: any unsigned operand makes the whole thing unsigned. Unchanged.
     auto sum = sem->getExprType(signedValue, unsignedCount, op_plus, &dummy);
     ok       = expect(sum.operationPrecision != nullptr, "no precision for a sum") && ok;

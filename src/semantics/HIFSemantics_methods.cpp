@@ -585,6 +585,11 @@ Object *HIFSemantics::_getSimplifiedSymbolIeeeNumericStd(KeySymbol &key, Object 
     if (key.second == "resize") {
         return _makeCast(s, hif::copy(getSemanticType(dynamic_cast<FunctionCall *>(s), this)));
     }
+    if (key.second == "to_integer") {
+        // A signed/unsigned read as an integer: a cast, like to_signed and
+        // to_unsigned the other way round (hif-backend#94).
+        return _makeCast(s, _factory.integer());
+    }
     if (key.second == "to_signed") {
         Type *t = getSemanticType(dynamic_cast<FunctionCall *>(s), this);
         messageAssert(t != nullptr, "Unable to type.", s, this);

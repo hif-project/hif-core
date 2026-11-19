@@ -937,8 +937,11 @@ void VHDLAnalysis::map(Signed *op1, Signed *op2)
     // Returns a Signed with range dependent by operation
     // If range contains an expression operations are allowed
     // only on equivalent range.
-    if (_isAllowedArithmeticOrConcat(_currOperator) || hif::operatorIsBitwise(_currOperator) ||
-        _isShiftNoRotate(_currOperator)) {
+    // Shifts are not here: `sll` and `srl` take an integer count, so a shift
+    // by a signed/unsigned vector is not VHDL, and allowing it let the operand's
+    // integer cast be simplified away (hif-backend#94). Only the `Int` second
+    // operand maps below accept one.
+    if (_isAllowedArithmeticOrConcat(_currOperator) || hif::operatorIsBitwise(_currOperator)) {
         Range *resRange = nullptr;
         if (_currOperator == op_div || _currOperator == op_rem || _currOperator == op_mod) {
             // result range: op1'length - 1
@@ -1065,8 +1068,7 @@ void VHDLAnalysis::map(Unsigned *op1, Unsigned *op2)
     // Returns an Unsigned with range dependent by operation
     // If range contains an expression operations are allowed
     // only on equivalent range.
-    if (_isAllowedArithmeticOrConcat(_currOperator) || hif::operatorIsBitwise(_currOperator) ||
-        _isShiftNoRotate(_currOperator)) {
+    if (_isAllowedArithmeticOrConcat(_currOperator) || hif::operatorIsBitwise(_currOperator)) {
         Range *resRange = nullptr;
         if (_currOperator == op_div || _currOperator == op_rem || _currOperator == op_mod) {
             // result range: op1'length - 1
@@ -1109,8 +1111,7 @@ void VHDLAnalysis::map(Signed *op1, Unsigned *op2)
         return;
 
     // check libraries
-    if (_currOperator == op_plus || _currOperator == op_minus || _currOperator == op_mult ||
-        _isShiftNoRotate(_currOperator)) {
+    if (_currOperator == op_plus || _currOperator == op_minus || _currOperator == op_mult) {
         // Returns a Signed with range dependent by operation
         // If range contains an expression operations are allowed
         // only on equivalent range.
@@ -2055,13 +2056,22 @@ void VHDLCastAnalysis::map(Int *, Int *) { _result = hif::copy(_inputVal); }
 
 void VHDLCastAnalysis::map(Bitvector *vi, Int *)
 {
-    std::string fName = (vi->isSigned()) ? "to_signed" : "to_unsigned";
-    _result           = _factory.functionCall(
+    // `to_integer` takes a signed or an unsigned, not a std_logic_vector, so
+    // the vector is first reinterpreted: `to_integer(unsigned(x))`. This used to
+    // call `to_unsigned(x)`, which converts an integer *to* an unsigned and
+    // needs a size, so the result was `to_unsigned(x)` with one argument -
+    // invalid VHDL that hif2vhdl wrote without complaint (hif-backend#94).
+    Type *vectorType = nullptr;
+    if (vi->isSigned()) {
+        vectorType = new Signed();
+    } else {
+        vectorType = new Unsigned();
+    }
+    hif::typeSetSpan(vectorType, hif::copy(hif::typeGetSpan(vi, _sem)), _sem);
+
+    _result = _factory.functionCall(
         "to_integer", nullptr, _factory.noTemplateArguments(),
-        _factory.parameterArgument(
-            "param1", _factory.functionCall(
-                          fName.c_str(), nullptr, _factory.noTemplateArguments(),
-                          _factory.parameterArgument("param1", hif::copy(_inputVal)))));
+        _factory.parameterArgument("param1", _factory.cast(vectorType, hif::copy(_inputVal))));
 
     _neededIncludes.insert("ieee_numeric_std");
 }
@@ -2812,10 +2822,29 @@ Operator VHDLSemantics::getMapForOperator(
 Type *VHDLSemantics::getSuggestedTypeForOp(
     Type *t,
     Operator operation,
-    Type * /*opType*/,
+    Type *opType,
     Object *startingObject,
-    bool /*isOp1*/)
+    bool isOp1)
 {
+    // A shift is cast on its second operand only, to an integer, and that cast
+    // type is what the caller passes as @p t for *both* operands. Taking the
+    // first operand's suggestion from it turned `a sll n` on vectors into
+    // integer `sll` integer, which is not VHDL (hif-backend#94). The vector
+    // being shifted keeps its own width and becomes signed or unsigned, the types
+    // numeric_std defines `sll` and `srl` on.
+    if (isOp1 && hif::operatorIsShift(operation)) {
+        if (auto *bv = dynamic_cast<Bitvector *>(opType)) {
+            Type *shifted = nullptr;
+            if (bv->isSigned()) {
+                shifted = new Signed();
+            } else {
+                shifted = new Unsigned();
+            }
+            hif::typeSetSpan(shifted, hif::copy(bv->getSpan()), this);
+            hif::typeSetConstexpr(shifted, bv->isConstexpr());
+            return shifted;
+        }
+    }
     if (hif::operatorIsArithmetic(operation)) {
         if (dynamic_cast<Bitvector *>(t) != nullptr) {
             Bitvector *bv = static_cast<Bitvector *>(t);

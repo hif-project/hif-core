@@ -2833,6 +2833,13 @@ Type *VHDLSemantics::getSuggestedTypeForOp(
     // being shifted keeps its own width and becomes signed or unsigned, the types
     // numeric_std defines `sll` and `srl` on.
     if (isOp1 && hif::operatorIsShift(operation)) {
+        // Already signed or unsigned: it is what numeric_std shifts, so it stays,
+        // with its sign. Taking the count's integer type for it, or demoting it to
+        // unsigned, turned an arithmetic shift of a signed value into a shift of an
+        // unsigned one.
+        if (dynamic_cast<Signed *>(opType) != nullptr || dynamic_cast<Unsigned *>(opType) != nullptr) {
+            return hif::copy(opType);
+        }
         if (auto *bv = dynamic_cast<Bitvector *>(opType)) {
             Type *shifted = nullptr;
             if (bv->isSigned()) {

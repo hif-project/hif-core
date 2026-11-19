@@ -145,6 +145,17 @@ auto checkShiftedOperandSuggestion() -> bool
     Type *second            = sem->getSuggestedTypeForOp(countCast, op_sra, signedVector, &dummy, true);
     ok = expect(second != nullptr && dynamic_cast<Signed *>(second) != nullptr, "a signed vector is not suggested as signed") && ok;
 
+    // A value that is already signed or unsigned keeps its type: an arithmetic
+    // shift of a signed one must not become a shift of an unsigned one.
+    Signed *alreadySigned = new Signed();
+    alreadySigned->setSpan(new Range(7, 0));
+    Type *third = sem->getSuggestedTypeForOp(countCast, op_sra, alreadySigned, &dummy, true);
+    ok          = expect(third != nullptr && dynamic_cast<Signed *>(third) != nullptr,
+                         "a signed operand is not kept signed for an arithmetic shift") &&
+         ok;
+    delete third;
+    delete alreadySigned;
+
     delete first;
     delete second;
     delete vectorType;
